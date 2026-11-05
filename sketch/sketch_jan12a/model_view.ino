@@ -5,11 +5,6 @@ static const float MODEL_ZOOMS[3] = {1.0f, 1.5f, 2.2f};
 static const int MODEL_FOOTER_HEIGHT = 14;
 static const float MODEL_CAMERA = 3.0f;  // Distance from the model's centre, in model radii
 
-ModelMolecule* currentMolecule = nullptr;
-Mat3 modelRotation;
-uint8_t modelZoomStep = 0;
-bool modelForceNoMemory = false;  // Serial "modelnomem 1": tests the out-of-memory path
-
 static M5Canvas* modelCanvas = nullptr;
 static bool modelCanvasInPsram = false;
 static float* modelZ = nullptr;

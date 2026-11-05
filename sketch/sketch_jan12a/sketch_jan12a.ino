@@ -194,6 +194,15 @@ uint8_t* imageBuffer = nullptr;
 int imageBufferSize = 0;
 String currentImageUrl = "";
 bool hasImage = false;
+// 3D view (model_view.ino, model_source.ino). modelRefText is what deep sleep saves.
+bool hasModel = false;
+String modelRefText;
+String modelLabel;
+ModelMolecule* currentMolecule = nullptr;
+Mat3 modelRotation;
+uint8_t modelZoomStep = 0;
+bool modelForceNoMemory = false;  // Serial "modelnomem 1": tests the out-of-memory path
+String modelPubChemHost = "pubchem.ncbi.nlm.nih.gov";  // Serial "modelhost": tests a dead server
 bool isWolframImage = false;  // Flag to track if current image is from Wolfram Alpha
 int wolframScrollOffset = 0;  // Vertical scroll offset for Wolfram images
 int wolframMaxScrollOffset = 0;
@@ -401,6 +410,12 @@ void drawHomeScreen();
 void drawIconTextScreen(const String &text, const uint8_t* iconData);
 int heldRotation();
 void handleSerialCommands();
+bool modelViewBegin();
+void modelViewEnd();
+bool modelViewActive();
+void modelViewFrame(const char* footer);
+void modelBench(int atoms);
+bool fetchModel(const ModelRef& ref);
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();

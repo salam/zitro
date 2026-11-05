@@ -320,6 +320,11 @@ void handleSerialCommands() {
     } else if (line == "shot") {
       armCapture("current", 0);
       redrawPreviousResult();
+    } else if (line.startsWith("modelhost ")) {
+      modelPubChemHost = line.substring(10);
+      Serial.println("modelhost " + modelPubChemHost);
+    } else if (line.startsWith("model ")) {
+      runModelCommand(line.substring(6));
     } else if (line.startsWith("modelbench ")) {
       modelBench(line.substring(11).toInt());
       redrawPreviousResult();

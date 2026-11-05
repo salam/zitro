@@ -85,6 +85,15 @@ static void testSdf() {
   CHECK(!parse(counts(2, 1) + atomLine("C") + atomLine("C") + " 1 99  1  0\nM  END\n"));
   CHECK(!parse(counts(2, 1) + atomLine("C") + atomLine("C") + " 1  1  1  0\nM  END\n"));
   CHECK(!parse(counts(1, 0) + atomLine("Xx") + "M  END\n"));
+  // Non-finite or absurd coordinates are not a model
+  const auto rawAtom = [](const char* x) {
+    char line[80];
+    snprintf(line, sizeof line, "%10s%10.4f%10.4f %-3s 0  0\n", x, 0.25, -0.5, "C");
+    return std::string(line);
+  };
+  for (const char* x : {"nan", "inf", "-inf", "1e30"}) {
+    CHECK(!parse(counts(2, 0) + rawAtom(x) + atomLine("C") + "M  END\n"));
+  }
   // A single atom must not divide by zero
   CHECK(parse(counts(1, 0) + atomLine("C") + "M  END\n"));
   CHECK(mol.atoms[0].x == 0);

@@ -138,6 +138,7 @@ inline bool parseSdf(const char* text, size_t textLen, ModelMolecule& out) {
     }
     a.element = elementFromSymbol(sym);
     if (a.element == 0) return false;
+    if (!isfinite(a.x) || !isfinite(a.y) || !isfinite(a.z)) return false;
     sx += a.x; sy += a.y; sz += a.z;
   }
   for (int i = 0; i < bonds; i++) {
@@ -167,6 +168,7 @@ inline bool parseSdf(const char* text, size_t textLen, ModelMolecule& out) {
     float r2 = a.x * a.x + a.y * a.y + a.z * a.z;
     if (r2 > maxR2) maxR2 = r2;
   }
+  if (!isfinite(maxR2)) return false;  // Absurdly large coordinates
   if (maxR2 > 0) {
     float s = 1.0f / sqrtf(maxR2);
     for (int i = 0; i < atoms; i++) {

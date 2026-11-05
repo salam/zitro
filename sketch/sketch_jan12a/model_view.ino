@@ -51,7 +51,7 @@ static void modelFreeBuffers() {
   free(modelAdjOrder); modelAdjOrder = nullptr;
 }
 
-static void modelBuildAdjacency() {
+static bool modelBuildAdjacency() {
   const ModelMolecule& m = *currentMolecule;
   memset(modelAdjStart, 0, sizeof(uint16_t) * (m.atomCount + 1));
   for (uint16_t i = 0; i < m.bondCount; i++) {
@@ -60,7 +60,7 @@ static void modelBuildAdjacency() {
   }
   for (uint16_t i = 0; i < m.atomCount; i++) modelAdjStart[i + 1] += modelAdjStart[i];
   uint16_t* fill = (uint16_t*)malloc(sizeof(uint16_t) * m.atomCount);
-  if (!fill) return;
+  if (!fill) return false;
   memcpy(fill, modelAdjStart, sizeof(uint16_t) * m.atomCount);
   for (uint16_t i = 0; i < m.bondCount; i++) {
     const ModelBond& b = m.bonds[i];
@@ -70,6 +70,7 @@ static void modelBuildAdjacency() {
     modelAdjOrder[fill[b.b]++] = b.order;
   }
   free(fill);
+  return true;
 }
 
 void modelViewEnd() {
@@ -156,7 +157,10 @@ bool modelViewBegin() {
     return false;
   }
   for (uint16_t i = 0; i < atoms; i++) modelOrder[i] = (uint8_t)i;
-  modelBuildAdjacency();
+  if (!modelBuildAdjacency()) {
+    modelViewEnd();
+    return false;
+  }
 
   // Internal RAM is much faster to draw into than PSRAM; PSRAM is the fallback
   modelCanvas = new M5Canvas(&M5.Display);
@@ -265,12 +269,14 @@ void modelViewFrame(const char* footer) {
 
 // Opens the 3D view. Out of memory: back to the text, with a short note.
 bool modelViewShow() {
+  if (timerAlertActive) return false;  // The alert stays on top; dismissing it brings the model back
   if (!hasModel || !currentMolecule) {
     currentDisplayMode = SHOW_TEXT;
     return false;
   }
   if (!modelViewActive() && !modelViewBegin()) {
     currentDisplayMode = SHOW_TEXT;
+    modelResetRotateToggle = true;
     Serial.println("3D view: no memory for the sprite");
     drawScreen("Not enough memory\nfor the 3D view.");
     delay(1500);
@@ -278,6 +284,8 @@ bool modelViewShow() {
     return false;
   }
   currentDisplayMode = SHOW_MODEL;
+  // Every way here is a button press or a wake-up, which restarts the 5 minutes of motion
+  modelWindowStart = millis();
   updateGyroPower();
   modelViewFrame(modelFooterText.c_str());
   return true;
@@ -298,11 +306,7 @@ void modelCycleZoom() {
 // One frame of the 3D view, at most 25 per second. Runs from loop() and never blocks.
 void modelViewTick() {
   static unsigned long lastFrame = 0;
-  static unsigned long lastTick = 0;
   const unsigned long now = millis();
-  // First pass after entering the view or waking up: that was a button press
-  if (now - lastTick > 2000) modelWindowStart = now;
-  lastTick = now;
   if (now - lastFrame < MODEL_FRAME_MS) return;
   const float dt = min((now - lastFrame) / 1000.0f, 0.1f);
   lastFrame = now;

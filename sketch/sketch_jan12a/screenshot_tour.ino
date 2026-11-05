@@ -239,6 +239,8 @@ static void runScreenshotTour() {
   String savedResponse = response;
   modelViewEnd();
   bool savedHasImage = hasImage;
+  bool savedHasModel = hasModel;
+  hasModel = false;
   DisplayMode savedMode = currentDisplayMode;
   hasImage = false;
   currentDisplayMode = SHOW_TEXT;
@@ -300,6 +302,12 @@ static void runScreenshotTour() {
   captureArmed = 0;
   response = savedResponse;
   hasImage = savedHasImage;
+  hasModel = savedHasModel;
+  if (hasModel) {  // Only with a model loaded: the tour itself doesn't use the network
+    armCapture("50-3d-model", 0);
+    modelViewShow();
+    modelViewEnd();
+  }
   currentDisplayMode = savedMode;
   redrawPreviousResult();
   resetToActiveState();

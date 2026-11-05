@@ -7528,6 +7528,7 @@ void replayLastAudio() {
 }
 
 bool speakText(const String &text) {
+  modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
   Serial.println("\n========== TEXT-TO-SPEECH ==========");
   Serial.println("Text: " + text);
 
@@ -8579,8 +8580,14 @@ void handleVoiceQuery(bool playAudio) {
   M5.Display.setRotation(getLandscapeRotation());  // Landscape with auto-rotation
   currentDisplayMode = SHOW_TEXT;
   imageZoomMode = CONTAIN;  // Reset zoom mode to default for new query
-  Serial.println("Initial display: showing text in landscape mode");
-  drawScreen(response);
+  // A found 3D model is the answer, so it opens right away; Button C shows the text
+  if (hasModel) {
+    Serial.println("Initial display: showing the 3D model");
+    modelViewShow();  // Without memory it shows the text instead
+  } else {
+    Serial.println("Initial display: showing text in landscape mode");
+    drawScreen(response);
+  }
 
   resetToActiveState(); // Reset to active state after showing answer
 

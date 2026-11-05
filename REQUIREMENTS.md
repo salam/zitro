@@ -352,7 +352,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Phase 1 is built:
 - Up to 200 atoms and 250 bonds, otherwise not available. Atoms, bonds and hydrogens are never dropped
 
 ## View (`model_view.ino`, pure logic in `model_core.h`)
-- `DisplayMode` `SHOW_MODEL`. Text first; Button C or rotate-to-toggle enters. Button C returns to text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi, three quick Button C presses open settings as everywhere
+- `DisplayMode` `SHOW_MODEL`. An answer with a model opens straight in the view. Button C goes to the text and back, rotate-to-toggle enters from the text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi, three quick Button C presses open settings as everywhere
 - Shake, roll, rotate-to-toggle and landscape flip are off; rotation locks on entry
 - One non-blocking frame per `loop()`, at most 25 per second. Measured on the Plus2 at full speed: 50 atoms 58-62 fps, 100 atoms 51-55 fps, 200 atoms 42-46 fps
 - Gyro integrated, 2x gain; under 3 deg/s it turns by itself at 0.35 rad/s

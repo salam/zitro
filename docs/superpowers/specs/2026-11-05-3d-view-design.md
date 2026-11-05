@@ -44,12 +44,11 @@ The AI only names what to look up. It never supplies coordinates, record IDs, co
 ## What the user sees
 
 1. They ask "What does caffeine look like?".
-2. Status screen "Finding 3D model", then the text answer, with a small 3D hint icon where the rotate icon sits today.
-3. They press Button C or do the usual rotate gesture. The model appears.
-4. Turning the stick turns the model. Lying still, it turns slowly by itself, so depth stays visible.
-5. Button C goes back to the text.
+2. Status screen "Finding 3D model", then the model opens right away.
+3. Turning the stick turns the model. Lying still, it turns slowly by itself, so depth stays visible.
+4. Button C shows the text answer, with a small 3D hint icon where the rotate icon sits today. Button C or the usual rotate gesture goes back to the model.
 
-The text comes first, as it does for pictures today.
+Changed after the user's first try: text first left a screen promising a model it didn't show.
 
 A small footer names the thing and its source: "Caffeine · PubChem". Molecules also get a colour legend with element letters (C, H, O, N).
 
@@ -228,7 +227,7 @@ Each phase ships on its own.
 ## Calls made by the author, open to correction
 
 - "Bodies" read as geometric solids plus celestial bodies, not human anatomy.
-- Text first, then 3D.
+- The model opens straight away, text behind Button C (first built text-first; changed after the user's first try).
 - Model follows the hand; spin with momentum for globe and solar system only.
 - A found model replaces the picture, so such answers can't be printed until the worksheets project.
 - Cells and organs show pictures rather than models.

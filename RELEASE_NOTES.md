@@ -2,7 +2,7 @@
 
 ## Thu 5 Nov, 2026 (late evening)
 
-- **Hold a molecule in your hand**: ask "How is caffeine built?" or "Show me aspirin in 3D", then press the side button. Turn the stick to look around the real molecule, in true atom colors.
+- **Hold a molecule in your hand**: ask "How is caffeine built?" or "Show me aspirin in 3D", and the molecule opens right away. Turn the stick to look around it, in true atom colors. The side button shows the answer in words.
 - **Real data, nothing made up**: every 3D molecule comes straight from PubChem, the big public chemistry database. If there's no 3D model, like for table salt, Zitro shows you a picture instead.
 
 ## Thu 5 Nov, 2026

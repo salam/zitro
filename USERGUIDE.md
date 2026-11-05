@@ -188,11 +188,12 @@ The project includes deployment scripts for building and uploading firmware to y
 Ask how a substance is built, or ask for it in 3D:
 - "Wie ist Koffein aufgebaut?" or "How is caffeine built?"
 - "Zeig mir Aspirin in 3D" or "Show me aspirin in 3D"
+- "Visualisiere Koffein" or "Visualize caffeine"
 
-1. Zitro answers in text. A small cube at the bottom right means a 3D model is ready.
-2. Press Button C, or rotate the stick to the opposite orientation and back. The model appears.
-3. Turn the stick to look around the molecule. Put it down and the model turns slowly by itself.
-4. Press Button B to zoom (3 steps). Press Button C to go back to the text. Press Button A to ask something new.
+1. The model opens right away.
+2. Turn the stick to look around the molecule. Put it down and the model turns slowly by itself.
+3. Press Button B to zoom (3 steps). Press Button A to ask something new.
+4. Press Button C to read the answer. A small cube at the bottom right means the model is still there: press Button C again, or rotate the stick to the opposite orientation and back.
 
 Good to know:
 - The bottom line names the molecule and its source, and shows which color is which atom: C, H, O, N and so on.

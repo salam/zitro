@@ -320,6 +320,12 @@ void handleSerialCommands() {
     } else if (line == "shot") {
       armCapture("current", 0);
       redrawPreviousResult();
+    } else if (line.startsWith("modelbench ")) {
+      modelBench(line.substring(11).toInt());
+      redrawPreviousResult();
+    } else if (line.startsWith("modelnomem ")) {
+      modelForceNoMemory = line.substring(11).toInt() != 0;
+      Serial.printf("modelnomem %d\n", modelForceNoMemory);
     } else if (line.startsWith("printimg ") || line.startsWith("printtest ") || line.startsWith("printtext ")) {
       runPrintTestCommand(line);
     }

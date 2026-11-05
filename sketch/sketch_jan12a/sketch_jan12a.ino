@@ -26,6 +26,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 
 // AI providers (OpenAI, Claude, Infomaniak, OpenAI-compatible, Zitro relay) and conversation memory
 #include "ai_provider.h"
+#include "model_core.h"
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
 // Requires JPEGENC library: https://github.com/bitbank2/JPEGENC

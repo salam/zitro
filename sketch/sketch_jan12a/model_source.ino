@@ -110,10 +110,15 @@ static bool fetchMoleculeFromPubChem(const char* name) {
 // Looks up a model. On failure there is no model.
 bool fetchModel(const ModelRef& ref) {
   hasModel = false;
+  modelViewEnd();  // TLS needs the memory, and the buffers fit the old model
   if (WiFi.status() != WL_CONNECTED) return false;
   if (ref.kind == MODEL_MOLECULE) hasModel = fetchMoleculeFromPubChem(ref.query);
   if (hasModel) {
     modelRefText = String("molecule:") + ref.query;
+    // A slight tilt from the start, so it reads as 3D even before the first turn
+    mat3Identity(modelRotation);
+    mat3Rotate(modelRotation, 0.35f, 0.5f, 0.0f);
+    modelZoomStep = 0;
   } else {
     modelRefText = "";
     modelLabel = "";
@@ -133,18 +138,7 @@ void runModelCommand(const String& text) {
   Serial.printf("model %s: %s in %lu ms, label '%s'\n", text.c_str(), found ? "found" : "not available", millis() - start,
                 modelLabel.c_str());
   if (!found) return;
-  const unsigned long shown = millis();
-  if (!modelViewBegin()) {
-    Serial.println("model: no memory for the sprite");
-    return;
-  }
-  mat3Identity(modelRotation);
-  const String footer = modelLabel + " - PubChem";
-  while (millis() - shown < 4000) {
-    mat3Rotate(modelRotation, 0.01f, 0.03f, 0.0f);
-    modelViewFrame(footer.c_str());
-    yield();
-  }
-  modelViewEnd();
-  redrawPreviousResult();
+  response = modelLabel;
+  currentDisplayMode = SHOW_MODEL;
+  modelViewShow();
 }

@@ -237,6 +237,7 @@ static void runScreenshotTour() {
 
   // Keep the real state; the tour only draws
   String savedResponse = response;
+  modelViewEnd();
   bool savedHasImage = hasImage;
   DisplayMode savedMode = currentDisplayMode;
   hasImage = false;
@@ -325,6 +326,11 @@ void handleSerialCommands() {
       Serial.println("modelhost " + modelPubChemHost);
     } else if (line.startsWith("model ")) {
       runModelCommand(line.substring(6));
+    } else if (line.startsWith("ask ")) {
+      serialTestQuestion = line.substring(4);
+      handleVoiceQuery(false);
+    } else if (line == "modelgyro") {
+      modelGyroNoise();
     } else if (line.startsWith("modelbench ")) {
       modelBench(line.substring(11).toInt());
       redrawPreviousResult();

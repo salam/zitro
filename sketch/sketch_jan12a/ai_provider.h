@@ -63,6 +63,7 @@ struct GPTResponse {
   bool listTimers;    // User wants to list pending timers
   bool clearTimer;    // User wants to clear all timers
   bool isOnboarding;  // User wants to enter AP/setup mode
+  String model;       // What to look up as a 3D model: "<kind>:<query>", or empty. Last: filled by position elsewhere
 };
 
 // Chat endpoint configuration for the selected provider

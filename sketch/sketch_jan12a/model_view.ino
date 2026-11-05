@@ -2,8 +2,32 @@
 // The pure math and parsing live in model_core.h.
 
 static const float MODEL_ZOOMS[3] = {1.0f, 1.5f, 2.2f};
-static const int MODEL_FOOTER_HEIGHT = 14;
+static const int MODEL_FOOTER_HEIGHT = 18;
 static const float MODEL_CAMERA = 3.0f;  // Distance from the model's centre, in model radii
+static const unsigned long MODEL_FRAME_MS = 40;  // 25 frames per second is smooth and saves battery
+static const float MODEL_TURN_GAIN = 2.0f;  // A small wrist turn shows the far side, screen stays readable
+static const float MODEL_TURN_SIGN = -1.0f;  // The model stays put while the stick turns around it
+static const float MODEL_STILL_DPS = 3.0f;  // Below this the hand isn't turning: sensor noise, idle turn
+static const float MODEL_ACTIVE_DPS = 15.0f;  // Above this, motion counts as activity for the sleep timers
+static const unsigned long MODEL_MOTION_CAP_MS = 5UL * 60UL * 1000UL;  // ...until no button for this long
+static const float MODEL_IDLE_RAD_PER_S = 0.35f;
+static const int MODEL_LEGEND_MAX = 8;
+
+bool modelResetRotateToggle = false;
+static unsigned long modelWindowStart = 0;
+static uint8_t modelLegend[MODEL_LEGEND_MAX];
+static uint8_t modelLegendCount = 0;
+static String modelFooterText;
+static bool modelFooterSmallFont = true;
+
+static void modelSetFooterFont(M5Canvas& c) {
+  if (modelFooterSmallFont) {
+    c.setFont(&fonts::DejaVu9);
+  } else {
+    c.setFreeFont(FontManager::getFont12pt());  // Names with umlauts or Greek letters
+  }
+  c.setTextSize(1);
+}
 
 static M5Canvas* modelCanvas = nullptr;
 static bool modelCanvasInPsram = false;
@@ -57,6 +81,62 @@ void modelViewEnd() {
   modelFreeBuffers();
 }
 
+static void modelLegendAdd(uint8_t element) {
+  for (uint8_t i = 0; i < modelLegendCount; i++) {
+    if (modelLegend[i] == element) return;
+  }
+  if (modelLegendCount < MODEL_LEGEND_MAX) modelLegend[modelLegendCount++] = element;
+}
+
+// Name and source on the left, the elements' letters in their colours on the right
+static void modelBuildFooter() {
+  const ModelMolecule& m = *currentMolecule;
+  modelLegendCount = 0;
+  // Carbon and hydrogen first, as chemists write formulas; then in order of appearance
+  for (uint16_t i = 0; i < m.atomCount; i++) {
+    if (m.atoms[i].element == 6) { modelLegendAdd(6); break; }
+  }
+  for (uint16_t i = 0; i < m.atomCount; i++) {
+    if (m.atoms[i].element == 1) { modelLegendAdd(1); break; }
+  }
+  for (uint16_t i = 0; i < m.atomCount; i++) modelLegendAdd(m.atoms[i].element);
+
+  // The small font only knows ASCII
+  modelFooterSmallFont = true;
+  for (unsigned int i = 0; i < modelLabel.length(); i++) {
+    if ((uint8_t)modelLabel[i] >= 0x80) modelFooterSmallFont = false;
+  }
+  M5Canvas& c = *modelCanvas;
+  modelSetFooterFont(c);
+  int legendWidth = 0;
+  for (uint8_t i = 0; i < modelLegendCount; i++) legendWidth += c.textWidth(elementSymbol(modelLegend[i])) + 3;
+  const String source = " - PubChem";
+  const int room = WIDTH - legendWidth - 6;
+  String name = modelLabel;
+  if (c.textWidth((name + source).c_str()) > room) {
+    while (name.length() > 1 && c.textWidth((name + "..." + source).c_str()) > room) {
+      // Never cut in the middle of a UTF-8 character
+      int cut = name.length() - 1;
+      while (cut > 0 && ((uint8_t)name[cut] & 0xC0) == 0x80) cut--;
+      name.remove(cut);
+    }
+    name += "...";
+  }
+  modelFooterText = name + source;
+}
+
+// Small cube at the bottom right of the text screen: this answer has a 3D model
+void drawModelHint(M5Canvas& c) {
+  const int x = WIDTH - 21, y = HEIGHT - 19, s = 11, d = 5;
+  const uint16_t color = c.color565(0xF2, 0xB7, 0x05);
+  c.drawRect(x, y + d, s, s, color);
+  c.drawRect(x + d, y, s, s, color);
+  c.drawLine(x, y + d, x + d, y, color);
+  c.drawLine(x + s - 1, y + d, x + s - 1 + d, y, color);
+  c.drawLine(x, y + d + s - 1, x + d, y + s - 1, color);
+  c.drawLine(x + s - 1, y + d + s - 1, x + s - 1 + d, y + s - 1, color);
+}
+
 // Allocates the sprite and depth buffers. False if there's no memory: the caller stays on the text.
 bool modelViewBegin() {
   if (modelForceNoMemory || !currentMolecule) return false;
@@ -90,6 +170,8 @@ bool modelViewBegin() {
       return false;
     }
   }
+  M5.Display.setRotation(getLandscapeRotation());  // Locked until the view ends
+  modelBuildFooter();
   return true;
 }
 
@@ -158,18 +240,111 @@ void modelViewFrame(const char* footer) {
     // A dark rim keeps overlapping atoms apart, which is what makes the depth readable
     c.fillCircle(x, y, r + 1, TFT_BLACK);
     c.fillCircle(x, y, r, color);
-    if (r >= 3) c.fillCircle(x - r / 3, y - r / 3, r / 3, TFT_WHITE);
+    // Only on larger atoms: a highlight on a small one reads as a + sign, which means charge
+    if (r >= 6) c.fillRect(x - r / 3 - 1, y - r / 3 - 1, 2, 2, TFT_WHITE);
   }
 
   if (hasFooter) {
     c.fillRect(0, HEIGHT - MODEL_FOOTER_HEIGHT, WIDTH, MODEL_FOOTER_HEIGHT, TFT_BLACK);
-    c.setTextSize(1);
-    c.setTextDatum(textdatum_t::bottom_left);
-    c.setTextColor(TFT_LIGHTGREY, TFT_BLACK);
-    c.drawString(footer, 2, HEIGHT - 2);
+    modelSetFooterFont(c);
+    c.setTextDatum(textdatum_t::baseline_left);
+    c.setTextColor(TFT_LIGHTGREY);
+    c.drawString(footer, 2, HEIGHT - 4);
+    int x = WIDTH - 2;
+    for (int i = modelLegendCount - 1; i >= 0; i--) {
+      const char* symbol = elementSymbol(modelLegend[i]);
+      x -= c.textWidth(symbol);
+      c.setTextColor(elementColor565(modelLegend[i]));
+      c.drawString(symbol, x, HEIGHT - 4);
+      x -= 3;
+    }
   }
   c.pushSprite(0, 0);
   captureCanvas(c);
+}
+
+// Opens the 3D view. Out of memory: back to the text, with a short note.
+bool modelViewShow() {
+  if (!hasModel || !currentMolecule) {
+    currentDisplayMode = SHOW_TEXT;
+    return false;
+  }
+  if (!modelViewActive() && !modelViewBegin()) {
+    currentDisplayMode = SHOW_TEXT;
+    Serial.println("3D view: no memory for the sprite");
+    drawScreen("Not enough memory\nfor the 3D view.");
+    delay(1500);
+    drawScreen(response);
+    return false;
+  }
+  currentDisplayMode = SHOW_MODEL;
+  updateGyroPower();
+  modelViewFrame(modelFooterText.c_str());
+  return true;
+}
+
+void leaveModelView() {
+  modelViewEnd();
+  currentDisplayMode = SHOW_TEXT;
+  modelResetRotateToggle = true;
+  updateGyroPower();
+}
+
+void modelCycleZoom() {
+  modelZoomStep = (modelZoomStep + 1) % 3;
+  modelWindowStart = millis();
+}
+
+// One frame of the 3D view, at most 25 per second. Runs from loop() and never blocks.
+void modelViewTick() {
+  static unsigned long lastFrame = 0;
+  static unsigned long lastTick = 0;
+  const unsigned long now = millis();
+  // First pass after entering the view or waking up: that was a button press
+  if (now - lastTick > 2000) modelWindowStart = now;
+  lastTick = now;
+  if (now - lastFrame < MODEL_FRAME_MS) return;
+  const float dt = min((now - lastFrame) / 1000.0f, 0.1f);
+  lastFrame = now;
+  if (!modelViewActive() && !modelViewShow()) return;
+
+  float magnitude = 0;
+  if (gyroReady()) {
+    M5.Imu.update();
+    const auto imu = M5.Imu.getImuData();
+    const float gx = imu.gyro.x, gy = imu.gyro.y, gz = imu.gyro.z;
+    magnitude = sqrtf(gx * gx + gy * gy + gz * gz);
+    if (magnitude >= MODEL_STILL_DPS) {
+      // Rotation 1 and 3 are the same landscape view turned by half a circle
+      const float side = M5.Display.getRotation() == 3 ? -1.0f : 1.0f;
+      const float k = MODEL_TURN_SIGN * MODEL_TURN_GAIN * dt * (float)M_PI / 180.0f;
+      mat3Rotate(modelRotation, k * side * gx, k * side * gy, k * gz);
+    }
+    if (magnitude >= MODEL_ACTIVE_DPS && now - modelWindowStart < MODEL_MOTION_CAP_MS) lastActivityTime = now;
+  }
+  if (magnitude < MODEL_STILL_DPS) mat3Rotate(modelRotation, 0, MODEL_IDLE_RAD_PER_S * dt, 0);
+  modelViewFrame(modelFooterText.c_str());
+}
+
+// Serial "modelgyro": how much the gyro reads while nothing moves, against the activity limit
+void modelGyroNoise() {
+  setGyroEnabled(true);
+  delay(200);
+  float peak = 0, sum = 0;
+  int samples = 0;
+  const unsigned long start = millis();
+  while (millis() - start < 3000) {
+    M5.Imu.update();
+    const auto imu = M5.Imu.getImuData();
+    const float m = sqrtf(imu.gyro.x * imu.gyro.x + imu.gyro.y * imu.gyro.y + imu.gyro.z * imu.gyro.z);
+    peak = max(peak, m);
+    sum += m;
+    samples++;
+    delay(10);
+  }
+  Serial.printf("modelgyro samples=%d mean=%.2f peak=%.2f dps, still<%.1f active>=%.1f\n", samples, sum / samples, peak,
+                MODEL_STILL_DPS, MODEL_ACTIVE_DPS);
+  updateGyroPower();
 }
 
 // Serial "modelbench <atoms>": frames per second for a made-up test molecule.
@@ -198,6 +373,8 @@ void modelBench(int atoms) {
   }
   ModelMolecule* saved = currentMolecule;
   currentMolecule = bench;
+  const String savedLabel = modelLabel;
+  modelLabel = "Benchmark";
   if (modelViewBegin()) {
     mat3Identity(modelRotation);
     for (uint8_t zoom = 0; zoom < 3; zoom++) {
@@ -219,6 +396,7 @@ void modelBench(int atoms) {
   } else {
     Serial.println("modelbench: no memory for the sprite");
   }
+  modelLabel = savedLabel;
   currentMolecule = saved;
   free(bench);
 }

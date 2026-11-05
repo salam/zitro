@@ -140,7 +140,7 @@ The project includes deployment scripts for building and uploading firmware to y
 - Shake: triggers a surprise fact query (no voice playback).
 - Rotate: rotate to the opposite orientation and back to toggle text vs image.
 - Roll: toggles image zoom mode (contain vs cover) while image is shown.
-- To save battery, the gyroscope (needed for roll) only runs while an image or equation is on screen. Shake and turning the stick still work everywhere.
+- To save battery, the gyroscope (needed for roll and for turning 3D models) only runs while an image or 3D model is on screen. Shake and turning the stick still work everywhere.
 
 ### Camera (M5 Unit V / M12 Camera - optional)
 - If attached, device auto-detects camera on startup.
@@ -182,6 +182,25 @@ The project includes deployment scripts for building and uploading firmware to y
 - When a timer fires, the device plays an alert sound and shows a swinging bell with the reminder text, even if the display is asleep or in light sleep. The screen blinks white and black until you press Button A (✓ tab).
 - Hold the stick upright and the timer card, the timer list and the alert turn to portrait with it.
 - Maximum 5 concurrent timers. Active timers prevent deep sleep so they can fire on time.
+
+### 3D molecules
+
+Ask how a substance is built, or ask for it in 3D:
+- "Wie ist Koffein aufgebaut?" or "How is caffeine built?"
+- "Zeig mir Aspirin in 3D" or "Show me aspirin in 3D"
+
+1. Zitro answers in text. A small cube at the bottom right means a 3D model is ready.
+2. Press Button C, or rotate the stick to the opposite orientation and back. The model appears.
+3. Turn the stick to look around the molecule. Put it down and the model turns slowly by itself.
+4. Press Button B to zoom (3 steps). Press Button C to go back to the text. Press Button A to ask something new.
+
+Good to know:
+- The bottom line names the molecule and its source, and shows which color is which atom: C, H, O, N and so on.
+- All 3D data comes from PubChem. The AI only picks the name to look up, so a model is never made up.
+- PubChem has no 3D model for some things, such as table salt, DNA and proteins. You get the usual picture instead.
+- General questions like "What is water?" still show a picture. Only pictures can be printed, so a 3D answer can't be printed yet.
+- Shake, roll and rotate don't do anything while the model is on screen, so turning it can't trigger them.
+- While you keep turning, the screen stays on, for up to 5 minutes after your last button press. Put the stick down and it goes to sleep as usual.
 
 ### Answer sources and media
 - Math and calculation questions are answered with Wolfram Alpha.

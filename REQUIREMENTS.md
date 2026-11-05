@@ -71,7 +71,7 @@
 - Before light and deep sleep: WiFi off, display controller asleep (backlight off), IMU asleep, mic and speaker stopped
 - Deep sleep latches the power-hold pin (GPIO4, the Plus2 has no PMIC) with `gpio_hold_en` so Button A can still wake the device on battery; released after boot
 - Active reminder timers keep the device in light sleep with a timer wake-up instead of deep sleep
-- Motion sensor while awake: accelerometer always on (shake, auto-flip, rotate-to-toggle); gyroscope (PWR_MGMT_2 standby bits) only while an image or equation is shown, for the roll-to-zoom gesture. Roll readings are ignored for 150 ms after the gyro powers up
+- Motion sensor while awake: accelerometer always on (shake, auto-flip, rotate-to-toggle); gyroscope (PWR_MGMT_2 standby bits) only while an image is shown, for the roll-to-zoom gesture, or a 3D model, for turning it. Roll readings are ignored for 150 ms after the gyro powers up
 
 ### Feature Toggles
 - **Search Related Images**: Enable/disable Wikipedia image search (default: on)
@@ -332,6 +332,40 @@ When modifying JavaScript files, browsers may serve cached versions to users, pr
 - Forms may submit to wrong endpoints if backend changes but JS is cached
 - Critical security updates may not apply if old JS is served
 - Cache busting ensures all users get the latest version immediately
+
+---
+
+# Requirements for the 3D View
+
+Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Phase 1 is built: molecules. Solids, atoms, globe, proteins, DNA, crystals, solar system, sky and physics follow.
+
+## Honest content
+- The AI only names what to look up, in the answer field `model` (`"molecule:<English name>"`, empty for none). It never supplies coordinates, IDs or numbers
+- The on-screen label is the source record's title (PubChem Title), so a wrong lookup is visible
+- The written answer stays AI-written
+- `model` only for questions about a substance's structure or for explicit 3D requests. Photos stay the default. `create_image` and calculations (`is_wolfram`) win over `model`
+- Not available: the normal Wikipedia picture (`image_query` is always filled). A found model replaces the picture, so such an answer can't be printed yet
+
+## Lookup (`model_source.ino`)
+- PubChem PUG REST, `/compound/name/<name>/SDF?record_type=3d` and `/property/Title/JSON`, generic User-Agent, no keys
+- 10 s for the whole lookup, body limit 64 KB (PSRAM), V2000 SDF only, must end in `M  END`
+- Up to 200 atoms and 250 bonds, otherwise not available. Atoms, bonds and hydrogens are never dropped
+
+## View (`model_view.ino`, pure logic in `model_core.h`)
+- `DisplayMode` `SHOW_MODEL`. Text first; Button C or rotate-to-toggle enters. Button C returns to text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi, three quick Button C presses open settings as everywhere
+- Shake, roll, rotate-to-toggle and landscape flip are off; rotation locks on entry
+- One non-blocking frame per `loop()`, at most 25 per second. Measured on the Plus2 at full speed: 50 atoms 58-62 fps, 100 atoms 51-55 fps, 200 atoms 42-46 fps
+- Gyro integrated, 2x gain; under 3 deg/s it turns by itself at 0.35 rad/s
+- The sprite (internal RAM, PSRAM as fallback) lives only while the view is on screen: freed for questions, timer alerts and setup. No memory: a short note, then the text
+- Atoms in PubChem colours (`atom_table.h`, made by `scripts/make_atom_table.py`), dark rim for depth, no highlight on small atoms because it reads as a + sign. Footer: label, source, element letters in colour; a smaller ASCII font unless the label needs the full font
+
+## Sleep
+- Motion from 15 deg/s counts as activity, for up to 5 minutes after the last button press, entry or wake. Measured gyro noise on a desk: peak 0.62 deg/s. Motion never wakes a sleeping display
+- Deep sleep saves the reference (`modelRef`) and fetches the model again on wake; on failure, text
+
+## Tests
+- `tests/model/run.sh`: reference parsing, SDF parsing with real PubChem files and broken input, rotation, depth order, colours
+- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
 
 ---
 

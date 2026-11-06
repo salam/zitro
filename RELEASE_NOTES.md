@@ -2,6 +2,7 @@
 
 ## Fri 6 Nov, 2026
 
+- **See it all on zitro.spot**: the homepage now shows music, graphs, the globe, proteins, organs, the night sky, physics, timelines and recipes with real screenshots from the stick.
 - Ask Zitro for a song like "Alle meine Entchen": watch real notes scroll by on a never-ending band and hear each one play!
 - Ask for a curve like sin(x) or x^2 and watch Zitro draw it sharp on its own screen, then tilt the stick to travel along it and read the exact values.
 - Cook with Zitro: ask "How do I make pancakes?" and follow the recipe step by step, with Button C for next and Button B for back.

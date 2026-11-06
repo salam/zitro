@@ -607,6 +607,112 @@ static void testTurning() {
   CHECK(graphTurnRate(-4, 0) == -4);        // At the limit it moves
 }
 
+// Runs one motion at 25 frames per second and returns the columns moved
+static long tiltFor(GraphTilt& t, float rate, float seconds) {
+  long moved = 0;
+  const int frames = (int)(seconds * 25 + 0.5f);
+  for (int i = 0; i < frames; i++) moved += graphTiltStep(t, rate, 0.04f);
+  return moved;
+}
+
+static void testTiltAndHold() {
+  // Tilt and hold keeps sliding: this is what lets you travel along a curve
+  GraphTilt t = {0, 0, 0};
+  const long during = tiltFor(t, 60, 0.5f);
+  CHECK(during > 0);
+  const long held1 = tiltFor(t, 0, 1);
+  const long held2 = tiltFor(t, 0, 1);
+  CHECK(held1 > 50);
+  CHECK(held2 > 50);
+  // Back to level stops it, without running backwards
+  tiltFor(t, -60, 0.5f);
+  CHECK(tiltFor(t, 0, 5) == 0);
+
+  // Travelling is net movement: tilt, hold, back, and you're somewhere else
+  t = {0, 0, 0};
+  long travelled = tiltFor(t, 60, 0.5f);
+  travelled += tiltFor(t, 0, 3);
+  travelled += tiltFor(t, -60, 0.5f);
+  travelled += tiltFor(t, 0, 3);
+  CHECK(travelled > 240);
+
+  // The other way round is the mirror image
+  t = {0, 0, 0};
+  long mirrored = tiltFor(t, -60, 0.5f);
+  mirrored += tiltFor(t, 0, 3);
+  mirrored += tiltFor(t, 60, 0.5f);
+  mirrored += tiltFor(t, 0, 3);
+  CHECK(mirrored == -travelled || labs(mirrored + travelled) <= 2);
+
+  // A long hold slows down and ends: the angle fades
+  t = {0, 0, 0};
+  tiltFor(t, 60, 0.5f);
+  const long early = tiltFor(t, 0, 2);
+  tiltFor(t, 0, 4);
+  const long late = tiltFor(t, 0, 2);
+  CHECK(late < early);
+  tiltFor(t, 0, 20);
+  CHECK(tiltFor(t, 0, 2) == 0);
+
+  // Going level after that long hold does not slide backwards
+  CHECK(tiltFor(t, -60, 0.5f) >= -3);
+  CHECK(tiltFor(t, 0, 5) == 0);
+
+  // A straight swing through level to the other side does slide the other way
+  t = {0, 0, 0};
+  tiltFor(t, 60, 0.5f);
+  tiltFor(t, -60, 1.0f);
+  CHECK(tiltFor(t, 0, 1) < -50);
+
+  // After a hold, tilting the other way from level still works
+  t = {0, 0, 0};
+  tiltFor(t, 60, 0.5f);
+  tiltFor(t, 0, 3);
+  tiltFor(t, -60, 0.5f);
+  tiltFor(t, -60, 0.5f);
+  CHECK(tiltFor(t, 0, 1) < -50);
+
+  // A small tilt stays in the dead zone
+  t = {0, 0, 0};
+  tiltFor(t, 10, 0.5f);
+  CHECK(tiltFor(t, 0, 3) == 0);
+
+  // Sensor noise on a stick lying on a desk: nothing moves
+  t = {0, 0, 0};
+  long noise = 0;
+  for (int i = 0; i < 1500; i++) {
+    const float raw = (i % 2 ? 3.0f : -3.0f);
+    noise += graphTiltStep(t, graphTurnRate(raw, raw), 0.04f);
+  }
+  CHECK(noise == 0);
+  CHECK(t.angle == 0 && t.faded == 0);
+
+  // A slow return the gyro can't see: the slide still ends by itself
+  t = {0, 0, 0};
+  tiltFor(t, 60, 0.5f);
+  tiltFor(t, 0, 25);
+  CHECK(tiltFor(t, 0, 2) == 0);
+
+  // Limits: a wild swing stays within the speed limit and the angle limit
+  t = {0, 0, 0};
+  const long fastest = tiltFor(t, 2000, 1);
+  CHECK(fastest <= (long)GRAPH_SLIDE_MAX + 1);
+  CHECK(fabs(t.angle) <= GRAPH_TILT_MAX_DEG);
+
+  // Tilted beyond the limit and back: level again, nothing slides
+  t = {0, 0, 0};
+  tiltFor(t, 240, 0.5f);
+  tiltFor(t, -240, 0.5f);
+  CHECK(fabs(t.angle) <= 1);
+  CHECK(tiltFor(t, 0, 2) == 0);
+
+  // A long frame and a zero frame are safe
+  t = {0, 0, 0};
+  graphTiltStep(t, 500, 0.1f);
+  CHECK(graphTiltStep(t, 0, 0) == 0);
+  CHECK(std::isfinite(t.angle) && std::isfinite(t.carry));
+}
+
 static void testStart() {
   double center = 99;
   CHECK(compile("sin(x)"));
@@ -680,6 +786,7 @@ int main() {
   testFit();
   testTicks();
   testTurning();
+  testTiltAndHold();
   testStart();
   testHostileThroughTheView();
   testArithmetic();

@@ -47,14 +47,14 @@ A constant such as `graph:3` is valid: a flat line is a true graph.
 
 | Input | In the graph |
 | --- | --- |
-| Turn the stick (`modelGyroDps[1]`, or `[2]` when larger), below 4 degrees per second ignored | Moves along the curve: the curve scrolls under the dot, 3 columns per degree. Stops at x = +-1000. `turnsWithGyro` is false. |
+| Tilt the stick and hold (`modelGyroDps[1]`, or `[2]` when larger; below 4 degrees per second ignored) | Slides along the curve under the dot, for as long as it's held. Beyond 6 degrees: 5 columns per second per degree, at most 240. Back to level stops it. Stops at x = +-1000. `turnsWithGyro` is false. |
 | Button A | New question |
 | Button B click | Zoom (default handler, `modelZoomStep`): x +-5, then +-1, then +-20, then back to +-5, which also returns to the starting place |
 | Button C click | Back to the text answer, and from there back to the same place in the graph (default handler) |
 
 Button use: the first plan had Button C zoom in and Button B zoom out, but Button C is the only way back to the text in this view, and the interface offers no hold on it. So Button B does all the zooming and Button C stays as in every other view.
 
-The gyro measures turning speed, not tilt angle: the curve moves while the wrist turns and stops when it stops. The direction constant `GRAPH_TILT_SIGN` was worked out from the molecule view's turning sign and is not yet tried on a stick.
+The gyro measures turning speed, not tilt angle, so the tilt is added up from how the stick was held when the view opened. Mapping turning directly to position was rejected: turning back would undo the movement, so you could only peek, never travel. A held tilt fades (8 s time constant, up to 60 degrees), so a return too slow to measure can't slide forever: a long hold slows down and ends. The way back also takes off what has faded (forgotten over about 2 minutes), so going level after a normal hold doesn't slide backwards. After a return too slow to measure, the next tilt the other way starts late by up to the faded amount. The direction constant `GRAPH_TILT_SIGN` was worked out from the molecule view's turning sign and is not yet tried on a stick.
 
 ### Frame time
 
@@ -62,7 +62,7 @@ The gyro measures turning speed, not tilt angle: the curve moves while the wrist
 
 ### Memory and flash
 
-No network. Sample buffer of about 2.2 KB in PSRAM between `begin` and `end`. About 300 bytes of static data.
+No network. Sample buffer of about 2.2 KB in PSRAM between `begin` and `end`. About 370 bytes of static data. Flash: 23 KB more than the build without this feature.
 
 ### Prompt
 
@@ -73,13 +73,13 @@ The feature's `promptRule` assumes plain function plots go to `graph` with `is_w
 
 ### Not tested on hardware
 
-Host tests cover the logic, and `verify.sh` covers compiling. Direction and feel of turning, frame rate, and the look on the real screen need a stick.
+Host tests cover the logic, and `verify.sh` covers compiling. Direction and feel of tilting, frame rate, and the look on the real screen need a stick.
 
 ## User guide
 
 Ask Zitro to show a curve, for example "Visualisiere sin(x)", "Zeichne x^2 minus 3" or "Wie sieht die Kurve von 1 durch x aus?". Zitro draws the graph itself and calculates every point exactly.
 
-- **Turn the stick** left or right to move along the curve. The white dot follows it, and the top line shows x and y at the dot.
+- **Tilt the stick** left or right and hold it to slide along the curve. Hold it level again to stop. The top line shows x and y at the white dot.
 - **Button B** zooms: closer, then far away, then back to where you started.
 - **Button C** shows the text answer. Press it again to return to the graph.
 - **Button A** asks a new question.
@@ -90,7 +90,7 @@ Questions like "Was ist das Integral von sin(x)?" or "Loese x^2=4" still go to W
 
 ## Release note
 
-- Ask for a curve like sin(x) or x^2 and watch Zitro draw it sharp on its own screen, then turn the stick to travel along it and read the exact values.
+- Ask for a curve like sin(x) or x^2 and watch Zitro draw it sharp on its own screen, then tilt the stick to travel along it and read the exact values.
 
 ## Sources and licences
 

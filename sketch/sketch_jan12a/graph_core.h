@@ -576,16 +576,68 @@ inline void graphFormatValue(double value, double scale, char* out, size_t size)
   }
 }
 
-// ----- Moving by turning the stick -----
+// ----- Moving by tilting the stick -----
 
-static const float GRAPH_STILL_DPS = 4.0f;  // Below this the hand isn't turning: sensor noise
+static const float GRAPH_STILL_DPS = 4.0f;        // Below this the hand isn't turning: sensor noise
+static const float GRAPH_TILT_DEAD_DEG = 6.0f;    // A hand is never quite level: this much doesn't move anything
+static const float GRAPH_TILT_MAX_DEG = 60.0f;
+static const float GRAPH_TILT_FADE_S = 8.0f;      // A held tilt fades, so slow unmeasured motion can't slide forever
+static const float GRAPH_TILT_FORGET_S = 120.0f;  // How long the faded part still counts for the way back
+static const float GRAPH_SLIDE_PER_DEG = 5.0f;    // Columns per second, per degree beyond the dead zone
+static const float GRAPH_SLIDE_MAX = 240.0f;      // Columns per second: one screen
 
 // Turning speed along the curve from the gyro, in degrees per second, positive towards larger x.
-// Both ways of turning count, whichever is stronger: rocking the stick like a steering wheel, clockwise
+// Both ways of tilting count, whichever is stronger: rocking the stick like a steering wheel, clockwise
 // (screen axis z, gz negative), and swinging it so the screen faces right (screen axis y, gy positive).
 inline float graphTurnRate(float gy, float gz) {
   const float rate = std::fabs(gy) >= std::fabs(gz) ? gy : -gz;
   return std::fabs(rate) >= GRAPH_STILL_DPS ? rate : 0.0f;
+}
+
+// The gyro only measures turning, so the tilt is added up from where the hand was when the view opened.
+// angle counts for sliding; faded is the part of the real tilt that no longer does. Both have the same sign.
+struct GraphTilt {
+  float angle, faded;
+  float carry;  // Part of a column not moved yet
+};
+
+// One frame: tilt and hold to keep sliding, back to level to stop. Returns whole columns to move.
+inline long graphTiltStep(GraphTilt& t, float rate, float dt) {
+  const float turn = rate * dt;
+  const float sign = t.angle + t.faded >= 0 ? 1.0f : -1.0f;
+  if (turn * sign >= 0) {
+    t.angle += turn;
+  } else {
+    // On the way back the faded part comes off too, or going level after a long hold would slide backwards
+    float back = -turn * sign;
+    const float fromAngle = std::min(back, std::fabs(t.angle));
+    t.angle -= sign * fromAngle;
+    back -= fromAngle;
+    const float fromFaded = std::min(back, std::fabs(t.faded));
+    t.faded -= sign * fromFaded;
+    back -= fromFaded;
+    t.angle -= sign * back;  // Past level: a tilt the other way
+  }
+  if (t.angle > GRAPH_TILT_MAX_DEG) {
+    t.faded += t.angle - GRAPH_TILT_MAX_DEG;
+    t.angle = GRAPH_TILT_MAX_DEG;
+  } else if (t.angle < -GRAPH_TILT_MAX_DEG) {
+    t.faded += t.angle + GRAPH_TILT_MAX_DEG;
+    t.angle = -GRAPH_TILT_MAX_DEG;
+  }
+  const float fade = t.angle * std::min(1.0f, dt / GRAPH_TILT_FADE_S);
+  t.angle -= fade;
+  t.faded += fade;
+  t.faded -= t.faded * std::min(1.0f, dt / GRAPH_TILT_FORGET_S);
+
+  const float beyond = std::fabs(t.angle) - GRAPH_TILT_DEAD_DEG;
+  if (beyond > 0) {
+    const float speed = std::min(beyond * GRAPH_SLIDE_PER_DEG, GRAPH_SLIDE_MAX);
+    t.carry += (t.angle > 0 ? speed : -speed) * dt;
+  }
+  const long whole = (long)t.carry;
+  t.carry -= (float)whole;
+  return whole;
 }
 
 // ----- Where to start -----

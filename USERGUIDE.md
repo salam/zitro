@@ -368,7 +368,7 @@ The organs are real shapes from anatomy research, made simple enough for this sm
 ## User interface hierarchy
 
 - Boot and connection
-  - Power on or wake
+  - Power on or wake (the logo appears; two playful little pops sound on power-on and restart, at your speaker volume, and stay quiet when waking from deep sleep)
   - WiFi connect attempts
   - AP setup mode (screen with SSID + IP, web setup page)
 - Home / idle

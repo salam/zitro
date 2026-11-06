@@ -44,10 +44,10 @@ ENGLISH_NAME = {
 GERMAN_NAME = {"Hyi": "Kleine Wasserschlange", "Car": "Schiffskiel"}
 
 # More ways people ask for a constellation. Only ones that mean this constellation, or a part of it.
+# Not "Stern" for Puppis (German for star), nor Fish, Snake or Cross, which could mean several.
 ALIASES = {
     "UMa": ["Big Dipper", "Plough", "Plow", "Grosser Wagen"],
     "UMi": ["Little Dipper", "Lesser Bear", "Kleiner Wagen"],
-    "Cru": ["Cross"],
     "Sco": ["Scorpio"],
     "Aqr": ["Water Carrier"],
     "Cap": ["Sea Goat"],
@@ -58,12 +58,10 @@ ALIASES = {
     "Eri": ["River"],
     "Lib": ["Scales"],
     "Vir": ["Maiden"],
-    "Psc": ["Fish"],
     "Cyg": ["Northern Cross"],
-    "Ser": ["Serpens Caput", "Serpens Cauda", "Snake"],
+    "Ser": ["Serpens Caput", "Serpens Cauda"],
     "Oph": ["Serpent Bearer"],
     "Ori": ["Hunter", "Orions Belt"],
-    "Pup": ["Stern"],
     "Vel": ["Sail"],
 }
 

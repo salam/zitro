@@ -1882,7 +1882,7 @@ static const SkyConstellation SKY_CONSTELLATIONS[] = {
 {"Vulpecula","Fuchs",13176,-26673,13733,8,739,4,1,{842,0,0},{"Anser",nullptr,nullptr},},
 };
 
-static const int SKY_KEY_COUNT = 283;
+static const int SKY_KEY_COUNT = 279;
 static const SkyKey SKY_KEYS[] = {
 {"achterdeck",67},
 {"adler",4},
@@ -1938,7 +1938,6 @@ static const SkyKey SKY_KEYS[] = {
 {"crab",11},
 {"crane",38},
 {"crater",28},
-{"cross",29},
 {"crow",27},
 {"crux",29},
 {"cup",28},
@@ -1959,7 +1958,6 @@ static const SkyKey SKY_KEYS[] = {
 {"equuleus",34},
 {"eridanus",35},
 {"fische",65},
-{"fish",65},
 {"fishes",65},
 {"fliege",55},
 {"fliegenderfisch",86},
@@ -2116,13 +2114,11 @@ static const SkyKey SKY_KEYS[] = {
 {"sextant",76},
 {"shield",74},
 {"skorpion",72},
-{"snake",75},
 {"southerncross",29},
 {"southerncrown",25},
 {"southernfish",66},
 {"southerntriangle",80},
 {"steinbock",15},
-{"stern",67},
 {"stier",77},
 {"sudlichekrone",25},
 {"sudlicherfisch",66},

@@ -148,7 +148,7 @@ static void testLookup() {
   CHECK(skyFindConstellation("the all") == SKY_WHOLE_DOME);
 
   // Off the list, ambiguous, broken or hostile: never a match, never a crash
-  const char* no[] = {"", " ", "...", "the", "constellation", "the constellation", "Compass", "Mars", "Sirius", "Andromeda Galaxy",
+  const char* no[] = {"", " ", "...", "the", "constellation", "the constellation", "Compass", "Stern", "Fish", "Snake", "Cross", "Mars", "Sirius", "Andromeda Galaxy",
                       "Orion; DROP TABLE", "Orion\n", "Orion\t", "<script>", "../../etc/passwd", "%00", "Orion1", "1", "al", "alll",
                       "\xff\xfe", "\xc3", "Or\xc3", "\xc3\x28", "\xf0\x9f\x8c\x9f", "O\xc3\xa9rion", "\xce\xa9", "%s%s%s%n"};
   for (const char* q : no) CHECK(skyFindConstellation(q) == SKY_NOT_FOUND);

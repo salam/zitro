@@ -34,13 +34,15 @@ CREDITS = {
     "bp3d": {
         "short": "BodyParts3D CC BY",
         "attribution": "BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution 4.0 International",
+        "source_url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html",
         "licence_url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
         "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised.",
         "note": SHARE_ALIKE_NOTE,
     },
     "hra": {
         "short": "HuBMAP HRA CC BY",
-        "attribution": "3D Reference Organ, Human Reference Atlas v1.3, HuBMAP, licensed under CC Attribution 4.0 International",
+        "attribution": "3D Reference Organ for Lung, Male, v1.3, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
+        "source_url": "https://lod.humanatlas.io/ref-organ/lung-male/v1.3/",
         "licence_url": "https://creativecommons.org/licenses/by/4.0/",
         "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised.",
     },
@@ -186,12 +188,17 @@ def face_areas(v, f):
 
 
 def orient_outward(v, f):
-    """Closed parts with a negative volume are inside out."""
-    return f[:, [0, 2, 1]] if signed_volume(v, f) < 0 else f
+    """A closed part with a negative volume is inside out. The volume of an open part depends on where the origin is,
+    so it says nothing: those keep the winding of the source."""
+    edges = np.sort(f[:, [0, 1, 1, 2, 2, 0]].reshape(-1, 2), axis=1)
+    _, counts = np.unique(edges, axis=0, return_counts=True)
+    closed = bool(np.all(counts == 2))
+    return f[:, [0, 2, 1]] if closed and signed_volume(v, f) < 0 else f
 
 
 def simplify(v, f, target):
-    if len(f) <= target or target < 4:
+    target = max(int(target), 4)
+    if len(f) <= target:
         return v, f
     out = fast_simplification.simplify(v, f.astype(np.int32), target_count=int(target), agg=7)
     nv, nf = np.asarray(out[0], dtype=np.float64), np.asarray(out[1], dtype=np.int64)
@@ -292,6 +299,15 @@ def rotate_x(parts, degrees):
     for p in parts:
         v = p["v"]
         p["v"] = np.column_stack([v[:, 0], c * v[:, 1] - s * v[:, 2], s * v[:, 1] + c * v[:, 2]])
+
+
+def rotate_y(parts, degrees):
+    """Turns the model about the vertical. The view opens at a fixed tilt, so this picks the side seen first."""
+    a = math.radians(degrees)
+    c, s = math.cos(a), math.sin(a)
+    for p in parts:
+        v = p["v"]
+        p["v"] = np.column_stack([c * v[:, 0] + s * v[:, 2], v[:, 1], -s * v[:, 0] + c * v[:, 2]])
 
 
 def rotate_z(parts, degrees):
@@ -415,11 +431,388 @@ def merge_entries(out_dir, new_entries):
 # ---- Recipes -------------------------------------------------------------------------------------------------------
 
 
+BONES_SKULL = (
+    r"Frontal bone|(Left|Right) parietal bone|Occipital bone|(Left|Right) temporal bone|Sphenoid bone|Ethmoid|Vomer"
+    r"|(Left|Right) (maxilla|zygomatic bone|nasal bone|lacrimal bone|palatine bone|inferior nasal concha)|Mandible"
+)
+BONES_BODY = (
+    r"(Left|Right) (clavicle|scapula|humerus|radius|ulna|hip bone|femur|patella|tibia|fibula|talus|calcaneus)"
+    r"|(Left|Right) (cuboid bone|(lateral|intermediate|medial) cuneiform bone)|Navicular bone of (left|right) foot"
+    r"|(Left|Right) (first|second|third|fourth|fifth) (metacarpal|metatarsal) bone"
+    r"|(Proximal|Middle|Distal) phalanx of (left|right) .*"
+    r"|(Left|Right) (scaphoid|lunate|triquetral|pisiform|trapezium|trapezoid|capitate|hamate)"
+    r"|(First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth|Eleventh|Twelfth) (cervical|thoracic|lumbar) vertebra"
+    r"|Atlas|Axis|Sacrum|Coccyx|Manubrium|Body of sternum|Xiphoid process"
+    r"|(Left|Right) (first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|eleventh|twelfth) rib"
+)
+HAND_BONES = (
+    r"Right (first|second|third|fourth|fifth) metacarpal bone"
+    r"|(Proximal|Middle|Distal) phalanx of right (thumb|index finger|middle finger|ring finger|little finger)"
+    r"|Right (scaphoid|lunate|triquetral|pisiform|trapezium|trapezoid|capitate|hamate)"
+)
+
+
+def make_heart(args, folder):
+    """Heart muscle shape and the great vessels. BodyParts3D models the ventricles by their cavities."""
+    palette = [(178, 52, 52), (222, 60, 48), (64, 90, 196), (240, 140, 70)]
+    rules = [
+        (r"Cavity of (left|right) (ventricle|atrium)|Wall of (left|right) atrium", 0),
+        (r"Ascending aorta|Arch of aorta", 1),
+        (r"Pulmonary trunk|(Left|Right) pulmonary artery|Superior vena cava", 2),
+        (r"Trunk of right coronary artery|Trunk of anterior interventricular branch of left coronary artery"
+         r"|Circumflex branch of left coronary artery", 3),
+    ]
+    parts = select_bp3d(folder, args.names(folder), rules)
+    return write_model(args.out, "heart", "Herz", "Heart", "bp3d", palette, build(parts, 1400, 40))
+
+
+def make_lungs(args):
+    path = os.path.join(args.sources, "hra", "lung-male.glb")
+    parts = select_glb(
+        path,
+        [
+            (r"VH_M_left_.*bronchopulmonary_segment", 0),
+            (r"VH_M_right_.*bronchopulmonary_segment", 0),
+            (r"VH_M_hilum.*", 1),
+        ],
+    )
+    return write_model(args.out, "lungs", "Lunge", "Lungs", "hra", [(232, 150, 150), (150, 70, 80)],
+                       build(parts, 1400, 20, unit_tolerance=1e-5))
+
+
+def make_brain(args, folder):
+    palette = [(232, 176, 168), (205, 130, 130), (190, 150, 120), (178, 120, 120)]
+    rules = [
+        (r"(Left|Right) (superior frontal gyrus|middle frontal gyrus|inferior frontal gyrus|precentral gyrus|postcentral gyrus"
+         r"|superior parietal lobule|angular gyrus|supramarginal gyrus|occipital lobe|superior temporal gyrus"
+         r"|middle temporal gyrus|inferior temporal gyrus|fusiform gyrus|parahippocampal gyrus|cingulate gyrus|insula)", 0),
+        (r"White matter of (left|right) cerebral hemisphere", 3),
+        (r"Cerebellum", 1),
+        (r"Pons|Midbrain|Medulla oblongata", 2),
+    ]
+    parts = select_bp3d(folder, args.names(folder), rules)
+    rotate_y(parts, 60)  # Opens side-on: the view in which a brain looks most like one
+    return write_model(args.out, "brain", "Gehirn", "Brain", "bp3d", palette, build(parts, 1500, 30))
+
+
+def make_liver(args, folder):
+    rules = [(r"Hepatovenous segment .*|Caudate lobe of liver", 0)]
+    parts = select_bp3d(folder, args.names(folder), rules)
+    return write_model(args.out, "liver", "Leber", "Liver", "bp3d", [(136, 50, 42)], build(parts, 1200, 40))
+
+
+def make_skeleton(args, folder):
+    palette = [(236, 226, 202), (176, 196, 206)]
+    rules = [(BONES_SKULL, 0), (BONES_BODY, 0), (r"(Left|Right) (first|second|third|fourth|fifth|sixth|seventh) costal cartilage", 1)]
+    parts = select_bp3d(folder, args.names(folder), rules)
+    return write_model(args.out, "skeleton", "Skelett", "Skeleton", "bp3d", palette, build(parts, 2000, 6))
+
+
+def make_skull(args, folder):
+    palette = [(236, 226, 202), (250, 250, 240)]
+    parts = select_bp3d(folder, args.names(folder), [(BONES_SKULL, 0)])
+    isa = os.path.join(args.sources, "bp3d", "isa")
+    parts += select_bp3d(isa, args.names(isa), [(r".*secondary (central |lateral )?(incisor|canine|premolar|first premolar|second premolar|molar) tooth|.*secondary (molar|premolar) tooth", 1)])
+    return write_model(args.out, "skull", "Schädel", "Skull", "bp3d", palette, build(parts, 1500, 10))
+
+
+def make_eye(args, folder):
+    """The clear cornea would hide what makes an eye an eye, so it's left out and the iris shows through the opening."""
+    palette = [(240, 240, 232), (58, 112, 170), (16, 16, 20), (150, 52, 40)]
+    rules = [(r"Right sclera", 0), (r"Right iris", 1), (r"Right lens", 2)]
+    parts = select_bp3d(folder, args.names(folder), rules)
+    rotate_y(parts, -22)  # Opens looking almost at you
+    return write_model(args.out, "eye", "Auge", "Eye", "bp3d", palette, build(parts, 1000, 120, cull=False))
+
+
+def make_hand(args, folder):
+    parts = select_bp3d(folder, args.names(folder), [(HAND_BONES, 0)])
+    rotate_z(parts, 180)  # Fingers up: the model stands in anatomical position with the hands hanging down
+    rotate_y(parts, -22)  # Opens with the flat of the hand towards you
+    return write_model(args.out, "hand", "Handknochen", "Hand bones", "bp3d", [(236, 226, 202)], build(parts, 1200, 16))
+
+
+# ---- Schematic cells -----------------------------------------------------------------------------------------------
+# No real scan of these exists in a usable form. They're drawn from what every textbook describes: which parts a cell
+# has and roughly where. Sizes and positions are not measurements, so the file carries the schematic flag and the screen
+# says "Vereinfachtes Schema" / "Simplified schematic" the whole time. Fixed numbers below, no randomness and no AI.
+
+
+def uv_sphere(centre, radii, rows, cols):
+    verts = [(0.0, 1.0, 0.0)]
+    for r in range(1, rows):
+        polar = math.pi * r / rows
+        for c in range(cols):
+            az = 2 * math.pi * c / cols
+            verts.append((math.sin(polar) * math.cos(az), math.cos(polar), math.sin(polar) * math.sin(az)))
+    verts.append((0.0, -1.0, 0.0))
+    faces = []
+    for c in range(cols):
+        faces.append((0, 1 + (c + 1) % cols, 1 + c))
+    for r in range(rows - 2):
+        for c in range(cols):
+            a = 1 + r * cols + c
+            b = 1 + r * cols + (c + 1) % cols
+            d = a + cols
+            e = b + cols
+            faces.append((a, b, e))
+            faces.append((a, e, d))
+    last = len(verts) - 1
+    base = 1 + (rows - 2) * cols
+    for c in range(cols):
+        faces.append((last, base + c, base + (c + 1) % cols))
+    v = np.array(verts) * np.array(radii) + np.array(centre)
+    return v, np.array(faces, dtype=np.int64)
+
+
+def align_y(v, f, direction):
+    """Turns a shape built along y to point along direction."""
+    d = np.array(direction, dtype=np.float64)
+    d /= np.linalg.norm(d)
+    y = np.array([0.0, 1.0, 0.0])
+    axis = np.cross(y, d)
+    s = np.linalg.norm(axis)
+    c = float(y @ d)
+    if s < 1e-9:
+        return (v if c > 0 else v * np.array([1, -1, -1])), f
+    k = axis / s
+    K = np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+    R = np.eye(3) + s * K + (1 - c) * K @ K
+    return (R @ v.T).T, f
+
+
+def ellipsoid(centre, radii, rows, cols, direction=None):
+    v, f = uv_sphere((0, 0, 0), radii, rows, cols)
+    if direction is not None:
+        v, f = align_y(v, f, direction)
+    return v + np.array(centre), f
+
+
+def tube(points, radii, sides):
+    """A closed tube through points, with a radius at each."""
+    points = [np.array(p, dtype=np.float64) for p in points]
+    verts, faces = [], []
+    frame = None
+    for i, p in enumerate(points):
+        t = points[min(i + 1, len(points) - 1)] - points[max(i - 1, 0)]
+        t /= np.linalg.norm(t)
+        if frame is None:
+            helper = np.array([0.0, 0.0, 1.0]) if abs(t[2]) < 0.9 else np.array([1.0, 0.0, 0.0])
+            frame = np.cross(t, helper)
+        frame = frame - t * (frame @ t)
+        frame /= np.linalg.norm(frame)
+        other = np.cross(t, frame)
+        for s in range(sides):
+            a = 2 * math.pi * s / sides
+            verts.append(p + (math.cos(a) * frame + math.sin(a) * other) * radii[i])
+    n = len(points)
+    for i in range(n - 1):
+        for s in range(sides):
+            a = i * sides + s
+            b = i * sides + (s + 1) % sides
+            faces.append((a, a + sides, b + sides))
+            faces.append((a, b + sides, b))
+    start = len(verts)
+    verts.append(points[0])
+    verts.append(points[-1])
+    for s in range(sides):
+        faces.append((start, s, (s + 1) % sides))
+        faces.append((start + 1, (n - 1) * sides + (s + 1) % sides, (n - 1) * sides + s))
+    return np.array(verts), np.array(faces, dtype=np.int64)
+
+
+def surface_of_revolution(profile, cols):
+    """Closed surface from (radius, height) points running top to bottom on the axis; radius 0 at both ends."""
+    rows = len(profile)
+    verts = [(0.0, profile[0][1], 0.0)]
+    for r, h in profile[1:-1]:
+        for c in range(cols):
+            a = 2 * math.pi * c / cols
+            verts.append((r * math.cos(a), h, r * math.sin(a)))
+    verts.append((0.0, profile[-1][1], 0.0))
+    faces = []
+    for c in range(cols):
+        faces.append((0, 1 + (c + 1) % cols, 1 + c))
+    for r in range(rows - 3):
+        for c in range(cols):
+            a = 1 + r * cols + c
+            b = 1 + r * cols + (c + 1) % cols
+            d = a + cols
+            e = b + cols
+            faces.append((a, b, e))
+            faces.append((a, e, d))
+    last = len(verts) - 1
+    base = 1 + (rows - 3) * cols
+    for c in range(cols):
+        faces.append((last, base + c, base + (c + 1) % cols))
+    return np.array(verts), np.array(faces, dtype=np.int64)
+
+
+def part(name, mesh, color):
+    return {"name": name, "source": "schematic", "v": mesh[0], "f": mesh[1], "color": color}
+
+
+def cut_shell(radii, rows, cols, thickness, keep_back_of=0.25):
+    """Cell membrane as a bowl: the front is cut away so the parts inside can be seen. A thick wall with an outer and
+    an inner face, closed at the rim, so culling works from every side."""
+    outer_v, outer_f = uv_sphere((0, 0, 0), radii, rows, cols)
+    limit = keep_back_of * radii[2]
+    keep = outer_v[outer_f].mean(axis=1)[:, 2] < limit
+    fo = outer_f[keep]
+    inner_scale = 1.0 - thickness
+    inner_v = outer_v * inner_scale
+    fi = fo[:, [0, 2, 1]] + len(outer_v)
+    v = np.concatenate([outer_v, inner_v])
+    edges = {}
+    for tri in fo:
+        for k in range(3):
+            a, b = int(tri[k]), int(tri[(k + 1) % 3])
+            edges[(a, b)] = True
+    rim = []
+    n = len(outer_v)
+    for (a, b) in edges:
+        if (b, a) not in edges:
+            rim.append((a, n + a, n + b))
+            rim.append((a, n + b, b))
+    f = np.concatenate([fo, fi, np.array(rim, dtype=np.int64)])
+    return v, f
+
+
+def merge(meshes):
+    vs, fs, base = [], [], 0
+    for v, f in meshes:
+        vs.append(v)
+        fs.append(f + base)
+        base += len(v)
+    return np.concatenate(vs), np.concatenate(fs)
+
+
+def make_animal_cell(args):
+    palette = [(240, 190, 150), (120, 70, 150), (70, 40, 110), (226, 96, 60), (120, 180, 210), (240, 220, 110)]
+    parts = [part("cell membrane, cut open", cut_shell((1.0, 0.88, 0.95), 12, 20, 0.05), 0)]
+    parts.append(part("nucleus", ellipsoid((-0.12, 0.05, -0.15), (0.34, 0.32, 0.34), 8, 12), 1))
+    parts.append(part("nucleolus", ellipsoid((-0.05, 0.1, 0.13), (0.11, 0.11, 0.11), 5, 7), 2))
+    for i, (c, d) in enumerate([((0.48, 0.32, 0.05), (1, 1, 0)), ((0.55, -0.22, -0.1), (1, -0.4, 0.3)),
+                                ((-0.55, -0.3, 0.1), (1, 0.6, 0)), ((0.1, -0.52, 0.12), (1, 0.1, 0.4))]):
+        parts.append(part(f"mitochondrion {i + 1}", ellipsoid(c, (0.07, 0.19, 0.07), 5, 7, direction=d), 3))
+    # Endoplasmic reticulum as flat sacs around the nucleus
+    for i, (c, r) in enumerate([((-0.55, 0.32, -0.02), 0.22), ((-0.42, 0.5, -0.05), 0.2), ((0.18, 0.5, -0.05), 0.18)]):
+        parts.append(part(f"endoplasmic reticulum {i + 1}", ellipsoid(c, (r, 0.035, 0.14), 4, 8), 4))
+    for i, c in enumerate([(0.32, 0.02, 0.28), (0.38, -0.42, 0.3), (-0.3, -0.5, 0.25), (-0.62, 0.02, 0.22), (0.25, 0.3, 0.32)]):
+        parts.append(part(f"vesicle {i + 1}", ellipsoid(c, (0.05, 0.05, 0.05), 3, 5), 5))
+    return write_model(args.out, "animal-cell", "Tierzelle", "Animal cell", "schematic", palette, parts, schematic=True,
+                       extra={"schematic_of": "Which parts an animal cell has and roughly where, as in school textbooks. Not measured."})
+
+
+def make_plant_cell(args):
+    palette = [(90, 150, 70), (178, 220, 150), (120, 70, 150), (70, 40, 110), (60, 170, 70), (120, 180, 230), (226, 96, 60)]
+    # Box-shaped cell wall, cut open at the front, with an inner membrane colour
+    size = (1.0, 0.68, 0.5)
+    wall = []
+    # Back and four sides as solid slabs
+    t = 0.05
+    def slab(lo, hi):
+        x0, y0, z0 = lo
+        x1, y1, z1 = hi
+        v = np.array([[x0, y0, z0], [x1, y0, z0], [x1, y1, z0], [x0, y1, z0], [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]], dtype=np.float64)
+        f = np.array([[0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7], [0, 1, 5], [0, 5, 4], [2, 3, 7], [2, 7, 6], [0, 4, 7], [0, 7, 3], [1, 2, 6], [1, 6, 5]], dtype=np.int64)
+        return v, f
+    sx, sy, sz = size
+    wall.append(slab((-sx, -sy, -sz), (sx, sy, -sz + t)))
+    wall.append(slab((-sx, -sy, -sz), (-sx + t, sy, sz * 0.3)))
+    wall.append(slab((sx - t, -sy, -sz), (sx, sy, sz * 0.3)))
+    wall.append(slab((-sx, sy - t, -sz), (sx, sy, sz * 0.3)))
+    wall.append(slab((-sx, -sy, -sz), (sx, -sy + t, sz * 0.3)))
+    parts = [part("cell wall, cut open", merge(wall), 0)]
+    parts.append(part("vacuole", ellipsoid((0.2, 0.0, -0.08), (0.58, 0.44, 0.28), 8, 14), 5))
+    parts.append(part("nucleus", ellipsoid((-0.62, 0.22, 0.0), (0.2, 0.2, 0.2), 7, 10), 2))
+    parts.append(part("nucleolus", ellipsoid((-0.6, 0.24, 0.17), (0.06, 0.06, 0.06), 4, 6), 3))
+    for i, (c, d) in enumerate([((-0.62, -0.32, 0.12), (1, 0.3, 0)), ((-0.25, -0.52, 0.14), (1, 0.1, 0.2)), ((0.25, -0.54, 0.14), (1, -0.1, 0)),
+                                ((0.72, -0.42, 0.1), (0.3, 1, 0)), ((0.82, 0.05, 0.12), (0.1, 1, 0)), ((0.7, 0.5, 0.12), (1, 0.6, 0)),
+                                ((0.2, 0.54, 0.14), (1, 0, 0.1)), ((-0.25, 0.54, 0.14), (1, 0.1, 0))]):
+        parts.append(part(f"chloroplast {i + 1}", ellipsoid(c, (0.06, 0.13, 0.06), 4, 7, direction=d), 4))
+    for i, (c, d) in enumerate([((-0.28, -0.12, 0.14), (1, 0.8, 0)), ((-0.82, -0.02, 0.1), (0.2, 1, 0))]):
+        parts.append(part(f"mitochondrion {i + 1}", ellipsoid(c, (0.04, 0.09, 0.04), 4, 6, direction=d), 6))
+    return write_model(args.out, "plant-cell", "Pflanzenzelle", "Plant cell", "schematic", palette, parts, schematic=True,
+                       extra={"schematic_of": "Which parts a plant cell has and roughly where, as in school textbooks. Not measured."})
+
+
+def make_red_blood_cell(args):
+    """Biconcave disc after the formula of Evans and Fung (1972), a fit to measured cells. Still schematic: one idealised
+    shape, not a scan. z(r) = +-0.5 * sqrt(1 - s^2) * (c0 + c1 s^2 + c2 s^4), s = r / R, R = 3.91 micrometres.
+    c1: one paper seen (arXiv 1605.04509) prints 7.38. 7.83 is used because it reproduces the reported cell height of
+    2.58 micrometres, where 7.38 gives 2.41. The original paper was not read."""
+    R, c0, c1, c2 = 3.91, 0.81, 7.83, -4.39
+    steps = 12
+    top = []
+    for i in range(steps + 1):
+        s = math.sin(i / steps * math.pi / 2)  # More points at the rim, where it curves fastest
+        h = 0.5 * math.sqrt(max(0.0, 1 - s * s)) * (c0 + c1 * s ** 2 + c2 * s ** 4)
+        top.append((s * R, h))
+    profile = top[:-1] + [top[-1]] + [(r, -h) for r, h in reversed(top[:-1])]
+    v, f = surface_of_revolution(profile, 22)
+    # Stand it up a little: side-on it reads as a disc with a dimple
+    parts = [part("biconcave disc", (v, f), 0)]
+    rotate_x(parts, 62)
+    return write_model(args.out, "red-blood-cell", "Rote Blutzelle", "Red blood cell", "schematic", [(205, 40, 44)], parts, schematic=True,
+                       extra={"schematic_of": "Idealised shape from the Evans and Fung (1972) formula, fitted to measured cells. Not a scan."})
+
+
+def make_neuron(args):
+    palette = [(150, 110, 200), (70, 40, 110), (235, 225, 190), (240, 190, 90)]
+    parts = [part("cell body", ellipsoid((-0.62, 0.0, 0.0), (0.17, 0.15, 0.15), 7, 10), 0)]
+    parts.append(part("nucleus", ellipsoid((-0.62, 0.03, 0.12), (0.06, 0.06, 0.05), 4, 6), 1))
+    # Dendrites: fixed branching, short and getting thinner
+    dendrites = [
+        [(-0.70, 0.12, 0.02), (-0.82, 0.30, 0.05), (-0.92, 0.44, 0.10), (-0.98, 0.56, 0.08)],
+        [(-0.82, 0.30, 0.05), (-0.72, 0.46, -0.02), (-0.68, 0.60, -0.06)],
+        [(-0.78, 0.02, 0.05), (-0.94, 0.06, 0.12), (-1.06, 0.16, 0.16)],
+        [(-0.94, 0.06, 0.12), (-1.04, -0.04, 0.06), (-1.14, -0.10, 0.02)],
+        [(-0.70, -0.11, 0.02), (-0.80, -0.28, -0.06), (-0.94, -0.42, -0.08), (-1.00, -0.54, -0.12)],
+        [(-0.80, -0.28, -0.06), (-0.70, -0.46, -0.02), (-0.66, -0.58, 0.03)],
+        [(-0.58, 0.14, -0.06), (-0.50, 0.32, -0.12), (-0.40, 0.44, -0.14)],
+        [(-0.60, -0.14, -0.06), (-0.50, -0.30, 0.04), (-0.38, -0.40, 0.08)],
+    ]
+    for i, pts in enumerate(dendrites):
+        radii = [0.032 * (1 - 0.65 * k / (len(pts) - 1)) for k in range(len(pts))]
+        parts.append(part(f"dendrite {i + 1}", tube(pts, radii, 5), 0))
+    # Axon, thin between the myelin sheaths
+    def axon_at(x):
+        return (x, 0.05 * math.sin(x * 4.0), 0.03 * math.cos(x * 3.0))
+    xs = [-0.46 + i * 0.1 for i in range(13)]
+    parts.append(part("axon", tube([axon_at(x) for x in xs], [0.016] * len(xs), 5), 0))
+    for i in range(5):
+        a, b = -0.40 + i * 0.2, -0.40 + i * 0.2 + 0.16
+        pts = [axon_at(a + (b - a) * k / 4) for k in range(5)]
+        parts.append(part(f"myelin sheath {i + 1}", tube(pts, [0.03, 0.05, 0.052, 0.05, 0.03], 7), 2))
+    # Axon terminals
+    end = axon_at(0.74)
+    tips = [(0.98, 0.26, 0.08), (1.04, 0.08, -0.08), (1.02, -0.12, 0.08), (0.94, -0.28, -0.05)]
+    for i, tip in enumerate(tips):
+        mid = ((end[0] + tip[0]) / 2, (end[1] + tip[1]) / 2 + 0.02, (end[2] + tip[2]) / 2)
+        parts.append(part(f"axon branch {i + 1}", tube([end, mid, tip], [0.016, 0.013, 0.011], 4), 0))
+        parts.append(part(f"axon terminal {i + 1}", ellipsoid(tip, (0.035, 0.035, 0.035), 3, 5), 3))
+    return write_model(args.out, "neuron", "Nervenzelle", "Neuron", "schematic", palette, parts, schematic=True,
+                       extra={"schematic_of": "Cell body, dendrites, axon with myelin, terminals, as in school textbooks. Not measured."})
+
+
 def recipes(args):
     partof = os.path.join(args.sources, "bp3d", "partof")
     return {
         "stomach": lambda: make_bp3d(args, partof, "stomach", "Magen", "Stomach", [(232, 150, 140)], [(r"Stomach", 0)], 900, 900),
         "kidney": lambda: make_bp3d(args, partof, "kidney", "Niere", "Kidney", [(150, 62, 58)], [(r"Right kidney", 0)], 900, 900),
+        "liver": lambda: make_liver(args, partof),
+        "heart": lambda: make_heart(args, partof),
+        "lungs": lambda: make_lungs(args),
+        "brain": lambda: make_brain(args, partof),
+        "skeleton": lambda: make_skeleton(args, partof),
+        "skull": lambda: make_skull(args, partof),
+        "eye": lambda: make_eye(args, partof),
+        "hand": lambda: make_hand(args, partof),
+        "animal-cell": lambda: make_animal_cell(args),
+        "plant-cell": lambda: make_plant_cell(args),
+        "red-blood-cell": lambda: make_red_blood_cell(args),
+        "neuron": lambda: make_neuron(args),
     }
 
 

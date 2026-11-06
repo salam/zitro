@@ -1113,7 +1113,9 @@ int main(int argc, char** argv) {
   gScratch = new WolframScratch;
 
   // Real Wolfram answers stay local: its terms don't allow passing them on (see docs/features/wolfram.md)
-  const bool haveFixtures = !fixtureNames(dir).empty();
+  DIR* fixtureDir = opendir(dir.c_str());
+  const bool haveFixtures = fixtureDir != nullptr;
+  if (fixtureDir) closedir(fixtureDir);
   if (!haveFixtures) printf("No Wolfram fixtures here: skipping the checks that need real answers\n");
   testFormulaShapes();
   testPlotHelpers();

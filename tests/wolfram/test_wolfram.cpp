@@ -122,10 +122,24 @@ static std::vector<std::string> fixtureNames(const std::string& dir) {
   return names;
 }
 
-static std::string digitsOf(const std::string& s) {
-  std::string out;
+// What makes a number that number: its digits, point and signs. A lost minus has to show up here.
+// "->" goes first: on screen a formula's arrow is drawn, and its "-" isn't a sign.
+static std::string numbersOf(const std::string& s) {
+  std::string plain;
   for (char c : s) {
-    if (c >= '0' && c <= '9') out += c;
+    if (c != ' ') plain += c;
+  }
+  std::string out;
+  for (size_t i = 0; i < plain.size(); i++) {
+    const char c = plain[i];
+    if (c == '-' && i + 1 < plain.size() && plain[i + 1] == '>') {
+      i++;
+    } else if ((c >= '0' && c <= '9') || c == '.' || c == '+' || c == '-') {
+      out += c;
+    } else if (c == '\xC2' && i + 1 < plain.size() && plain[i + 1] == '\xB1') {  // Plus-minus
+      out += "+-";
+      i++;
+    }
   }
   return out;
 }
@@ -176,23 +190,23 @@ static std::string pageText(const WolframDoc& doc, const WolframLayout& L, const
   return out;
 }
 
-static std::string shownDigits(const WolframDoc& doc, const WolframLayout& L, int section) {
-  return digitsOf(shownText(doc, L, section));
+static std::string shownNumbers(const WolframDoc& doc, const WolframLayout& L, int section) {
+  return numbersOf(shownText(doc, L, section));
 }
 
-// The digits Wolfram sent for a section, in the order the screen has them
-static std::string sourceDigits(const WolframDoc& doc, const WolframLayout& L, int section) {
+// The numbers Wolfram sent for a section, in the order the screen has them
+static std::string sourceNumbers(const WolframDoc& doc, const WolframLayout& L, int section) {
   std::string flow, pinned;
   const WolframSection& s = doc.sections[section];
   const WolframPage* page = firstTextPage(L, section);
   const bool usesPins = page && page->noteCount > 0;
   for (int i = 0; i < s.lineCount; i++) {
     const WolframLine& line = doc.lines[s.firstLine + i];
-    (usesPins && wolframLineIsPinned(doc.text, line) ? pinned : flow) += digitsOf(spanText(doc, line.span));
+    (usesPins && wolframLineIsPinned(doc.text, line) ? pinned : flow) += numbersOf(spanText(doc, line.span));
   }
   if (section == 0) {
     for (int i = 0; i < doc.assumptionCount; i++) {
-      (usesPins ? pinned : flow) += digitsOf(spanText(doc, doc.assumptions[i]));
+      (usesPins ? pinned : flow) += numbersOf(spanText(doc, doc.assumptions[i]));
     }
   }
   return flow + pinned;
@@ -243,11 +257,11 @@ static void checkLayoutInvariants(const WolframDoc& doc, const WolframLayout& L,
   }
   for (int s = 0; s < doc.sectionCount; s++) {
     if (!seen[s]) continue;
-    const std::string shown = shownDigits(doc, L, s), source = sourceDigits(doc, L, s);
+    const std::string shown = shownNumbers(doc, L, s), source = sourceNumbers(doc, L, s);
     checks++;
     if (shown != source) {
       failures++;
-      printf("FAIL %s: section %d digits changed\n  source %s\n  shown  %s\n", what, s, source.c_str(), shown.c_str());
+      printf("FAIL %s: section %d numbers changed\n  source %s\n  shown  %s\n", what, s, source.c_str(), shown.c_str());
     }
   }
 }
@@ -523,7 +537,10 @@ static void testFormulaShapes() {
        "frac[pow[π ^ 2] | 6] = - 2 big[sum _ {k = 1} ^ ∞] frac[pow[(- 1) ^ k] | pow[k ^ 2]]"},
       {"π^2/6 = 8/3 ( sum_(k=0)^∞ (-1)^k/(1 + 2 k))^2",
        "frac[pow[π ^ 2] | 6] = frac[8 | 3] pow[(big[sum _ {k = 0} ^ ∞] frac[pow[(- 1) ^ k] | {1 + 2 k}]) ^ 2]"},
-      {"sum_(n=1)^k 1/n^2 = H_k^(2)", "big[sum _ {n = 1} ^ k] frac[1 | pow[n ^ 2]] = pow[H _ k ^ {2}]"},
+      {"sum_(n=1)^k 1/n^2 = H_k^(2)", "big[sum _ {n = 1} ^ k] frac[1 | pow[n ^ 2]] = pow[H _ k ^ (2)]"},
+      // The order of a derivative isn't a power: its parentheses stay
+      {"f^(n)(x)", "pow[f ^ (n)] (x)"},
+      {"x^(n + 1)", "pow[x ^ {n + 1}]"},
       {"1 - x^2/6 + x^4/120 + O(x^6)", "1 - frac[pow[x ^ 2] | 6] + frac[pow[x ^ 4] | 120] + O (pow[x ^ 6])"},
       {"-1/2 e^(-i x) - e^(i x)/2 + constant", "- frac[1 | 2] pow[e ^ {- i x}] - frac[pow[e ^ {i x}] | 2] + constant"},
       // Powers of ten and roots

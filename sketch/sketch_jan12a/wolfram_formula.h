@@ -446,6 +446,16 @@ inline int16_t wolframParseScript(WolframFormula& f, bool sup) {
     if (arg >= 0) f.nodes[arg].symbol = t.symbol;
   } else if (t.kind == WOLFRAM_TOKEN_OPEN) {
     arg = wolframParseGroup(f, true);
+    // H_k^(2) and f^(n) mean an order, not a power: one number or letter keeps its parentheses, or it would read as one.
+    // Sub- and superscripts with more in them, like x^(2 y), lose nothing without them.
+    if (sup && arg >= 0) {
+      const WolframNode& inner = f.nodes[f.nodes[arg].a];
+      const int16_t only = inner.a;
+      if (only >= 0 && f.nodes[only].next < 0 &&
+          (f.nodes[only].type == WOLFRAM_NODE_TEXT || f.nodes[only].type == WOLFRAM_NODE_SYMBOL)) {
+        f.nodes[arg].flags &= (uint8_t)~WOLFRAM_FLAG_HIDDEN;
+      }
+    }
   }
   if (arg < 0) return -1;
   if (sign < 0) return arg;

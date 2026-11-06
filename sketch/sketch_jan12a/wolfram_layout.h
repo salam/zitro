@@ -362,6 +362,11 @@ inline int wolframGapBetween(const WolframFormula& f, int16_t prev, int16_t node
   return 0;
 }
 
+// "(cubic centimeters)" says what the value is in, in a size that leaves the room to the value
+inline uint8_t wolframGlossFont(const WolframBuilder& b, const WolframNode& n) {
+  return b.baseFont == WOLFRAM_FONT_14 ? WOLFRAM_FONT_10 : wolframTextFont(b, WOLFRAM_FONT_SMALL, n.start, n.len);
+}
+
 inline void wolframMeasureNode(WolframBuilder& b, int16_t i, uint8_t level);
 
 inline void wolframMeasureText(WolframBuilder& b, WolframNode& n, uint8_t level) {
@@ -408,7 +413,7 @@ inline void wolframMeasureNode(WolframBuilder& b, int16_t i, uint8_t level) {
       }
       break;
     case WOLFRAM_NODE_GLOSS: {
-      const uint8_t glossFont = WOLFRAM_FONT_10;
+      const uint8_t glossFont = wolframGlossFont(b, n);
       n.width = (int16_t)b.measure(glossFont, b.text + n.start, n.len);
       n.ascent = (int16_t)wolframFontAscent(glossFont);
       n.descent = (int16_t)wolframFontDescent(glossFont);
@@ -565,7 +570,7 @@ inline void wolframEmitNode(WolframBuilder& b, int16_t i, int x, int y, uint8_t 
       }
       break;
     case WOLFRAM_NODE_GLOSS:
-      wolframAddText(b, WOLFRAM_FONT_10, WOLFRAM_COLOR_DIM, x, y, n.start, n.len);
+      wolframAddText(b, wolframGlossFont(b, n), WOLFRAM_COLOR_DIM, x, y, n.start, n.len);
       break;
     case WOLFRAM_NODE_GROUP: {
       const WolframNode& inner = f.nodes[n.a];

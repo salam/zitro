@@ -201,5 +201,10 @@ static bool recipeFetch(const char* query) {
   return ok;
 }
 
-const EduFeature FEATURE_RECIPE = {"recipe",       "Wikibooks",   nullptr,      false,         recipeFetch,    recipeUnload,
-                                   recipeBegin,    recipeFrame,   recipeEnd,    recipeButtonB, recipeButtonC,  recipeKeepAwake};
+static const char* const RECIPE_PROMPT_RULE =
+    "Fragt jemand, wie man ein bestimmtes Gericht kocht oder backt, oder nach dem Rezept dafuer: setze model auf "
+    "\"recipe:<Gericht auf Englisch>\", z.B. \"recipe:pancakes\" oder \"recipe:chicken soup\". Nicht bei anderen Fragen "
+    "ueber Essen. Schreibe in answer dann nur einen kurzen Satz, nie selbst Zutaten, Mengen oder Schritte.";
+
+const EduFeature FEATURE_RECIPE = {"recipe",    "Wikibooks", RECIPE_PROMPT_RULE, false,         recipeFetch,   recipeUnload,
+                                   recipeBegin, recipeFrame, recipeEnd,          recipeButtonB, recipeButtonC, recipeKeepAwake};

@@ -1,0 +1,160 @@
+# Published scores the song table is compared with, note by note (check_references.py).
+# Notes are in LilyPond form, copied from the page named; marks, chords, lyrics and other voices left out.
+# The melodies are public domain. Wikipedia and Wikibooks scores are CC BY-SA, retrieved 2026-11-06.
+# deutsch: h is B natural, b is B flat. nederlands: b is B natural, bes is B flat.
+
+song alle-meine-entchen
+source https://de.wikipedia.org/wiki/Alle_meine_Entchen
+lang nederlands
+relative c'
+notes c8 d e f g4 g | a8 a a a g2 | a8 a a a g2 f8 f f f e4 e | d8 d d d c2
+
+song haenschen-klein
+source https://de.wikipedia.org/wiki/H%C3%A4nschen_klein
+lang deutsch
+relative c''
+notes \repeat volta 2 { c8 a a4 | b8 g g4 | } \alternative { { f8 g a b | c c c4 | } { f,8 a c c | f,4 r | } } g8 g g g | g a b4 | a8 a a a | a b c4 | c8 a a4 | b8 g g4 | f8 a c c | f,2
+
+song fuchs-du-hast-die-gans
+source https://de.wikipedia.org/wiki/Fuchs,_du_hast_die_Gans_gestohlen
+lang deutsch
+relative c'
+notes d4 e fis g a a a a h g d' h a1 h4 g d' h a1 a4 g g g g fis fis fis fis e fis e d fis a2 a4 g g g g fis fis fis fis e fis e d1
+
+song kommt-ein-vogel
+source https://de.wikipedia.org/wiki/Kommt_ein_Vogel_geflogen
+lang deutsch
+relative c''
+notes a8 b | c4 a a | a g g8 a | b4 g g8 d' | c4 r a8 b | c4 a a | a g g8 a | b4 e, e | f r
+
+song ein-maennlein
+source https://de.wikibooks.org/wiki/Liederbuch/_Ein_M%C3%A4nnlein_steht_im_Walde
+lang nederlands
+relative c'
+notes a4 | d e fis g | a2 b4 g | fis2 e | d r4 a4 | d e fis g | a2 b4 g | fis2 e | d r2 | a'4. g8 fis4 a | g fis e2 | a4. g8 fis4 a | g fis e2 | d4 e fis g | a2 b4 g | fis2 e | d r2
+
+song alle-voegel
+source https://de.wikipedia.org/wiki/Alle_V%C3%B6gel_sind_schon_da
+lang deutsch
+relative g'
+notes d4. fis8 a4 d | h d8 h a2 | g4. a8 fis4 d | e2 d4 r | \repeat unfold 2 { a' a g g | fis a8 fis e2 | } d4. fis8 a4 d | h d8 h a2 | g4. a8 fis4 d | e2 d4 r
+
+song kuckuck-und-esel
+source https://de.wikipedia.org/wiki/Der_Kuckuck_und_der_Esel
+lang nederlands
+relative c''
+notes c4 | a c a c | bes bes r bes g bes g bes | a2 r4 c8 bes | a4 a a a | bes bes r4 bes8 a | g4 g g g | a a r4 f | f g a bes | c4. d8 c4 bes | a a g g | f2 r4
+
+song kuckuck-ruft
+source https://de.wikipedia.org/wiki/Kuckuck,_Kuckuck,_ruft%E2%80%99s_aus_dem_Wald
+lang deutsch
+relative c''
+notes d4 h r | d h r | a g a | g2. | a4 a h | c2 a4 | h h c | d2 h4 | d2 h4 | d2 h4 | c h a | g2.
+
+song backe-backe-kuchen
+source https://de.wikipedia.org/wiki/Backe,_backe_Kuchen
+lang nederlands
+relative c''
+notes a4 a b b | a2 fis4 d | a' a b b | a2 fis2 | a4 a b b | a a fis4 d | a' a b b | a a fis fis | a8 a a4 fis2 | a8 a a4 fis2 | a4 a fis2 | a4 a b b | a a fis2 | d' a4 g | fis e d2
+
+song schlaf-kindlein
+source https://de.wikipedia.org/wiki/Schlaf,_Kindlein,_schlaf
+lang deutsch
+relative c''
+notes a4 g8 g | f4 r8 f16 a | c8 c b b | a4 r8 a | b b g g | c c a a | b b g g | c c a4 | b g8 g | f4 r
+
+song guten-abend-gut-nacht
+source https://de.wikipedia.org/wiki/Guten_Abend,_gut%E2%80%99_Nacht (grace notes left out)
+lang nederlands
+relative g'
+notes g8 g | bes4. g8 g4 | bes r g8 bes | es4 d4. c8 | c4 bes f8 g | aes4 f f8 g | aes4 r f8 aes | d c bes4 d | es r es,8 es | es'2 c8 aes | bes2 g8 es | aes4 bes c | bes2 es,8 es | es'2 c8 aes | bes2 g8 es | aes4 g f | es2
+
+song haeschen-in-der-grube
+source https://de.wikipedia.org/wiki/H%C3%A4schen_in_der_Grube
+lang deutsch
+relative c'
+notes d8 e fis g | a4 a | h8 g d' h | a4 r | h8 g d' h | a4 r | a8 g g g | g fis fis4 | fis8 e fis e | d fis a4 | a8 a d4 | a8 a d4 | a4 a | d,4 r
+
+song summ-summ-summ
+source https://de.wikipedia.org/wiki/Summ,_summ,_summ
+lang deutsch
+relative c''
+notes d4 c | h r | a8 h c a | g4 r | h8 c d h | a h c a | h c d h | a h c a | d4 c | h r | a8 h c a | g4 r
+
+song o-tannenbaum
+source https://de.wikipedia.org/wiki/O_Tannenbaum (the Fine and D.C. written out)
+lang nederlands
+relative c'
+notes d8 | g8. g16 g4 a | b8. b16 b4. b8 | a b c4 fis, | a g r8 d'8 | d b e4. d8 | d c c4. c8 | c a d4. c8 | c b b4 r8 d,8 | g8. g16 g4 a | b8. b16 b4. b8 | a b c4 fis, | a g r8
+
+song stille-nacht
+source https://en.wikipedia.org/wiki/Silent_Night (the score marked Contemporary, in the C major it is written in)
+lang nederlands
+relative c''
+notes g8. a16 g8 e4. | g8. a16 g8 e4. | d'4 d8 b4. | c4 c8 g4. | a4 a8 c8. b16 a8 | g8. a16 g8 e4. | a4 a8 c8. b16 a8 | g8. a16 g8 e4. | d'4 d8 f8. d16 b8 | c4. e4 r8 | c8. g16 e8 g8. f16 d8 | c4.~ c4 r8
+
+song schneefloeckchen
+source https://de.wikipedia.org/wiki/Schneefl%C3%B6ckchen,_Wei%C3%9Fr%C3%B6ckchen
+lang deutsch
+relative c'
+notes e8 f | g4 g a | d, d d8 e | f4 f g | e2 e8 f | g4 g c | h a g8 f | e4 f d | c2
+
+song wer-hat-die-schoensten-schaefchen
+source https://de.wikipedia.org/wiki/Wer_hat_die_sch%C3%B6nsten_Sch%C3%A4fchen
+lang deutsch
+relative f'
+notes f4 | c' c b b | a2 g4 c | c f, b a | g2 r4 g | b b a a | d2 c4 b | a a g g | f2 r4
+
+song haensel-und-gretel
+source https://de.wikipedia.org/wiki/H%C3%A4nsel_und_Gretel_verliefen_sich_im_Wald
+lang nederlands
+relative a'
+notes a2 fis4 g | a2 fis4 d | e e e fis | d2. r4 | a'2 fis4 g | a2 fis4 d | e e e fis | d2 r4 d | e e e fis | g2 e4 e | fis fis fis g | a2. r4 | a2 fis4 g | a2 fis4 d | e e e fis | d2. r4
+
+song twinkle-twinkle
+source https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star
+lang nederlands
+relative c'
+notes c4 c g' g a a g2 | f4 f e e d d c2 g'4 g f f e e d2 | g4 g f f e e d2 c4 c g' g a a g2 | f4 f e e d d c2
+
+song frere-jacques
+source https://en.wikipedia.org/wiki/Fr%C3%A8re_Jacques (the four voices of the round, one after the other)
+lang nederlands
+relative c'
+notes \repeat unfold 2 { f4 g a f } \repeat unfold 2 { a4 bes c2 } c8 d c bes a4 f c'8 d c bes a4 f \repeat unfold 2 { f4 c f2 }
+
+song row-your-boat
+source https://en.wikipedia.org/wiki/Row,_Row,_Row_Your_Boat
+lang nederlands
+relative c'
+notes c4. c4. | c4 d8 e4. | e4 d8 e4 f8 | g2. c8 c c g g g e e e c c c | g'4 f8 e4 d8 c2.
+
+song london-bridge
+source https://en.wikipedia.org/wiki/London_Bridge_Is_Falling_Down
+lang nederlands
+relative c''
+notes \repeat volta 2 { c8. d16 c8 bes | a8 bes c4 | } \alternative { { g8 a bes4 | a8 bes c4 | } { g4 c | a8 f4. } }
+
+song jingle-bells
+source https://de.wikibooks.org/wiki/Liederbuch/_Jingle_Bells (the chorus, second score)
+lang nederlands
+relative c''
+notes b4 b b2 | b4 b b2 | b4 d g,4. a8 | b2. r4 | c4 c c4. c8 | c4 b b b8 b | b4 a a b | a2 d4 r | b4 b b2 | b4 b b2 | b4 d g,4. a8 | b2. r4 | c4 c c4. c8 | c4 b b b8 b | d4 d c a | g2. r4
+
+song ode-to-joy
+source https://en.wikipedia.org/wiki/Ode_to_Joy
+lang nederlands
+relative c'
+notes b'4 b c d | d c b a | g g a b | b4. a8 a2 | b4 b c d | d c b a | g g a b | a4. g8 g2 | a4 a b g | a b8 c b4 g | a b8 c b4 a | g a d, b'~ | b b c d | d c b a | g g a b | a4. g8 g2
+
+song happy-birthday
+source https://en.wikipedia.org/wiki/Happy_Birthday_to_You
+lang nederlands
+relative c'
+notes d8. d16 | e4 d g | fis2 d8. d16 | e4 d a' | g2 d8. d16 | d'4 b g | fis e c'8. c16 | b4 g a | g2
+
+song mulberry-bush
+source https://en.wikipedia.org/wiki/Here_We_Go_Round_the_Mulberry_Bush
+lang nederlands
+absolute
+notes g'8 g' g' g'4 b'8 | d''4 b'8 g'4 g'8 | a'4 a'8 a'4 g'8 | fis'4 e'8 d'4. | g'8 g' g' g'4 b'8 | d''4 b'8 g'4 g'8 | a'4 a'8 d'4 d'8 | g'4. g'

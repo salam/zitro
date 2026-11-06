@@ -436,6 +436,7 @@ void modelBench(int atoms);
 bool fetchModel(const ModelRef& ref);
 void eduUnloadActive();
 bool modelViewShow();
+bool modelButtonCHold();
 void modelButtonB();
 bool modelButtonC();
 void drawModelHint(M5Canvas& c);
@@ -9335,6 +9336,11 @@ void loop() {
       }
       resetToActiveState();
     }
+  }
+
+  if (M5.BtnPWR.wasHold() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel &&
+      response.length() > 0 && modelButtonCHold()) {
+    resetToActiveState();
   }
 
   // Long press B to reset WiFi credentials

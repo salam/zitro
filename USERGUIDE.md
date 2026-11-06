@@ -221,9 +221,10 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** show the text answer and stop the music. Press again to hear the song from the start.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. Each new song starts loud.
+- **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
-The music plays with one click on Button A, at your normal volume. It keeps going round until you stop it, and pauses by itself after 5 minutes.
+The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
 
 Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 

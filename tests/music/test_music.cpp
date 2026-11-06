@@ -274,6 +274,33 @@ static void testEverySong() {
   }
 }
 
+static void testVolumeLevels() {
+  // Button C goes round silent, low, regular, loud; a song starts loud, at the stored volume
+  CHECK(MUSIC_VOLUME_START == MUSIC_VOLUME_LOUD);
+  int level = MUSIC_VOLUME_START;
+  const int expected[] = {MUSIC_VOLUME_SILENT, MUSIC_VOLUME_LOW, MUSIC_VOLUME_REGULAR, MUSIC_VOLUME_LOUD};
+  for (int i = 0; i < 8; i++) {
+    level = musicNextVolumeLevel(level);
+    CHECK(level == expected[i % 4]);
+  }
+  // Loud is exactly the stored setting, whatever that is; silent is really silent
+  for (int stored : {0, 1, 60, 210, 255}) {
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_LOUD) == stored);
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_SILENT) == 0);
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_LOW) <= musicVolumeAt(stored, MUSIC_VOLUME_REGULAR));
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_REGULAR) <= stored);
+  }
+  CHECK(musicVolumeAt(210, MUSIC_VOLUME_REGULAR) == 140);
+  CHECK(musicVolumeAt(210, MUSIC_VOLUME_LOW) == 70);
+  // A stored value outside the range can't wrap round to something loud
+  CHECK(musicVolumeAt(300, MUSIC_VOLUME_LOUD) == 255);
+  CHECK(musicVolumeAt(-5, MUSIC_VOLUME_LOUD) == 0);
+  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_SILENT, true), "Stumm") == 0);
+  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_LOUD, true), "Laut") == 0);
+  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_REGULAR, false), "Regular") == 0);
+  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_LOW, false), "Low") == 0);
+}
+
 static void testPromptRule() {
   for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
     if (!strstr(MUSIC_PROMPT_RULE, MUSIC_SONGS[i].id)) {
@@ -473,6 +500,7 @@ int main(int argc, char** argv) {
   testPinnedMelodies();
   testEverySong();
   testFindSong();
+  testVolumeLevels();
   testPromptRule();
   testDrawing();
   printf("music tests: %d checks, %d failures\n", checks, failures);

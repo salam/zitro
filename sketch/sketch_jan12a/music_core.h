@@ -129,6 +129,26 @@ inline void musicPlaybackReset(MusicPlayback& p) {
   p.playedSeconds = 0;
 }
 
+// What Button C steps through while a song plays. Loud is the stored volume setting.
+enum MusicVolumeLevel { MUSIC_VOLUME_SILENT, MUSIC_VOLUME_LOW, MUSIC_VOLUME_REGULAR, MUSIC_VOLUME_LOUD };
+static const int MUSIC_VOLUME_START = MUSIC_VOLUME_LOUD;
+
+inline int musicNextVolumeLevel(int level) {
+  return (level + 1) % (MUSIC_VOLUME_LOUD + 1);
+}
+
+inline int musicVolumeAt(int stored, int level) {
+  if (stored < 0) stored = 0;
+  if (stored > 255) stored = 255;
+  return stored * level / MUSIC_VOLUME_LOUD;
+}
+
+inline const char* musicVolumeName(int level, bool german) {
+  static const char* const NAMES[2][MUSIC_VOLUME_LOUD + 1] = {{"Silent", "Low", "Regular", "Loud"},
+                                                              {"Stumm", "Leise", "Normal", "Laut"}};
+  return NAMES[german ? 1 : 0][level];
+}
+
 inline float musicMsPerTick(int beatsPerMinute) {
   return 60000.0f / (beatsPerMinute * MUSIC_TICKS_PER_QUARTER);
 }

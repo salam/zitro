@@ -126,6 +126,15 @@ bool modelButtonC() {
   return activeFeature && activeFeature->buttonC && activeFeature->buttonC();
 }
 
+// Holding Button C: back to the text. Music only: its click sets the volume, so it needs another
+// way back. The other features keep theirs.
+bool modelButtonCHold() {
+  if (activeFeature != &FEATURE_MUSIC) return false;
+  leaveModelView();
+  drawScreen(response);
+  return true;
+}
+
 // One frame of the view, at most 25 per second. Runs from loop() and never blocks.
 void modelViewTick() {
   static unsigned long lastFrame = 0;

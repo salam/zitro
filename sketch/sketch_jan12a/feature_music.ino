@@ -16,6 +16,10 @@ static float musicTickMs = 0;
 static bool musicGerman = true;
 static bool musicOpen = false;
 static MusicPlayback musicPlayback;
+static int musicStoredVolume = 210;
+static int musicVolumeLevel = MUSIC_VOLUME_START;
+static float musicVolumeLabelSeconds = 0;  // How much longer the level's name stays on screen
+static const float MUSIC_VOLUME_LABEL_SECONDS = 1.5f;
 
 static void musicUnload() {
   free(musicNotes);
@@ -45,6 +49,7 @@ static bool musicFetch(const char* query) {
   prefs.begin("settings", true);
   musicGerman = prefs.getString("language", "DE") != "EN";
   prefs.end();
+  musicVolumeLevel = MUSIC_VOLUME_START;  // Going to the text and back keeps the level; a new song doesn't
   modelLabel = musicGerman ? song->nameDe : song->nameEn;
   modelSourceName = "";
   return true;
@@ -57,20 +62,33 @@ static bool musicBegin(M5Canvas& c) {
   M5.Speaker.begin();
   Preferences prefs;
   prefs.begin("settings", true);
-  M5.Speaker.setVolume(prefs.getInt("volume", 210));
+  musicStoredVolume = prefs.getInt("volume", 210);
   prefs.end();
+  M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
+  musicVolumeLabelSeconds = 0;
   musicOpen = true;
   return true;
 }
 
 static void musicEnd() {
-  musicOpen = false;
   M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
+  // The level is only for this song: speech and alarms go back to the stored volume
+  if (musicOpen) M5.Speaker.setVolume(musicStoredVolume);
+  musicOpen = false;
 }
 
 static void musicButtonB() {
   musicTogglePause(musicPlayback);
   if (musicPlayback.paused) M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
+}
+
+// Button C: the next volume level. Holding it goes back to the text (modelButtonCHold).
+static bool musicButtonC() {
+  musicVolumeLevel = musicNextVolumeLevel(musicVolumeLevel);
+  M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
+  musicVolumeLabelSeconds = MUSIC_VOLUME_LABEL_SECONDS;
+  Serial.printf("Music: volume level %s, speaker %d\n", musicVolumeName(musicVolumeLevel, false), M5.Speaker.getVolume());
+  return true;
 }
 
 static bool musicKeepAwake() {
@@ -116,10 +134,21 @@ static void musicFrame(M5Canvas& c, float dt) {
     c.fillRect(WIDTH - 20, 3, 5, 15, TFT_WHITE);
     c.fillRect(WIDTH - 11, 3, 5, 15, TFT_WHITE);
   }
+  // The level's name after a press. Silent stays up, or it would look broken.
+  if (musicVolumeLabelSeconds > 0) musicVolumeLabelSeconds -= dt;
+  if (musicVolumeLabelSeconds > 0 || musicVolumeLevel == MUSIC_VOLUME_SILENT) {
+    const char* level = musicVolumeName(musicVolumeLevel, musicGerman);
+    c.setFont(&fonts::DejaVu12);
+    c.setTextDatum(textdatum_t::top_right);
+    const int right = WIDTH - 26;
+    c.fillRect(right - c.textWidth(level) - 3, 2, c.textWidth(level) + 6, 16, TFT_BLACK);
+    c.setTextColor(MUSIC_COLOR_NOW);
+    c.drawString(level, right, 4);
+  }
   eduDrawFooter(c, 0);
 }
 
 const EduFeature FEATURE_MUSIC = {
     "music", "",
     MUSIC_PROMPT_RULE,
-    false, musicFetch, musicUnload, musicBegin, musicFrame, musicEnd, musicButtonB, nullptr, musicKeepAwake};
+    false, musicFetch, musicUnload, musicBegin, musicFrame, musicEnd, musicButtonB, musicButtonC, musicKeepAwake};

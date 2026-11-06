@@ -16,7 +16,10 @@
 - Sound: `M5.Speaker.tone()` on channel 1, one note at a time, at the stored volume (`settings`, key `volume`). Tones are only started from `frame()` and each has its own length, which leaves a 12 percent gap before the next note, so nothing waits and sound can't hang when frames stop. Band and sound share one clock. A note starts on the first frame at or after its time, so up to 40 ms late.
 - After a stall the clock jumps to the note it should be on and sounds only that one. Tied notes sound once for their combined length.
 - `end()` stops the sound. `begin()` starts the song from its beginning, so going to the text and back starts over.
-- Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button C: back to the text. Button A: new question, as everywhere. No gyro turning.
+- Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button A: new question, as everywhere. No gyro turning.
+- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. The level's name shows for 1.5 seconds at the top right; silent stays up, because a silent band would otherwise look broken.
+- Hold Button C for 1 second: back to the text. From the text, a click on Button C opens the song again from the start, at the same level.
+- The level is for this song only and is never saved. A new song starts loud, and `end()` puts the speaker back to the stored volume, so speech and alarms never come out silent. An alarm during a silent song still rings at the stored volume. The user approved this change to Button C on 2026-11-06. It applies to music only: in other views a Button C click still does what it did.
 - `keepAwake` is true while playing. **Addition to the brief:** after 5 minutes of playing without a Button B press it pauses by itself, and then the normal sleep timers apply. An endless melody that kept the stick awake would otherwise break the 3D spec's anti-goal of a forgotten stick draining its battery.
 - A song result is not read aloud: the prompt rule sets `is_audio` false. A single click plays the music. The user approved this exception to "single click is text only".
 - A double click on Button A still reads the answer aloud. `speakText` closes the view, so the first note sounds for a moment before the speech, and the song starts from the beginning after it. Fixing the moment of sound needs a change in `sketch_jan12a.ino`.
@@ -35,9 +38,10 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** show the text answer and stop the music. Press again to hear the song from the start.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. Each new song starts loud.
+- **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
-The music plays with one click on Button A, at your normal volume. It keeps going round until you stop it, and pauses by itself after 5 minutes.
+The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
 
 Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 

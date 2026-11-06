@@ -334,6 +334,10 @@ void handleSerialCommands() {
       Serial.println("modelhost " + modelPubChemHost);
     } else if (line.startsWith("model ")) {
       runModelCommand(line.substring(6));
+    } else if (line == "forget") {
+      // So repeated "ask" runs can't copy each other's answers
+      memoryClear();
+      Serial.println("Memory cleared");
     } else if (line.startsWith("ask ")) {
       serialTestQuestion = line.substring(4);
       handleVoiceQuery(false);

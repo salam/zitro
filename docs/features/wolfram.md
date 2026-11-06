@@ -64,7 +64,7 @@ Seen but unchanged: the fallback's old `Serial.println("Wolfram URL: " + url)` p
 
 ### Tests
 
-`tests/wolfram/run.sh`, with sanitizers. 25 real API answers as fixtures, with no AppID in them. Checks the first section of each, noise, assumptions, order, German titles, plots, 47 hand-written formula shapes, 42 lines that must stay plain text, numbers, symbols, layout bounds, plot helpers, broken input (cut UTF-8, NUL, CRLF, 6000-byte lines, 3000-deep parentheses, carets, too many sections and lines) and 23000 fuzzed answers and formulas. With a `.bmp` path as argument it also draws every page with the real fonts, to look at. The stick itself hasn't run any of this.
+`tests/wolfram/run.sh`, with sanitizers. 26 real API responses as fixtures (24 answers, 2 refusals), with no AppID in them. Checks the first section of each, noise, assumptions, order, German titles, plots, 46 hand-written formula shapes, 42 lines that must stay plain text, numbers, symbols, layout bounds, plot helpers, broken input (cut UTF-8, NUL, CRLF, 6000-byte lines, 3000-deep parentheses, carets, too many sections and lines) and 23000 fuzzed answers and formulas. With a `.bmp` path as argument it also draws every page with the real fonts, to look at. The stick itself hasn't run any of this.
 
 ## User guide
 
@@ -87,6 +87,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 
 - `USERGUIDE.md` "Calculations are answered with Wolfram Alpha" gets the section above. The deep-sleep line stays true for the fallback picture; text results are asked for again on wake, which needs WiFi.
 - `REQUIREMENTS.md`: add the requirements above. The rule "`create_image` and calculations (`is_wolfram`) win over `model`" stays: `is_wolfram` now uses the `wolfram` kind itself.
+- `USERGUIDE.md` "Hold about 1 second (image view)" also applies on a Wolfram text result: it loads the picture first. "Only pictures can be printed" stays true.
 - A change from today: a Wolfram answer used to show the text first, with the picture a press away. It now opens on the result. You asked for that.
 
 ## Sources and licences

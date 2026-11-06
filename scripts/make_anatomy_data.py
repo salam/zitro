@@ -986,14 +986,15 @@ def make_lungs_cut(args):
 
 def make_skull_cut(args, partof, isa):
     """BodyParts3D: cut down the middle. Shows the inside of the real bones and where the brain sits."""
-    palette = [(236, 226, 202), (250, 250, 240)]
+    palette = [(236, 226, 202), (250, 250, 240), (196, 104, 84)]
     bones = select_bp3d(partof, args.names(partof), [(BONES_SKULL, 0)])
     teeth = select_bp3d(isa, args.names(isa), [(TEETH, 0)])
-    parts = named(bones, "solid", 0) + named(teeth, "solid", 1)
+    # Bone and its inner surface are the same colour: only a different cut face shows where it's cut
+    parts = named(bones, "solid", 0, fill_color=2) + named(teeth, "solid", 1, fill_color=2)
     centre = cut_centre(parts)
     origin, axes = cut_frame(centre + np.array([0.5, 0, 0]), [1, 0, 0], [0, 1, 0])
     result, left_open = build_cut(parts, origin, axes, 2600, 8)
-    legend = [(0, "Knochen", "Bone"), (1, "Zahn", "Tooth")]
+    legend = [(0, "Knochen", "Bone"), (1, "Zahn", "Tooth"), (2, "Schnitt", "Cut")]
     return write_cut(args, "skull", "Schädel", "Skull", "bp3d", palette, result, legend, left_open=left_open, short="BodyParts3D")
 
 

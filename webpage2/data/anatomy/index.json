@@ -1185,7 +1185,7 @@
    "schematic": false,
    "triangles": 1084,
    "vertices": 803,
-   "bytes": 12609,
+   "bytes": 12650,
    "source": "bp3d",
    "parts": [
     "Ethmoid",
@@ -1244,6 +1244,10 @@
     {
      "de": "Zahn",
      "en": "Tooth"
+    },
+    {
+     "de": "Schnitt",
+     "en": "Cut"
     }
    ]
   },

@@ -2,6 +2,7 @@
 
 ## Fri 6 Nov, 2026
 
+- **Sharp math from Wolfram**: calculations now open as crisp fractions, powers and roots made for your Zitro's screen. Press the button to step through the result, its plot and more!
 - Look inside! Ask "Was ist im Herz?" and Zitro cuts it open: real chambers and valves, brain, eye, kidney and more. Cells open up too, with every part named.
 - **A playful hello**: switch on your stick and two quick little pops greet you along with the logo. Waking from deep sleep stays quiet, and setting the volume to 0 silences it.
 - **See it all on zitro.spot**: the homepage now shows music, graphs, the globe, proteins, organs, the night sky, physics, timelines and recipes with real screenshots from the stick.

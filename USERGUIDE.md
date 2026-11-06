@@ -350,8 +350,21 @@ Heart, brain, kidney, eye, liver, lungs and skull have a real inside, from anato
 
 The cells are always shown open. They are drawn from what school books describe, and they carry the sign "Vereinfachtes Schema", because they are simple drawings and not measurements.
 
+#### Calculations and formulas
+
+Ask Zitro to calculate something: "Was ist die Ableitung von x^2 sin(x)?", "Löse x^2 + x - 1 = 0", "Wie gross ist das Volumen eines Torus mit Radius 5 cm?"
+
+The result opens right away, with real fractions, powers and roots. The small grey lines say what Wolfram assumed, like "assuming inner radius b": they matter, so read them.
+
+- **Button C**: next page. After the last page you see Zitro's text answer. Press again to go back to the start.
+- **Button B**: one page back.
+- **Hold Button B**: to print. Zitro fetches Wolfram's full picture of the result and opens the printer list. The print shows that picture, not the formula on the screen, and the picture stays on screen afterwards.
+- **Button A**: new question.
+
+The numbers come straight from Wolfram|Alpha, unchanged, and a long number carries on in the next line. The bottom line shows what Wolfram understood. If Wolfram's answer can't be shown as text, you get the Wolfram picture as before. Some answers have a plot too: it comes as a page of its own.
+
 ### Answer sources and media
-- Calculations are answered with Wolfram Alpha. Plain function plots ("Draw x^2") get Zitro's own sharp graph.
+- Calculations and formulas come from Wolfram Alpha, shown as sharp text. Plain function plots ("Draw x^2") get Zitro's own graph.
 - Requests to create images use OpenAI image generation (GPT Image 2.5 Flare, falling back to GPT Image 1.5).
 - If a related Wikipedia article is found, the device also shows an image.
 - Time questions ("what time is it?") return the current time including seconds.
@@ -517,7 +530,7 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
-- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures from Wolfram and pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again.
+- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again. A Wolfram picture isn't kept, so that answer comes back without it.
 
 ## Screenshots of the device screens
 

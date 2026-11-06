@@ -1,5 +1,10 @@
 # Release Notes
 
+## Fri 6 Nov, 2026
+
+- **See the science on zitro.spot**: the website now shows molecules, graphs, moving pictures and printed pages as short recordings from a real stick. Check them out in the features section.
+- **Know where it comes from**: a new "Sources, not guesses" card explains that the AI only picks what to look up, and PubChem, Wikipedia or Wolfram Alpha supply what you see.
+
 ## Thu 5 Nov, 2026 (late evening)
 
 - **Hold a molecule in your hand**: ask "How is caffeine built?" or "Show me aspirin in 3D", and the molecule opens right away. Turn the stick to look around it, in true atom colors. The side button shows the answer in words.

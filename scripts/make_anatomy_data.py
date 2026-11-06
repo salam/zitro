@@ -349,7 +349,7 @@ def build(parts, total, floor, unit_tolerance=0.01, cull=True, intermediate=6):
     return final
 
 
-def write_model(out_dir, model_id, label_de, label_en, source_key, palette, parts, schematic=False, extra=None):
+def write_model(out_dir, model_id, label_de, label_en, source_key, palette, parts, schematic=False, extra=None, short=None):
     all_v = np.concatenate([p["v"] for p in parts])
     centre = (all_v.min(0) + all_v.max(0)) / 2
     radius = np.linalg.norm(all_v - centre, axis=1).max()
@@ -375,7 +375,7 @@ def write_model(out_dir, model_id, label_de, label_en, source_key, palette, part
             raise SystemExit(f"{model_id}: '{s}' does not fit {size} bytes")
         return b.ljust(size, b"\0")
 
-    short = CREDITS[source_key]["short"]
+    short = short or CREDITS[source_key]["short"]
     pal = [rgb565(*rgb) for rgb in palette] + [0] * (8 - len(palette))
     head = struct.pack("<4sBBHHH", b"ZAN1", 1 if schematic else 0, len(palette), len(v), len(f), 0)
     head += text(model_id, 16) + text(label_de, 24) + text(label_en, 24) + text(short, 24)
@@ -513,7 +513,8 @@ def make_skull(args, folder):
     parts = select_bp3d(folder, args.names(folder), [(BONES_SKULL, 0)])
     isa = os.path.join(args.sources, "bp3d", "isa")
     parts += select_bp3d(isa, args.names(isa), [(r".*secondary (central |lateral )?(incisor|canine|premolar|first premolar|second premolar|molar) tooth|.*secondary (molar|premolar) tooth", 1)])
-    return write_model(args.out, "skull", "Schädel", "Skull", "bp3d", palette, build(parts, 1500, 10))
+    return write_model(args.out, "skull", "Schädel", "Skull", "bp3d", palette, build(parts, 1500, 10),
+                       short="BodyParts3D")  # The umlaut needs the wider font: with "CC BY" the name itself would be cut
 
 
 def make_eye(args, folder):

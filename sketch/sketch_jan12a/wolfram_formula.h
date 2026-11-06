@@ -65,7 +65,7 @@ struct WolframNode {
 };
 
 static const int WOLFRAM_MAX_NODES = 120;
-static const int WOLFRAM_MAX_DEPTH = 6;
+static const int WOLFRAM_MAX_DEPTH = 4;  // Real answers need 2 or 3, and this keeps the stack small on the stick
 static const size_t WOLFRAM_FORMULA_LINE_LIMIT = 220;
 static const int WOLFRAM_MAX_LONG_WORDS = 1;  // Two real words means a sentence, not a formula
 

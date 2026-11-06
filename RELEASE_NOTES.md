@@ -22,6 +22,9 @@
 - **Know where it comes from**: a new "Sources, not guesses" card explains that the AI only picks what to look up, and PubChem, Wikipedia or Wolfram Alpha supply what you see.
 - **Spot the real screen**: the recordings on zitro.spot now sit in a little stick-shaped frame, so you can see right away that they come straight from the device.
 - **Shorter science cards**: the feature cards on zitro.spot now get to the point. Tap a little number to jump to the source in the footer.
+- **Watch it all move**: music, curves, the globe, proteins, organs, physics, the night sky, timelines and recipes now play as short recordings from a real stick. See them in their own section on zitro.spot.
+- **See the print dialog**: the print card now shows every step on the stick, from finding your printer to the finished pages.
+- **Tidier feature page**: the everyday features come first and the recordings follow in even rows, with all the sources together at the bottom.
 
 ## Thu 5 Nov, 2026 (late evening)
 

@@ -5,6 +5,7 @@
 #include <cstring>
 #include <string>
 #include "../../sketch/sketch_jan12a/model_core.h"
+#include "../../sketch/sketch_jan12a/button_rules.h"
 
 static int failures = 0, checks = 0;
 #define CHECK(c) do { checks++; if (!(c)) { failures++; \
@@ -131,9 +132,24 @@ static void testElements() {
   CHECK(elementColor565(6) == (((0x90 >> 3) << 11) | ((0x90 >> 2) << 5) | (0x90 >> 3)));
 }
 
+static void testButtonRules() {
+  // Rotation 3: buttons on the left, Button C on top, Button B below
+  CHECK(imageScrollDirection(3, true) == -1);
+  CHECK(imageScrollDirection(3, false) == 1);
+  // Rotation 1: buttons on the right, Button B on top, Button C below
+  CHECK(imageScrollDirection(1, true) == 1);
+  CHECK(imageScrollDirection(1, false) == -1);
+
+  // Settings only where Button C has no other job
+  CHECK(buttonCCountsForSettings(false, false, false));
+  CHECK(!buttonCCountsForSettings(true, false, false));   // Lists and alerts: next
+  CHECK(!buttonCCountsForSettings(false, true, false));   // Picture: scroll or switch view
+  CHECK(!buttonCCountsForSettings(false, false, true));   // 3D model: switch view
+}
+
 int main(int argc, char** argv) {
   fixtureDir = argc > 1 ? argv[1] : "fixtures";
-  testRefs(); testSdf(); testMath(); testElements();
+  testRefs(); testSdf(); testMath(); testElements(); testButtonRules();
   printf("%d checks, %d failures\n", checks, failures);
   if (failures == 0) printf("All model tests passed\n");
   return failures == 0 ? 0 : 1;

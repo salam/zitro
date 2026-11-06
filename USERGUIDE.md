@@ -123,15 +123,15 @@ The project includes deployment scripts for building and uploading firmware to y
   - AP mode: retry WiFi connection.
   - Print menu: confirm the printer, then the page size. The last confirmation prints.
 - Button B (side)
-  - Short click (image view): scroll up in the image.
+  - Short click (image view): scroll. The upper of the two side buttons scrolls up, the lower one down, however you hold the stick.
   - Hold about 1 second (image view): open printer discovery and selection.
   - Hold about 3 seconds (normal mode): reset WiFi credentials and restart.
   - Hold about 5 seconds (AP mode): reset WiFi credentials and restart.
   - Print menu: one step back; in the printer list, cancel.
   - Timer list: delete the shown timer.
 - Button C / PWR (bottom)
-  - Triple click: open settings/setup page (enters AP mode). Not in the printer list, timer list or a timer alert.
-  - Short click (image view): scroll down in the image.
+  - Triple click: open settings/setup page (enters AP mode). Only where Button C has no other job: not in the printer list, timer list or a timer alert, and not while the answer has a picture or 3D model, so scrolling can't open the settings by accident. There, say "Open settings page" instead.
+  - Short click (image view): scroll (see Button B).
   - Short click (text view with image available): toggle text vs image view.
   - Print menu: next printer, page size or zoom value.
   - Timer list: show the next timer.
@@ -286,8 +286,7 @@ Good to know:
   - Rotating the device to the opposite orientation and back, or
   - Pressing Button C.
 - Scroll a tall image:
-  - Button B scrolls up.
-  - Button C scrolls down.
+  - The upper side button scrolls up, the lower one scrolls down, however you hold the stick.
 - Zoom:
   - Roll the device to toggle contain vs cover zoom.
 
@@ -327,7 +326,7 @@ Good to know:
 
 1. Enter setup mode by either:
    - Waiting for the device to automatically enter AP mode (if WiFi fails or no API key is configured), or
-   - Triple-clicking Button C from any screen to manually open settings.
+   - Triple-clicking Button C (not while a list, picture or 3D model is in use), or saying "Open settings page".
 
 2. Connect your phone or computer to "zitro" (or scan the QR code on the screen).
 3. The setup page opens automatically (captive portal). If not, open `zitro.local` in your browser (or `192.168.4.1`).
@@ -371,7 +370,7 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
-- Deep sleep restarts and restores the last answer if it can.
+- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures from Wolfram and pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again.
 
 ## Screenshots of the device screens
 

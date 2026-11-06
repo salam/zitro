@@ -61,7 +61,7 @@ A small footer names the thing and its source: "Caffeine · PubChem". Molecules 
 | Button B hold 1 s | Nothing yet (see Non-goals) |
 | Button B hold 3 s | Resets WiFi, unchanged |
 | Button C click | Back to text. From text, Button C goes to 3D. |
-| Button C three quick presses | Opens settings, unchanged. The view flips on the way, which is harmless. |
+| Button C three quick presses | Nothing extra: Button C only counts for settings where it has no other job (changed 2026-11-06). Settings by voice. |
 | Shake, roll, rotate-to-toggle, auto-flip | Off. Screen rotation locks when entering the view. |
 
 ### How turning feels (builder may tune)

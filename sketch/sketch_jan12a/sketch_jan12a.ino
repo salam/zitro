@@ -27,6 +27,8 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 // AI providers (OpenAI, Claude, Infomaniak, OpenAI-compatible, Zitro relay) and conversation memory
 #include "ai_provider.h"
 #include "model_core.h"
+#include "button_rules.h"
+#include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
 // Requires JPEGENC library: https://github.com/bitbank2/JPEGENC
@@ -167,6 +169,7 @@ unsigned long DEEP_SLEEP_TIMEOUT = 180000;        // 180 seconds (3 min) - enter
 #define PREFS_KEY_RESPONSE "response"
 #define PREFS_KEY_IMAGE_URL "imageUrl"
 #define PREFS_KEY_MODEL_REF "modelRef"
+#define PREFS_KEY_IS_WOLFRAM "isWolfram"
 #define PREFS_KEY_HAS_IMAGE "hasImage"
 #define PREFS_KEY_DISPLAY_MODE "dispMode"
 #define PREFS_KEY_VALID "valid"
@@ -412,6 +415,9 @@ void drawHomeScreen();
 void drawIconTextScreen(const String &text, const uint8_t* iconData);
 int heldRotation();
 void handleSerialCommands();
+bool saveImageToFlash();
+bool restoreImageFromFlash();
+void handleDeepSleepWake();
 bool modelViewBegin();
 void modelViewEnd();
 bool modelViewActive();
@@ -2221,6 +2227,47 @@ void resetCredentials() {
 // =============== POWER MANAGEMENT - STATE PERSISTENCE ===============
 
 // Save current state to Preferences before deep sleep
+// Pictures without an address survive deep sleep in flash. Formats the partition on first use.
+static const char* SAVED_IMAGE_PATH = "/lastimage";
+static const int SAVED_IMAGE_LIMIT = 512 * 1024;
+
+bool saveImageToFlash() {
+  if (!imageBuffer || imageBufferSize <= 0 || imageBufferSize > SAVED_IMAGE_LIMIT) return false;
+  if (!SPIFFS.begin(true)) {
+    Serial.println("Saved image: flash storage not available");
+    return false;
+  }
+  File file = SPIFFS.open(SAVED_IMAGE_PATH, FILE_WRITE);
+  const size_t written = file ? file.write(imageBuffer, imageBufferSize) : 0;
+  if (file) file.close();
+  SPIFFS.end();
+  Serial.printf("Saved image: %u of %d bytes\n", (unsigned)written, imageBufferSize);
+  return written == (size_t)imageBufferSize;
+}
+
+bool restoreImageFromFlash() {
+  if (!SPIFFS.begin(true)) return false;
+  bool ok = false;
+  File file = SPIFFS.open(SAVED_IMAGE_PATH, FILE_READ);
+  if (file) {
+    const size_t size = file.size();
+    uint8_t* buffer = (size > 0 && size <= (size_t)SAVED_IMAGE_LIMIT) ? (uint8_t*)ps_malloc(size) : nullptr;
+    if (buffer && file.read(buffer, size) == size) {
+      free(imageBuffer);
+      imageBuffer = buffer;
+      imageBufferSize = (int)size;
+      ok = true;
+    } else {
+      free(buffer);
+    }
+    file.close();
+    SPIFFS.remove(SAVED_IMAGE_PATH);  // Back in memory; the next deep sleep saves it again
+  }
+  SPIFFS.end();
+  Serial.printf("Restored saved image: %s, %d bytes\n", ok ? "ok" : "failed", ok ? imageBufferSize : 0);
+  return ok;
+}
+
 void saveStateToPreferences() {
   Serial.println("\n========== SAVING STATE ==========");
 
@@ -2233,6 +2280,9 @@ void saveStateToPreferences() {
   // Save image URL
   prefs.putString(PREFS_KEY_IMAGE_URL, currentImageUrl);
   prefs.putString(PREFS_KEY_MODEL_REF, hasModel ? modelRefText : String(""));
+  prefs.putBool(PREFS_KEY_IS_WOLFRAM, isWolframImage);
+  // Wolfram and AI-drawn pictures have no address to download again from
+  if (hasImage && currentImageUrl.length() == 0 && !saveImageToFlash()) hasImage = false;
   Serial.printf("Saved image URL: %s\n", currentImageUrl.c_str());
 
   // Save boolean flags
@@ -2270,6 +2320,7 @@ bool restoreStateFromPreferences() {
   // Restore image URL
   currentImageUrl = prefs.getString(PREFS_KEY_IMAGE_URL, "");
   modelRefText = prefs.getString(PREFS_KEY_MODEL_REF, "");
+  isWolframImage = prefs.getBool(PREFS_KEY_IS_WOLFRAM, false);
   Serial.printf("Restored image URL: %s\n", currentImageUrl.c_str());
 
   // Restore flags
@@ -2560,6 +2611,22 @@ void handleDeepSleepWake() {
       currentDisplayMode = SHOW_TEXT;
       drawScreen(response);
     }
+  }
+
+  // A picture without an address comes back from flash; without it there is no picture
+  if (hasImage && currentImageUrl.length() == 0) {
+    if (restoreImageFromFlash()) {
+      if (currentDisplayMode == SHOW_IMAGE) displayImage(true);
+    } else {
+      hasImage = false;
+      if (currentDisplayMode == SHOW_IMAGE) {
+        currentDisplayMode = SHOW_TEXT;
+        drawScreen(response);
+      }
+    }
+  } else if (!hasImage && currentDisplayMode == SHOW_IMAGE) {
+    currentDisplayMode = SHOW_TEXT;
+    drawScreen(response);
   }
 
   // A 3D model is fetched again, like a picture
@@ -8660,7 +8727,7 @@ void loop() {
   // Not counted in the timer and printer lists (Button C is "next" there, so three quick
   // presses must not open the settings) or while a timer alert is up.
   bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode;
-  if (btnCIsPressed && !btnCWasPressed && !btnCIsListButton) {
+  if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
     unsigned long now = millis();
 
     // Reset count if too much time has passed since last press
@@ -9178,8 +9245,8 @@ void loop() {
     } else if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       int scrollStep = HEIGHT / 5;
       if (scrollStep < 1) scrollStep = 1;
-      wolframScrollOffset = clampInt(wolframScrollOffset - scrollStep, 0, wolframMaxScrollOffset);
-      Serial.printf("Button B: Scrolling up, offset now: %d\n", wolframScrollOffset);
+      wolframScrollOffset = clampInt(wolframScrollOffset + imageScrollDirection(M5.Display.getRotation(), false) * scrollStep, 0, wolframMaxScrollOffset);
+      Serial.printf("Button B: scroll offset now: %d\n", wolframScrollOffset);
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
     }
@@ -9199,8 +9266,8 @@ void loop() {
     } else if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       int scrollStep = HEIGHT / 5;
       if (scrollStep < 1) scrollStep = 1;
-      wolframScrollOffset = clampInt(wolframScrollOffset + scrollStep, 0, wolframMaxScrollOffset);
-      Serial.printf("Button C: Scrolling down, offset now: %d\n", wolframScrollOffset);
+      wolframScrollOffset = clampInt(wolframScrollOffset + imageScrollDirection(M5.Display.getRotation(), true) * scrollStep, 0, wolframMaxScrollOffset);
+      Serial.printf("Button C: scroll offset now: %d\n", wolframScrollOffset);
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
     } else if (!displaySleeping && hasImage && response.length() > 0) {

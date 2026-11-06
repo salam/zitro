@@ -337,6 +337,17 @@ void handleSerialCommands() {
     } else if (line.startsWith("ask ")) {
       serialTestQuestion = line.substring(4);
       handleVoiceQuery(false);
+    } else if (line == "sleeptest") {
+      // What deep sleep does to the state, without the sleep: Button A would be needed to wake
+      if (hasImage) currentDisplayMode = SHOW_IMAGE;
+      saveStateToPreferences();
+      free(imageBuffer);
+      imageBuffer = nullptr;
+      imageBufferSize = 0;
+      hasImage = false;
+      currentImageUrl = "";
+      handleDeepSleepWake();
+      Serial.printf("sleeptest hasImage=%d buffer=%d bytes mode=%d\n", hasImage, imageBufferSize, currentDisplayMode);
     } else if (line == "modelgyro") {
       modelGyroNoise();
     } else if (line.startsWith("modelbench ")) {

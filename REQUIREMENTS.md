@@ -116,7 +116,7 @@
   - Rotation 0 (portrait, A at the bottom): A ✓ bottom-center, C ▶ left edge low, B ✕ right-middle
   - Rotation 2 (portrait, A on top): A ✓ top-center, C ▶ right edge high, B ✕ left-middle
   - The C (next) tab is hidden with only one printer
-- Button C triple-press (open settings) is not counted while the printer list, the timer list or a timer alert is open: there C is "next"
+- Button C triple-press (open settings) only counts where Button C has no other job (`buttonCCountsForSettings()` in `button_rules.h`): not in the printer list, the timer list or a timer alert (C is "next"), and not while the answer has a picture or 3D model (C scrolls or switches views). There the settings open by voice
 - While the printer list is open, shake, rotate-to-toggle and roll are ignored; turning the stick (every 200 ms check) redraws the list in the new orientation, and does not count toward the text/image toggle
 
 ### Print Pages
@@ -239,6 +239,7 @@ The device implements three-tier power management to maximize battery life:
    - Device reboots on wake
    - Previous answer and image URL saved to Preferences
    - Image re-downloaded after wake
+   - Pictures without a URL (Wolfram, AI-drawn) are saved to SPIFFS (`/lastimage`, up to 512 KB) just before deep sleep and read back on wake; the file is removed once read. The partition is formatted on first use. If saving or reading fails, the answer comes back without a picture, never with "No image buffer"
 
 ## Wake-Up Behavior
 
@@ -352,7 +353,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Phase 1 is built:
 - Up to 200 atoms and 250 bonds, otherwise not available. Atoms, bonds and hydrogens are never dropped
 
 ## View (`model_view.ino`, pure logic in `model_core.h`)
-- `DisplayMode` `SHOW_MODEL`. An answer with a model opens straight in the view. Button C goes to the text and back, rotate-to-toggle enters from the text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi, three quick Button C presses open settings as everywhere
+- `DisplayMode` `SHOW_MODEL`. An answer with a model opens straight in the view. Button C goes to the text and back, rotate-to-toggle enters from the text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi; three quick Button C presses do not open settings here
 - Shake, roll, rotate-to-toggle and landscape flip are off; rotation locks on entry
 - One non-blocking frame per `loop()`, at most 25 per second. Measured on the Plus2 at full speed: 50 atoms 58-62 fps, 100 atoms 51-55 fps, 200 atoms 42-46 fps
 - Gyro integrated, 2x gain; under 3 deg/s it turns by itself at 0.35 rad/s

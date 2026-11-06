@@ -71,7 +71,7 @@
 - Before light and deep sleep: WiFi off, display controller asleep (backlight off), IMU asleep, mic and speaker stopped
 - Deep sleep latches the power-hold pin (GPIO4, the Plus2 has no PMIC) with `gpio_hold_en` so Button A can still wake the device on battery; released after boot
 - Active reminder timers keep the device in light sleep with a timer wake-up instead of deep sleep
-- Motion sensor while awake: accelerometer always on (shake, auto-flip, rotate-to-toggle); gyroscope (PWR_MGMT_2 standby bits) only while an image or equation is shown, for the roll-to-zoom gesture. Roll readings are ignored for 150 ms after the gyro powers up
+- Motion sensor while awake: accelerometer always on (shake, auto-flip, rotate-to-toggle); gyroscope (PWR_MGMT_2 standby bits) only while an image is shown, for the roll-to-zoom gesture, or a 3D model, for turning it. Roll readings are ignored for 150 ms after the gyro powers up
 
 ### Feature Toggles
 - **Search Related Images**: Enable/disable Wikipedia image search (default: on)
@@ -116,7 +116,7 @@
   - Rotation 0 (portrait, A at the bottom): A ✓ bottom-center, C ▶ left edge low, B ✕ right-middle
   - Rotation 2 (portrait, A on top): A ✓ top-center, C ▶ right edge high, B ✕ left-middle
   - The C (next) tab is hidden with only one printer
-- Button C triple-press (open settings) is not counted while the printer list, the timer list or a timer alert is open: there C is "next"
+- Button C triple-press (open settings) only counts where Button C has no other job (`buttonCCountsForSettings()` in `button_rules.h`): not in the printer list, the timer list or a timer alert (C is "next"), and not while the answer has a picture or 3D model (C scrolls or switches views). There the settings open by voice
 - While the printer list is open, shake, rotate-to-toggle and roll are ignored; turning the stick (every 200 ms check) redraws the list in the new orientation, and does not count toward the text/image toggle
 
 ### Print Pages
@@ -239,6 +239,7 @@ The device implements three-tier power management to maximize battery life:
    - Device reboots on wake
    - Previous answer and image URL saved to Preferences
    - Image re-downloaded after wake
+   - Pictures without a URL (Wolfram, AI-drawn) are saved to SPIFFS (`/lastimage`, up to 512 KB) just before deep sleep and read back on wake; the file is removed once read. The partition is formatted on first use. If saving or reading fails, the answer comes back without a picture, never with "No image buffer"
 
 ## Wake-Up Behavior
 
@@ -332,6 +333,56 @@ When modifying JavaScript files, browsers may serve cached versions to users, pr
 - Forms may submit to wrong endpoints if backend changes but JS is cached
 - Critical security updates may not apply if old JS is served
 - Cache busting ensures all users get the latest version immediately
+
+---
+
+# Requirements for the 3D View
+
+Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are described here; every other kind of result is a plug-in with its requirements in its own file:
+
+- **Music on an endless band**: [docs/features/music.md](docs/features/music.md)
+- **Function graphs**: [docs/features/graph.md](docs/features/graph.md)
+- **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
+- **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
+- **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
+- **Night sky**: [docs/features/sky.md](docs/features/sky.md)
+- **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)
+- **Timelines with pictures**: [docs/features/timeline.md](docs/features/timeline.md)
+- **Organs, skeleton and cells**: [docs/features/anatomy.md](docs/features/anatomy.md)
+
+## Plug-ins (`edu_feature.h`)
+- Each kind fills in one `EduFeature` in `feature_<kind>.ino` with pure logic in `<kind>_core.h`, tested by `tests/<kind>/run.sh`; all are registered in `feature_registry.ino`. The AI prompt collects each feature's `promptRule`
+- `model_view.ino` owns the sprite, the gyro, the sleep rules and the bottom line; `fetchModel()` in `model_source.ino` dispatches by kind
+- Prepared data lives in `webpage2/data/<kind>/` and is read from `https://zitro.spot/data/<kind>/`. It's static hosting, uploaded separately from the firmware. Without it those kinds fall back to the picture
+- `gyroToScreen()` maps the sensor's axes to the screen's: in landscape the sensor's x runs along the short side
+
+## Honest content
+- The AI only names what to look up, in the answer field `model` (`"molecule:<English name>"`, empty for none). It never supplies coordinates, IDs or numbers
+- The on-screen label is the source record's title (PubChem Title), so a wrong lookup is visible
+- The written answer stays AI-written
+- `model` only for questions about a substance's structure or for explicit 3D requests. Photos stay the default. `create_image` and calculations (`is_wolfram`) win over `model`
+- Not available: the normal Wikipedia picture (`image_query` is always filled). A found model replaces the picture, so such an answer can't be printed yet
+
+## Lookup (`model_source.ino`)
+- PubChem PUG REST, `/compound/name/<name>/SDF?record_type=3d` and `/property/Title/JSON`, generic User-Agent, no keys
+- 10 s for the whole lookup, body limit 64 KB (PSRAM), V2000 SDF only, must end in `M  END`
+- Up to 200 atoms and 250 bonds, otherwise not available. Atoms, bonds and hydrogens are never dropped
+
+## View (`model_view.ino`, pure logic in `model_core.h`)
+- `DisplayMode` `SHOW_MODEL`. An answer with a model opens straight in the view. Button C goes to the text and back, rotate-to-toggle enters from the text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi; three quick Button C presses do not open settings here
+- Shake, roll, rotate-to-toggle and landscape flip are off; rotation locks on entry
+- One non-blocking frame per `loop()`, at most 25 per second. Measured on the Plus2 at full speed: 50 atoms 58-62 fps, 100 atoms 51-55 fps, 200 atoms 42-46 fps
+- Gyro integrated, 2x gain; under 3 deg/s it turns by itself at 0.35 rad/s
+- The sprite (internal RAM, PSRAM as fallback) lives only while the view is on screen: freed for questions, timer alerts and setup. No memory: a short note, then the text
+- Atoms in PubChem colours (`atom_table.h`, made by `scripts/make_atom_table.py`), dark rim for depth, no highlight on small atoms because it reads as a + sign. Footer: label, source, element letters in colour; a smaller ASCII font unless the label needs the full font
+
+## Sleep
+- Motion from 15 deg/s counts as activity, for up to 5 minutes after the last button press, entry or wake. Measured gyro noise on a desk: peak 0.62 deg/s. Motion never wakes a sleeping display
+- Deep sleep saves the reference (`modelRef`) and fetches the model again on wake; on failure, text
+
+## Tests
+- `tests/model/run.sh`: reference parsing, SDF parsing with real PubChem files and broken input, rotation, depth order, colours
+- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
 
 ---
 

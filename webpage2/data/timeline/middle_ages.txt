@@ -1,0 +1,8 @@
+ZTL1	middle_ages	Q12554	Mittelalter	Middle Ages	7	38217
+Q12506	532	-	0	Hagia Sophia	Hagia Sophia	0	6597	240	96	0ddd688a	Arild Vågen, CC BY-SA 3.0
+Q83224	1066	-	0	Schlacht bei Hastings	Battle of Hastings	6597	8201	240	96	a23e6af5	Antony McCallum, CC BY-SA 3.0
+Q2981	1163	-	0	Notre-Dame de Paris	Notre-Dame de Paris	14798	8675	240	96	71e2d84c	P e z i, CC BY-SA 3.0
+Q12519	1215	-	0	Magna Carta	Magna Carta	23473	3782	144	96	49466ad6	-
+Q42005	1346	1352	0	Schwarzer Tod	Black Death	0	0	0	0	-	-
+Q144334	1439	-	1	Druckpresse	Printing press	27255	2555	72	96	1363670d	-
+Q160077	1453	-	0	Eroberung von Konstantinopel	Fall of Constantinople	29810	8407	240	96	f92990c7	CC BY-SA 3.0

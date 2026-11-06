@@ -1,0 +1,8 @@
+ZTL1	moon_missions	Q1064739	Erforschung des Erdmonds	Exploration of the Moon	7	23842
+Q1159927	1959	-	0	Luna 2	Luna 2	0	1705	60	96	a62f3338	-
+Q1159933	1966	-	0	Luna 9	Luna 9	1705	2856	60	96	b63f6260	Stolbovsky, CC BY 4.0
+Q184201	1968	-	0	Apollo 8	Apollo 8	4561	3233	75	96	763497ab	-
+Q43653	1969	-	0	Apollo 11	Apollo 11	7794	4346	122	96	8cdaf77e	-
+Q180971	1972	-	0	Apollo 17	Apollo 17	12140	5305	122	96	3b148404	-
+Q723045	2018	-	0	Chang'e 4	Chang'e 4	17445	6397	240	96	12ad41b9	CSNA/Siyu Zhang/ Kevin M. Gill, CC BY 2.0
+Q65049774	2023	-	0	Chandrayaan-3	Chandrayaan-3	0	0	0	0	-	-

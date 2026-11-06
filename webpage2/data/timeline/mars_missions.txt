@@ -1,0 +1,7 @@
+ZTL1	mars_missions	Q716774	Erforschung des Mars	Exploration of Mars	6	27292
+Q203805	1964	-	0	Mariner 4	Mariner 4	0	2779	162	96	1e58270b	-
+Q210199	1975	-	0	Viking 1	Viking 1	2779	2042	122	96	2e6c5eb7	-
+Q201771	1996	-	0	Mars Pathfinder	Mars Pathfinder	4821	9532	240	96	dca2fbe1	-
+Q193538	2003	-	0	Opportunity-Rover	Opportunity	14353	3452	120	96	13f4240c	-
+Q48485	2011	-	0	Curiosity	Curiosity	17805	3286	117	96	5aa2d56e	-
+Q87749354	2020	-	0	Perseverance	Perseverance	21091	6201	240	96	79a8707e	-

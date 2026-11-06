@@ -237,7 +237,10 @@ static void runScreenshotTour() {
 
   // Keep the real state; the tour only draws
   String savedResponse = response;
+  modelViewEnd();
   bool savedHasImage = hasImage;
+  bool savedHasModel = hasModel;
+  hasModel = false;
   DisplayMode savedMode = currentDisplayMode;
   hasImage = false;
   currentDisplayMode = SHOW_TEXT;
@@ -299,6 +302,12 @@ static void runScreenshotTour() {
   captureArmed = 0;
   response = savedResponse;
   hasImage = savedHasImage;
+  hasModel = savedHasModel;
+  if (hasModel) {  // Only with a model loaded: the tour itself doesn't use the network
+    armCapture("50-3d-model", 0);
+    modelViewShow();
+    modelViewEnd();
+  }
   currentDisplayMode = savedMode;
   redrawPreviousResult();
   resetToActiveState();
@@ -320,6 +329,33 @@ void handleSerialCommands() {
     } else if (line == "shot") {
       armCapture("current", 0);
       redrawPreviousResult();
+    } else if (line.startsWith("modelhost ")) {
+      modelPubChemHost = line.substring(10);
+      Serial.println("modelhost " + modelPubChemHost);
+    } else if (line.startsWith("model ")) {
+      runModelCommand(line.substring(6));
+    } else if (line.startsWith("ask ")) {
+      serialTestQuestion = line.substring(4);
+      handleVoiceQuery(false);
+    } else if (line == "sleeptest") {
+      // What deep sleep does to the state, without the sleep: Button A would be needed to wake
+      if (hasImage) currentDisplayMode = SHOW_IMAGE;
+      saveStateToPreferences();
+      free(imageBuffer);
+      imageBuffer = nullptr;
+      imageBufferSize = 0;
+      hasImage = false;
+      currentImageUrl = "";
+      handleDeepSleepWake();
+      Serial.printf("sleeptest hasImage=%d buffer=%d bytes mode=%d\n", hasImage, imageBufferSize, currentDisplayMode);
+    } else if (line == "modelgyro") {
+      modelGyroNoise();
+    } else if (line.startsWith("modelbench ")) {
+      modelBench(line.substring(11).toInt());
+      redrawPreviousResult();
+    } else if (line.startsWith("modelnomem ")) {
+      modelForceNoMemory = line.substring(11).toInt() != 0;
+      Serial.printf("modelnomem %d\n", modelForceNoMemory);
     } else if (line.startsWith("printimg ") || line.startsWith("printtest ") || line.startsWith("printtext ")) {
       runPrintTestCommand(line);
     }

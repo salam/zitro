@@ -1,0 +1,7 @@
+ZTL1	cars	Q1129377	Geschichte des Automobils	History of the automobile	6	46220
+Q326248	1886	-	0	Benz Patent-Motorwagen Nummer 1	Benz Patent-Motorwagen	0	7323	240	96	38e07291	DaimlerChrysler AG, CC BY-SA 3.0
+Q182323	1908	-	0	Ford Modell T	Ford Model T	7323	9423	240	96	cb12715c	-
+Q152946	1938	-	0	VW Käfer	Volkswagen Beetle	16746	8259	240	96	881cf42f	Vwexport1300, CC BY-SA 3.0
+Q36024	1959	-	0	Mini	Mini	25005	7235	240	96	fee925c4	DeFacto, CC BY-SA 2.5
+Q213115	1997	-	0	Toyota Prius	Toyota Prius	32240	6767	240	96	2b1e4e62	-
+Q210893	2006	-	0	Tesla Roadster	Tesla Roadster	39007	7213	240	96	6093d323	Chuq, CC BY-SA 4.0

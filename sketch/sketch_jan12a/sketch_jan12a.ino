@@ -7,7 +7,7 @@ struct AudioEndpoint;
 
 // Enum declarations must be at the top for Arduino function prototype generation
 enum Orientation { LANDSCAPE, PORTRAIT };
-enum DisplayMode { SHOW_TEXT, SHOW_IMAGE };
+enum DisplayMode { SHOW_TEXT, SHOW_IMAGE, SHOW_MODEL };
 enum ImageZoomMode { CONTAIN, COVER };
 enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS_DOWNSAMPLE, IMAGE_FETCH_ERROR };
 
@@ -25,7 +25,17 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include <ArduinoJson.h>
 
 // AI providers (OpenAI, Claude, Infomaniak, OpenAI-compatible, Zitro relay) and conversation memory
+#if __has_include("local_secrets.h")
+#include "local_secrets.h"
+#endif
+#ifndef WOLFRAM_APPID
+#define WOLFRAM_APPID ""  // Without one, Wolfram questions fail and Zitro says so. See local_secrets.h.example
+#endif
 #include "ai_provider.h"
+#include "model_core.h"
+#include "edu_feature.h"
+#include "button_rules.h"
+#include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
 // Requires JPEGENC library: https://github.com/bitbank2/JPEGENC
@@ -165,6 +175,8 @@ unsigned long DEEP_SLEEP_TIMEOUT = 180000;        // 180 seconds (3 min) - enter
 #define PREFS_NAMESPACE "powerstate"
 #define PREFS_KEY_RESPONSE "response"
 #define PREFS_KEY_IMAGE_URL "imageUrl"
+#define PREFS_KEY_MODEL_REF "modelRef"
+#define PREFS_KEY_IS_WOLFRAM "isWolfram"
 #define PREFS_KEY_HAS_IMAGE "hasImage"
 #define PREFS_KEY_DISPLAY_MODE "dispMode"
 #define PREFS_KEY_VALID "valid"
@@ -193,6 +205,17 @@ uint8_t* imageBuffer = nullptr;
 int imageBufferSize = 0;
 String currentImageUrl = "";
 bool hasImage = false;
+// 3D view (model_view.ino, model_source.ino). modelRefText is what deep sleep saves.
+bool hasModel = false;
+String modelRefText;
+String modelLabel;
+String modelSourceName;
+ModelMolecule* currentMolecule = nullptr;
+Mat3 modelRotation;
+uint8_t modelZoomStep = 0;
+bool modelForceNoMemory = false;  // Serial "modelnomem 1": tests the out-of-memory path
+String serialTestQuestion;  // Serial "ask <question>": stands in for the recording
+String modelPubChemHost = "pubchem.ncbi.nlm.nih.gov";  // Serial "modelhost": tests a dead server
 bool isWolframImage = false;  // Flag to track if current image is from Wolfram Alpha
 int wolframScrollOffset = 0;  // Vertical scroll offset for Wolfram images
 int wolframMaxScrollOffset = 0;
@@ -400,6 +423,25 @@ void drawHomeScreen();
 void drawIconTextScreen(const String &text, const uint8_t* iconData);
 int heldRotation();
 void handleSerialCommands();
+bool saveImageToFlash();
+bool restoreImageFromFlash();
+void handleDeepSleepWake();
+bool modelViewBegin();
+void modelViewEnd();
+bool modelViewActive();
+void modelViewRender(float dt);
+bool modelViewSpriteInPsram();
+void modelBench(int atoms);
+bool fetchModel(const ModelRef& ref);
+void eduUnloadActive();
+bool modelViewShow();
+void modelButtonB();
+bool modelButtonC();
+void drawModelHint(M5Canvas& c);
+void modelViewTick();
+void leaveModelView();
+void modelGyroNoise();
+extern bool modelResetRotateToggle;
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();
@@ -1227,6 +1269,8 @@ void drawScreen(const String &text) {
     int iconX = WIDTH - ROTATEICON_WIDTH - 3;
     int iconY = HEIGHT - ROTATEICON_HEIGHT - 3;
     drawIcon(canvas, rotateIcon, ROTATEICON_WIDTH, ROTATEICON_HEIGHT, iconX, iconY, 200);
+  } else if (hasModel && currentDisplayMode == SHOW_TEXT) {
+    drawModelHint(canvas);
   }
 
   captureCanvas(canvas);
@@ -1849,6 +1893,11 @@ void sendSetupFont(const unsigned char* data, unsigned int len) {
 }
 
 void startAPMode() {
+  modelViewEnd();  // Setup mode needs the memory
+  if (currentDisplayMode == SHOW_MODEL) {
+    currentDisplayMode = SHOW_TEXT;
+    modelResetRotateToggle = true;
+  }
   Serial.println("\n========== STARTING AP MODE ==========");
 
   apMode = true;
@@ -2189,6 +2238,47 @@ void resetCredentials() {
 // =============== POWER MANAGEMENT - STATE PERSISTENCE ===============
 
 // Save current state to Preferences before deep sleep
+// Pictures without an address survive deep sleep in flash. Formats the partition on first use.
+static const char* SAVED_IMAGE_PATH = "/lastimage";
+static const int SAVED_IMAGE_LIMIT = 512 * 1024;
+
+bool saveImageToFlash() {
+  if (!imageBuffer || imageBufferSize <= 0 || imageBufferSize > SAVED_IMAGE_LIMIT) return false;
+  if (!SPIFFS.begin(true)) {
+    Serial.println("Saved image: flash storage not available");
+    return false;
+  }
+  File file = SPIFFS.open(SAVED_IMAGE_PATH, FILE_WRITE);
+  const size_t written = file ? file.write(imageBuffer, imageBufferSize) : 0;
+  if (file) file.close();
+  SPIFFS.end();
+  Serial.printf("Saved image: %u of %d bytes\n", (unsigned)written, imageBufferSize);
+  return written == (size_t)imageBufferSize;
+}
+
+bool restoreImageFromFlash() {
+  if (!SPIFFS.begin(true)) return false;
+  bool ok = false;
+  File file = SPIFFS.open(SAVED_IMAGE_PATH, FILE_READ);
+  if (file) {
+    const size_t size = file.size();
+    uint8_t* buffer = (size > 0 && size <= (size_t)SAVED_IMAGE_LIMIT) ? (uint8_t*)ps_malloc(size) : nullptr;
+    if (buffer && file.read(buffer, size) == size) {
+      free(imageBuffer);
+      imageBuffer = buffer;
+      imageBufferSize = (int)size;
+      ok = true;
+    } else {
+      free(buffer);
+    }
+    file.close();
+    SPIFFS.remove(SAVED_IMAGE_PATH);  // Back in memory; the next deep sleep saves it again
+  }
+  SPIFFS.end();
+  Serial.printf("Restored saved image: %s, %d bytes\n", ok ? "ok" : "failed", ok ? imageBufferSize : 0);
+  return ok;
+}
+
 void saveStateToPreferences() {
   Serial.println("\n========== SAVING STATE ==========");
 
@@ -2200,6 +2290,10 @@ void saveStateToPreferences() {
 
   // Save image URL
   prefs.putString(PREFS_KEY_IMAGE_URL, currentImageUrl);
+  prefs.putString(PREFS_KEY_MODEL_REF, hasModel ? modelRefText : String(""));
+  prefs.putBool(PREFS_KEY_IS_WOLFRAM, isWolframImage);
+  // Wolfram and AI-drawn pictures have no address to download again from
+  if (hasImage && currentImageUrl.length() == 0 && !saveImageToFlash()) hasImage = false;
   Serial.printf("Saved image URL: %s\n", currentImageUrl.c_str());
 
   // Save boolean flags
@@ -2236,6 +2330,8 @@ bool restoreStateFromPreferences() {
 
   // Restore image URL
   currentImageUrl = prefs.getString(PREFS_KEY_IMAGE_URL, "");
+  modelRefText = prefs.getString(PREFS_KEY_MODEL_REF, "");
+  isWolframImage = prefs.getBool(PREFS_KEY_IS_WOLFRAM, false);
   Serial.printf("Restored image URL: %s\n", currentImageUrl.c_str());
 
   // Restore flags
@@ -2457,6 +2553,8 @@ void handleLightSleepWake() {
       // AI-generated images have empty currentImageUrl
       bool isGenerated = (currentImageUrl.length() == 0);
       displayImage(isGenerated);
+    } else if (currentDisplayMode == SHOW_MODEL && hasModel) {
+      modelViewShow();
     } else {
       drawScreen(response);
     }
@@ -2524,6 +2622,43 @@ void handleDeepSleepWake() {
       currentDisplayMode = SHOW_TEXT;
       drawScreen(response);
     }
+  }
+
+  // A picture without an address comes back from flash; without it there is no picture
+  if (hasImage && currentImageUrl.length() == 0) {
+    if (restoreImageFromFlash()) {
+      if (currentDisplayMode == SHOW_IMAGE) displayImage(true);
+    } else {
+      hasImage = false;
+      if (currentDisplayMode == SHOW_IMAGE) {
+        currentDisplayMode = SHOW_TEXT;
+        drawScreen(response);
+      }
+    }
+  } else if (!hasImage && currentDisplayMode == SHOW_IMAGE) {
+    currentDisplayMode = SHOW_TEXT;
+    drawScreen(response);
+  }
+
+  // A 3D model is fetched again, like a picture
+  if (modelRefText.length() > 0) {
+    drawScreen("Restoring...");
+    ModelRef ref;
+    const bool wasShowingModel = currentDisplayMode == SHOW_MODEL;
+    if (parseModelRef(modelRefText.c_str(), ref) && fetchModel(ref)) {
+      if (wasShowingModel) {
+        modelViewShow();
+      } else {
+        drawScreen(response);
+      }
+    } else {
+      Serial.println("Failed to restore 3D model, showing text only");
+      currentDisplayMode = SHOW_TEXT;
+      drawScreen(response);
+    }
+  } else if (currentDisplayMode == SHOW_MODEL) {
+    currentDisplayMode = SHOW_TEXT;
+    drawScreen(response);
   }
 
   // Clear saved state after successful restoration
@@ -2633,7 +2768,8 @@ void setGyroEnabled(bool on) {
 }
 
 void updateGyroPower() {
-  setGyroEnabled(!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage);
+  setGyroEnabled(!displaySleeping && ((currentDisplayMode == SHOW_IMAGE && hasImage) ||
+                                      (currentDisplayMode == SHOW_MODEL && hasModel)));
 }
 
 // The gyro needs ~35 ms to settle after power-up; ignore its readings until then
@@ -2683,6 +2819,8 @@ void redrawPreviousResult() {
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
     if (currentDisplayMode == SHOW_IMAGE && hasImage && imageBuffer) {
       displayImage(currentImageUrl.length() == 0);
+    } else if (currentDisplayMode == SHOW_MODEL && hasModel) {
+      modelViewShow();
     } else {
       drawScreen(response);
     }
@@ -4571,7 +4709,10 @@ GPTResponse askGPT(const String &question) {
   if (dateTimeContext.length() > 0) {
     systemPrompt += dateTimeContext + " ";
   }
-  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird, und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Spiele ab', 'Sing mir', 'Erzähle mir', 'Play a song', 'Tell me a story'). WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Spiele ab', 'Sing mir', 'Erzähle mir', 'Play a song', 'Tell me a story'). WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
+    if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
+  }
 
   // Language: EN answers are requested explicitly (German is the prompt's default)
   String userText = question;
@@ -7468,6 +7609,7 @@ void replayLastAudio() {
 }
 
 bool speakText(const String &text) {
+  modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
   Serial.println("\n========== TEXT-TO-SPEECH ==========");
   Serial.println("Text: " + text);
 
@@ -8295,6 +8437,7 @@ void checkTimers() {
       // Show alert and play sound
       timerAlertActive = true;
       timerAlertIndex = i;
+      modelViewEnd();  // The alert needs the memory; its dismissal brings the model back
       drawTimerAlert(i);
       playAlarmSound();
 
@@ -8309,6 +8452,13 @@ void checkTimers() {
 }
 
 void handleVoiceQuery(bool playAudio) {
+  // Recording and the AI need the memory, and this question's answer is what comes next
+  modelViewEnd();
+  const bool cameFromModel = currentDisplayMode == SHOW_MODEL;
+  if (cameFromModel) {
+    currentDisplayMode = SHOW_TEXT;
+    modelResetRotateToggle = true;
+  }
   Serial.println("\n*** BUTTON PRESSED ***\n");
   if (playAudio) {
     Serial.println("Mode: DOUBLE-CLICK (with audio)");
@@ -8329,8 +8479,10 @@ void handleVoiceQuery(bool playAudio) {
   }
 
   bool recordingCancelled = false;
-  if (!recordAudio(recordingCancelled)) {
+  const bool typedQuestion = serialTestQuestion.length() > 0;  // Serial "ask": no mic needed
+  if (!typedQuestion && !recordAudio(recordingCancelled)) {
     if (recordingCancelled) {
+      if (cameFromModel) currentDisplayMode = SHOW_MODEL;
       redrawPreviousResult();
       resetToActiveState();
       return;
@@ -8344,7 +8496,8 @@ void handleVoiceQuery(bool playAudio) {
   Serial.printf("Free heap after recording: %d bytes\n", ESP.getFreeHeap());
 
   drawScreenWithIcon("Transcribing...", transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
-  String question = transcribeAudio();
+  String question = typedQuestion ? serialTestQuestion : transcribeAudio();
+  serialTestQuestion = "";
 
   if (question.length() < 2 || question.startsWith("No ") || question.startsWith("Parse") || question.startsWith("Connection") || question.startsWith("Timeout")) {
     Serial.println("Transcription failed or empty");
@@ -8478,8 +8631,25 @@ void handleVoiceQuery(bool playAudio) {
   Serial.println("Final display text:");
   Serial.println(response);
 
+  // A real 3D model replaces the picture; without one, the picture is the answer as before
+  hasModel = false;
+  modelRefText = "";
+  eduUnloadActive();
+  ModelRef modelRef;
+  if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
+    drawScreen("Looking it up...");
+    fetchModel(modelRef);
+  }
+
   // Handle image retrieval (DALL-E, Wikipedia, or Wolfram Alpha)
-  bool imageRetrievalSuccess = handleImageRetrieval(gptResponse, question);
+  bool imageRetrievalSuccess = true;
+  if (hasModel) {
+    hasImage = false;
+    currentImageUrl = "";
+    isWolframImage = false;
+  } else {
+    imageRetrievalSuccess = handleImageRetrieval(gptResponse, question);
+  }
 
   // If Wolfram Alpha failed, update the response text
   if (gptResponse.isWolfram && !imageRetrievalSuccess) {
@@ -8492,8 +8662,14 @@ void handleVoiceQuery(bool playAudio) {
   M5.Display.setRotation(getLandscapeRotation());  // Landscape with auto-rotation
   currentDisplayMode = SHOW_TEXT;
   imageZoomMode = CONTAIN;  // Reset zoom mode to default for new query
-  Serial.println("Initial display: showing text in landscape mode");
-  drawScreen(response);
+  // A found 3D model is the answer, so it opens right away; Button C shows the text
+  if (hasModel) {
+    Serial.println("Initial display: showing the 3D model");
+    modelViewShow();  // Without memory it shows the text instead
+  } else {
+    Serial.println("Initial display: showing text in landscape mode");
+    drawScreen(response);
+  }
 
   resetToActiveState(); // Reset to active state after showing answer
 
@@ -8566,7 +8742,7 @@ void loop() {
   // Not counted in the timer and printer lists (Button C is "next" there, so three quick
   // presses must not open the settings) or while a timer alert is up.
   bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode;
-  if (btnCIsPressed && !btnCWasPressed && !btnCIsListButton) {
+  if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
     unsigned long now = millis();
 
     // Reset count if too much time has passed since last press
@@ -8668,12 +8844,15 @@ void loop() {
       // Restore previous display
       if (currentDisplayMode == SHOW_IMAGE && hasImage && imageBuffer) {
         displayImage(currentImageUrl.length() == 0);
+      } else if (currentDisplayMode == SHOW_MODEL && hasModel) {
+        modelViewShow();
       } else if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
         drawScreen(response);
       } else {
         drawScreen(MAIN_QUESTION);
       }
       resetToActiveState();
+      discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
     // Blink between a white and a black screen until dismissed (stops when the display sleeps)
     if (timerAlertActive && !displaySleeping) {
@@ -8737,8 +8916,14 @@ void loop() {
     return;  // Don't process other buttons in timer list mode
   }
 
+  // 3D view: one frame per pass, so timers, buttons and sleep keep working
+  if (currentDisplayMode == SHOW_MODEL && hasModel && !displaySleeping && currentPowerState == POWER_ACTIVE) {
+    modelViewTick();
+  }
+
   // Detect shake gesture to trigger surprise fact query
-  if (!displaySleeping && currentPowerState == POWER_ACTIVE && !inPrinterSelectionMode && detectShakeGesture()) {
+  if (!displaySleeping && currentPowerState == POWER_ACTIVE && !inPrinterSelectionMode &&
+      currentDisplayMode != SHOW_MODEL && detectShakeGesture()) {
     Serial.println("\n*** SHAKE DETECTED - SURPRISE FACT ***\n");
     resetToActiveState();
 
@@ -8794,6 +8979,9 @@ void loop() {
     // Try to fetch Wikipedia image for this fact
     hasImage = false;
     currentImageUrl = "";
+    hasModel = false;
+    modelRefText = "";
+    eduUnloadActive();
 
     if (wikiQuery.length() > 0) {
       Serial.printf("Fetching Wikipedia image for: %s\n", wikiQuery.c_str());
@@ -8831,12 +9019,21 @@ void loop() {
   // Use orientation change as a toggle gesture (always render in landscape)
   // Requires full rotation cycle: must rotate to opposite orientation and back
   // Only detect orientation and gestures when display is active
-  if (!displaySleeping && currentPowerState == POWER_ACTIVE) {
+  // In 3D view turning the stick turns the model, so none of this applies
+  if (!displaySleeping && currentPowerState == POWER_ACTIVE && currentDisplayMode != SHOW_MODEL) {
     static Orientation lastOrientation = LANDSCAPE;
     static Orientation startOrientation = LANDSCAPE;
     static bool rotationCycleComplete = false;
 
     Orientation currentOrientation = detectOrientation();
+
+    // Back from 3D view: whatever the hand did there must not count as half a toggle
+    if (modelResetRotateToggle) {
+      modelResetRotateToggle = false;
+      lastOrientation = currentOrientation;
+      startOrientation = currentOrientation;
+      rotationCycleComplete = false;
+    }
 
     if (currentOrientation != lastOrientation) {
       // Orientation changed
@@ -8853,7 +9050,11 @@ void loop() {
         // Returned to starting orientation - complete the toggle
         rotationCycleComplete = false;
 
-        if (hasImage && response.length() > 0 && !inPrinterSelectionMode) {
+        if (hasModel && response.length() > 0 && !inPrinterSelectionMode) {
+          startOrientation = currentOrientation;
+          if (currentDisplayMode == SHOW_TEXT) modelViewShow();
+          resetToActiveState();
+        } else if (hasImage && response.length() > 0 && !inPrinterSelectionMode) {
           // Toggle between text and image
           if (currentDisplayMode == SHOW_TEXT) {
             currentDisplayMode = SHOW_IMAGE;
@@ -8916,7 +9117,7 @@ void loop() {
 
   // Detect roll gesture (gyroscope, only powered in image view)
   updateGyroPower();
-  if (!displaySleeping && currentPowerState == POWER_ACTIVE && gyroReady()) {
+  if (!displaySleeping && currentPowerState == POWER_ACTIVE && gyroReady() && currentDisplayMode != SHOW_MODEL) {
     if (detectRollGesture()) {
       if (currentDisplayMode == SHOW_IMAGE && hasImage && !inPrinterSelectionMode) {
         // In IMAGE mode: toggle between CONTAIN and COVER zoom modes
@@ -9054,11 +9255,14 @@ void loop() {
   else if (M5.BtnB.wasClicked()) {
     Serial.printf("Button B single-click detected! displaySleeping=%d, mode=%d, hasImage=%d\n",
                   displaySleeping, currentDisplayMode, hasImage);
-    if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
+    if (!displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
+      modelButtonB();
+      resetToActiveState();
+    } else if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       int scrollStep = HEIGHT / 5;
       if (scrollStep < 1) scrollStep = 1;
-      wolframScrollOffset = clampInt(wolframScrollOffset - scrollStep, 0, wolframMaxScrollOffset);
-      Serial.printf("Button B: Scrolling up, offset now: %d\n", wolframScrollOffset);
+      wolframScrollOffset = clampInt(wolframScrollOffset + imageScrollDirection(M5.Display.getRotation(), false) * scrollStep, 0, wolframMaxScrollOffset);
+      Serial.printf("Button B: scroll offset now: %d\n", wolframScrollOffset);
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
     }
@@ -9066,11 +9270,22 @@ void loop() {
 
   // Button C (PWR button) short press: scroll down when showing an image
   if (M5.BtnPWR.wasClicked()) {
-    if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
+    if (!displaySleeping && hasModel && response.length() > 0 &&
+        (currentDisplayMode == SHOW_MODEL || currentDisplayMode == SHOW_TEXT)) {
+      if (currentDisplayMode == SHOW_MODEL) {
+        if (!modelButtonC()) {
+          leaveModelView();
+          drawScreen(response);
+        }
+      } else {
+        modelViewShow();
+      }
+      resetToActiveState();
+    } else if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       int scrollStep = HEIGHT / 5;
       if (scrollStep < 1) scrollStep = 1;
-      wolframScrollOffset = clampInt(wolframScrollOffset + scrollStep, 0, wolframMaxScrollOffset);
-      Serial.printf("Button C: Scrolling down, offset now: %d\n", wolframScrollOffset);
+      wolframScrollOffset = clampInt(wolframScrollOffset + imageScrollDirection(M5.Display.getRotation(), true) * scrollStep, 0, wolframMaxScrollOffset);
+      Serial.printf("Button C: scroll offset now: %d\n", wolframScrollOffset);
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
     } else if (!displaySleeping && hasImage && response.length() > 0) {

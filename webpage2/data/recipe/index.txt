@@ -1,0 +1,294 @@
+pancakes|pancakes|de en
+pancake|pancakes|de en
+american pancakes|pancakes|de en
+american pancake|pancakes|de en
+pfannkuchen|pancakes|de en
+pfannkuchens|pancakes|de en
+eierpfannkuchen|pancakes|de en
+eierpfannkuchens|pancakes|de en
+apple pancakes|apple-pancakes|de
+apple pancake|apple-pancakes|de
+apfelpfannkuchen|apple-pancakes|de
+apfelpfannkuchens|apple-pancakes|de
+crepes|crepes|en
+crepe|crepes|en
+crêpes|crepes|en
+crêpe|crepes|en
+waffles|waffles|de en
+waffle|waffles|de en
+waffeln|waffles|de en
+waffelns|waffles|de en
+french toast|french-toast|de en
+french toasts|french-toast|de en
+arme ritter|french-toast|de en
+arme ritters|french-toast|de en
+scrambled eggs|scrambled-eggs|de en
+scrambled egg|scrambled-eggs|de en
+ruehrei|scrambled-eggs|de en
+ruehreis|scrambled-eggs|de en
+rührei|scrambled-eggs|de en
+rühreis|scrambled-eggs|de en
+fried eggs|fried-eggs|en
+fried egg|fried-eggs|en
+spiegelei|fried-eggs|en
+spiegeleis|fried-eggs|en
+fried rice|fried-rice|en
+fried rices|fried-rice|en
+gebratener reis|fried-rice|en
+gebratener rei|fried-rice|en
+grilled cheese sandwich|grilled-cheese|en
+grilled cheese sandwichs|grilled-cheese|en
+grilled cheese|grilled-cheese|en
+grilled cheeses|grilled-cheese|en
+omelette|omelette|de en
+omelettes|omelette|de en
+omelet|omelette|de en
+omelets|omelette|de en
+omelett|omelette|de en
+omeletts|omelette|de en
+pizza|pizza|de en
+pizzas|pizza|de en
+pizza dough|pizza|de en
+pizza doughs|pizza|de en
+pizzateig|pizza|de en
+pizzateigs|pizza|de en
+spaghetti bolognese|spaghetti-bolognese|en
+spaghetti bologneses|spaghetti-bolognese|en
+bolognese|spaghetti-bolognese|en
+bologneses|spaghetti-bolognese|en
+spagetti bolognese|spaghetti-bolognese|en
+spagetti bologneses|spaghetti-bolognese|en
+tomato sauce|tomato-sauce|de en
+tomato sauces|tomato-sauce|de en
+spaghetti with tomato sauce|tomato-sauce|de en
+spaghetti with tomato sauces|tomato-sauce|de en
+tomatensauce|tomato-sauce|de en
+tomatensauces|tomato-sauce|de en
+tomatensosse|tomato-sauce|de en
+tomatensosses|tomato-sauce|de en
+lasagna|lasagna|de en
+lasagnas|lasagna|de en
+lasagne|lasagna|de en
+lasagnes|lasagna|de en
+macaroni and cheese|macaroni-and-cheese|en
+macaroni and cheeses|macaroni-and-cheese|en
+mac and cheese|macaroni-and-cheese|en
+mac and cheeses|macaroni-and-cheese|en
+macaroni cheese|macaroni-and-cheese|en
+macaroni cheeses|macaroni-and-cheese|en
+kaesemakkaroni|macaroni-and-cheese|en
+kaesemakkaronis|macaroni-and-cheese|en
+mashed potatoes|mashed-potatoes|en
+mashed potatoe|mashed-potatoes|en
+kartoffelbrei|mashed-potatoes|en
+kartoffelbreis|mashed-potatoes|en
+kartoffelpueree|mashed-potatoes|en
+kartoffelpuerees|mashed-potatoes|en
+french fries|french-fries|en
+french frie|french-fries|en
+fries|french-fries|en
+frie|french-fries|en
+chips|french-fries|en
+chip|french-fries|en
+pommes|french-fries|en
+pomme|french-fries|en
+pommes frites|french-fries|en
+pommes frite|french-fries|en
+potato salad|potato-salad|en
+potato salads|potato-salad|en
+kartoffelsalat|potato-salad|en
+kartoffelsalats|potato-salad|en
+potato gratin|potato-gratin|de
+potato gratins|potato-gratin|de
+gratin|potato-gratin|de
+gratins|potato-gratin|de
+kartoffelgratin|potato-gratin|de
+kartoffelgratins|potato-gratin|de
+chicken soup|chicken-soup|de en
+chicken soups|chicken-soup|de en
+huehnersuppe|chicken-soup|de en
+huehnersuppes|chicken-soup|de en
+hühnersuppe|chicken-soup|de en
+hühnersuppes|chicken-soup|de en
+vegetable soup|vegetable-soup|en
+vegetable soups|vegetable-soup|en
+gemuesesuppe|vegetable-soup|en
+gemuesesuppes|vegetable-soup|en
+lentil soup|lentil-soup|en
+lentil soups|lentil-soup|en
+linsensuppe|lentil-soup|en
+linsensuppes|lentil-soup|en
+chili|chili|de en
+chilis|chili|de en
+chili con carne|chili|de en
+chili con carnes|chili|de en
+meatballs|meatballs|de en
+meatball|meatballs|de en
+frikadellen|meatballs|de en
+frikadellens|meatballs|de en
+hamburger patties|meatballs|de en
+hamburger pattie|meatballs|de en
+spaetzle|spaetzle|de en
+spaetzles|spaetzle|de en
+spätzle|spaetzle|de en
+spätzles|spaetzle|de en
+spatzle|spaetzle|de en
+spatzles|spaetzle|de en
+rice pudding|rice-pudding|en
+rice puddings|rice-pudding|en
+milchreis|rice-pudding|en
+milchrei|rice-pudding|en
+vanilla pudding|vanilla-pudding|de
+vanilla puddings|vanilla-pudding|de
+vanillepudding|vanilla-pudding|de
+vanillepuddings|vanilla-pudding|de
+hummus|hummus|en
+hummu|hummus|en
+guacamole|guacamole|de en
+guacamoles|guacamole|de en
+fruit salad|fruit-salad|de en
+fruit salads|fruit-salad|de en
+obstsalat|fruit-salad|de en
+obstsalats|fruit-salad|de en
+popcorn|popcorn|en
+popcorns|popcorn|en
+lemonade|lemonade|en
+lemonades|lemonade|en
+limonade|lemonade|en
+limonades|lemonade|en
+hot chocolate|hot-chocolate|en
+hot chocolates|hot-chocolate|en
+hot cocoa|hot-chocolate|en
+hot cocoas|hot-chocolate|en
+kakao|hot-chocolate|en
+kakaos|hot-chocolate|en
+heisse schokolade|hot-chocolate|en
+heisse schokolades|hot-chocolate|en
+milkshake|milkshake|en
+milkshakes|milkshake|en
+vanilla milkshake|milkshake|en
+vanilla milkshakes|milkshake|en
+milchshake|milkshake|en
+milchshakes|milkshake|en
+chocolate milkshake|chocolate-milkshake|en
+chocolate milkshakes|chocolate-milkshake|en
+schoko milchshake|chocolate-milkshake|en
+schoko milchshakes|chocolate-milkshake|en
+banana milkshake|banana-milkshake|en
+banana milkshakes|banana-milkshake|en
+bananenmilch|banana-milkshake|en
+bananenmilchs|banana-milkshake|en
+muffins|muffins|de en
+muffin|muffins|de en
+blueberry muffins|muffins|de en
+blueberry muffin|muffins|de en
+banana bread|banana-bread|de
+banana breads|banana-bread|de
+bananenbrot|banana-bread|de
+bananenbrots|banana-bread|de
+chocolate cake|chocolate-cake|de
+chocolate cakes|chocolate-cake|de
+schokoladenkuchen|chocolate-cake|de
+schokoladenkuchens|chocolate-cake|de
+schokokuchen|chocolate-cake|de
+schokokuchens|chocolate-cake|de
+apple cake|apple-cake|de en
+apple cakes|apple-cake|de en
+apple pie|apple-cake|de en
+apple pies|apple-cake|de en
+apfelkuchen|apple-cake|de en
+apfelkuchens|apple-cake|de en
+brownies|brownies|de en
+brownie|brownies|de en
+chocolate chip cookies|chocolate-chip-cookies|de en
+chocolate chip cookie|chocolate-chip-cookies|de en
+cookies|chocolate-chip-cookies|de en
+cookie|chocolate-chip-cookies|de en
+kekse|chocolate-chip-cookies|de en
+kekses|chocolate-chip-cookies|de en
+plaetzchen|chocolate-chip-cookies|de en
+plaetzchens|chocolate-chip-cookies|de en
+peanut butter cookies|peanut-butter-cookies|en
+peanut butter cookie|peanut-butter-cookies|en
+erdnussbutterkekse|peanut-butter-cookies|en
+erdnussbutterkekses|peanut-butter-cookies|en
+shortbread|shortbread|en
+shortbreads|shortbread|en
+hamburger|hamburger|de
+hamburgers|hamburger|de
+burger|hamburger|de
+burgers|hamburger|de
+cheesecake|cheesecake|de
+cheesecakes|cheesecake|de
+kaesekuchen|cheesecake|de
+kaesekuchens|cheesecake|de
+käsekuchen|cheesecake|de
+käsekuchens|cheesecake|de
+carrot cake|carrot-cake|de
+carrot cakes|carrot-cake|de
+rueblikuchen|carrot-cake|de
+rueblikuchens|carrot-cake|de
+rüblikuchen|carrot-cake|de
+rüblikuchens|carrot-cake|de
+möhrenkuchen|carrot-cake|de
+möhrenkuchens|carrot-cake|de
+banana cake|banana-cake|de
+banana cakes|banana-cake|de
+bananenkuchen|banana-cake|de
+bananenkuchens|banana-cake|de
+braided bread|braided-bread|de
+braided breads|braided-bread|de
+challah|braided-bread|de
+challahs|braided-bread|de
+hefezopf|braided-bread|de
+hefezopfs|braided-bread|de
+zopf|braided-bread|de
+zopfs|braided-bread|de
+pumpkin soup|pumpkin-soup|de
+pumpkin soups|pumpkin-soup|de
+kuerbissuppe|pumpkin-soup|de
+kuerbissuppes|pumpkin-soup|de
+kürbissuppe|pumpkin-soup|de
+kürbissuppes|pumpkin-soup|de
+pasta salad|pasta-salad|de
+pasta salads|pasta-salad|de
+nudelsalat|pasta-salad|de
+nudelsalats|pasta-salad|de
+cucumber salad|cucumber-salad|de
+cucumber salads|cucumber-salad|de
+gurkensalat|cucumber-salad|de
+gurkensalats|cucumber-salad|de
+greek salad|greek-salad|de
+greek salads|greek-salad|de
+griechischer salat|greek-salad|de
+griechischer salats|greek-salad|de
+semolina pudding|semolina-pudding|de
+semolina puddings|semolina-pudding|de
+griessbrei|semolina-pudding|de
+griessbreis|semolina-pudding|de
+grießbrei|semolina-pudding|de
+grießbreis|semolina-pudding|de
+fried noodles|fried-noodles|de
+fried noodle|fried-noodles|de
+gebratene nudeln|fried-noodles|de
+gebratene nudelns|fried-noodles|de
+rice|steamed-rice|de
+rices|steamed-rice|de
+steamed rice|steamed-rice|de
+steamed rices|steamed-rice|de
+reis|steamed-rice|de
+rei|steamed-rice|de
+pesto|pesto|de
+pestos|pesto|de
+fruit ice cream|fruit-ice-cream|de
+fruit ice creams|fruit-ice-cream|de
+ice cream|fruit-ice-cream|de
+ice creams|fruit-ice-cream|de
+fruchteis|fruit-ice-cream|de
+fruchtei|fruit-ice-cream|de
+eis|fruit-ice-cream|de
+ei|fruit-ice-cream|de
+gingerbread|gingerbread|en
+gingerbreads|gingerbread|en
+lebkuchen|gingerbread|en
+lebkuchens|gingerbread|en

@@ -128,6 +128,7 @@ bool parseAiAnswer(const String& content, GPTResponse& out) {
   if (!err) {
     out.answer       = jsonText(doc["answer"]);
     out.imageQuery   = jsonText(doc["image_query"]);
+    out.model        = jsonText(doc["model"]);
     out.createImage  = jsonFlag(doc["create_image"]);
     out.isWolfram    = jsonFlag(doc["is_wolfram"]);
     out.isAudio      = jsonFlag(doc["is_audio"]);

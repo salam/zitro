@@ -1,0 +1,8 @@
+ZTL1	famous_buildings	Q12271	Architektur	Architecture	7	33354
+Q12506	532	-	0	Hagia Sophia	Hagia Sophia	0	6597	240	96	0ddd688a	Arild Vågen, CC BY-SA 3.0
+Q2981	1163	-	0	Notre-Dame de Paris	Notre-Dame de Paris	6597	8675	240	96	71e2d84c	P e z i, CC BY-SA 3.0
+Q39054	1173	-	0	Schiefer Turm von Pisa	Leaning Tower of Pisa	15272	2154	43	96	b704b8df	Chabe01, CC BY-SA 4.0
+Q243	1889	-	0	Eiffelturm	Eiffel Tower	17426	1591	52	96	c37d3638	-
+Q9188	1931	-	0	Empire State Building	Empire State Building	19017	2926	64	96	fa0d01c5	-
+Q45178	1973	-	0	Sydney Opera House	Sydney Opera House	21943	5163	240	96	87ab55d0	CC BY-SA 3.0
+Q12495	2010	-	0	Burj Khalifa	Burj Khalifa	27106	6248	240	96	e45d2d6c	Tim.Reckmann, CC BY-SA 3.0

@@ -1,5 +1,30 @@
 # Release Notes
 
+## Fri 6 Nov, 2026
+
+- **See it all on zitro.spot**: the homepage now shows music, graphs, the globe, proteins, organs, the night sky, physics, timelines and recipes with real screenshots from the stick.
+- Ask Zitro for a song like "Alle meine Entchen": watch real notes scroll by on a never-ending band and hear each one play!
+- Ask for a curve like sin(x) or x^2 and watch Zitro draw it sharp on its own screen, then tilt the stick to travel along it and read the exact values.
+- Cook with Zitro: ask "How do I make pancakes?" and follow the recipe step by step, with Button C for next and Button B for back.
+- Ask "Where is the Matterhorn?" and find it on a globe you spin with your hand: flick it and watch it turn!
+- Turn real proteins, DNA and crystals in your hand: ask "How is hemoglobin built?" or "Show me a diamond in 3D".
+- Look around a star map with your hand: ask for Orion or the Great Bear, or the whole night sky, and turn your Zitro to explore 1,600 real stars.
+- Ask how something works and watch it move: levers, pendulums, magnets, light, sound, seasons, moon phases and atoms, plus 3D shapes to turn in your hand, all computed right on your Zitro.
+- Ask for a timeline and travel through history: tip Zitro or press a button to go from the first satellite to the Moon, with real dates and pictures.
+- Turn a real heart, brain or skeleton in your hand, and look inside a cell: ask Zitro how it looks in 3D.
+- **Your pictures survive sleep**: drawings and Wolfram results now come back when you wake Zitro, instead of "No image buffer".
+- **Scroll the way you expect**: the upper side button scrolls up and the lower one down, however you hold the stick.
+- **No more surprise settings**: scrolling quickly through a picture no longer opens the settings page. Say "Open settings page" any time instead.
+- **See the science on zitro.spot**: the website now shows molecules, graphs, moving pictures and printed pages as short recordings from a real stick. Check them out in the features section.
+- **Know where it comes from**: a new "Sources, not guesses" card explains that the AI only picks what to look up, and PubChem, Wikipedia or Wolfram Alpha supply what you see.
+- **Spot the real screen**: the recordings on zitro.spot now sit in a little stick-shaped frame, so you can see right away that they come straight from the device.
+- **Shorter science cards**: the feature cards on zitro.spot now get to the point. Tap a little number to jump to the source in the footer.
+
+## Thu 5 Nov, 2026 (late evening)
+
+- **Hold a molecule in your hand**: ask "How is caffeine built?" or "Show me aspirin in 3D", and the molecule opens right away. Turn the stick to look around it, in true atom colors. The side button shows the answer in words.
+- **Real data, nothing made up**: every 3D molecule comes straight from PubChem, the big public chemistry database. If there's no 3D model, like for table salt, Zitro shows you a picture instead.
+
 ## Thu 5 Nov, 2026
 
 - **GIFs come alive**: animated GIFs now play on the screen at their own speed. Very large ones stay a still picture, so your buttons stay quick.

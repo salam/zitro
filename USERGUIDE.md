@@ -123,15 +123,15 @@ The project includes deployment scripts for building and uploading firmware to y
   - AP mode: retry WiFi connection.
   - Print menu: confirm the printer, then the page size. The last confirmation prints.
 - Button B (side)
-  - Short click (image view): scroll up in the image.
+  - Short click (image view): scroll. The upper of the two side buttons scrolls up, the lower one down, however you hold the stick.
   - Hold about 1 second (image view): open printer discovery and selection.
   - Hold about 3 seconds (normal mode): reset WiFi credentials and restart.
   - Hold about 5 seconds (AP mode): reset WiFi credentials and restart.
   - Print menu: one step back; in the printer list, cancel.
   - Timer list: delete the shown timer.
 - Button C / PWR (bottom)
-  - Triple click: open settings/setup page (enters AP mode). Not in the printer list, timer list or a timer alert.
-  - Short click (image view): scroll down in the image.
+  - Triple click: open settings/setup page (enters AP mode). Only where Button C has no other job: not in the printer list, timer list or a timer alert, and not while the answer has a picture or 3D model, so scrolling can't open the settings by accident. There, say "Open settings page" instead.
+  - Short click (image view): scroll (see Button B).
   - Short click (text view with image available): toggle text vs image view.
   - Print menu: next printer, page size or zoom value.
   - Timer list: show the next timer.
@@ -140,7 +140,7 @@ The project includes deployment scripts for building and uploading firmware to y
 - Shake: triggers a surprise fact query (no voice playback).
 - Rotate: rotate to the opposite orientation and back to toggle text vs image.
 - Roll: toggles image zoom mode (contain vs cover) while image is shown.
-- To save battery, the gyroscope (needed for roll) only runs while an image or equation is on screen. Shake and turning the stick still work everywhere.
+- To save battery, the gyroscope (needed for roll and for turning 3D models) only runs while an image or 3D model is on screen. Shake and turning the stick still work everywhere.
 
 ### Camera (M5 Unit V / M12 Camera - optional)
 - If attached, device auto-detects camera on startup.
@@ -183,8 +183,169 @@ The project includes deployment scripts for building and uploading firmware to y
 - Hold the stick upright and the timer card, the timer list and the alert turn to portrait with it.
 - Maximum 5 concurrent timers. Active timers prevent deep sleep so they can fire on time.
 
+### 3D molecules
+
+Ask how a substance is built, or ask for it in 3D:
+- "Wie ist Koffein aufgebaut?" or "How is caffeine built?"
+- "Zeig mir Aspirin in 3D" or "Show me aspirin in 3D"
+- "Visualisiere Koffein" or "Visualize caffeine"
+
+1. The model opens right away.
+2. Turn the stick to look around the molecule. Put it down and the model turns slowly by itself.
+3. Press Button B to zoom (3 steps). Press Button A to ask something new.
+4. Press Button C to read the answer. A small cube at the bottom right means the model is still there: press Button C again, or rotate the stick to the opposite orientation and back.
+
+Good to know:
+- The bottom line names the molecule and its source, and shows which color is which atom: C, H, O, N and so on.
+- All 3D data comes from PubChem. The AI only picks the name to look up, so a model is never made up.
+- PubChem has no 3D model for some things, such as table salt, DNA and proteins. Crystals and proteins have their own views, below; for anything else you get the usual picture.
+- General questions like "What is water?" still show a picture. Only pictures can be printed, so a 3D answer can't be printed yet.
+- Shake, roll and rotate don't do anything while the model is on screen, so turning it can't trigger them.
+- While you keep turning, the screen stays on, for up to 5 minutes after your last button press. Put the stick down and it goes to sleep as usual.
+
+### More than pictures
+
+Zitro can show much more than pictures. You don't choose a mode: just ask. Everything shown comes from a real source or exact math, and the bottom line names it. If there's nothing, you get the usual picture. Button A always asks something new.
+
+Proteins, anatomy, recipes, timelines and the detailed globe load their data from zitro.spot, so they need WiFi.
+
+#### Music on an endless band
+
+Ask for a song by name, for example "Spiel Alle meine Entchen", "Wie geht Bruder Jakob?" or "Play Silent Night". The notes move across the screen and the one on the line plays.
+
+Zitro knows these 26 songs. Others get a normal answer with a picture.
+
+German: Alle meine Entchen, Hänschen klein, Fuchs du hast die Gans gestohlen, Kommt ein Vogel geflogen, Ein Männlein steht im Walde, Alle Vögel sind schon da, Der Kuckuck und der Esel, Kuckuck Kuckuck ruft's aus dem Wald, Backe backe Kuchen, Schlaf Kindlein schlaf, Guten Abend gut' Nacht, Häschen in der Grube, Summ summ summ, O Tannenbaum, Stille Nacht, Schneeflöckchen Weißröckchen, Wer hat die schönsten Schäfchen, Hänsel und Gretel, Bruder Jakob, Zum Geburtstag viel Glück.
+
+English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London Bridge, Jingle Bells, Ode to Joy, Here We Go Round the Mulberry Bush.
+
+- **Button A:** new question.
+- **Button B:** pause. Press again to carry on.
+- **Button C:** show the text answer and stop the music. Press again to hear the song from the start.
+
+The music plays with one click on Button A, at your normal volume. It keeps going round until you stop it, and pauses by itself after 5 minutes.
+
+Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
+
+#### Function graphs
+
+Ask Zitro to show a curve, for example "Visualisiere sin(x)", "Zeichne x^2 minus 3" or "Wie sieht die Kurve von 1 durch x aus?". Zitro draws the graph itself and calculates every point exactly.
+
+- **Tilt the stick** left or right and hold it to slide along the curve. Hold it level again to stop. The top line shows x and y at the white dot.
+- **Button B** zooms: closer, then far away, then back to where you started.
+- **Button C** shows the text answer. Press it again to return to the graph.
+- **Button A** asks a new question.
+
+Where a curve has no value, the line stops. That's correct: `1/x` has no value at 0, so there's a gap.
+
+Questions like "Was ist das Integral von sin(x)?" or "Loese x^2=4" still go to Wolfram Alpha.
+
+#### Recipes step by step
+
+Ask how to make something: "Wie mache ich Pfannkuchen?" or "How do I make pizza?". If Zitro has that recipe, it opens right away. If not, you get the usual picture.
+
+First you see what you need, then one step at a time.
+
+- **Button C**: next. After the last step you're back at the text answer.
+- **Button B**: back.
+- **Button A**: new question, as always.
+
+"Schritt 3/8" means step 3 of 8. A small number at the bottom right, such as 2/3, means this step goes on: press Button C.
+
+An orange **"Erwachsene fragen"** marker means the step has something hot or sharp in it, or the oven. Ask a grown-up to help. Without the marker you should still take care: Zitro only looks for certain words.
+
+There are 59 dishes, such as pancakes, pizza, soups, cakes and cookies. 37 of them are in German and 40 in English. If a recipe only exists in the other language, Zitro shows it in that language and says so at the bottom, for example "Wikibooks (EN)". Recipes with alcohol are left out.
+
+The recipes come from Wikibooks, written by volunteers. They aren't all written for children, so some steps are long and use cooks' words.
+
+#### Globe with a pin
+
+Ask where a place is: "Where is the Matterhorn?" or "Wo liegt Paris?". Zitro shows the Earth with a yellow pin on that place.
+
+- **Turn the stick** to turn the globe.
+- **Flick it quickly** and the globe keeps spinning, then slows down. Move the stick again to stop it.
+- **Lost the pin?** A yellow arrow shows which way it is.
+- **Button B** zooms in, three steps.
+- **Button C** shows the written answer.
+- **Button A** asks a new question.
+
+Zitro only shows a globe for places Wikipedia has a position for, on Earth. For anything else, such as Mars, you get the picture. "What does the Matterhorn look like?" also gets a picture.
+
+#### Proteins, DNA and crystals
+
+Ask how something is built, or ask for 3D:
+
+- "Wie ist Hämoglobin aufgebaut?", "Zeig mir DNA in 3D"
+- "Wie ist Kochsalz aufgebaut?", "Show me a diamond in 3D"
+
+Zitro then shows a real model that you turn with your hand. Lying still, it turns slowly by itself.
+
+**Proteins and DNA** are a coloured ribbon that follows the molecule's chain. Each chain starts blue and ends red. Zitro knows about 50 famous ones, such as hemoglobin, insulin, lysozyme, GFP, antibodies, enzymes like pepsin and amylase, and DNA. Is yours not there? You get the usual picture. Models come from the Zitro server, so they need WiFi.
+
+**Crystals** show the atoms in their real places, each element in its own colour. Zitro knows salt, diamond, graphite, ice, quartz, calcite, pyrite, fluorite, copper, gold, silver, iron and silicon. Ice shows only its oxygen atoms.
+
+Questions like "What is an enzyme?" or "What is a diamond?" still get a photo.
+
+The bottom line names what you see and where it comes from, such as "Haemoglobin - RCSB PDB 4HHB".
+
+| Button | What it does |
+| --- | --- |
+| A | Ask something new |
+| B | Zoom in, three steps |
+| C | Show the written answer |
+
+#### Night sky
+
+Ask about a constellation or the stars: "Where is Orion?", "What does the Great Bear look like?", "Show me the night sky."
+
+Zitro opens a star map. Turn the stick and look around. The stars move when you turn, and stay put when you stop.
+
+The constellation you asked for is drawn in yellow. If you lose it, follow the yellow arrow.
+
+- **Button A:** new question
+- **Button B:** zoom in, three steps, then back
+- **Button C:** back to the written answer
+
+This is a map of all the stars, not a window. The stick has no compass and doesn't know where you are, so it can't point at the real stars above you. It shows the stars as they sit on the whole sky, all year round, without planets or the Moon.
+
+#### Physics scenes and geometric solids
+
+Ask how something works, and Zitro shows it moving.
+
+- "Wie funktioniert ein Hebel?", "Warum schwimmt Holz?", "Warum gibt es Jahreszeiten?", "Warum knickt ein Stab im Wasser?", "Wie ist ein Kohlenstoffatom aufgebaut?"
+- For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism.
+
+Questions like "Was ist ein Magnet?" still bring a photo.
+
+**Scenes:** Button B changes something: a heavier weight, a longer pendulum, another planet. Button C shows the written answer, and pressing it again brings the scene back. Button A asks something new.
+
+**Shapes:** turn the stick to look around the shape. Button B zooms. Shapes with flat sides show how many faces, edges and corners they have. Button C shows the written answer.
+
+#### Timelines with pictures
+
+Ask for a timeline: "Zeig mir den Zeitstrahl der Weltkriege" or "Show me a timeline of space exploration".
+
+Topics: world wars, space exploration, dinosaurs, Roman Empire, inventions, Swiss history, ancient Egypt, ancient Greece, Middle Ages, explorers, aviation, railways, computers, Moon missions, Mars missions, Olympic Games, medicine, scientists, composers, painters, Earth's history, Cold War, famous buildings, communication, cars.
+
+- **Button C:** next event. After the last one you're back at the answer.
+- **Button B:** previous event.
+- **Tip the stick** to the right for the next event, to the left for the previous one.
+- **Button A:** new question.
+
+The big year runs while the band moves. A long empty stretch between two pictures means a long time. A small cut in the line at the top means even longer than it looks.
+
+#### Organs, skeleton and cells
+
+Ask for a body part in 3D, or ask how a cell looks inside: "Zeig mir das Herz in 3D", "Zeig mir das Gehirn in 3D", "Wie ist eine Pflanzenzelle aufgebaut?"
+
+Zitro knows the heart, brain, lungs, stomach, liver, kidney, skeleton, skull, eye and hand bones. It also knows the animal cell, plant cell, red blood cell and nerve cell. For anything else, or when a model can't be loaded, you see a picture as usual.
+
+Turn the stick and the model turns with it. Button B zooms in. Button C shows the text answer. Button A asks something new.
+
+The organs are real shapes from anatomy research, made simple enough for this small screen. They show the outside of the organ. The cells are drawn from what school books describe. They carry the sign "Vereinfachtes Schema", because they are simple drawings and not measurements.
+
 ### Answer sources and media
-- Math and calculation questions are answered with Wolfram Alpha.
+- Calculations are answered with Wolfram Alpha. Plain function plots ("Draw x^2") get Zitro's own sharp graph.
 - Requests to create images use OpenAI image generation (GPT Image 2.5 Flare, falling back to GPT Image 1.5).
 - If a related Wikipedia article is found, the device also shows an image.
 - Time questions ("what time is it?") return the current time including seconds.
@@ -266,8 +427,7 @@ The project includes deployment scripts for building and uploading firmware to y
   - Rotating the device to the opposite orientation and back, or
   - Pressing Button C.
 - Scroll a tall image:
-  - Button B scrolls up.
-  - Button C scrolls down.
+  - The upper side button scrolls up, the lower one scrolls down, however you hold the stick.
 - Zoom:
   - Roll the device to toggle contain vs cover zoom.
 
@@ -307,7 +467,7 @@ Good to know:
 
 1. Enter setup mode by either:
    - Waiting for the device to automatically enter AP mode (if WiFi fails or no API key is configured), or
-   - Triple-clicking Button C from any screen to manually open settings.
+   - Triple-clicking Button C (not while a list, picture or 3D model is in use), or saying "Open settings page".
 
 2. Connect your phone or computer to "zitro" (or scan the QR code on the screen).
 3. The setup page opens automatically (captive portal). If not, open `zitro.local` in your browser (or `192.168.4.1`).
@@ -351,7 +511,7 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
-- Deep sleep restarts and restores the last answer if it can.
+- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures from Wolfram and pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again.
 
 ## Screenshots of the device screens
 

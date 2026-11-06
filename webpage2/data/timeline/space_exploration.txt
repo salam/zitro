@@ -1,0 +1,8 @@
+ZTL1	space_exploration	Q180046	Weltraumforschung	Space exploration	7	26905
+Q80811	1957	-	0	Sputnik 1	Sputnik 1	0	1105	72	96	52150f05	-
+Q182524	1961	-	0	Wostok 1	Vostok 1	1105	3696	133	96	1839effa	CC BY-SA 3.0
+Q43653	1969	-	0	Apollo 11	Apollo 11	4801	4346	122	96	8cdaf77e	-
+Q48469	1977	-	0	Voyager 1	Voyager 1	9147	2299	116	96	160ce4ad	-
+Q2513	1990	-	0	Hubble-Weltraumteleskop	Hubble Space Telescope	11446	6503	240	96	828f49f5	-
+Q25271	1998	-	0	Internationale Raumstation	International Space Station	17949	6038	240	96	57932901	-
+Q186447	2021	-	0	James-Webb-Weltraumteleskop	James Webb Space Telescope	23987	2918	92	96	e66bd8f5	-

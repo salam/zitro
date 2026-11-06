@@ -1,0 +1,6 @@
+ZTL1	roman_empire	Q2277	Römisches Kaiserreich	Roman Empire	5	24943
+Q1025466	-44	-	0	Ermordung von Iulius Caesar	Assassination of Julius Caesar	0	2243	71	96	c614e5c1	-
+Q2277	-27	395	0	Römisches Kaiserreich	Roman Empire	2243	2147	60	96	133058cc	Joel Bellviure, CC BY-SA 4.0
+Q2411998	79	-	0	Ausbruch des Vesuvs 79 n. Chr.	Eruption of Mount Vesuvius in 79	4390	7422	240	96	1aee4e7a	pietro scerrato, CC BY 3.0
+Q57357	122	-	0	Hadrianswall	Hadrian's Wall	11812	8277	240	96	99d6d0d0	quisnovus from Gloucester, England, CC BY 2.0
+Q608613	476	-	0	Untergang des Römischen Reiches	Fall of the western Roman Empire	20089	4854	102	96	b12f3a6c	Classical Numismatic Group, Inc., CC BY-SA 3.0

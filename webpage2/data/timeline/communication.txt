@@ -1,0 +1,8 @@
+ZTL1	communication	Q418	Telekommunikation	Telecommunications	7	17551
+Q144334	1439	-	1	Druckpresse	Printing press	0	2555	72	96	1363670d	-
+Q79897	1837	-	1	Morsecode	Morse code	2555	2333	240	17	e84ac689	Dr. Schorsch, CC BY-SA 3.0
+Q11035	1876	-	0	Telefon	Telephone	4888	3718	122	96	d50efa6f	Berthold Werner, CC BY-SA 3.0
+Q872	1894	-	0	Radio	Radio	8606	4671	240	96	70db7212	Kuebi, CC BY-SA 3.0
+Q75	1969	-	0	Internet	Internet	0	0	0	0	-	-
+Q466	1989	-	0	World Wide Web	World Wide Web	13277	2560	76	96	da05697c	Web Summit, CC BY 2.0
+Q621427	2007	-	0	IPhone	IPhone	15837	1714	50	96	32b8d4ea	Rafael Fernandez, CC BY-SA 4.0

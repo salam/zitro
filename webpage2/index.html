@@ -72,7 +72,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Instrument+Sans:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
     <link rel="preload" as="image" href="images/zitro-hero-2.webp" imagesrcset="images/zitro-hero-2.webp 1x, images/zitro-hero-2@2x.webp 2x">
-    <link rel="stylesheet" href="styles.css?v=1.1.4">
+    <link rel="stylesheet" href="styles.css?v=1.1.7">
 </head>
 <body>
     <!-- Header -->
@@ -248,23 +248,152 @@
                         <p>A safe first step into AI for kids — learning its potential and its limits.</p>
                     </div>
 
-                    <div class="feature-card w-3 reveal">
-                        <div class="card-icon" aria-hidden="true">🎨</div>
-                        <h3>Image creation</h3>
-                        <p>Generate simple visuals for inspiration, right on the little screen.</p>
+                    <div class="feature-card reveal">
+                        <picture class="card-cover">
+                            <source media="(prefers-reduced-motion: reduce)" srcset="images/cover-molecule-still.webp">
+                            <img src="images/cover-molecule.webp" alt="The stick's screen: a caffeine molecule turning slowly, atoms in grey, white, red and blue, labelled Caffeine, PubChem." width="720" height="405" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Molecules you can hold</h3>
+                        <p>Ask "How is caffeine built?" and the real molecule opens. Turn the stick to look around it.</p>
+                        <p class="small">3D data: PubChem<sup class="ref"><a href="#src-1" aria-label="Source 1: PubChem">1</a></sup>. No 3D record? You get a picture.</p>
                     </div>
 
-                    <div class="feature-card w-1 tint-sky reveal">
+                    <div class="feature-card tint-lemon reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-music.webp" alt="The stick's screen: notes of Ode to Joy on a staff, with the current note marked" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Music on an endless band</h3>
+                        <p>Say "Play Ode to Joy". Real notes scroll past and the stick plays them, one tone at a time.</p>
+                        <p class="small">26 public-domain songs, each checked against a published score.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-graph.webp" alt="The stick's screen: the curve of x squared minus 3 with axes and numbers" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Curves, drawn sharp</h3>
+                        <p>"Draw x squared minus 3" gives a real graph made for this little screen. Tilt to walk along the curve.</p>
+                        <p class="small">Computed on the stick, exactly.</p>
+                    </div>
+
+                    <div class="feature-card tint-sky reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-globe.webp" alt="The stick's screen: a globe with a citrus pin on the Matterhorn" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>A globe in your hand</h3>
+                        <p>"Where is the Matterhorn?" Spin the globe with your hand and find the pin.</p>
+                        <p class="small">Coastlines: Natural Earth. Places: Wikipedia.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-protein.webp" alt="The stick's screen: the folded chain of hemoglobin in rainbow colours" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Enzymes, DNA, crystals</h3>
+                        <p>How is hemoglobin folded? What does salt look like up close? Turn real structures in your hand.</p>
+                        <p class="small">50 structures: RCSB PDB. 13 crystals: Crystallography Open Database.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-anatomy.webp" alt="The stick's screen: a 3D model of the human heart" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Organs and cells in 3D</h3>
+                        <p>Turn a real heart, brain or skeleton. Cells are clearly marked as simplified.</p>
+                        <p class="small">Organs: BodyParts3D (CC BY), HRA.</p>
+                    </div>
+
+                    <div class="feature-card tint-sky reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-sky.webp" alt="The stick's screen: a star map with the constellation Orion highlighted" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>A sky you can turn</h3>
+                        <p>Ask about Orion and find it among 1,665 stars and all 88 constellations.</p>
+                        <p class="small">A star map, not a window: the stick has no compass. Stars: Yale Bright Star Catalogue.</p>
+                    </div>
+
+                    <div class="feature-card tint-lemon reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-physics.webp" alt="The stick's screen: a lever in balance, with 2 kg and 1 kg" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Physics you can watch</h3>
+                        <p>Levers, pendulums, magnets, moon phases and more: 17 scenes for curious kids up to about 12, computed from the real equations.</p>
+                        <p class="small">Plus 17 geometric shapes with their faces, edges and corners.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-timeline.webp" alt="The stick's screen: 1957, Sputnik 1, on a scrolling timeline" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Timelines with pictures</h3>
+                        <p>"Show me the timeline of space travel." Step through history, with a real picture for each date.</p>
+                        <p class="small">25 topics. Dates: Wikidata. Pictures: Wikimedia Commons, <a href="data/timeline/credits.html">credits</a>.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <picture class="card-cover">
+                            <img src="images/screen-recipe.webp" alt="The stick's screen: the first ingredient of a pancake recipe" width="480" height="270" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Cook it step by step</h3>
+                        <p>"How do I make pancakes?" Ingredients first, then one step per screen. Hot or sharp steps get an "ask an adult" mark.</p>
+                        <p class="small">59 dishes from Wikibooks, CC BY-SA 4.0. No alcohol.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <picture class="card-cover">
+                            <source media="(prefers-reduced-motion: reduce)" srcset="images/cover-wolfram-still.webp">
+                            <img src="images/cover-wolfram.webp" alt="The stick's screen scrolling down a Wolfram Alpha result for plot sin(x), past two sine curves." width="720" height="405" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Math &amp; science</h3>
+                        <p>Ask what 17 times 23 is, or for the integral of x squared. Roll to zoom, buttons to scroll.</p>
+                        <p class="small">Experimental. Calculations: Wolfram Alpha<sup class="ref"><a href="#src-2" aria-label="Source 2: Wolfram Alpha">2</a></sup>.</p>
+                    </div>
+
+                    <div class="feature-card w-3 tint-sky reveal">
                         <div class="card-icon" aria-hidden="true">📱</div>
                         <h3>Ultra portable</h3>
                         <p>Fits in your pocket, works anywhere you go.</p>
                         <p class="small">Current model needs a WiFi connection.</p>
                     </div>
 
+                    <div class="feature-card reveal">
+                        <picture class="card-cover">
+                            <source media="(prefers-reduced-motion: reduce)" srcset="images/cover-gif-still.webp">
+                            <img src="images/cover-gif.webp" alt="The stick's screen playing an animation of a satellite circling Earth, with arrows for its speed and acceleration." width="720" height="405" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Pictures that move</h3>
+                        <p>Animated GIFs<sup class="ref"><a href="#src-3" aria-label="Source 3: the animation shown">3</a></sup> play right on the little screen, even while you scroll or zoom.</p>
+                        <p class="small">Very large GIFs stay still.</p>
+                    </div>
+
+                    <div class="feature-card tint-lemon reveal">
+                        <picture class="card-cover">
+                            <source media="(prefers-reduced-motion: reduce)" srcset="images/cover-print-still.webp">
+                            <img src="images/cover-print.webp" alt="The stick showing an answer about Earth from space, next to the pages it printed in different sizes, from half a page to a full page." width="720" height="405" loading="lazy" decoding="async">
+                        </picture>
+                        <h3>Print it for the school folder</h3>
+                        <p>Send a picture<sup class="ref"><a href="#src-4" aria-label="Source 4: the photo shown">4</a></sup> to your printer over AirPrint. "Half + text" adds the answer below it. Every page names its source.</p>
+                        <p class="small">Experimental. Works with some printers.</p>
+                    </div>
+
                     <div class="feature-card w-3 reveal">
-                        <div class="card-icon" aria-hidden="true">🎯</div>
-                        <h3>Focused experience</h3>
-                        <p>A distraction-free interface designed for clarity — nothing pulls you back in.</p>
+                        <div class="card-icon" aria-hidden="true">📷</div>
+                        <h3>Camera</h3>
+                        <p>Snap a photo and get kid-friendly AI analysis of objects and plants.</p>
+                        <p class="small">Requires optional M5 camera module.</p>
+                    </div>
+
+                    <div class="feature-card w-3 reveal">
+                        <div class="card-icon" aria-hidden="true">🖼️</div>
+                        <h3>Wikipedia photos</h3>
+                        <p>Real, attributable photos from matching articles — zoom and pan included.</p>
+                    </div>
+
+                    <div class="feature-card tint-sky reveal">
+                        <div class="card-icon" aria-hidden="true">🔎</div>
+                        <h3>Sources, not guesses</h3>
+                        <p>The AI only picks what to look up. 3D models, graphs and photos come from PubChem<sup class="ref"><a href="#src-1" aria-label="Source 1: PubChem">1</a></sup>, Wolfram Alpha<sup class="ref"><a href="#src-2" aria-label="Source 2: Wolfram Alpha">2</a></sup> and Wikipedia<sup class="ref"><a href="#src-5" aria-label="Source 5: Wikipedia">5</a></sup>.</p>
+                        <p class="small">The written answer still comes from the AI.</p>
                     </div>
 
                     <div class="feature-card tint-lemon reveal">
@@ -274,19 +403,18 @@
                     </div>
 
                     <div class="feature-card w-3 reveal">
-                        <div class="card-icon" aria-hidden="true">🖼️</div>
-                        <h3>Wikipedia photos</h3>
-                        <p>Real, attributable photos from matching articles — zoom and pan included.</p>
+                        <div class="card-icon" aria-hidden="true">🎨</div>
+                        <h3>Image creation</h3>
+                        <p>Generate simple visuals for inspiration, right on the little screen.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="card-icon" aria-hidden="true">🎯</div>
+                        <h3>Focused experience</h3>
+                        <p>A distraction-free interface designed for clarity — nothing pulls you back in.</p>
                     </div>
 
                     <div class="feature-card tint-sage reveal">
-                        <div class="card-icon" aria-hidden="true">🧮</div>
-                        <h3>Math &amp; science</h3>
-                        <p>Hard questions route to <a href="https://www.wolframalpha.com/" target="_blank" rel="noopener">Wolfram Alpha</a> — sometimes the answer is a graph.</p>
-                        <p class="small">Experimental.</p>
-                    </div>
-
-                    <div class="feature-card w-3 reveal">
                         <div class="card-icon" aria-hidden="true">🗣️</div>
                         <h3>Voice settings</h3>
                         <p>Change any setting by speaking naturally. "Volume to 100" or "switch to English" — in German and English.</p>
@@ -296,20 +424,6 @@
                         <div class="card-icon" aria-hidden="true">⏱️</div>
                         <h3>Timers &amp; reminders</h3>
                         <p>"Remind me in 90 minutes about the laundry." Alerts appear on screen, even from sleep.</p>
-                    </div>
-
-                    <div class="feature-card w-1 reveal">
-                        <div class="card-icon" aria-hidden="true">📷</div>
-                        <h3>Camera</h3>
-                        <p>Snap a photo and get kid-friendly AI analysis of objects and plants.</p>
-                        <p class="small">Requires optional M5 camera module.</p>
-                    </div>
-
-                    <div class="feature-card w-3 tint-lemon reveal">
-                        <div class="card-icon" aria-hidden="true">🖨️</div>
-                        <h3>Print</h3>
-                        <p>Send generated or found images to a printer over AirPrint/WiFi.</p>
-                        <p class="small">Experimental. Works with some printers.</p>
                     </div>
 
                     <div class="feature-card reveal">
@@ -485,6 +599,16 @@
                         <a href="compare.html#compare">Full spec table</a>
                     </div>
                 </div>
+            </div>
+            <div class="footer-sources">
+                <span class="footer-col-head">Sources</span>
+                <ol>
+                    <li id="src-1">3D molecule data: <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubChem</a>, U.S. National Library of Medicine.</li>
+                    <li id="src-2">Calculations: <a href="https://www.wolframalpha.com/" target="_blank" rel="noopener">Wolfram Alpha</a>.</li>
+                    <li id="src-3">Animation shown: <a href="https://commons.wikimedia.org/wiki/File:Orbital_motion.gif" target="_blank" rel="noopener">HereToHelp</a>, Wikimedia Commons, public domain.</li>
+                    <li id="src-4">Photo shown: <a href="https://commons.wikimedia.org/wiki/File:Meteosat-12-fci-march-equinox-2025-noon.jpg" target="_blank" rel="noopener">EUMETSAT</a>, Wikimedia Commons.</li>
+                    <li id="src-5">Photos: <a href="https://www.wikipedia.org/" target="_blank" rel="noopener">Wikipedia</a> and Wikimedia Commons.</li>
+                </ol>
             </div>
             <div class="footer-bottom">
                 <p>Built by <a href="https://matthias.sala.ch" target="_blank" rel="noopener">Matthias Sala</a>.</p>

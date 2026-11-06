@@ -1,0 +1,52 @@
+ZITRO-PROTEIN-INDEX 1 50
+4HHB|Haemoglobin|Hemoglobin|haemoglobin;hemoglobin;hemoglobin a
+1MBN|Myoglobin|Myoglobin|myoglobin
+1LYZ|Lysozym|Lysozyme|lysozym;lysozyme
+4INS|Insulin|Insulin|insulin;insuline
+1EMA|GFP Leuchtprotein|GFP glowing protein|gfp leuchtprotein;gfp glowing protein;gfp;green fluorescent protein;gruen fluoreszierendes protein;leuchtprotein
+7CAT|Katalase|Catalase|katalase;catalase
+2PTN|Trypsin|Trypsin|trypsin
+4CHA|Chymotrypsin|Chymotrypsin|chymotrypsin
+4PEP|Pepsin|Pepsin|pepsin
+1SMD|Speichel-Amylase|Salivary amylase|speichel amylase;salivary amylase;amylase;alpha amylase;speichelamylase;ptyalin
+1HPL|Lipase|Lipase|lipase;pancreatic lipase;pankreas lipase
+1CAG|Kollagen-Modell|Collagen model|kollagen modell;collagen model;collagen;kollagen;collagen like peptide
+3TNU|Keratin-Stueck|Keratin piece|keratin stueck;keratin piece;keratin
+1IGT|Antikoerper|Antibody|antikoerper;antibody;immunoglobulin;immunglobulin;igg
+1J6Z|Aktin|Actin|aktin;actin
+2MYS|Myosin|Myosin|myosin
+1TUB|Tubulin|Tubulin|tubulin
+1BG2|Kinesin|Kinesin|kinesin
+1UBQ|Ubiquitin|Ubiquitin|ubiquitin
+1HRC|Cytochrom c|Cytochrome c|cytochrom c;cytochrome c;cytochrome
+7RSA|Ribonuklease A|Ribonuclease A|ribonuklease a;ribonuclease a;ribonuclease;ribonuklease;rnase;rnase a
+1PPB|Thrombin|Thrombin|thrombin
+1AKE|Adenylatkinase|Adenylate kinase|adenylatkinase;adenylate kinase
+6LU7|Corona-Protease|Covid main protease|corona protease;covid main protease;covid protease;coronavirus protease;sars cov 2 main protease
+6M0J|Corona-Spike mit ACE2|Covid spike with ACE2|corona spike mit ace2;covid spike with ace2;spike protein;spike;coronavirus spike;covid spike;corona spike;spike protein ace2;ace2
+1HVR|HIV-Protease|HIV protease|hiv protease;hiv 1 protease
+1NN2|Neuraminidase|Neuraminidase|neuraminidase;flu neuraminidase;influenza neuraminidase;grippe neuraminidase
+8ADH|Alkohol-Dehydrogenase|Alcohol dehydrogenase|alkohol dehydrogenase;alcohol dehydrogenase;alkoholdehydrogenase;adh
+1LCI|Luciferase|Luciferase|luciferase;firefly luciferase;gluehwuermchen luciferase;luziferase
+3RUB|RuBisCO|RuBisCO|rubisco;ribulose bisphosphate carboxylase
+2MLT|Melittin (Bienengift)|Melittin (bee venom)|melittin (bienengift);melittin (bee venom);melittin
+1MSI|Frostschutz-Protein|Antifreeze protein|frostschutz protein;antifreeze protein;frostschutzprotein;fish antifreeze protein
+1F88|Rhodopsin|Rhodopsin|rhodopsin;sehpurpur
+1J4N|Aquaporin|Aquaporin|aquaporin;water channel;wasserkanal;aquaporin 1
+1BL8|Kaliumkanal|Potassium channel|kaliumkanal;potassium channel;kcsa
+1CEL|Cellulase|Cellulase|cellulase;cellobiohydrolase;zellulase
+1SBT|Subtilisin|Subtilisin|subtilisin
+9PAP|Papain|Papain|papain
+3LA4|Urease|Urease|urease
+4CMS|Chymosin (Lab)|Chymosin (rennin)|chymosin (lab);chymosin (rennin);chymosin;rennin;labferment
+1TAQ|Taq-Polymerase|Taq polymerase|taq polymerase;taq dna polymerase;dna polymerase
+4UN3|Cas9 an DNA|Cas9 on DNA|cas9 an dna;cas9 on dna;cas9;crispr;crispr cas9;genschere;gene scissors
+1AOI|Nukleosom|Nucleosome|nukleosom;nucleosome;histone;histon;histones
+1BNA|DNA|DNA|dna;dns;dna double helix;dna doppelhelix;double helix;doppelhelix;b dna;deoxyribonucleic acid;desoxyribonukleinsaeure;dna molecule;dna molekuel
+1EHZ|tRNA|tRNA|trna;transfer rna;rna;rns;ribonucleic acid
+1AO6|Serumalbumin|Serum albumin|serumalbumin;serum albumin;albumin
+1THW|Thaumatin|Thaumatin|thaumatin
+1TIT|Titin-Stueck|Titin piece|titin stueck;titin piece;titin
+3HHR|Wachstumshormon|Growth hormone|wachstumshormon;growth hormone;human growth hormone
+1TUP|p53 an DNA|p53 on DNA|p53 an dna;p53 on dna;p53;tumor suppressor p53
+END

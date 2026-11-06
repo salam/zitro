@@ -134,6 +134,24 @@ static void testElements() {
   CHECK(elementColor565(6) == (((0x90 >> 3) << 11) | ((0x90 >> 2) << 5) | (0x90 >> 3)));
 }
 
+static void testGyroAxes() {
+  float s[3];
+  // Rotation 1: the sensor's +x points up the screen and its +y to the left
+  gyroToScreen(1, 10, 0, 0, s);
+  CHECK(s[0] == 0); CHECK(s[1] == 10); CHECK(s[2] == 0);
+  gyroToScreen(1, 0, 10, 0, s);
+  CHECK(s[0] == -10); CHECK(s[1] == 0);
+  gyroToScreen(1, 0, 0, 10, s);
+  CHECK(s[2] == 10);
+  // Rotation 3 is the same view turned by half a circle: x and y flip, the axis out of the screen doesn't
+  gyroToScreen(3, 10, 0, 0, s);
+  CHECK(s[1] == -10);
+  gyroToScreen(3, 0, 10, 0, s);
+  CHECK(s[0] == 10);
+  gyroToScreen(3, 0, 0, 10, s);
+  CHECK(s[2] == 10);
+}
+
 static void testButtonRules() {
   // Rotation 3: buttons on the left, Button C on top, Button B below
   CHECK(imageScrollDirection(3, true) == -1);
@@ -151,7 +169,7 @@ static void testButtonRules() {
 
 int main(int argc, char** argv) {
   fixtureDir = argc > 1 ? argv[1] : "fixtures";
-  testRefs(); testSdf(); testMath(); testElements(); testButtonRules();
+  testRefs(); testSdf(); testMath(); testElements(); testButtonRules(); testGyroAxes();
   printf("%d checks, %d failures\n", checks, failures);
   if (failures == 0) printf("All model tests passed\n");
   return failures == 0 ? 0 : 1;

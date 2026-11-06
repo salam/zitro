@@ -232,6 +232,15 @@ inline void mat3Rotate(Mat3& r, float rx, float ry, float rz) {
   mat3Orthonormalise(r);
 }
 
+// Hand motion in the screen's axes (x right, y up, z towards you) from the sensor's. In landscape the
+// sensor's x runs along the screen's short side: getLandscapeRotation() and detectOrientation() rely on it.
+inline void gyroToScreen(int rotation, float gx, float gy, float gz, float out[3]) {
+  const float side = rotation == 3 ? -1.0f : 1.0f;
+  out[0] = -side * gy;
+  out[1] = side * gx;
+  out[2] = gz;
+}
+
 // Sorts indices far first (lowest z). Insertion sort: nearly sorted from frame to frame.
 inline void sortByDepth(const float* z, uint8_t* order, uint16_t n) {
   for (uint16_t i = 1; i < n; i++) {

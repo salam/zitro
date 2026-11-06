@@ -140,11 +140,7 @@ void modelViewTick() {
   if (gyroReady()) {
     M5.Imu.update();
     const auto imu = M5.Imu.getImuData();
-    // Rotation 1 and 3 are the same landscape view turned by half a circle
-    const float side = M5.Display.getRotation() == 3 ? -1.0f : 1.0f;
-    modelGyroDps[0] = side * imu.gyro.x;
-    modelGyroDps[1] = side * imu.gyro.y;
-    modelGyroDps[2] = imu.gyro.z;
+    gyroToScreen(M5.Display.getRotation(), imu.gyro.x, imu.gyro.y, imu.gyro.z, modelGyroDps);
     magnitude = sqrtf(imu.gyro.x * imu.gyro.x + imu.gyro.y * imu.gyro.y + imu.gyro.z * imu.gyro.z);
     if (magnitude >= MODEL_STILL_DPS && activeFeature->turnsWithGyro) {
       const float k = MODEL_TURN_SIGN * MODEL_TURN_GAIN * dt * (float)M_PI / 180.0f;
@@ -202,7 +198,7 @@ void eduDrawFooter(M5Canvas& c, int reserveRight) {
 void modelGyroNoise() {
   setGyroEnabled(true);
   delay(200);
-  float peak = 0, sum = 0;
+  float peak = 0, sum = 0, ax = 0, ay = 0, az = 0;
   int samples = 0;
   const unsigned long start = millis();
   while (millis() - start < 3000) {
@@ -210,11 +206,14 @@ void modelGyroNoise() {
     const auto imu = M5.Imu.getImuData();
     const float m = sqrtf(imu.gyro.x * imu.gyro.x + imu.gyro.y * imu.gyro.y + imu.gyro.z * imu.gyro.z);
     peak = max(peak, m);
+    ax = imu.accel.x;
+    ay = imu.accel.y;
+    az = imu.accel.z;
     sum += m;
     samples++;
     delay(10);
   }
-  Serial.printf("modelgyro samples=%d mean=%.2f peak=%.2f dps, still<%.1f active>=%.1f\n", samples, sum / samples, peak,
-                MODEL_STILL_DPS, MODEL_ACTIVE_DPS);
+  Serial.printf("modelgyro samples=%d mean=%.2f peak=%.2f dps, still<%.1f active>=%.1f accel=%.2f,%.2f,%.2f\n", samples,
+                sum / samples, peak, MODEL_STILL_DPS, MODEL_ACTIVE_DPS, ax, ay, az);
   updateGyroPower();
 }

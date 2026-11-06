@@ -78,6 +78,7 @@ static bool musicKeepAwake() {
 }
 
 static void musicFrame(M5Canvas& c, float dt) {
+  if (!musicNotes || musicNoteCount <= 0) return;
   uint8_t midi = 0;
   uint32_t toneMs = 0;
   // Band and sound run on the same clock, and each tone ends by itself: nothing here waits

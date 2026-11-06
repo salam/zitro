@@ -707,14 +707,14 @@ h1 {
 /* Cover: a real recording of the stick's screen (16:9, like the display itself). */
 .card-cover {
     display: block;
-    width: 60%;
+    width: 100%;
     border: 5px var(--citrus) solid;
     align-content: center;
     margin: 0 auto 25px;
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 5px 5px 5px #00000095;
-    padding-left: 10%;
+    padding-left: 16.67%;
     background: var(--citrus);
 }
 
@@ -722,6 +722,25 @@ h1 {
     display: block;
     width: 100%;
     height: auto;
+}
+
+/* Numbered link from a feature card to its entry under Sources in the footer. */
+.ref {
+    font-size: 0.72em;
+    line-height: 0;
+}
+
+.ref a {
+    display: inline-block;
+    padding: 6px 3px;
+    margin: -6px -1px;
+    color: var(--citrus-deep);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ref a:hover {
+    text-decoration: underline;
 }
 
 /* ---------- Edges (who it's for) ---------- */
@@ -1396,6 +1415,38 @@ a.footer-col-head:hover {
 
 .device-card[id] {
     scroll-margin-top: 96px;
+}
+
+.footer-sources {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.footer-sources ol {
+    margin: 0;
+    padding-left: 1.4em;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+}
+
+.footer-sources li {
+    scroll-margin-top: 96px;
+    border-radius: 4px;
+}
+
+.footer-sources li:target {
+    background: var(--citrus-soft);
+}
+
+.footer-sources a {
+    color: var(--ink-soft);
+}
+
+.footer-sources a:hover {
+    color: var(--ink);
 }
 
 .footer-bottom {

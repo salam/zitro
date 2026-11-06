@@ -25,6 +25,12 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include <ArduinoJson.h>
 
 // AI providers (OpenAI, Claude, Infomaniak, OpenAI-compatible, Zitro relay) and conversation memory
+#if __has_include("local_secrets.h")
+#include "local_secrets.h"
+#endif
+#ifndef WOLFRAM_APPID
+#define WOLFRAM_APPID ""  // Without one, Wolfram questions fail and Zitro says so. See local_secrets.h.example
+#endif
 #include "ai_provider.h"
 #include "model_core.h"
 #include "edu_feature.h"

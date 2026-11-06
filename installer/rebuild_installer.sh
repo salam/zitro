@@ -5,6 +5,12 @@
 
 set -e
 
+# Wolfram answers need the AppID, which isn't in git
+if ! grep -q 'WOLFRAM_APPID "[A-Z0-9-]\{6,\}"' "$(dirname "$0")/../sketch/sketch_jan12a/local_secrets.h" 2>/dev/null; then
+  echo "Error: sketch/sketch_jan12a/local_secrets.h with the Wolfram AppID is missing (see local_secrets.h.example)" >&2
+  exit 1
+fi
+
 echo "======================================"
 echo "  AI Stick Installer - Quick Rebuild"
 echo "======================================"

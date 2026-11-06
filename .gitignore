@@ -3,3 +3,21 @@ test/*
 # API keys
 .env
 **/.env
+
+# Keys for local builds
+sketch/sketch_jan12a/local_secrets.h
+
+# Build output: rebuilt by installer/rebuild_installer.sh, verify.sh or deploy.sh
+.build/
+sketch/*/build/
+installer/firmware/
+installer/gui_installer/build/
+installer/native_flasher/bin/
+installer/*.dmg
+installer/*.app/
+tmp/
+
+# Local tools
+.worktrees/
+.claude/settings.local.json
+.claudine/

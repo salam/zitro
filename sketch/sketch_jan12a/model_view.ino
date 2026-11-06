@@ -153,7 +153,8 @@ void modelViewTick() {
     if (magnitude >= MODEL_ACTIVE_DPS && now - modelWindowStart < MODEL_MOTION_CAP_MS) lastActivityTime = now;
   }
   if (activeFeature->keepAwake && activeFeature->keepAwake()) lastActivityTime = now;
-  if (magnitude < MODEL_STILL_DPS && activeFeature->turnsWithGyro) {
+  // The globe holds still so the pin stays in view
+  if (magnitude < MODEL_STILL_DPS && activeFeature->turnsWithGyro && activeFeature != &FEATURE_GLOBE) {
     mat3Rotate(modelRotation, 0, MODEL_IDLE_RAD_PER_S * dt, 0);
   }
   modelViewRender(dt);

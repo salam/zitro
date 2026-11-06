@@ -179,6 +179,9 @@ static void testPromptRule() {
   CHECK((int)listed.size() == SOLID_TABLE_SIZE);
   for (const std::string& id : listed) CHECK(solidFindId(id.c_str()) >= 0);
   for (int i = 0; i < SOLID_TABLE_SIZE; i++) CHECK(listed.count(SOLID_TABLE[i].id) == 1);
+  // The plain words a child uses have a default, or they'd miss the list and give a photo
+  CHECK(rule.find("Pyramide square-pyramid") != std::string::npos);
+  CHECK(rule.find("Prisma triangular-prism") != std::string::npos);
 }
 
 static void testShading() {

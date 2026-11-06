@@ -525,7 +525,8 @@ static const char PHYSICS_PROMPT_RULE[] =
     "'Warum gibt es Jahreszeiten?' ergibt seasons, 'Warum sieht der Mond mal rund, mal schmal aus?' ergibt moon). "
     "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
     "sound circuit matter seasons moon atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
-    "Kohlenstoffatom aufgebaut?' ergibt atom-C). Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
+    "Kohlenstoffatom aufgebaut?' ergibt atom-C). Frage nach dem Aufbau eines Atoms ergibt immer physics:atom-<Symbol>, "
+    "nie molecule. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";
 
 // Same letters, whatever the case

@@ -592,6 +592,13 @@ static void testPromptRule() {
   }
 }
 
+// Atoms must not go to the molecule rule, which comes first in the prompt
+static void testPromptKeepsAtomsFromMolecule() {
+  const std::string rule = PHYSICS_PROMPT_RULE;
+  CHECK(rule.find("physics:atom-<Symbol>") != std::string::npos);
+  CHECK(rule.find("nie molecule") != std::string::npos);
+}
+
 static void testAtomQueries() {
   int scene, element;
   CHECK(physicsParseQuery("atom-C", scene, element));
@@ -622,6 +629,7 @@ int main() {
   testScenes();
   testPromptRule();
   testAtomQueries();
+  testPromptKeepsAtomsFromMolecule();
   testNumbers();
   testFalling();
   testFriction();

@@ -441,6 +441,7 @@ bool modelButtonC();
 void drawModelHint(M5Canvas& c);
 void modelViewTick();
 void leaveModelView();
+bool fetchWolframSimpleImage(const String &englishQuery);
 void modelGyroNoise();
 extern bool modelResetRotateToggle;
 void setGyroEnabled(bool on);
@@ -4806,12 +4807,15 @@ String translateToEnglishForWolfram(const String &query) {
 }
 
 bool fetchWolframAlphaImage(const String &query) {
+  // Translate query to English if needed
+  return fetchWolframSimpleImage(translateToEnglishForWolfram(query));
+}
+
+// The Simple API's picture of a whole result page: what printing uses, and the answer when there's no text result
+bool fetchWolframSimpleImage(const String &englishQuery) {
   Serial.println("\n========== FETCHING WOLFRAM ALPHA IMAGE ==========");
 
   lastActivityTime = millis();  // Prevent sleep during download
-
-  // Translate query to English if needed
-  String englishQuery = translateToEnglishForWolfram(query);
 
   Serial.println("Query for Wolfram: " + englishQuery);
 
@@ -4820,7 +4824,7 @@ bool fetchWolframAlphaImage(const String &query) {
     Serial.println("WiFi not connected, attempting reconnection...");
     if (!reconnectWiFiNow()) {
       Serial.println("Failed to reconnect WiFi");
-      return IMAGE_FETCH_ERROR;
+      return false;
     }
   }
 

@@ -240,7 +240,7 @@ The device implements three-tier power management to maximize battery life:
    - Device reboots on wake
    - Previous answer and image URL saved to Preferences
    - Image re-downloaded after wake
-   - Pictures without a URL (Wolfram, AI-drawn) are saved to SPIFFS (`/lastimage`, up to 512 KB) just before deep sleep and read back on wake; the file is removed once read. The partition is formatted on first use. If saving or reading fails, the answer comes back without a picture, never with "No image buffer"
+   - AI-drawn pictures have no URL, so they are saved to SPIFFS (`/lastimage`, up to 512 KB) just before deep sleep and read back on wake; the file is removed once read. The partition is formatted on first use. If saving or reading fails, the answer comes back without a picture, never with "No image buffer". Wolfram pictures aren't saved, because its terms forbid storing results
 
 ## Wake-Up Behavior
 

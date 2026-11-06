@@ -2297,7 +2297,8 @@ void saveStateToPreferences() {
   prefs.putString(PREFS_KEY_MODEL_REF, hasModel ? modelRefText : String(""));
   prefs.putBool(PREFS_KEY_IS_WOLFRAM, isWolframImage);
   // Wolfram and AI-drawn pictures have no address to download again from
-  if (hasImage && currentImageUrl.length() == 0 && !saveImageToFlash()) hasImage = false;
+  // Wolfram's terms don't allow storing its results, so those aren't kept; AI-drawn pictures are
+  if (hasImage && currentImageUrl.length() == 0 && (isWolframImage || !saveImageToFlash())) hasImage = false;
   Serial.printf("Saved image URL: %s\n", currentImageUrl.c_str());
 
   // Save boolean flags

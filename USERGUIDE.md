@@ -517,7 +517,7 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
-- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures from Wolfram and pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again.
+- Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again. A Wolfram picture isn't kept, so that answer comes back without it.
 
 ## Screenshots of the device screens
 

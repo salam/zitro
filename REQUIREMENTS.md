@@ -350,6 +350,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)
 - **Timelines with pictures**: [docs/features/timeline.md](docs/features/timeline.md)
 - **Organs, skeleton and cells**: [docs/features/anatomy.md](docs/features/anatomy.md)
+- **Wolfram results**: [docs/features/wolfram.md](docs/features/wolfram.md)
 
 ## Plug-ins (`edu_feature.h`)
 - Each kind fills in one `EduFeature` in `feature_<kind>.ino` with pure logic in `<kind>_core.h`, tested by `tests/<kind>/run.sh`; all are registered in `feature_registry.ino`. The AI prompt collects each feature's `promptRule`

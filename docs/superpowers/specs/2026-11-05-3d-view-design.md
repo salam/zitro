@@ -20,7 +20,7 @@ The audience runs from kids who are starting to read up to teenagers. The 3D vie
 ## Non-goals
 
 - Quiz or game on the display (user rejected this).
-- Cells, organs and human anatomy as 3D models: no small trusted 3D source has been tested. These show the Wikipedia picture.
+- ~~Cells, organs and human anatomy as 3D models~~: the user asked for them on 2026-11-06, see `docs/features/anatomy.md`.
 - Printing a 3D view. That comes with the worksheets project. Hold Button B does nothing in 3D view until then.
 - An age setting. To be decided in the math project, where it matters most.
 - Pointing the stick at real stars: the motion sensor has no compass.

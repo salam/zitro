@@ -338,7 +338,23 @@ When modifying JavaScript files, browsers may serve cached versions to users, pr
 
 # Requirements for the 3D View
 
-Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Phase 1 is built: molecules. Solids, atoms, globe, proteins, DNA, crystals, solar system, sky and physics follow.
+Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are described here; every other kind of result is a plug-in with its requirements in its own file:
+
+- **Music on an endless band**: [docs/features/music.md](docs/features/music.md)
+- **Function graphs**: [docs/features/graph.md](docs/features/graph.md)
+- **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
+- **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
+- **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
+- **Night sky**: [docs/features/sky.md](docs/features/sky.md)
+- **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)
+- **Timelines with pictures**: [docs/features/timeline.md](docs/features/timeline.md)
+- **Organs, skeleton and cells**: [docs/features/anatomy.md](docs/features/anatomy.md)
+
+## Plug-ins (`edu_feature.h`)
+- Each kind fills in one `EduFeature` in `feature_<kind>.ino` with pure logic in `<kind>_core.h`, tested by `tests/<kind>/run.sh`; all are registered in `feature_registry.ino`. The AI prompt collects each feature's `promptRule`
+- `model_view.ino` owns the sprite, the gyro, the sleep rules and the bottom line; `fetchModel()` in `model_source.ino` dispatches by kind
+- Prepared data lives in `webpage2/data/<kind>/` and is read from `https://zitro.spot/data/<kind>/`. It's static hosting, uploaded separately from the firmware. Without it those kinds fall back to the picture
+- `gyroToScreen()` maps the sensor's axes to the screen's: in landscape the sensor's x runs along the short side
 
 ## Honest content
 - The AI only names what to look up, in the answer field `model` (`"molecule:<English name>"`, empty for none). It never supplies coordinates, IDs or numbers

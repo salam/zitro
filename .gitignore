@@ -26,3 +26,6 @@ tmp/
 installer/*.zip
 screenshots/Screenshot */
 screenshots/Screenshot *
+
+# Real Wolfram answers: its terms do not allow passing them on
+tests/wolfram/fixtures/

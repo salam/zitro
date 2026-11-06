@@ -1112,21 +1112,25 @@ int main(int argc, char** argv) {
   gLayout = new WolframLayout;
   gScratch = new WolframScratch;
 
-  testFirstSections(dir);
-  testNoiseIsGone(dir);
-  testAssumptionsStayVisible(dir);
-  testSectionOrder(dir);
-  testPlots(dir);
-  testGerman(dir);
+  // Real Wolfram answers stay local: its terms don't allow passing them on (see docs/features/wolfram.md)
+  const bool haveFixtures = !fixtureNames(dir).empty();
+  if (!haveFixtures) printf("No Wolfram fixtures here: skipping the checks that need real answers\n");
   testFormulaShapes();
-  testLayoutOnFixtures(dir);
-  testAssumptionsOnScreen(dir);
-  testNumbersUnchanged(dir);
-  testSymbolsAreDrawn(dir);
-  testHostile(dir);
   testPlotHelpers();
-
-  if (argc > 2) writePreview(dir, argv[2]);
+  if (haveFixtures) {
+    testFirstSections(dir);
+    testNoiseIsGone(dir);
+    testAssumptionsStayVisible(dir);
+    testSectionOrder(dir);
+    testPlots(dir);
+    testGerman(dir);
+    testLayoutOnFixtures(dir);
+    testAssumptionsOnScreen(dir);
+    testNumbersUnchanged(dir);
+    testSymbolsAreDrawn(dir);
+    testHostile(dir);
+    if (argc > 2) writePreview(dir, argv[2]);
+  }
 
   printf("%d checks, %d failed\n", checks, failures);
   delete gDoc;

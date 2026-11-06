@@ -5,6 +5,8 @@
 #include <string>
 #include "../../sketch/sketch_jan12a/music_core.h"
 #include "../../sketch/sketch_jan12a/music_songs.h"
+#include "../../sketch/sketch_jan12a/music_draw.h"
+#include <vector>
 
 static int failures = 0, checks = 0;
 #define CHECK(c) do { checks++; if (!(c)) { failures++; \
@@ -282,6 +284,129 @@ static void testFindSong() {
   CHECK(musicFindSong(nullptr) == nullptr);
 }
 
+// Runs the real drawing code and keeps what it asks for
+struct RecordingCanvas {
+  struct Head { int x, y; uint16_t color; };
+  std::vector<Head> heads;
+  std::vector<int> hollow, ledgerY, barX, doubleBarX;
+  int calls = 0;
+  void drawFastHLine(int, int y, int w, uint16_t) {
+    calls++;
+    if (w == 17) ledgerY.push_back(y);
+  }
+  void drawFastVLine(int x, int, int, uint16_t) { calls++; barX.push_back(x); }
+  void fillRect(int x, int, int w, int, uint16_t) {
+    calls++;
+    if (w == 2) doubleBarX.push_back(x);
+  }
+  void drawLine(int, int, int, int, uint16_t) { calls++; }
+  void fillCircle(int, int, int, uint16_t) { calls++; }
+  void fillEllipse(int x, int y, int rx, int, uint16_t color) {
+    calls++;
+    if (rx == 5) heads.push_back({x, y, color});
+    if (rx == 3) hollow.push_back(x);
+  }
+};
+
+static void testDrawing() {
+  // True pitch positions: the staff lines are E4, G4, B4, D5, F5
+  int total = 0;
+  CHECK(musicParseNotes("E4:4 G4:4 B4:4 D5:4 F5:4 F4:4 C4:4 A3:4 A5:4 F#4:4 Bb4:4", notes, MUSIC_MAX_NOTES, total) == 11);
+  const int expectedY[] = {68, 58, 48, 38, 28, 63, 78, 88, 18, 63, 48};
+  for (int i = 0; i < 11; i++) CHECK(musicStaffY(notes[i].staffStep) == expectedY[i]);
+
+  // The note at the playhead sits on it, in its own colour; the next is one quarter on
+  int count = musicParseNotes("E4:4 G4:8 C4:4 R:4 A3:16 D4:4 E4:4 R:4 F4:4 G4:4 A4:4", notes, MUSIC_MAX_NOTES, total);
+  CHECK(count == 11);
+  MusicBand band = {notes, count, 16, 0, 0, 0.0f};
+  RecordingCanvas c;
+  musicDrawBand(c, band);
+  bool found = false;
+  for (auto& h : c.heads) {
+    if (h.x == MUSIC_PLAYHEAD_X && h.color == MUSIC_COLOR_NOW) {
+      found = true;
+      CHECK(h.y == 68);
+    }
+    if (h.x == MUSIC_PLAYHEAD_X + 40) CHECK(h.y == 58 && h.color == MUSIC_COLOR_NOTE);
+  }
+  CHECK(found);
+  bool hollowHalf = false;
+  for (int x : c.hollow) hollowHalf = hollowHalf || x == MUSIC_PLAYHEAD_X + 40;
+  CHECK(hollowHalf);
+  // Ledger lines only below the staff: C4 at 78, then C4 and A3 for A3
+  for (int y : c.ledgerY) CHECK(y == 78 || y == 88);
+  CHECK(!c.ledgerY.empty());
+  // The band moves left with time, by exactly the note spacing
+  band.tickInNote = 1.0f;
+  RecordingCanvas moved;
+  musicDrawBand(moved, band);
+  found = false;
+  for (auto& h : moved.heads) found = found || (h.x == MUSIC_PLAYHEAD_X - MUSIC_PX_PER_TICK && h.color == MUSIC_COLOR_NOW);
+  CHECK(found);
+
+  // A song far shorter than the screen fills it in both directions, joined at a double bar: no end in sight
+  count = musicParseNotes("C4:4 D4:4", notes, MUSIC_MAX_NOTES, total);
+  CHECK(count == 2);
+  band = {notes, count, 8, 0, 0, 0.0f};
+  std::vector<int> seen;
+  musicForEachVisible(band, [&](int i, int x) {
+    CHECK(i == 0 || i == 1);
+    CHECK((x - MUSIC_PLAYHEAD_X) % 40 == 0);
+    CHECK(i == (((x - MUSIC_PLAYHEAD_X) / 40) % 2 != 0 ? 1 : 0));
+    seen.push_back(x);
+  });
+  int leftmost = 1000, rightmost = -1000;
+  for (int x : seen) {
+    leftmost = x < leftmost ? x : leftmost;
+    rightmost = x > rightmost ? x : rightmost;
+  }
+  CHECK(leftmost <= 0);
+  CHECK(rightmost + 40 >= MUSIC_BAND_WIDTH);  // The next one would be off screen
+  RecordingCanvas shortSong;
+  musicDrawBand(shortSong, band);
+  CHECK(shortSong.doubleBarX.size() >= 2);
+
+  // Bars fall at the bar length, after the lead-in; the seam is the double bar. Bar before a sharp clears it.
+  count = musicParseNotes("D4:4 E4:4 E4:4 E4:4 F#4:4 E4:4 E4:4 E4:4", notes, MUSIC_MAX_NOTES, total);
+  CHECK(count == 8);
+  band = {notes, count, 12, 4, 1, 0.0f};
+  RecordingCanvas bars;
+  musicDrawBand(bars, band);
+  // Note 1 starts a bar right at the playhead; note 4 starts the next, 3 quarters on, with its sharp
+  bool plain = false, sharp = false;
+  for (int x : bars.barX) {
+    plain = plain || x == MUSIC_PLAYHEAD_X - 9;
+    sharp = sharp || x == MUSIC_PLAYHEAD_X + 120 - 17;
+  }
+  CHECK(plain);
+  CHECK(sharp);
+
+  // Broken bands draw nothing, and don't read outside the notes
+  const MusicBand broken[] = {{nullptr, 8, 12, 0, 0, 0.0f}, {notes, 0, 12, 0, 0, 0.0f}, {notes, 8, 12, 0, 8, 0.0f},
+                              {notes, 8, 12, 0, -1, 0.0f}};
+  for (const MusicBand& b : broken) {
+    RecordingCanvas none;
+    musicDrawBand(none, b);
+    CHECK(none.calls == 0);
+  }
+
+  // Every song, at every note: the walk ends, and the current note is always drawn
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
+    count = musicParseNotes(MUSIC_SONGS[i].notes, notes, MUSIC_MAX_NOTES, total);
+    for (int n = 0; n < count; n++) {
+      band = {notes, count, MUSIC_SONGS[i].barTicks, MUSIC_SONGS[i].pickupTicks, n, 0.5f};
+      RecordingCanvas all;
+      musicDrawBand(all, band);
+      CHECK(all.calls > 0 && all.calls < 2000);
+      if (notes[n].midi) {
+        bool lit = false;
+        for (auto& h : all.heads) lit = lit || (h.color == MUSIC_COLOR_NOW && h.y == musicStaffY(notes[n].staffStep));
+        CHECK(lit);
+      }
+    }
+  }
+}
+
 // For check_references.py
 static void dumpSongs() {
   for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
@@ -305,6 +430,7 @@ int main(int argc, char** argv) {
   testPinnedMelodies();
   testEverySong();
   testFindSong();
+  testDrawing();
   printf("music tests: %d checks, %d failures\n", checks, failures);
   return failures ? 1 : 0;
 }

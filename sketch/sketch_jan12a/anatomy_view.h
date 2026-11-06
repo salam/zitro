@@ -7,5 +7,5 @@ static const float ANATOMY_VIEW_ZOOMS[3] = {1.0f, 1.6f, 2.4f};
 
 // Pixels per model radius. At zoom 0 the whole model fits whichever way it's turned.
 inline float anatomyViewScale(int viewHeight, int zoomStep) {
-  return viewHeight * 0.44f * ANATOMY_VIEW_ZOOMS[zoomStep < 0 || zoomStep > 2 ? 0 : zoomStep];
+  return viewHeight * 0.5f * ANATOMY_VIEW_ZOOMS[zoomStep < 0 || zoomStep > 2 ? 0 : zoomStep];
 }

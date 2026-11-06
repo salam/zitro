@@ -1,0 +1,7 @@
+ZTL1	swiss_history	Q208761	Geschichte der Schweiz	History of Switzerland	6	28668
+Q662637	1291	-	0	Bundesbrief von 1291	Federal Charter of 1291	0	3579	109	96	dba6918e	Public domain
+Q326989	1315	-	0	Schlacht am Morgarten	Battle of Morgarten	3579	7534	240	96	4ee6a77a	Stefan Schuler - schulerst, CC BY-SA 3.0, resized
+Q150995	1648	-	0	Westfälischer Friede	Peace of Westphalia	11113	3960	124	96	1fbe6b9a	Public domain
+Q30921	1848	-	0	Bundesverfassung der Schweizerischen Eidgenossenschaft	Swiss Federal Constitution	15073	2165	125	96	b32a6745	CC0
+Q688618	1882	-	0	Gotthardtunnel	Gotthard Tunnel	17238	6158	240	96	d933dfa1	Mike Knell, CC BY-SA 2.0, resized
+Q193002	2016	-	0	Gotthard-Basistunnel	Gotthard Base Tunnel	23396	5272	240	96	40add443	Hannes Ortlieb ( Diskussion ), CC BY-SA 3.0 de, resized

@@ -1,0 +1,9 @@
+ZTL1	world_wars	Q103495	Weltkrieg	World war	8	38248
+Q192050	1914	-	0	Attentat von Sarajevo	Assassination of Archduke Franz Ferdinand	0	2184	68	96	82212f95	Public domain
+Q361	1914	1918	0	Erster Weltkrieg	World War I	2184	4413	162	96	ad6b506c	CC BY-SA 2.5
+Q253224	1918	-	0	Waffenstillstand von Compiègne 1918	Armistice of Compiègne	6597	5739	240	96	2943be4f	Public domain
+Q8736	1919	-	0	Friedensvertrag von Versailles	Treaty of Versailles	12336	9383	240	96	559d5ed5	ToucanWings, CC BY-SA 3.0, resized
+Q362	1939	1945	0	Zweiter Weltkrieg	World War II	21719	3075	105	96	1ede5b48	San Jose, CC BY-SA 3.0, resized
+Q52418	1941	-	0	Angriff auf Pearl Harbor	Attack on Pearl Harbor	24794	3219	240	96	4d5c9e91	Public domain
+Q16470	1944	-	0	Operation Neptune	Normandy landings	28013	4252	155	96	51b75cd8	Public domain
+Q1065	1945	-	0	Vereinte Nationen	United Nations	32265	5983	240	96	892f0a09	Superbass, CC BY-SA 4.0, resized

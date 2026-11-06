@@ -446,6 +446,8 @@ void modelViewTick();
 void leaveModelView();
 void modelGyroNoise();
 extern bool modelResetRotateToggle;
+const int SERIAL_LINE_MAX = 2048;  // Longest serial command: a provisioning line (see provisioning.ino)
+void handleProvisionCommand(const String& json);
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();
@@ -1741,11 +1743,6 @@ void handleSave() {
   ESP.restart();
 }
 
-// Secret API keys stored in Preferences ("settings" namespace). Never sent back to the browser.
-static const char* const SECRET_SETTING_KEYS[] = {"apiKey", "claudeKey", "ikKey", "customKey", "zitroKey"};
-// Plain-text AI settings editable on the setup page
-static const char* const AI_TEXT_SETTING_KEYS[] = {"oaModel", "claudeModel", "ikModel", "ikProduct", "customUrl", "customModel"};
-
 void handleGetSettings() {
   Serial.println("Serving settings JSON");
   Preferences settingsPrefs;
@@ -1816,8 +1813,7 @@ void handleSaveSettings() {
 
   if (server.hasArg("provider")) {
     String provider = server.arg("provider");
-    if (provider == AI_PROVIDER_ZITRO || provider == AI_PROVIDER_OPENAI || provider == AI_PROVIDER_ANTHROPIC ||
-        provider == AI_PROVIDER_INFOMANIAK || provider == AI_PROVIDER_CUSTOM) {
+    if (isValidAiProvider(provider)) {
       settingsPrefs.putString("provider", provider);
     }
   }
@@ -1826,8 +1822,7 @@ void handleSaveSettings() {
     if (!server.hasArg(key)) continue;
     String value = server.arg(key);
     value.trim();
-    if (strcmp(key, "customUrl") == 0 && value.length() > 0 && !value.startsWith("https://")) continue;
-    if (value.length() <= 200) settingsPrefs.putString(key, value);
+    if (isValidAiTextValue(key, value)) settingsPrefs.putString(key, value);
   }
 
   // Empty key fields mean "keep the stored key"
@@ -1835,7 +1830,7 @@ void handleSaveSettings() {
     if (!server.hasArg(key)) continue;
     String value = server.arg(key);
     value.trim();
-    if (value.length() >= 8 && value.length() <= 300 && value.indexOf(' ') < 0) {
+    if (isValidSecretValue(value)) {
       settingsPrefs.putString(key, value);
       Serial.printf("%s saved\n", key);
     }
@@ -7813,6 +7808,7 @@ M5.Speaker.begin();
 }
 
 void setup() {
+  Serial.setRxBufferSize(SERIAL_LINE_MAX);  // Must come before begin()
   Serial.begin(115200);
   delay(1000);
   

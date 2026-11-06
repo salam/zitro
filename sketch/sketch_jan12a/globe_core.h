@@ -9,6 +9,7 @@
 #include <string.h>
 
 static const size_t GLOBE_FILE_HEADER = 10;
+static const size_t GLOBE_FILE_LIMIT = 64 * 1024;  // The most a download may be
 static const uint16_t GLOBE_MAX_LINES = 4000;
 static const uint16_t GLOBE_MAX_POINTS = 20000;
 static const int GLOBE_MAX_LAT = 9000;   // Hundredths of a degree

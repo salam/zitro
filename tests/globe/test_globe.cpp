@@ -213,7 +213,7 @@ static void testRealFiles(Map& builtin, Map& detail) {
   const std::string d = readFile(detailPath);
   CHECK(detail.load((const uint8_t*)d.data(), d.size()));
   CHECK(detail.points > 2 * builtin.points);
-  CHECK(d.size() <= 64 * 1024);
+  CHECK(d.size() <= GLOBE_FILE_LIMIT);
   // Every point is on the unit sphere, to rounding
   for (size_t i = 0; i + 2 < builtin.xyz.size(); i += 3) {
     const float x = builtin.xyz[i] / GLOBE_Q14, y = builtin.xyz[i + 1] / GLOBE_Q14, z = builtin.xyz[i + 2] / GLOBE_Q14;

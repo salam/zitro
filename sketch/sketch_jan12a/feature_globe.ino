@@ -1,10 +1,12 @@
 // Globe: where a place is on Earth. The pin comes from Wikipedia's coordinates, the coastlines from
-// Natural Earth, built in. No coordinates on Earth: fetch() is false and Zitro shows the picture.
+// Natural Earth: a more detailed file from the Zitro server if it's there in time, otherwise the built-in one.
+// No coordinates on Earth: fetch() is false and Zitro shows the picture.
 #include "globe_coast_data.h"
 #include "globe_core.h"
 #include "globe_wiki.h"
 
 static const size_t GLOBE_REPLY_LIMIT = 8 * 1024;
+static const unsigned long GLOBE_DETAIL_MS = 4000;  // The better coast isn't worth a long wait
 static const float GLOBE_ZOOMS[3] = {1.0f, 1.6f, 2.4f};
 static const unsigned long GLOBE_LOG_EVERY_MS = 5000;
 static const uint8_t GLOBE_PIN_R = 0xF2, GLOBE_PIN_G = 0xB7, GLOBE_PIN_B = 0x05;  // Citrus, #f2b705
@@ -49,6 +51,19 @@ static bool globeLoadCoast(const uint8_t* data, size_t size) {
   return true;
 }
 
+// The detailed coast. False if it isn't there in time, or isn't right: the built-in one will do.
+static bool globeLoadDetail(unsigned long deadline) {
+  uint8_t* file = (uint8_t*)ps_malloc(GLOBE_FILE_LIMIT);
+  if (!file) return false;
+  unsigned long until = millis() + GLOBE_DETAIL_MS;
+  if ((long)(deadline - until) < 0) until = deadline;
+  size_t size = 0;
+  const bool ok = eduHttpGet(EDU_DATA_BASE_URL "globe/coast_detail.bin", until, (char*)file, GLOBE_FILE_LIMIT, size) &&
+                  globeLoadCoast(file, size);
+  free(file);
+  return ok;
+}
+
 static bool globeFetch(const char* title) {
   const unsigned long deadline = millis() + EDU_LOOKUP_DEADLINE_MS;
   char* body = (char*)ps_malloc(GLOBE_REPLY_LIMIT);
@@ -64,7 +79,7 @@ static bool globeFetch(const char* title) {
     Serial.printf("Globe lookup '%s': not available\n", title);
     return false;
   }
-  if (!globeLoadCoast(GLOBE_COAST_BUILTIN, GLOBE_COAST_BUILTIN_SIZE)) {
+  if (!globeLoadDetail(deadline) && !globeLoadCoast(GLOBE_COAST_BUILTIN, GLOBE_COAST_BUILTIN_SIZE)) {
     Serial.println("Globe lookup: no memory for the coastline");
     return false;
   }

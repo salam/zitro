@@ -1,4 +1,4 @@
-// Pure logic of function graphs: parser and evaluator for expressions in x.
+// Pure logic of function graphs: parser and evaluator, sampling, gaps, y fit and tick numbers.
 // Plain C++ with no Arduino includes, tested on the host: tests/graph/run.sh
 //
 // The parser is iterative with fixed-size stacks, so hostile input can't exhaust memory or the
@@ -6,9 +6,11 @@
 // evaluating that program on the device.
 #pragma once
 
+#include <algorithm>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 
 static const size_t GRAPH_MAX_EXPR = 63;   // Same as ModelRef.query
@@ -318,4 +320,283 @@ inline double graphEval(const GraphProgram& program, double x) {
     }
   }
   return top == 0 ? stack[0] : NAN;
+}
+
+// ----- Sampling: one value per pixel column, kept so that panning computes only new columns -----
+
+static const int GRAPH_COLUMNS = 240;
+static const double GRAPH_MAX_CENTER = 1000;   // Panning stops here: far enough, and x keeps its precision
+static const float GRAPH_LARGEST_SAMPLE = 1e30f;  // Beyond this a value is treated as no point
+static const int GRAPH_JOIN_PIXELS = 6;        // Up to this jump two neighbours are always joined
+static const int GRAPH_BISECT_STEPS = 12;
+static const int GRAPH_FAR_PIXELS = 1000;      // Pixel values are clamped to this far outside the plot
+
+enum GraphSegment : uint8_t { GRAPH_SEGMENT_UNKNOWN, GRAPH_SEGMENT_JOINED, GRAPH_SEGMENT_BROKEN };
+
+struct GraphSamples {
+  float y[GRAPH_COLUMNS];         // NaN: no point in this column
+  uint8_t segment[GRAPH_COLUMNS];  // Between column i and i + 1. Independent of the y range, so it can be kept
+  float sorted[GRAPH_COLUMNS];    // Working space for the y fit
+  int lo, hi;                     // Columns lo .. hi - 1 are computed
+  long offset;                    // Column GRAPH_COLUMNS / 2 is at x = offset * unitsPerColumn
+  double unitsPerColumn;
+};
+
+inline double graphColumnX(const GraphSamples& s, int column) {
+  // A multiple of the step, never a running sum: x = 0 is exactly 0, and no error builds up while panning
+  return (double)(column - GRAPH_COLUMNS / 2 + s.offset) * s.unitsPerColumn;
+}
+
+inline double graphCenterX(const GraphSamples& s) {
+  return (double)s.offset * s.unitsPerColumn;
+}
+
+// Shows centerX +- halfWidth. Everything gets computed again, from the middle outwards.
+inline void graphSetWindow(GraphSamples& s, double centerX, double halfWidth) {
+  s.unitsPerColumn = halfWidth / (GRAPH_COLUMNS / 2);
+  s.offset = std::lround(centerX / s.unitsPerColumn);
+  s.lo = s.hi = GRAPH_COLUMNS / 2;
+}
+
+// Moves the window by whole columns, to the right if positive. What's still on screen is kept.
+inline void graphPan(GraphSamples& s, long columns) {
+  const long limit = std::lround(GRAPH_MAX_CENTER / s.unitsPerColumn);
+  const long target = std::max(-limit, std::min(limit, s.offset + columns));
+  const long move = target - s.offset;
+  if (move == 0) return;
+  s.offset = target;
+  if (move >= GRAPH_COLUMNS || move <= -GRAPH_COLUMNS) {
+    s.lo = s.hi = GRAPH_COLUMNS / 2;
+    return;
+  }
+  const int d = (int)(move > 0 ? move : -move);
+  const int kept = GRAPH_COLUMNS - d;
+  if (move > 0) {
+    memmove(s.y, s.y + d, kept * sizeof(float));
+    memmove(s.segment, s.segment + d, kept);
+    s.lo = std::max(0, s.lo - d);
+    s.hi -= d;
+  } else {
+    memmove(s.y + d, s.y, kept * sizeof(float));
+    memmove(s.segment + d, s.segment, kept);
+    s.lo += d;
+    s.hi = std::min(GRAPH_COLUMNS, s.hi + d);
+  }
+  if (s.hi <= s.lo) s.lo = s.hi = GRAPH_COLUMNS / 2;
+}
+
+inline float graphToSample(double value) {
+  if (!std::isfinite(value) || std::fabs(value) > (double)GRAPH_LARGEST_SAMPLE) return NAN;
+  return (float)value;
+}
+
+// Computes one more column. False when all are done. The caller decides how many fit in a frame.
+inline bool graphComputeNext(const GraphProgram& program, GraphSamples& s) {
+  if (s.lo <= 0 && s.hi >= GRAPH_COLUMNS) return false;
+  const bool right = s.lo <= 0 || (s.hi < GRAPH_COLUMNS && s.hi - GRAPH_COLUMNS / 2 <= GRAPH_COLUMNS / 2 - s.lo);
+  const int column = right ? s.hi : s.lo - 1;
+  s.y[column] = graphToSample(graphEval(program, graphColumnX(s, column)));
+  s.segment[column] = GRAPH_SEGMENT_UNKNOWN;
+  if (column > 0) s.segment[column - 1] = GRAPH_SEGMENT_UNKNOWN;
+  if (right) {
+    s.hi++;
+  } else {
+    s.lo--;
+  }
+  return true;
+}
+
+// True if the curve really breaks between x0 and x1: a pole like tan(x) and 1/x, or a jump like x/abs(x).
+// Halving the interval towards the larger change: on a continuous curve the change shrinks with the
+// interval, across a jump it stays, and across a pole it grows.
+inline bool graphIsBreak(const GraphProgram& program, double x0, double x1) {
+  double y0 = graphEval(program, x0), y1 = graphEval(program, x1);
+  if (!std::isfinite(y0) || !std::isfinite(y1)) return true;
+  const double initial = std::fabs(y1 - y0);
+  for (int i = 0; i < GRAPH_BISECT_STEPS; i++) {
+    const double xm = (x0 + x1) / 2;
+    if (xm == x0 || xm == x1) break;
+    const double ym = graphEval(program, xm);
+    if (!std::isfinite(ym)) return true;
+    if (std::fabs(ym - y0) >= std::fabs(y1 - ym)) {
+      x1 = xm;
+      y1 = ym;
+    } else {
+      x0 = xm;
+      y0 = ym;
+    }
+  }
+  return std::fabs(y1 - y0) > 0.25 * initial;
+}
+
+// Pixel row of a value in a plot of the given height: ymax on row 0, clamped so a huge value stays a safe int
+inline int graphPixelY(double y, double ymin, double ymax, int height) {
+  const double row = (ymax - y) * (height - 1) / (ymax - ymin);
+  if (!(row > -GRAPH_FAR_PIXELS)) return -GRAPH_FAR_PIXELS;
+  if (row > height + GRAPH_FAR_PIXELS) return height + GRAPH_FAR_PIXELS;
+  return (int)std::floor(row + 0.5);
+}
+
+// Whether to draw from column i to i + 1, and where. Checking for a break costs evaluations, so it's
+// only done for a large jump, only when mayClassify says there's time, and only once per segment.
+// Not yet known: not drawn in this frame.
+inline bool graphSegmentRows(const GraphProgram& program, GraphSamples& s, int i, double ymin, double ymax, int height,
+                             bool mayClassify, int& row0, int& row1) {
+  if (i < s.lo || i + 1 >= s.hi) return false;
+  const float y0 = s.y[i], y1 = s.y[i + 1];
+  if (!std::isfinite(y0) || !std::isfinite(y1)) return false;
+  row0 = graphPixelY(y0, ymin, ymax, height);
+  row1 = graphPixelY(y1, ymin, ymax, height);
+  if ((row0 < 0 && row1 < 0) || (row0 >= height && row1 >= height)) return false;
+  if (std::abs(row1 - row0) <= GRAPH_JOIN_PIXELS) return true;
+  if (s.segment[i] == GRAPH_SEGMENT_UNKNOWN) {
+    if (!mayClassify) return false;
+    s.segment[i] = graphIsBreak(program, graphColumnX(s, i), graphColumnX(s, i + 1)) ? GRAPH_SEGMENT_BROKEN
+                                                                                    : GRAPH_SEGMENT_JOINED;
+  }
+  return s.segment[i] == GRAPH_SEGMENT_JOINED;
+}
+
+// ----- Fitting y to what's visible -----
+
+// The range to show. Normally all of the curve; with poles the extreme values would flatten everything
+// else, so the most extreme few percent go off screen. False if nothing is computed yet or there are no points.
+inline bool graphFitY(GraphSamples& s, double& ymin, double& ymax) {
+  int n = 0;
+  for (int i = s.lo; i < s.hi; i++) {
+    if (std::isfinite(s.y[i])) s.sorted[n++] = s.y[i];
+  }
+  if (n == 0) return false;
+  std::sort(s.sorted, s.sorted + n);
+  double low = s.sorted[0], high = s.sorted[n - 1];
+  const double middle = (double)s.sorted[n - 1 - n / 10] - (double)s.sorted[n / 10];
+  if (high - low > 8 * middle) {
+    const int cut = n * 3 / 100;
+    if (s.sorted[n - 1 - cut] > s.sorted[cut]) {
+      low = s.sorted[cut];
+      high = s.sorted[n - 1 - cut];
+    }
+  }
+  const double size = std::max(std::fabs(low), std::fabs(high));
+  if (high - low <= 1e-6 * size || high - low == 0) {
+    // A flat line: float samples can't tell it from one with invisible wiggles
+    const double pad = std::max(1.0, size * 0.1);
+    ymin = low - pad;
+    ymax = high + pad;
+  } else {
+    const double margin = (high - low) * 0.08;
+    ymin = low - margin;
+    ymax = high + margin;
+  }
+  return true;
+}
+
+// The y range on screen follows the fit smoothly and ignores small changes, so tick numbers don't flicker
+struct GraphYView {
+  double min, max, targetMin, targetMax;
+  bool ready;
+};
+
+inline void graphYViewFollow(GraphYView& view, double fitMin, double fitMax) {
+  const double tolerance = 0.15 * (view.targetMax - view.targetMin);
+  if (!view.ready) {
+    view.min = view.targetMin = fitMin;
+    view.max = view.targetMax = fitMax;
+    view.ready = true;
+  } else if (std::fabs(fitMin - view.targetMin) > tolerance || std::fabs(fitMax - view.targetMax) > tolerance) {
+    view.targetMin = fitMin;
+    view.targetMax = fitMax;
+  }
+}
+
+inline void graphYViewEase(GraphYView& view, float dt) {
+  const double k = std::min(1.0, 8.0 * (double)dt);
+  view.min += (view.targetMin - view.min) * k;
+  view.max += (view.targetMax - view.max) * k;
+}
+
+// ----- Tick numbers -----
+
+// A round step (1, 2 or 5 times a power of ten) for at most about maxTicks ticks in this range
+inline double graphNiceStep(double range, int maxTicks) {
+  if (!std::isfinite(range) || range <= 0 || maxTicks < 1) return 1;
+  const double rough = range / maxTicks;
+  const double magnitude = std::pow(10.0, std::floor(std::log10(rough)));
+  const double n = rough / magnitude;
+  return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * magnitude;
+}
+
+// Writes 2e+06 as 2e6: the screen is narrow
+inline void graphShortenExponent(char* text) {
+  char* e = strchr(text, 'e');
+  if (!e) return;
+  char* from = e + 1;
+  char* to = e + 1;
+  if (*from == '+') {
+    from++;
+  } else if (*from == '-') {
+    *to++ = *from++;
+  }
+  while (*from == '0' && from[1]) from++;
+  while (*from) *to++ = *from++;
+  *to = 0;
+}
+
+// The number at tick k: built from the step, so no 0.30000001 and no -0
+inline void graphFormatTick(long k, double step, char* out, size_t size) {
+  if (k == 0) {
+    snprintf(out, size, "0");
+    return;
+  }
+  const double value = (double)k * step;
+  if (std::fabs(value) >= 1e6 || step < 1e-4) {
+    snprintf(out, size, "%.2g", value);
+    graphShortenExponent(out);
+  } else {
+    int decimals = 0;
+    for (double scaled = step; decimals < 5 && std::fabs(scaled - std::floor(scaled + 0.5)) > 1e-6 * scaled; scaled *= 10) {
+      decimals++;
+    }
+    snprintf(out, size, "%.*f", decimals, value);
+  }
+}
+
+// A value at the dot. scale is the size of what's on screen: much smaller than that is rounding, so 0.
+inline void graphFormatValue(double value, double scale, char* out, size_t size) {
+  if (!std::isfinite(value)) {
+    snprintf(out, size, "--");
+  } else if (value == 0 || std::fabs(value) < scale * 1e-4) {
+    snprintf(out, size, "0");
+  } else if (std::fabs(value) >= 1000 && std::fabs(value) < 1e6) {
+    snprintf(out, size, "%.0f", value);
+  } else {
+    snprintf(out, size, "%.3g", value);
+    graphShortenExponent(out);
+  }
+}
+
+// ----- Where to start -----
+
+// The window to open with: around 0 if the curve is there, otherwise where it is.
+// False if there's nothing to draw anywhere near: sqrt(-1), 1/0, sqrt(x-1000).
+inline bool graphFindStart(const GraphProgram& program, double defaultHalfWidth, double& centerX) {
+  const double scans[] = {defaultHalfWidth, 20, 100};
+  for (const double halfWidth : scans) {
+    const double step = halfWidth / (GRAPH_COLUMNS / 2);
+    int count = 0;
+    double first = 0, last = 0;
+    for (int i = 0; i < GRAPH_COLUMNS; i++) {
+      const double x = (i - GRAPH_COLUMNS / 2) * step;
+      if (!std::isfinite(graphToSample(graphEval(program, x)))) continue;
+      if (count++ == 0) first = x;
+      last = x;
+    }
+    if (count >= 2) {
+      // Two points at least: a single one, like sqrt(-x^2) at 0, is not a graph
+      const bool mostlyThere = count >= GRAPH_COLUMNS * 6 / 10;
+      centerX = mostlyThere ? 0 : (first + last) / 2;
+      return true;
+    }
+  }
+  return false;
 }

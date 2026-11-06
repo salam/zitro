@@ -10,7 +10,7 @@
 - Before use the whole file is checked: magic, flags, counts against the caps before any multiplication, exact length, CRC-32, id equals the requested id, text fields terminated and valid UTF-8, every index in range, no degenerate triangle, colour index in range, coordinates within radius 1 plus rounding.
 - Label from the file, in the device language. Footer: label and source short form.
 - A file with the schematic flag shows "Schema" / "Schematic" as its source, and "Vereinfachtes Schema" / "Simplified schematic" on an amber tag in every frame. The firmware decides this from the flag, so a schematic can't show as data.
-- Drawing: flat-shaded faces with a fixed light, faces turned away dropped, far to near by 256 depth buckets, cost linear in triangles whatever the turn. Working arrays in internal RAM if there's room, otherwise PSRAM. All freed in `end()` and `unload()`.
+- Drawing: flat-shaded faces with a fixed light, faces turned away dropped, far to near by 256 depth buckets, cost linear in triangles whatever the turn. Working arrays in internal RAM if there's room, otherwise PSRAM: 12 KB for the largest model, 22.5 KB at the file limits. All freed in `end()` and `unload()`.
 - `turnsWithGyro` true. Button B: zoom, 3 steps. Button C: back to the text.
 - Budget: 25 frames per second. See the table. Every 5 s the serial log prints `anatomy <id> triangles= drawnMax= zoom= fps= drawMs= drawMaxMs= work= sprite= freeHeap=`. **Not yet measured on a stick.**
 
@@ -46,7 +46,7 @@ Build: `python -I scripts/make_anatomy_data.py --sources <folder>` needs numpy a
 
 ## User guide
 
-Ask how a body part or cell looks inside, or ask for it in 3D: "Wie sieht das Herz innen aus?", "Zeig mir das Gehirn in 3D", "Wie ist eine Pflanzenzelle aufgebaut?"
+Ask for a body part in 3D, or ask how a cell looks inside: "Zeig mir das Herz in 3D", "Zeig mir das Gehirn in 3D", "Wie ist eine Pflanzenzelle aufgebaut?"
 
 Zitro knows the heart, brain, lungs, stomach, liver, kidney, skeleton, skull, eye and hand bones. It also knows the animal cell, plant cell, red blood cell and nerve cell. For anything else, or when a model can't be loaded, you see a picture as usual.
 
@@ -64,7 +64,7 @@ The organs are real shapes from anatomy research, made simple enough for this sm
 
 - Required credit: "BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International".
 - Changes to indicate: selected parts, reduced polygon count, recoloured, quantised.
-- **The licence statements conflict.** The licence page and README (https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html, updated 2025-02-27) say CC BY 4.0. The header inside each OBJ file, dated 2013, says CC BY-SA 2.1 Japan. `index.json` states both and offers the derived files under share-alike as well, which satisfies both readings. Only the owner can decide whether to keep that or rely on the newer statement.
+- **The licence statements conflict.** The licence page and README (https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html, updated 2025-02-27) say CC BY 4.0. The header inside each OBJ file, dated 2013, says CC BY-SA 2.1 Japan. `index.json` states both and also offers the derived files under CC BY-SA 4.0, which satisfies both readings: clause 5.2 of the 2.1 Japan licence allows a later version with the same licence elements. Only the owner can decide whether to keep that or rely on the newer statement.
 
 **Human Reference Atlas, 3D Reference Organ for Lung, Male, v1.3** (HuBMAP): lungs. https://lod.humanatlas.io/ref-organ/lung-male/v1.3/, file https://cdn.humanatlas.io/digital-objects/ref-organ/lung-male/v1.3/assets/3d-vh-m-lung.glb. The record gives CC BY 4.0 with no fixed wording, so `index.json` credits it by name. Used because BodyParts3D has bronchial trees and arteries for the lungs but no outer surface.
 

@@ -28,7 +28,9 @@ import numpy as np
 
 SHARE_ALIKE_NOTE = (
     "The BodyParts3D licence page (updated 2025-02-27) says CC BY 4.0. The headers inside the OBJ files, dated 2013, "
-    "still say CC BY-SA 2.1 Japan. These derived files are therefore also offered under CC BY-SA, which satisfies both."
+    "still say CC BY-SA 2.1 Japan. These derived files are therefore also offered under CC BY-SA 4.0 "
+    "(https://creativecommons.org/licenses/by-sa/4.0/), which satisfies both: clause 5.2 of the 2.1 Japan licence allows "
+    "a later version with the same licence elements."
 )
 CREDITS = {
     "bp3d": {

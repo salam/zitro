@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zitro — The AI you ask and put down</title>
+    <meta name="description" content="Zitro is a pocket-sized AI you ask out loud. It answers on a small screen, then goes quiet. No feed, no notifications, no account. zitro.spot">
+    <link rel="canonical" href="https://zitro.spot/">
+    <meta name="theme-color" content="#f4efe6">
+    <meta property="og:type" content="product">
+    <meta property="og:site_name" content="Zitro">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Zitro — The AI you ask and put down">
+    <meta property="og:description" content="Zitro is a pocket-sized AI you ask out loud. It answers on a small screen, then goes quiet. No feed, no notifications, no account. zitro.spot">
+    <meta property="og:url" content="https://zitro.spot/">
+    <meta property="og:image" content="https://zitro.spot/images/og-zitro.jpg">
+    <meta property="og:image:secure_url" content="https://zitro.spot/images/og-zitro.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Zitro — a pocket-sized AI stick held up against green leaves">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zitro — The AI you ask and put down">
+    <meta name="twitter:description" content="Zitro is a pocket-sized AI you ask out loud. It answers on a small screen, then goes quiet. No feed, no notifications, no account. zitro.spot">
+    <meta name="twitter:image" content="https://zitro.spot/images/og-zitro.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://zitro.spot/#org",
+          "name": "Zitro",
+          "url": "https://zitro.spot/",
+          "logo": "https://zitro.spot/images/og-zitro.jpg",
+          "founder": {
+            "@type": "Person",
+            "name": "Matthias Sala",
+            "url": "https://matthias.sala.ch"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://zitro.spot/#website",
+          "name": "Zitro",
+          "url": "https://zitro.spot/"
+        },
+        {
+          "@type": "Product",
+          "@id": "https://zitro.spot/#product",
+          "name": "Zitro",
+          "description": "Zitro is a pocket-sized AI you ask out loud. It answers on a small screen — as text, a graph, or a real photo — then goes quiet. No feed, no notifications, no account, no camera on your face.",
+          "image": "https://zitro.spot/images/og-zitro.jpg",
+          "brand": {
+            "@type": "Brand",
+            "name": "Zitro"
+          },
+          "category": "AI voice assistant device",
+          "offers": {
+            "@type": "AggregateOffer",
+            "lowPrice": "25",
+            "highPrice": "50",
+            "priceCurrency": "USD",
+            "offerCount": "2",
+            "url": "https://zitro.spot/shop.html"
+          }
+        }
+      ]
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Instrument+Sans:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="images/zitro-hero-2.webp" imagesrcset="images/zitro-hero-2.webp 1x, images/zitro-hero-2@2x.webp 2x">
+    <link rel="stylesheet" href="styles.css?v=1.1.4">
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="wordmark" href="#top" aria-label="Zitro home">zitro<span class="wordmark-dot">.</span><span class="wordmark-tld">spot</span></a>
+            <nav class="site-nav" id="siteNav">
+                <a href="#features">Features</a>
+                <a href="#edges">For you</a>
+                <a href="compare.html">Compare</a>
+                <a href="#about">About</a>
+                <a href="shop.html">Shop</a>
+            </nav>
+            <div class="header-actions">
+                <button id="downloadBtnTop" class="btn btn-primary btn-small">Get Zitro</button>
+                <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+                    <span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="top">
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container">
+                <p class="eyebrow reveal">A first AI for curious minds</p>
+                <h1 class="reveal">Ask. Look&nbsp;up. Carry&nbsp;on.</h1>
+                <p class="tagline reveal">Zitro is the AI you ask and put down. One question, one answer — then it goes quiet. No feed, no account, nothing to scroll.</p>
+
+                <!-- Download / get flow -->
+                <div class="download-section reveal">
+                    <div class="cta-row">
+                        <button id="downloadBtn" class="btn btn-primary">Get Zitro</button>
+                        <a href="#features" class="btn btn-ghost">See what it does</a>
+                    </div>
+
+                    <div id="deviceQuestion" class="panel device-question hidden">
+                        <div class="device-question-header">
+                            <div>
+                                <h3>Do you have an M5StickC PLUS2?</h3>
+                                <p class="panel-note">Zitro runs on this tiny open device.</p>
+                            </div>
+                            <img src="images/m5stickc-product.webp" alt="M5StickC PLUS2" class="device-thumbnail">
+                        </div>
+                        <div class="device-buttons">
+                            <button id="hasDeviceYes" class="btn btn-outline">Yes, I have one</button>
+                            <button id="hasDeviceNo" class="btn btn-outline">Not yet</button>
+                        </div>
+                    </div>
+
+                    <div id="emailForm" class="panel email-form hidden">
+                        <div class="platform-toggle" role="group" aria-label="Choose platform">
+                            <button class="platform-btn active" data-platform="mac">macOS</button>
+                            <button class="platform-btn" data-platform="windows">Windows</button>
+                        </div>
+                        <form id="downloadForm">
+                            <input type="email" id="emailInput" placeholder="Enter your email" required>
+                            <button type="submit" class="btn btn-primary submit-btn">Send download link</button>
+                        </form>
+                        <p class="privacy-note">A download link will be delivered to you. You will receive updates when the product advances. We respect your privacy. You can always opt out.</p>
+                    </div>
+
+                    <div id="successMessage" class="panel success-message hidden">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <p>Check your email for the download link.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container hero-figure-wrap">
+                <figure class="hero-figure reveal">
+                    <!-- slideshow paused: re-enable by uncommenting this slide
+                    <img class="hero-slide" src="images/zitro-hero.webp" srcset="images/zitro-hero.webp 1x, images/zitro-hero@2x.webp 2x" alt="Zitro — a pocket-sized AI stick resting on a leaf" loading="lazy">
+                    -->
+                    <img class="hero-slide is-active" src="images/zitro-hero-2.webp" srcset="images/zitro-hero-2.webp 1x, images/zitro-hero-2@2x.webp 2x" alt="Zitro held up against green trees, screen at rest" loading="eager" fetchpriority="high" decoding="async">
+                    <figcaption class="mono">zitro · 17 g · fits a pocket, a zip, a lanyard</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Proof strip -->
+        <section class="proof-strip" aria-label="What Zitro doesn't have">
+            <div class="container">
+                <p class="proof-numbers reveal"><span>0 feeds</span><span class="proof-dot">·</span><span>0 notifications</span><span class="proof-dot">·</span><span>0 ads</span></p>
+                <p class="proof-sub mono reveal">it answers, then goes dark</p>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="how-section">
+            <div class="container">
+                <div class="how-grid">
+                    <div class="how-step reveal">
+                        <span class="how-num mono">01</span>
+                        <h3>Press</h3>
+                        <p>One button. It listens only while you hold the moment — never before, never after.</p>
+                    </div>
+                    <div class="how-step reveal">
+                        <span class="how-num mono">02</span>
+                        <h3>Ask</h3>
+                        <p>Any question, out loud, in your own language. Why is the sky blue? What's 12% of 340?</p>
+                    </div>
+                    <div class="how-step reveal">
+                        <span class="how-num mono">03</span>
+                        <h3>Look up</h3>
+                        <p>Read the answer — words, a graph, or a real photo. Then the screen fades, and the moment is yours again.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Edges: who it's for -->
+        <section id="edges" class="edges-section">
+            <div class="container">
+                <h2 class="section-title reveal">One quiet device,<br>four good reasons</h2>
+
+                <div class="edge-grid">
+                    <a class="edge-card tint-lemon reveal" href="learn.html">
+                        <span class="edge-kicker">For young minds</span>
+                        <h3>A first AI that teaches judgment</h3>
+                        <p>Kids ask out loud, read the answer, and check where it came from. Sensitivity for what AI can and can't do — built through practice, not lectures.</p>
+                        <span class="edge-more">Explore AI literacy</span>
+                    </a>
+
+                    <a class="edge-card reveal" href="compare.html">
+                        <span class="edge-kicker">For young adults</span>
+                        <h3>AI without a camera on your face</h3>
+                        <p>All the answers, none of the always-on glasses. Nothing you wear that films the room, records your friends, or reports to an account.</p>
+                        <span class="edge-more">Compare the gadgets</span>
+                    </a>
+
+                    <a class="edge-card tint-sky reveal" href="detox.html">
+                        <span class="edge-kicker">For screen detox</span>
+                        <h3>Be in the moment</h3>
+                        <p>One answer, then the screen goes dark. No feed to fall into, no notification pulling you back — the fact without the lost afternoon.</p>
+                        <span class="edge-more">Read the detox story</span>
+                    </a>
+
+                    <a class="edge-card tint-sage reveal" href="create.html">
+                        <span class="edge-kicker">For creators</span>
+                        <h3>From idea to paper</h3>
+                        <p>Generate images, steer stories, pull real photos — then print the keeper and pin it to the fridge. Answers that leave the screen entirely.</p>
+                        <span class="edge-more">See what you can make</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title reveal">Everyday brilliance,<br>quietly delivered</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-card w-3 tint-lemon reveal">
+                        <div class="card-icon" aria-hidden="true">💬</div>
+                        <h3>Smart conversations</h3>
+                        <p>Ask your AI assistant anytime and get short, clear answers.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="card-icon" aria-hidden="true">⚡</div>
+                        <h3>Instant answers</h3>
+                        <p>Quick, accurate responses without reaching for your phone or computer.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <div class="card-icon" aria-hidden="true">🚸</div>
+                        <h3>Family-friendly</h3>
+                        <p>A safe first step into AI for kids — learning its potential and its limits.</p>
+                    </div>
+
+                    <div class="feature-card w-3 reveal">
+                        <div class="card-icon" aria-hidden="true">🎨</div>
+                        <h3>Image creation</h3>
+                        <p>Generate simple visuals for inspiration, right on the little screen.</p>
+                    </div>
+
+                    <div class="feature-card w-1 tint-sky reveal">
+                        <div class="card-icon" aria-hidden="true">📱</div>
+                        <h3>Ultra portable</h3>
+                        <p>Fits in your pocket, works anywhere you go.</p>
+                        <p class="small">Current model needs a WiFi connection.</p>
+                    </div>
+
+                    <div class="feature-card w-3 reveal">
+                        <div class="card-icon" aria-hidden="true">🎯</div>
+                        <h3>Focused experience</h3>
+                        <p>A distraction-free interface designed for clarity — nothing pulls you back in.</p>
+                    </div>
+
+                    <div class="feature-card tint-lemon reveal">
+                        <div class="card-icon" aria-hidden="true">🌈</div>
+                        <h3>Surprise mode</h3>
+                        <p>Shake it for one delightful fact. Then it stops. That's the feature.</p>
+                    </div>
+
+                    <div class="feature-card w-3 reveal">
+                        <div class="card-icon" aria-hidden="true">🖼️</div>
+                        <h3>Wikipedia photos</h3>
+                        <p>Real, attributable photos from matching articles — zoom and pan included.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <div class="card-icon" aria-hidden="true">🧮</div>
+                        <h3>Math &amp; science</h3>
+                        <p>Hard questions route to <a href="https://www.wolframalpha.com/" target="_blank" rel="noopener">Wolfram Alpha</a> — sometimes the answer is a graph.</p>
+                        <p class="small">Experimental.</p>
+                    </div>
+
+                    <div class="feature-card w-3 reveal">
+                        <div class="card-icon" aria-hidden="true">🗣️</div>
+                        <h3>Voice settings</h3>
+                        <p>Change any setting by speaking naturally. "Volume to 100" or "switch to English" — in German and English.</p>
+                    </div>
+
+                    <div class="feature-card w-3 tint-sky reveal">
+                        <div class="card-icon" aria-hidden="true">⏱️</div>
+                        <h3>Timers &amp; reminders</h3>
+                        <p>"Remind me in 90 minutes about the laundry." Alerts appear on screen, even from sleep.</p>
+                    </div>
+
+                    <div class="feature-card w-1 reveal">
+                        <div class="card-icon" aria-hidden="true">📷</div>
+                        <h3>Camera</h3>
+                        <p>Snap a photo and get kid-friendly AI analysis of objects and plants.</p>
+                        <p class="small">Requires optional M5 camera module.</p>
+                    </div>
+
+                    <div class="feature-card w-3 tint-lemon reveal">
+                        <div class="card-icon" aria-hidden="true">🖨️</div>
+                        <h3>Print</h3>
+                        <p>Send generated or found images to a printer over AirPrint/WiFi.</p>
+                        <p class="small">Experimental. Works with some printers.</p>
+                    </div>
+
+                    <div class="feature-card reveal">
+                        <div class="card-icon" aria-hidden="true">📶</div>
+                        <h3>Easy setup</h3>
+                        <p>Connect to the "zitro" WiFi and the settings page opens on your phone. Two minutes, no app.</p>
+                    </div>
+
+                    <div class="feature-card tint-sage reveal">
+                        <div class="card-icon" aria-hidden="true">🌍</div>
+                        <h3>Bilingual &amp; beyond</h3>
+                        <p>Full interface in German and English. Displays text in 30+ languages including Greek, Cyrillic, and Hebrew.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stat band -->
+        <section class="stat-band">
+            <div class="container">
+                <div class="stat-band-card reveal">
+                    <div class="stat">
+                        <span class="stat-value">1</span>
+                        <span class="stat-label mono">button to ask</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">30+</span>
+                        <span class="stat-label mono">languages on screen</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">17&nbsp;g</span>
+                        <span class="stat-label mono">in your pocket</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">$25</span>
+                        <span class="stat-label mono">once — no subscription after</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Compare teaser -->
+        <section class="compare-teaser">
+            <div class="container">
+                <div class="compare-teaser-card reveal">
+                    <h2>How does it stack up?</h2>
+                    <p>Glasses that film, pins that always listen, a phone that keeps you scrolling — see the honest pros and cons of every AI gadget, side by side.</p>
+                    <a href="compare.html" class="btn btn-primary">Compare the gadgets</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials hidden for now (restore by removing this comment wrapper)
+        
+        <section id="stories" class="testimonials-section">
+            <div class="container">
+                <h2 class="section-title reveal">Loved by makers<br>&amp; curious families</h2>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card reveal">
+                        <p class="quote">"Zitro changed how I interact with AI. It's always there when inspiration strikes."</p>
+                        <div class="author">
+                            <img src="https://i.pravatar.cc/100?img=12" alt="Sarah Chen">
+                            <div>
+                                <strong>Sarah Chen</strong>
+                                <span>Product Designer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card reveal">
+                        <p class="quote">"The perfect balance of simplicity and power. I use it every single day."</p>
+                        <div class="author">
+                            <img src="https://i.pravatar.cc/100?img=33" alt="Marcus Rodriguez">
+                            <div>
+                                <strong>Marcus Rodriguez</strong>
+                                <span>Developer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-card reveal">
+                        <p class="quote">"Having AI in my pocket feels like living in the future. Absolutely brilliant device."</p>
+                        <div class="author">
+                            <img src="https://i.pravatar.cc/100?img=45" alt="Emma Thompson">
+                            <div>
+                                <strong>Emma Thompson</strong>
+                                <span>Writer</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+        <!-- About -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="about-card reveal">
+                    <div class="about-image">
+                        <img src="images/portrait-matthias.webp" alt="Matthias">
+                    </div>
+                    <div class="about-text">
+                        <h2>Built by Matthias</h2>
+                        <p>Hi, I'm Matthias, the creator of Zitro — a developer, a maker, and a father of three. Like most parents, I live the tension every day: I want to protect my kids from the overwhelming digital world, and at the same time I don't want to lock them out of it. They should grow up educated about AI — seeing its potential for creativity, knowledge, and agility, and learning its limits first-hand.</p>
+                        <p>Zitro is my answer to that tension: a device that answers their questions and then hands the moment back. No feed, no account, nothing pulling them in deeper. Curiosity in, an honest answer out, and eyes back on the world.</p>
+                        <p>It started as an experiment at the intersection of hardware and software — "what if your AI assistant could fit in your pocket and work anywhere?" — and turned into something my own kids reach for. I hope it brings your family as much joy and curiosity as it brings ours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Open source -->
+        <section id="github" class="github-section">
+            <div class="container">
+                <div class="github-card reveal">
+                    <div class="github-icon" aria-hidden="true">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </div>
+                    <h2>Open source</h2>
+                    <p>Zitro's firmware is open source and built in the open. Explore the code, contribute, or build your own.</p>
+                    <a href="https://github.com/salam/zitro" class="github-link" id="githubLink">
+                        <span>View on GitHub</span>
+                        <span class="stars" id="starCount">★ Loading...</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-card reveal">
+                    <h3>Stay in the loop</h3>
+                    <p>Get updates on new features, integrations, and fun facts. No spam, unsubscribe anytime.</p>
+                    <form id="newsletterForm" class="newsletter-form">
+                        <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
+                        <button type="submit" class="btn btn-primary newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>zitro<span class="wordmark-dot">.</span>spot</h3>
+                    <p>The AI you ask and put down.</p>
+                </div>
+                <div class="footer-cols">
+                    <div class="footer-col">
+                        <span class="footer-col-head">Explore</span>
+                        <a href="learn.html">Young minds</a>
+                        <a href="detox.html">Screen detox</a>
+                        <a href="create.html">Creativity</a>
+                        <a href="shop.html">Shop</a>
+                        <a href="#about">About</a>
+                        <a href="https://github.com/salam/zitro" target="_blank" rel="noopener">GitHub</a>
+                    </div>
+                    <div class="footer-col">
+                        <a class="footer-col-head" href="compare.html">Compare</a>
+                        <a href="compare.html#glasses">Meta Ray-Ban glasses</a>
+                        <a href="compare.html#pins">Humane, Limitless &amp; Bee pins</a>
+                        <a href="compare.html#rabbit">Rabbit R1</a>
+                        <a href="compare.html#phone">Phone + chat app</a>
+                        <a href="compare.html#speaker">Smart speakers</a>
+                        <a href="compare.html#compare">Full spec table</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built by <a href="https://matthias.sala.ch" target="_blank" rel="noopener">Matthias Sala</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="site.js?v=1.0.0"></script>
+    <script src="script.js?v=1.1.2"></script>
+</body>
+</html>

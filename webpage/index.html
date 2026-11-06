@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebird - Your AI Stick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo-only.webp" alt="Firebird">
+            </div>
+            <nav>
+                <a href="#features">Features</a>
+                <a href="#compare">Compare</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#about">About</a>
+                <a href="shop.html">Shop</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <img src="images/hero2.webp" alt="Firebird AI Stick">
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Firebird,<br><span class="gradient-text">your AI Stick</span></h1>
+                <p class="tagline">Carry your AI everywhere. Pocket-sized intelligence for a budget that fits your lifestyle.</p>
+
+                <!-- Download Section -->
+                <div class="download-section">
+                    <button id="downloadBtn" class="cta-button">Get Firebird</button>
+
+                    <div id="deviceQuestion" class="device-question hidden">
+                        <div class="device-question-header">
+                            <h3>Do you have an M5StickC PLUS2?</h3>
+                            <img src="images/m5stickc-product.webp" alt="M5StickC PLUS2" class="device-thumbnail">
+                        </div>
+                        <div class="device-buttons">
+                            <button id="hasDeviceYes" class="device-btn">Yes</button>
+                            <button id="hasDeviceNo" class="device-btn">No</button>
+                        </div>
+                    </div>
+
+                    <div id="emailForm" class="email-form hidden">
+                        <div class="platform-toggle">
+                            <button class="platform-btn active" data-platform="mac">macOS</button>
+                            <button class="platform-btn" data-platform="windows">Windows</button>
+                        </div>
+                        <form id="downloadForm">
+                            <input type="email" id="emailInput" placeholder="Enter your email" required>
+                            <button type="submit" class="submit-btn">Send Download Link</button>
+                        </form>
+                        <p class="privacy-note">A download link will be delivered to you. You will receive updates when the product advances. We respect your privacy. You can always opt out.</p>
+                    </div>
+
+                    <div id="successMessage" class="success-message hidden">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <p>Check your email for the download link!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Carousel -->
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop" alt="User 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=600&fit=crop" alt="User 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=600&fit=crop" alt="User 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=600&fit=crop" alt="User 4">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=600&fit=crop" alt="User 5">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=600&fit=crop" alt="User 6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Pinterest Style) -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2>Designed for<br><span class="gradient-text">everyday brilliance</span></h2>
+
+            <div class="masonry-grid">
+                <div class="feature-card color-2">
+                    <div class="card-icon">🎨</div>
+                    <h3>Image Creation</h3>
+                    <p>Generate simple visuals for inspiration.</p>
+                </div>
+
+                <div class="feature-card color-3">
+                    <div class="card-icon">💬</div>
+                    <h3>Smart Conversations</h3>
+                    <p>Ask your AI assistant anytime to get short answers.</p>
+                </div>
+
+                <div class="feature-card color-4">
+                    <div class="card-icon">⚡</div>
+                    <h3>Instant Answers</h3>
+                    <p>Get quick, accurate responses to your questions without using your phone or computer.</p>
+                </div>
+
+                <div class="feature-card color-5">
+                    <div class="card-icon">🚸</div>
+                    <h3>Family-friendly</h3>
+                    <p>Want to enable your kids to make first steps with AI to learn about its potential and risks?</p>
+                </div>
+
+                <div class="feature-card color-6">
+                    <div class="card-icon">📱</div>
+                    <h3>Ultra Portable</h3>
+                    <p>Fits in your pocket, works anywhere you go.</p>
+                    <p class="small">Current model needs WiFi connection.</p>
+                </div>
+
+                <div class="feature-card color-1">
+                    <div class="card-icon">🎯</div>
+                    <h3>Focused Experience</h3>
+                    <p>Distraction-free interface designed for clarity and inspiration.</p>
+                </div>
+
+                <div class="feature-card color-2">
+                    <div class="card-icon">🌈</div>
+                    <h3>Surprise Mode</h3>
+                    <p>Daily delightful surprises that spark creativity and joy.</p>
+                </div>
+
+                <div class="feature-card color-3">
+                    <div class="card-icon">🖼️</div>
+                    <h3>Wikipedia photos</h3>
+                    <p>Zoom and interact with related photos.</p>
+                </div>
+
+                <div class="feature-card color-4">
+                    <div class="card-icon">🖨️</div>
+                    <h3>Print</h3>
+                    <p>Print generated or search images on a printer through AirPrint/Wifi.</p>
+                    <p class="small">Experimental. Works with some printers.</p>
+                </div>
+
+                <div class="feature-card color-6">
+                    <div class="card-icon">🧮</div>
+                    <h3>Math & science</h3>
+                    <p>Get your hardest math questions answered by <a href="https://www.wolframalpha.com/" target="_blank" rel="noopener">Wolfram Alpha</a>.</p>
+                    <p class="small">Experimental.</p>
+                </div>
+
+                <div class="feature-card color-1">
+                    <div class="card-icon">🗣️</div>
+                    <h3>Voice Settings</h3>
+                    <p>Change any device setting by speaking naturally. Say "volume to 100" or "switch to English" — works in German and English.</p>
+                </div>
+
+                <div class="feature-card color-2">
+                    <div class="card-icon">⏱️</div>
+                    <h3>Timer & Reminders</h3>
+                    <p>Set timers and reminders by voice. "Remind me in 90 minutes about the laundry" or "set pomodoro timer". Alerts fire even during sleep.</p>
+                </div>
+
+                <div class="feature-card color-3">
+                    <div class="card-icon">📷</div>
+                    <h3>Camera</h3>
+                    <p>Snap a photo and get AI analysis. Identifies objects, plants, and shares kid-friendly facts about what it sees.</p>
+                    <p class="small">Requires optional M5 camera module.</p>
+                </div>
+
+                <div class="feature-card color-4">
+                    <div class="card-icon">📶</div>
+                    <h3>Easy Setup</h3>
+                    <p>Connect to the "zitro" WiFi and the settings page opens automatically. Configure WiFi, API key, language, and all device options from your phone.</p>
+                </div>
+
+                <div class="feature-card color-5">
+                    <div class="card-icon">🌍</div>
+                    <h3>Bilingual</h3>
+                    <p>Full interface in German and English. Displays text in 30+ languages including Greek, Cyrillic, and Hebrew.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Comparison -->
+    <section id="compare" class="compare-section">
+        <div class="container">
+            <h2>How does it<br><span class="gradient-text">stack up?</span></h2>
+
+            <div class="toggle-row">
+                <button class="toggle-btn" id="toggleExtras" aria-expanded="false">+ Full list</button>
+            </div>
+
+            <div class="compare-wrap">
+                <table class="compare" id="aiWearableCompare">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="highlight-col">Firebird AI-Stick</th>
+                            <th>OpenAI io (speculative)</th>
+                            <th>Apple AI (speculative)</th>
+                            <th>Meta Ray-Ban AI Glasses Gen 2</th>
+                            <th>Humane AI Pin</th>
+                            <th>Rabbit R1</th>
+                            <th class="extra-col">Limitless Pendant</th>
+                            <th class="extra-col">Plaud NotePin</th>
+                            <th class="extra-col">Bee AI pendant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Price (approx.)</th>
+                            <td class="highlight-col"><strong>$25</strong></td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>$379</td>
+                            <td>$699</td>
+                            <td>$199</td>
+                            <td class="extra-col">$99</td>
+                            <td class="extra-col">$159</td>
+                            <td class="extra-col">$49</td>
+                        </tr>
+                        <tr>
+                            <th>Subscription</th>
+                            <td class="highlight-col"><strong>–</strong></td>
+                            <td>Likely</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>$24/mo</td>
+                            <td>–</td>
+                            <td class="extra-col">Likely</td>
+                            <td class="extra-col">Optional</td>
+                            <td class="extra-col">Likely</td>
+                        </tr>
+                        <tr>
+                            <th>Cellular</th>
+                            <td class="highlight-col">–</td>
+                            <td>Likely</td>
+                            <td>Likely</td>
+                            <td>–</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                        </tr>
+                        <tr>
+                            <th>Wi-Fi</th>
+                            <td class="highlight-col">&#10003;</td>
+                            <td>Likely</td>
+                            <td>Likely</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                        </tr>
+                        <tr>
+                            <th>Always listening</th>
+                            <td class="highlight-col">–</td>
+                            <td>Likely</td>
+                            <td>Likely</td>
+                            <td>&#10003;</td>
+                            <td>–</td>
+                            <td>&#10003;</td>
+                            <td class="extra-col">&#10003;</td>
+                            <td class="extra-col">&#10003;</td>
+                            <td class="extra-col">&#10003;</td>
+                        </tr>
+                        <tr>
+                            <th>Compute location</th>
+                            <td class="highlight-col">On-device (ESP32)</td>
+                            <td>Hybrid edge + cloud</td>
+                            <td>Hybrid, likely iPhone offload</td>
+                            <td>On-device + phone + cloud</td>
+                            <td>On-device + cloud</td>
+                            <td>Hybrid</td>
+                            <td class="extra-col">Cloud</td>
+                            <td class="extra-col">Cloud</td>
+                            <td class="extra-col">Cloud</td>
+                        </tr>
+                        <tr>
+                            <th>Size</th>
+                            <td class="highlight-col">48 x 25 x 13 mm</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>? (varies by frame)</td>
+                            <td>47.5 x 44.5 x 8.25–14.98 mm</td>
+                            <td>78 x 78 x 13 mm</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                        </tr>
+                        <tr>
+                            <th>Weight</th>
+                            <td class="highlight-col"><strong>17 g</strong></td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>52 g</td>
+                            <td>34.2 g (booster 20.5 g)</td>
+                            <td>115 g</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                        </tr>
+                        <tr>
+                            <th>Battery capacity / life</th>
+                            <td class="highlight-col">200 mAh</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>Up to 8 h (plus case)</td>
+                            <td>~4 h (up to 9 h with booster)</td>
+                            <td>1000 mAh</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                            <td class="extra-col">?</td>
+                        </tr>
+                        <tr>
+                            <th>Display</th>
+                            <td class="highlight-col">1.14" TFT</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>Laser projection</td>
+                            <td>2.88" LCD</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                        </tr>
+                        <tr>
+                            <th>Camera</th>
+                            <td class="highlight-col">Optional</td>
+                            <td>&#10003; Likely </td>
+                            <td>&#10003; Likely </td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                        </tr>
+                        <tr>
+                            <th>Speaker</th>
+                            <td class="highlight-col">&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003;</td>
+                            <td>&#10003; (open-ear)</td>
+                            <td>&#10003;</td>
+                            <td>&#10003; (2W)</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                            <td class="extra-col">–</td>
+                        </tr>
+                        <tr>
+                            <th>Privacy model</th>
+                            <td class="highlight-col">Local firmware</td>
+                            <td>?</td>
+                            <td>Likely local-first</td>
+                            <td>Recording LED indicator</td>
+                            <td>Trust light + manual trigger</td>
+                            <td>Cloud-processed queries</td>
+                            <td class="extra-col">Cloud memory archive</td>
+                            <td class="extra-col">Audio-first recording</td>
+                            <td class="extra-col">Continuous audio capture</td>
+                        </tr>
+                        <tr>
+                            <th>LLM model</th>
+                            <td class="highlight-col">–</td>
+                            <td>OpenAI (likely GPT-5+)</td>
+                            <td>Apple Foundation Models</td>
+                            <td>Meta AI (Llama family)</td>
+                            <td>OpenAI (cloud)</td>
+                            <td>Cloud LLM (Rabbit OS)</td>
+                            <td class="extra-col">Proprietary</td>
+                            <td class="extra-col">Transcription LLM</td>
+                            <td class="extra-col">Proprietary</td>
+                        </tr>
+                        <tr>
+                            <th>Apps / extensibility</th>
+                            <td class="highlight-col">Programmable firmware</td>
+                            <td>?</td>
+                            <td>Apple ecosystem</td>
+                            <td>Meta AI app + integrations</td>
+                            <td>Limited, no native apps</td>
+                            <td>Limited integrations</td>
+                            <td class="extra-col">Companion app</td>
+                            <td class="extra-col">Note-taking integrations</td>
+                            <td class="extra-col">Limited</td>
+                        </tr>
+                        <tr>
+                            <th>Availability</th>
+                            <td class="highlight-col"><strong>Available now</strong></td>
+                            <td>~2026 (rumored)</td>
+                            <td>?</td>
+                            <td>Released (Gen 2)</td>
+                            <td>Apr 2024, shutdown Feb 2025</td>
+                            <td>Released 2024</td>
+                            <td class="extra-col">Released 2024</td>
+                            <td class="extra-col">Released 2024</td>
+                            <td class="extra-col">Released 2024</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <h2>Loved by<br><span class="gradient-text">makers & creators</span></h2>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="quote">"Firebird changed how I interact with AI. It's always there when inspiration strikes."</p>
+                    <div class="author">
+                        <img src="https://i.pravatar.cc/100?img=12" alt="Sarah Chen">
+                        <div>
+                            <strong>Sarah Chen</strong>
+                            <span>Product Designer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="quote">"The perfect balance of simplicity and power. I use it every single day."</p>
+                    <div class="author">
+                        <img src="https://i.pravatar.cc/100?img=33" alt="Marcus Rodriguez">
+                        <div>
+                            <strong>Marcus Rodriguez</strong>
+                            <span>Developer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <p class="quote">"Having AI in my pocket feels like living in the future. Absolutely brilliant device."</p>
+                    <div class="author">
+                        <img src="https://i.pravatar.cc/100?img=45" alt="Emma Thompson">
+                        <div>
+                            <strong>Emma Thompson</strong>
+                            <span>Writer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Matthias -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://i.pravatar.cc/300?img=60" alt="Matthias">
+                </div>
+                <div class="about-text">
+                    <h2>Built by<br><span class="gradient-text">Matthias</span></h2>
+                    <p>Hi, I'm Matthias, the creator of Firebird. I believe AI should be accessible, portable, and delightful to use. Firebird started as an experiment to bring AI assistants into the physical world in the most elegant way possible.</p>
+                    <p>As a developer and maker, I've always been fascinated by the intersection of hardware and software. Firebird is my answer to the question: "What if your AI assistant could fit in your pocket and work anywhere?"</p>
+                    <p>I hope Firebird brings you as much joy and productivity as it has brought me in creating it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GitHub Section -->
+    <section id="github" class="github-section">
+        <div class="container">
+            <div class="github-card">
+                <div class="github-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                </div>
+                <h2>Open Source</h2>
+                <p>Firebird is open source and built by the community. Explore the code, contribute, or build your own.</p>
+                <a href="https://github.com/yourusername/firebird" class="github-link" id="githubLink">
+                    <span>View on GitHub</span>
+                    <span class="stars" id="starCount">★ Loading...</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="newsletter-icon">⟩</div>
+                <h3>Stay in the Loop</h3>
+                <p>Get updates on new features, integrations, and fun facts. No spam, unsubscribe anytime.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Firebird</h3>
+                    <p>Your AI Stick</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#features">Features</a>
+                    <a href="#compare">Compare</a>
+                    <a href="#testimonials">Testimonials</a>
+                    <a href="#about">About</a>
+                    <a href="https://github.com/yourusername/firebird" target="_blank">GitHub</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built by <a href="https://matthias.sala.ch" target="_blank" rel="noopener">Matthias Sala</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js?v=1.0.0"></script>
+    <script>
+    (function () {
+        var btn = document.getElementById("toggleExtras");
+        var table = document.getElementById("aiWearableCompare");
+        var extras = table.querySelectorAll(".extra-col");
+        btn.addEventListener("click", function () {
+            var expanded = btn.getAttribute("aria-expanded") === "true";
+            extras.forEach(function (el) { el.style.display = expanded ? "none" : ""; });
+            btn.setAttribute("aria-expanded", expanded ? "false" : "true");
+            btn.textContent = expanded ? "+ Full list" : "– Hide extras";
+        });
+    })();
+    </script>
+</body>
+</html>

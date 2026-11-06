@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Firebird AI Stick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo-only.webp" alt="Firebird">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#testimonials">Testimonials</a>
+                <a href="index.html#about">About</a>
+                <a href="shop.html">Shop</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <div class="shop-content">
+                <div class="product-showcase">
+                    <img src="images/M5StickC.webp" alt="Firebird AI Stick" class="product-image">
+                    <div class="product-info">
+                        <h1>Firebird AI Stick</h1>
+                        <p class="product-subtitle">Pre-flashed M5StickC PLUS2</p>
+                        <div class="product-price">
+                            <span class="price-amount">$50</span>
+                            <span class="price-note">+ shipping</span>
+                        </div>
+                        <ul class="product-features">
+                            <li>✓ M5StickC PLUS2 device (<a href="https://docs.m5stack.com/en/core/M5StickC%20PLUS2" target="_blank" rel="noopener">Specs</a>)</li>
+                            <li>✓ <a href="index.html">Firebird</a> firmware pre-installed</li>
+                            <li>✓ Ready to use out of the box</li>
+                            <li>✓ Voice-controlled settings & timers</li>
+                            <li>✓ German & English interface</li>
+                            <li>✓ Easy phone-based setup (captive portal)</li>
+                            <li>✓ USB-C cable included</li>
+                            <li>✓ 30-day warranty</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="order-form-container">
+                    <h2>Order Your Firebird</h2>
+
+                    <form id="orderForm" class="order-form">
+                        <div class="form-section">
+                            <h3>Shipping Address</h3>
+
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">Street Address</label>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" name="city" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="state">State/Province</label>
+                                    <input type="text" id="state" name="state" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="zip">ZIP/Postal Code</label>
+                                    <input type="text" id="zip" name="zip" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="country">Country</label>
+                                    <select id="country" name="country" required>
+                                        <option value="">Select country</option>
+                                        <option value="US">United States</option>
+                                        <option value="CA">Canada</option>
+                                        <option value="GB">United Kingdom</option>
+                                        <option value="DE">Germany</option>
+                                        <option value="FR">France</option>
+                                        <option value="IT">Italy</option>
+                                        <option value="ES">Spain</option>
+                                        <option value="NL">Netherlands</option>
+                                        <option value="BE">Belgium</option>
+                                        <option value="CH">Switzerland</option>
+                                        <option value="AT">Austria</option>
+                                        <option value="AU">Australia</option>
+                                        <option value="NZ">New Zealand</option>
+                                        <option value="JP">Japan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Order Summary</h3>
+
+                            <div class="summary-line">
+                                <span>Firebird AI Stick</span>
+                                <span>$50.00</span>
+                            </div>
+
+                            <div class="summary-line" id="shippingLine">
+                                <span>Shipping (<span id="shippingCountry">-</span>)</span>
+                                <span id="shippingCost">$0.00</span>
+                            </div>
+
+                            <div class="summary-line total">
+                                <span>Total</span>
+                                <span id="totalCost">$50.00</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="checkoutButton" class="checkout-btn">
+                            Proceed to Payment
+                        </button>
+                    </form>
+
+                    <div id="usShippingMessage" class="us-shipping-message hidden">
+                        <p>We currently don't ship to the US. You can order the Stick on <a href="https://www.amazon.de/-/en/Official-M5StickC-Development-ESP32-PICO-V3-02-Controller/dp/B0CWFN391J" target="_blank" rel="noopener">Amazon</a> and then install the Firebird app with our <a href="index.html?download=true">Installer</a>.</p>
+                    </div>
+
+                    <div class="payment-note">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Secure checkout powered by Stripe
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="newsletter-icon">⟩</div>
+                <h3>Stay in the Loop</h3>
+                <p>Get updates on new features, integrations, and fun facts. No spam, unsubscribe anytime.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Firebird</h3>
+                    <p>Your AI Stick</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html#features">Features</a>
+                    <a href="index.html#testimonials">Testimonials</a>
+                    <a href="index.html#about">About</a>
+                    <a href="https://github.com/yourusername/firebird" target="_blank">GitHub</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built by <a href="https://matthias.sala.ch" target="_blank" rel="noopener">Matthias Sala</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="shop.js?v=1.0.0"></script>
+</body>
+</html>

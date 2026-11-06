@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake - Firebird AI Stick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="snake.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo-only.webp" alt="Firebird">
+                </a>
+            </div>
+            <nav>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#testimonials">Testimonials</a>
+                <a href="index.html#about">About</a>
+                <a href="shop.html">Shop</a>
+                <a href="snake.html" aria-current="page">Snake</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="snake-section">
+            <div class="container">
+                <div class="snake-shell">
+                    <article class="snake-card">
+                        <h1>Classic Snake</h1>
+                        <p class="snake-help">Arrow keys or WASD to move. Press <strong>P</strong> or <strong>Space</strong> to pause.</p>
+
+                        <div class="snake-hud">
+                            <div class="snake-stat">
+                                <span>Score</span>
+                                <strong id="snakeScore">0</strong>
+                            </div>
+                            <div class="snake-stat">
+                                <span>Status</span>
+                                <strong id="snakeStatus">Running</strong>
+                            </div>
+                        </div>
+
+                        <div id="snakeBoard" class="snake-board" role="grid" aria-label="Snake game board"></div>
+
+                        <div class="snake-actions">
+                            <button id="snakePauseBtn" class="snake-btn" type="button">Pause</button>
+                            <button id="snakeRestartBtn" class="snake-btn restart" type="button">Restart</button>
+                        </div>
+
+                        <div class="snake-mobile-controls" aria-label="On-screen direction controls">
+                            <button type="button" class="snake-control-btn" data-direction="up" aria-label="Move up">↑</button>
+                            <button type="button" class="snake-control-btn" data-direction="left" aria-label="Move left">←</button>
+                            <button type="button" class="snake-control-btn" data-direction="down" aria-label="Move down">↓</button>
+                            <button type="button" class="snake-control-btn" data-direction="right" aria-label="Move right">→</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Firebird</h3>
+                    <p>Your AI Stick</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html#features">Features</a>
+                    <a href="index.html#testimonials">Testimonials</a>
+                    <a href="index.html#about">About</a>
+                    <a href="shop.html">Shop</a>
+                    <a href="snake.html">Snake</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built by <a href="https://matthias.sala.ch" target="_blank" rel="noopener">Matthias Sala</a>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="snake-logic.js?v=1.0.0"></script>
+    <script src="snake.js?v=1.0.0"></script>
+</body>
+</html>

@@ -1,13 +1,13 @@
-// Pure logic of the anatomy view: closed model list, file check, projection, sorting, flat light.
+// Pure logic of the anatomy view: closed model list, file check, the two views, projection, sorting, flat light.
 // Plain C++ with no Arduino includes, tested on the host: tests/anatomy/run.sh
 //
 // File "ZAN1", little endian, made by scripts/make_anatomy_data.py:
 //   0  char[4]  magic "ZAN1"
-//   4  u8       flags (bit 0: schematic, built from textbook structure and not measured data)
+//   4  u8       flags (bit 0: schematic, built from textbook structure and not measured data; bit 1: cut open)
 //   5  u8       palette entries, 1 to 8
 //   6  u16      vertices
 //   8  u16      triangles
-//   10 u16      reserved, 0
+//   10 u16      cut open: first filled triangle, 0 if none. Otherwise 0
 //   12 char[16] id
 //   28 char[24] German label
 //   52 char[24] English label
@@ -16,7 +16,12 @@
 //   116 i16[3]  per vertex: x right, y up, z towards the viewer; radius 1 is 32767
 //   ... u16[3]  per triangle: counter-clockwise seen from outside
 //   ... u8      per triangle: palette index
+//   ... cut open only: u8 legend lines, 1 to 8, then per line u8 palette index (0xFF: a note with no colour),
+//       char[20] German, char[20] English, ASCII only
 //   ... u32     CRC-32 of everything before it
+//
+// A cut file holds everything behind the plane z = 0, seen from +z. Filled triangles lie on that plane, so they're
+// in front of everything else in every allowed view and are drawn last, in file order.
 #pragma once
 
 #include <math.h>
@@ -29,12 +34,18 @@
 #define ANATOMY_MAX_VERTICES 2500
 #define ANATOMY_MAX_TRIANGLES 3500
 #define ANATOMY_MAX_PALETTE 8
+#define ANATOMY_MAX_LEGEND 8
+#define ANATOMY_LEGEND_NOTE 0xFF
+#define ANATOMY_LEGEND_TEXT 20
+#define ANATOMY_LEGEND_SIZE (1 + 2 * ANATOMY_LEGEND_TEXT)
 #define ANATOMY_FLAG_SCHEMATIC 0x01
+#define ANATOMY_FLAG_CUT 0x02
 #define ANATOMY_HEADER_SIZE 116
 #define ANATOMY_BODY_LIMIT \
-  (ANATOMY_HEADER_SIZE + 6 * ANATOMY_MAX_VERTICES + 7 * ANATOMY_MAX_TRIANGLES + 4)
+  (ANATOMY_HEADER_SIZE + 6 * ANATOMY_MAX_VERTICES + 7 * ANATOMY_MAX_TRIANGLES + 1 + ANATOMY_MAX_LEGEND * ANATOMY_LEGEND_SIZE + 4)
 #define ANATOMY_DEPTH_BUCKETS 256
 #define ANATOMY_SHADES 16
+#define ANATOMY_FILL_SHADE 13
 #define ANATOMY_NO_TRIANGLE 0xFFFF
 
 // The closed list: file name on the server, and what the AI may ask for. Nothing else reaches a URL.
@@ -42,9 +53,34 @@ static const char* const ANATOMY_IDS[] = {"heart", "brain", "lungs", "stomach", 
                                           "eye", "hand", "animal-cell", "plant-cell", "red-blood-cell", "neuron"};
 static const int ANATOMY_ID_COUNT = sizeof(ANATOMY_IDS) / sizeof(ANATOMY_IDS[0]);
 
+// Which views exist for each id, in the same order. An organ has a cut only if the sources really have its inside.
+// A cell is only a drawing, and what matters is inside, so its one file is already cut open.
+enum AnatomyKind : uint8_t { ANATOMY_OUTSIDE_ONLY, ANATOMY_OUTSIDE_AND_CUT, ANATOMY_CUT_ONLY };
+static const AnatomyKind ANATOMY_KINDS[] = {
+    ANATOMY_OUTSIDE_AND_CUT,  // heart
+    ANATOMY_OUTSIDE_AND_CUT,  // brain
+    ANATOMY_OUTSIDE_AND_CUT,  // lungs
+    ANATOMY_OUTSIDE_ONLY,     // stomach: one closed outer surface, nothing inside it in any source
+    ANATOMY_OUTSIDE_AND_CUT,  // liver
+    ANATOMY_OUTSIDE_AND_CUT,  // kidney
+    ANATOMY_OUTSIDE_ONLY,     // skeleton
+    ANATOMY_OUTSIDE_AND_CUT,  // skull
+    ANATOMY_OUTSIDE_AND_CUT,  // eye
+    ANATOMY_OUTSIDE_ONLY,     // hand: the bones already are its inside, and nothing lies within them
+    ANATOMY_CUT_ONLY,         // animal-cell
+    ANATOMY_CUT_ONLY,         // plant-cell
+    ANATOMY_CUT_ONLY,         // red-blood-cell
+    ANATOMY_CUT_ONLY,         // neuron
+};
+static_assert(sizeof(ANATOMY_KINDS) / sizeof(ANATOMY_KINDS[0]) == ANATOMY_ID_COUNT, "One kind per id");
+
+static const char ANATOMY_INSIDE_SUFFIX[] = "-inside";
+
 struct AnatomyModel {
   uint8_t flags, paletteCount;
   uint16_t vertexCount, triangleCount;
+  uint16_t frontFrom;  // Cut open: first filled triangle, 0 if none
+  uint8_t legendCount;
   const char* id;
   const char* labelDe;
   const char* labelEn;
@@ -53,6 +89,7 @@ struct AnatomyModel {
   const int16_t* vertices;    // 3 per vertex
   const uint16_t* triangles;  // 3 per triangle
   const uint8_t* colors;      // 1 per triangle
+  const uint8_t* legend;      // legendCount lines of ANATOMY_LEGEND_SIZE; never aligned
 };
 
 // Working memory for one frame
@@ -91,6 +128,35 @@ inline int anatomyFindId(const char* query) {
   return -1;
 }
 
+// "heart" or "heart-inside". False for anything off the list, and for the inside of something without one: then the
+// question gets the normal picture rather than a model that doesn't answer it.
+inline bool anatomyParseQuery(const char* query, int& index, bool& wantCut) {
+  index = -1;
+  wantCut = false;
+  if (!query) return false;
+  const size_t length = strlen(query);
+  const size_t suffix = sizeof(ANATOMY_INSIDE_SUFFIX) - 1;
+  char id[24];
+  bool inside = false;
+  if (length > suffix && length - suffix < sizeof(id) && strcmp(query + length - suffix, ANATOMY_INSIDE_SUFFIX) == 0) {
+    memcpy(id, query, length - suffix);
+    id[length - suffix] = 0;
+    inside = true;
+  } else if (length < sizeof(id)) {
+    memcpy(id, query, length + 1);
+  } else {
+    return false;
+  }
+  index = anatomyFindId(id);
+  if (index < 0) return false;
+  if (inside && ANATOMY_KINDS[index] == ANATOMY_OUTSIDE_ONLY) {
+    index = -1;
+    return false;
+  }
+  wantCut = inside || ANATOMY_KINDS[index] == ANATOMY_CUT_ONLY;
+  return true;
+}
+
 inline uint32_t anatomyCrc32(const uint8_t* data, size_t length) {
   uint32_t crc = 0xFFFFFFFFu;
   for (size_t i = 0; i < length; i++) {
@@ -114,26 +180,37 @@ inline bool anatomyTextOk(const uint8_t* field, size_t size, bool mayBeEmpty) {
 }
 
 // Checks everything before anything is used. data must be 2-byte aligned and outlive the model.
-// False for anything unexpected: the caller shows the picture instead.
-inline bool anatomyParse(const uint8_t* data, size_t length, const char* expectedId, AnatomyModel& out) {
+// False for anything unexpected: the caller shows the picture instead. expectCut says which of the two views this
+// must be. The flags have to match the closed list, so a cell can't show as data, nor an organ as a drawing.
+inline bool anatomyParse(const uint8_t* data, size_t length, const char* expectedId, bool expectCut, AnatomyModel& out) {
   memset(&out, 0, sizeof(out));
   if (!data || !expectedId || ((uintptr_t)data & 1) != 0) return false;
+  const int index = anatomyFindId(expectedId);
+  if (index < 0) return false;
   if (length < ANATOMY_HEADER_SIZE + 4 || length > ANATOMY_BODY_LIMIT) return false;
   if (memcmp(data, "ZAN1", 4) != 0) return false;
   const uint8_t flags = data[4];
   const uint8_t paletteCount = data[5];
   const uint16_t vertexCount = (uint16_t)(data[6] | (data[7] << 8));
   const uint16_t triangleCount = (uint16_t)(data[8] | (data[9] << 8));
-  if ((flags & ~ANATOMY_FLAG_SCHEMATIC) != 0) return false;
+  if ((flags & ~(ANATOMY_FLAG_SCHEMATIC | ANATOMY_FLAG_CUT)) != 0) return false;
+  if (((flags & ANATOMY_FLAG_CUT) != 0) != expectCut) return false;
+  if (((flags & ANATOMY_FLAG_SCHEMATIC) != 0) != (ANATOMY_KINDS[index] == ANATOMY_CUT_ONLY)) return false;
   if (paletteCount < 1 || paletteCount > ANATOMY_MAX_PALETTE) return false;
   if (vertexCount < 3 || vertexCount > ANATOMY_MAX_VERTICES) return false;
   if (triangleCount < 1 || triangleCount > ANATOMY_MAX_TRIANGLES) return false;
-  if (data[10] != 0 || data[11] != 0) return false;
+  const uint16_t frontFrom = (uint16_t)(data[10] | (data[11] << 8));
+  if (frontFrom != 0 && (!expectCut || frontFrom >= triangleCount)) return false;
   // The counts are capped above, so this can't overflow
   const size_t verticesAt = ANATOMY_HEADER_SIZE;
   const size_t trianglesAt = verticesAt + (size_t)vertexCount * 6;
   const size_t colorsAt = trianglesAt + (size_t)triangleCount * 6;
-  const size_t crcAt = colorsAt + triangleCount;
+  const size_t legendAt = colorsAt + triangleCount;
+  // Read before the CRC is trusted, so the length has to be there first
+  if (expectCut && length < legendAt + 1 + 4) return false;
+  const uint8_t legendCount = expectCut ? data[legendAt] : 0;
+  if (expectCut && (legendCount < 1 || legendCount > ANATOMY_MAX_LEGEND)) return false;
+  const size_t crcAt = expectCut ? legendAt + 1 + (size_t)legendCount * ANATOMY_LEGEND_SIZE : legendAt;
   if (length != crcAt + 4) return false;
   uint32_t storedCrc;
   memcpy(&storedCrc, data + crcAt, 4);
@@ -159,7 +236,24 @@ inline bool anatomyParse(const uint8_t* data, size_t length, const char* expecte
     if (colors[i] >= paletteCount) return false;
   }
 
+  const uint8_t* legend = expectCut ? data + legendAt + 1 : nullptr;
+  for (uint8_t i = 0; i < legendCount; i++) {
+    const uint8_t* line = legend + (size_t)i * ANATOMY_LEGEND_SIZE;
+    if (line[0] != ANATOMY_LEGEND_NOTE && line[0] >= paletteCount) return false;
+    for (int language = 0; language < 2; language++) {
+      const uint8_t* text = line + 1 + language * ANATOMY_LEGEND_TEXT;
+      if (!anatomyTextOk(text, ANATOMY_LEGEND_TEXT, false)) return false;
+      // The small font on the stick only knows ASCII
+      for (int k = 0; text[k]; k++) {
+        if (text[k] >= 0x80) return false;
+      }
+    }
+  }
+
   out.flags = flags;
+  out.frontFrom = frontFrom;
+  out.legendCount = legendCount;
+  out.legend = legend;
   out.paletteCount = paletteCount;
   out.vertexCount = vertexCount;
   out.triangleCount = triangleCount;
@@ -172,6 +266,68 @@ inline bool anatomyParse(const uint8_t* data, size_t length, const char* expecte
   out.triangles = triangles;
   out.colors = colors;
   return true;
+}
+
+// Palette index of a legend line, ANATOMY_LEGEND_NOTE for a note
+inline uint8_t anatomyLegendColor(const AnatomyModel& m, int line) {
+  return m.legend[(size_t)line * ANATOMY_LEGEND_SIZE];
+}
+
+inline const char* anatomyLegendText(const AnatomyModel& m, int line, bool german) {
+  return (const char*)m.legend + (size_t)line * ANATOMY_LEGEND_SIZE + 1 + (german ? 0 : ANATOMY_LEGEND_TEXT);
+}
+
+// What Button C does: the view asked for first, then the other one if there is one, then the text answer
+struct AnatomyViews {
+  bool hasOutside, hasCut, cutFirst, showingCut;
+};
+
+inline void anatomyViewsOpen(AnatomyViews& v) {
+  v.showingCut = v.hasCut && (v.cutFirst || !v.hasOutside);
+}
+
+// True if the press moved to the other view; false means back to the text.
+inline bool anatomyViewsPressC(AnatomyViews& v) {
+  if (!v.hasOutside || !v.hasCut || v.showingCut != v.cutFirst) return false;
+  v.showingCut = !v.showingCut;
+  return true;
+}
+
+// The cut must face the viewer, or there's nothing to see: the back of a half organ. The hand can turn it this far.
+static const float ANATOMY_CUT_LIMIT_COS = 0.5736f;  // cos 55 degrees; same as CUT_VIEW_LIMIT_DEG in the data script
+static const float ANATOMY_CUT_LIMIT_RAD = 0.9599f;
+static const float ANATOMY_CUT_START_X = 0.12f;
+static const float ANATOMY_CUT_START_Y = 0.32f;
+static const float ANATOMY_CUT_SWAY_RAD = 0.2f;  // Rocks a little by itself, so it still reads as 3D
+
+inline void anatomyCutStart(Mat3& r) {
+  mat3Identity(r);
+  mat3Rotate(r, ANATOMY_CUT_START_X, ANATOMY_CUT_START_Y, 0.0f);
+}
+
+// Turns r back as little as needed so the cut faces the viewer again
+inline void anatomyClampCut(Mat3& r) {
+  const float nx = r.m[2], ny = r.m[5], nz = r.m[8];
+  if (nz >= ANATOMY_CUT_LIMIT_COS) return;
+  float ax = ny, ay = -nx;  // n x z: turns n towards the viewer
+  const float length = sqrtf(ax * ax + ay * ay);
+  if (length < 1e-5f) {  // Facing straight away: either way round is as short
+    ax = 1.0f;
+    ay = 0.0f;
+  } else {
+    ax /= length;
+    ay /= length;
+  }
+  const float angle = acosf(nz < -1.0f ? -1.0f : nz) - ANATOMY_CUT_LIMIT_RAD;
+  mat3Rotate(r, ax * angle, ay * angle, 0.0f);
+}
+
+// The shared view has just turned r: by the hand, or by its idle spin when the hand is still. A cut ignores the idle spin,
+// which would turn it away. held is last frame's turn.
+inline void anatomyHoldCut(Mat3& r, Mat3& held, bool handMoving) {
+  if (!handMoving) r = held;
+  anatomyClampCut(r);
+  held = r;
 }
 
 // One unit normal per triangle, 3 values of -127..127, so the light costs one dot product per face
@@ -205,7 +361,8 @@ inline void anatomyBuildShades(const AnatomyModel& m, uint16_t* table) {
 }
 
 // Projects, drops faces turned away, sorts far to near and calls draw(x0, y0, x1, y1, x2, y2, color)
-// for each visible triangle. Linear in triangles whatever the turn, so no frame takes much longer than another.
+// for each visible triangle, then the filled ones of a cut. Linear in triangles whatever the turn, so no frame takes
+// much longer than another.
 // Returns the number of triangles drawn.
 template <typename DrawTriangle>
 inline uint16_t anatomyRender(const AnatomyModel& m, const int8_t* normals, const uint16_t* shades, const Mat3& rotation,
@@ -229,15 +386,20 @@ inline uint16_t anatomyRender(const AnatomyModel& m, const int8_t* normals, cons
   const int light[3] = {(int)((r[0] * lx + r[3] * ly + r[6] * lz) * 256), (int)((r[1] * lx + r[4] * ly + r[7] * lz) * 256),
                         (int)((r[2] * lx + r[5] * ly + r[8] * lz) * 256)};
 
-  for (int i = 0; i < ANATOMY_DEPTH_BUCKETS; i++) w.heads[i] = ANATOMY_NO_TRIANGLE;
-  for (uint16_t i = 0; i < m.triangleCount; i++) {
-    const uint16_t a = m.triangles[i * 3], b = m.triangles[i * 3 + 1], c = m.triangles[i * 3 + 2];
-    // Screen y points down, so a face turned to the viewer has a negative cross product
+  // Screen y points down, so a face turned to the viewer has a negative cross product
+  const auto facesViewer = [&](uint16_t a, uint16_t b, uint16_t c) {
     const int32_t cross = (int32_t)(w.sx[b] - w.sx[a]) * (w.sy[c] - w.sy[a]) - (int32_t)(w.sy[b] - w.sy[a]) * (w.sx[c] - w.sx[a]);
-    if (cross >= 0) continue;
+    if (cross >= 0) return false;
     const int32_t minX = anatomyMin3(w.sx[a], w.sx[b], w.sx[c]), maxX = anatomyMax3(w.sx[a], w.sx[b], w.sx[c]);
     const int32_t minY = anatomyMin3(w.sy[a], w.sy[b], w.sy[c]), maxY = anatomyMax3(w.sy[a], w.sy[b], w.sy[c]);
-    if (maxX < 0 || maxY < 0 || minX >= width || minY >= height) continue;
+    return !(maxX < 0 || maxY < 0 || minX >= width || minY >= height);
+  };
+  const uint16_t sortedCount = m.frontFrom ? m.frontFrom : m.triangleCount;
+
+  for (int i = 0; i < ANATOMY_DEPTH_BUCKETS; i++) w.heads[i] = ANATOMY_NO_TRIANGLE;
+  for (uint16_t i = 0; i < sortedCount; i++) {
+    const uint16_t a = m.triangles[i * 3], b = m.triangles[i * 3 + 1], c = m.triangles[i * 3 + 2];
+    if (!facesViewer(a, b, c)) continue;
     const int32_t depth = ((int32_t)w.depth[a] + w.depth[b] + w.depth[c]) / 3;
     int bucket = (depth + 1100) * ANATOMY_DEPTH_BUCKETS / 2200;
     if (bucket < 0) bucket = 0;
@@ -247,15 +409,20 @@ inline uint16_t anatomyRender(const AnatomyModel& m, const int8_t* normals, cons
   }
 
   uint16_t drawn = 0;
+  const auto drawOne = [&](uint16_t i) {
+    const uint16_t a = m.triangles[i * 3], b = m.triangles[i * 3 + 1], c = m.triangles[i * 3 + 2];
+    const int dot = (normals[i * 3] * light[0] + normals[i * 3 + 1] * light[1] + normals[i * 3 + 2] * light[2]) / 127;
+    int shade = dot <= 0 ? 0 : (dot * (ANATOMY_SHADES - 1)) / 256;
+    if (shade >= ANATOMY_SHADES) shade = ANATOMY_SHADES - 1;
+    if (i >= sortedCount) shade = ANATOMY_FILL_SHADE;  // A flat cut stays the same bright colour whichever way it's turned
+    draw(w.sx[a], w.sy[a], w.sx[b], w.sy[b], w.sx[c], w.sy[c], shades[m.colors[i] * ANATOMY_SHADES + shade]);
+    drawn++;
+  };
   for (int bucket = 0; bucket < ANATOMY_DEPTH_BUCKETS; bucket++) {
-    for (uint16_t i = w.heads[bucket]; i != ANATOMY_NO_TRIANGLE; i = w.next[i]) {
-      const uint16_t a = m.triangles[i * 3], b = m.triangles[i * 3 + 1], c = m.triangles[i * 3 + 2];
-      const int dot = (normals[i * 3] * light[0] + normals[i * 3 + 1] * light[1] + normals[i * 3 + 2] * light[2]) / 127;
-      int shade = dot <= 0 ? 0 : (dot * (ANATOMY_SHADES - 1)) / 256;
-      if (shade >= ANATOMY_SHADES) shade = ANATOMY_SHADES - 1;
-      draw(w.sx[a], w.sy[a], w.sx[b], w.sy[b], w.sx[c], w.sy[c], shades[m.colors[i] * ANATOMY_SHADES + shade]);
-      drawn++;
-    }
+    for (uint16_t i = w.heads[bucket]; i != ANATOMY_NO_TRIANGLE; i = w.next[i]) drawOne(i);
+  }
+  for (uint16_t i = sortedCount; i < m.triangleCount; i++) {
+    if (facesViewer(m.triangles[i * 3], m.triangles[i * 3 + 1], m.triangles[i * 3 + 2])) drawOne(i);
   }
   return drawn;
 }

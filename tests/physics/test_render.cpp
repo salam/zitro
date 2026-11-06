@@ -60,8 +60,9 @@ static void renderScenes() {
         for (int frame = 0; frame < 750; frame++) {
           // Frame times as on the stick: mostly steady, sometimes a slow one
           physicsDrawFrame(canvas, state, frame % 40 == 7 ? 0.1f : 0.04f);
-          if (lang == 0 && (frame == 25 || frame == 110)) {
-            canvas.footerStandIn(info.de);
+          const bool wanted = info.scene != PHYSICS_ATOM || p == 0 || p == 5 || p == 10 || p == 25 || p == 35;
+          if (lang == 0 && wanted && (frame == 25 || frame == 110)) {
+            canvas.footerStandIn(info.scene == PHYSICS_ATOM ? PHYSICS_ELEMENTS[p].de : info.de);
             snprintf(name, sizeof(name), "scene_%02d_%s_%d_%03d", i, info.id, p, frame);
             save(name);
           }

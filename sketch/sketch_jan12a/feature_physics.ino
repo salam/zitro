@@ -2,6 +2,7 @@
 #include "physics_draw.h"
 
 static int physicsSceneIndex = -1;
+static uint8_t physicsParam = 0;  // Kept while the view closes and opens again: Button C and back
 static bool physicsGerman = true;
 static PhysicsState* physicsState = nullptr;
 
@@ -10,15 +11,28 @@ static void physicsEnd() {
   physicsState = nullptr;
 }
 
+// The label must always name what's on screen, and an atom's name changes with Button B
+static void physicsSetLabel() {
+  const PhysicsSceneInfo& info = PHYSICS_SCENES[physicsSceneIndex];
+  if (info.scene == PHYSICS_ATOM) {
+    const PhysicsElement& element = PHYSICS_ELEMENTS[physicsParam];
+    modelLabel = physicsGerman ? element.de : element.en;
+    modelSourceName = "PubChem";
+  } else {
+    modelLabel = physicsGerman ? info.de : info.en;
+    modelSourceName = physicsGerman ? "berechnet" : "computed";
+  }
+}
+
 static bool physicsFetch(const char* query) {
-  physicsSceneIndex = physicsFindScene(query);
-  if (physicsSceneIndex < 0) return false;
+  int element = 0;
+  if (!physicsParseQuery(query, physicsSceneIndex, element)) return false;
+  physicsParam = element > 0 ? (uint8_t)(element - 1) : 0;
   Preferences settings;
   settings.begin("settings", true);
   physicsGerman = settings.getString("language", "DE") != "EN";
   settings.end();
-  modelLabel = physicsGerman ? PHYSICS_SCENES[physicsSceneIndex].de : PHYSICS_SCENES[physicsSceneIndex].en;
-  modelSourceName = physicsGerman ? "berechnet" : "computed";
+  physicsSetLabel();
   return true;
 }
 
@@ -30,6 +44,7 @@ static bool physicsBegin(M5Canvas& c) {
   if (!physicsState) return false;
   memset(physicsState, 0, sizeof(PhysicsState));
   physicsState->sceneIndex = (uint8_t)physicsSceneIndex;
+  physicsState->param = physicsParam;
   physicsState->scene = PHYSICS_SCENES[physicsSceneIndex].scene;
   physicsState->german = physicsGerman;
   physicsState->big = FontManager::getFont16pt();
@@ -46,7 +61,10 @@ static void physicsFrame(M5Canvas& c, float dt) {
 }
 
 static void physicsButtonB() {
-  if (physicsState) physicsSceneNextParam(*physicsState);
+  if (!physicsState) return;
+  physicsSceneNextParam(*physicsState);
+  physicsParam = physicsState->param;
+  physicsSetLabel();
 }
 
 // Button C goes back to the text in every scene: nobody gets stuck in one.

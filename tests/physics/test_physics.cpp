@@ -575,17 +575,49 @@ static void testPromptRule() {
     }
   }
   CHECK((int)listed.size() == PHYSICS_SCENE_COUNT);
-  for (const std::string& id : listed) CHECK(physicsFindScene(id.c_str()) >= 0);
+  for (const std::string& id : listed) {
+    if (id == "atom-<Symbol>") continue;
+    int scene, element;
+    CHECK(physicsParseQuery(id.c_str(), scene, element));
+  }
   for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+    const std::string wanted = PHYSICS_SCENES[i].scene == PHYSICS_ATOM ? "atom-<Symbol>" : PHYSICS_SCENES[i].id;
     bool found = false;
-    for (const std::string& id : listed) found = found || id == PHYSICS_SCENES[i].id;
+    for (const std::string& id : listed) found = found || id == wanted;
     CHECK(found);
   }
+}
+
+static void testAtomQueries() {
+  int scene, element;
+  CHECK(physicsParseQuery("atom-C", scene, element));
+  CHECK(element == 6);
+  CHECK(PHYSICS_SCENES[scene].scene == PHYSICS_ATOM);
+  CHECK(physicsParseQuery("atom-Fe", scene, element) && element == 26);
+  CHECK(physicsParseQuery("atom-fe", scene, element) && element == 26);
+  CHECK(physicsParseQuery("ATOM-KR", scene, element) && element == 36);
+  CHECK(physicsParseQuery("atom-iron", scene, element) && element == 26);
+  CHECK(physicsParseQuery("atom-H", scene, element) && element == 1);
+  // Symbols are matched whole: Co is cobalt, C is carbon, never a mix
+  CHECK(physicsParseQuery("atom-Co", scene, element) && element == 27);
+  // Lookup keeps working for the other scenes, with no element
+  CHECK(physicsParseQuery("lever", scene, element) && element == 0);
+  CHECK(PHYSICS_SCENES[scene].scene == PHYSICS_LEVER);
+  const char* bad[] = {"atom", "atom-", "atom-U", "atom-Rb", "atom-uranium", "atom-Xx", "atom-C ", "atom-C;",
+                       "atom--C", "ato-C", "", "unknown", "atom-\xFF", "atom-kohlenstoff"};
+  for (const char* q : bad) {
+    CHECK(!physicsParseQuery(q, scene, element));
+    CHECK(scene == -1);
+  }
+  CHECK(!physicsParseQuery(nullptr, scene, element));
+  std::string huge = "atom-" + std::string(100000, 'a');
+  CHECK(!physicsParseQuery(huge.c_str(), scene, element));
 }
 
 int main() {
   testScenes();
   testPromptRule();
+  testAtomQueries();
   testNumbers();
   testFalling();
   testFriction();

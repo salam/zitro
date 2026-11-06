@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "physics_atom_table.h"
+
 static const float PHYSICS_PI = 3.14159265358979f;
 static const float PHYSICS_DEG = PHYSICS_PI / 180.0f;
 static const float PHYSICS_G_EARTH = 9.81f;  // m/s2
@@ -482,7 +484,8 @@ enum PhysicsSceneId : uint8_t {
   PHYSICS_CIRCUIT,
   PHYSICS_MATTER,
   PHYSICS_SEASONS,
-  PHYSICS_MOON
+  PHYSICS_MOON,
+  PHYSICS_ATOM
 };
 
 struct PhysicsSceneInfo {
@@ -510,6 +513,7 @@ static const PhysicsSceneInfo PHYSICS_SCENES[] = {
     {"matter", "Aggregatzust\xC3\xA4nde", "States of matter", PHYSICS_MATTER, 3},
     {"seasons", "Jahreszeiten", "Seasons", PHYSICS_SEASONS, 4},
     {"moon", "Mondphasen", "Moon phases", PHYSICS_MOON, 2},
+    {"atom", "Atom", "Atom", PHYSICS_ATOM, PHYSICS_ELEMENT_COUNT},
 };
 static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
 
@@ -520,8 +524,25 @@ static const char PHYSICS_PROMPT_RULE[] =
     "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Warum knickt ein Stab im Wasser?' ergibt refraction, "
     "'Warum gibt es Jahreszeiten?' ergibt seasons, 'Warum sieht der Mond mal rund, mal schmal aus?' ergibt moon). "
     "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
-    "sound circuit matter seasons moon. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
+    "sound circuit matter seasons moon atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
+    "Kohlenstoffatom aufgebaut?' ergibt atom-C). Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";
+
+// Same letters, whatever the case
+inline bool physicsSameLetter(char a, char b) {
+  if (a >= 'A' && a <= 'Z') a = (char)(a - 'A' + 'a');
+  if (b >= 'A' && b <= 'Z') b = (char)(b - 'A' + 'a');
+  return a == b;
+}
+inline bool physicsSameWordStart(const char* text, const char* word) {
+  for (; *word; text++, word++) {
+    if (!*text || !physicsSameLetter(*text, *word)) return false;
+  }
+  return true;
+}
+inline bool physicsSameWord(const char* text, const char* word) {
+  return physicsSameWordStart(text, word) && text[strlen(word)] == 0;
+}
 
 // Scene from "<id>", case and spaces ignored. -1 if it isn't on the list.
 inline int physicsFindScene(const char* query) {
@@ -634,4 +655,37 @@ inline float physicsNextSeasonLongitude(float longitude) {
   int next = (int)(longitude / quarter) + 1;
   if (next > 3) next = 0;
   return next * quarter + 0.5f * PHYSICS_DEG;
+}
+
+// ---- Atoms ----
+static const float PHYSICS_ATOM_SPEED = 3.0f;  // Radians per second on the first shell
+
+// "atom-<symbol>", such as atom-C or atom-Fe; English names work too. Element number 1 to
+// PHYSICS_ELEMENT_COUNT, or 0 if it isn't one of them.
+inline int physicsFindElement(const char* name) {
+  if (!name || !name[0]) return 0;
+  for (int i = 0; i < PHYSICS_ELEMENT_COUNT; i++) {
+    const PhysicsElement& e = PHYSICS_ELEMENTS[i];
+    if (physicsSameWord(name, e.symbol) || physicsSameWord(name, e.en)) return i + 1;
+  }
+  return 0;
+}
+
+// Scene and, for atoms, element from the AI's query. False if it isn't on the closed list.
+inline bool physicsParseQuery(const char* query, int& sceneIndex, int& element) {
+  sceneIndex = -1;
+  element = 0;
+  if (!query) return false;
+  if (physicsSameWordStart(query, "atom-")) {
+    element = physicsFindElement(query + 5);
+    if (element == 0) return false;
+    for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+      if (PHYSICS_SCENES[i].scene == PHYSICS_ATOM) sceneIndex = i;
+    }
+    return sceneIndex >= 0;
+  }
+  sceneIndex = physicsFindScene(query);
+  // The atom scene only comes with an element
+  if (sceneIndex >= 0 && PHYSICS_SCENES[sceneIndex].scene == PHYSICS_ATOM) sceneIndex = -1;
+  return sceneIndex >= 0;
 }

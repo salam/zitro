@@ -2,7 +2,6 @@
 // pictures on the host. Everything that moves comes from physics_core.h.
 #pragma once
 
-#include "physics_atom_table.h"
 #include "physics_core.h"
 
 static const uint16_t PHYSICS_BLACK = 0x0000, PHYSICS_WHITE = 0xFFFF, PHYSICS_GREY = 0x8410, PHYSICS_DARK = 0x3186,
@@ -907,6 +906,48 @@ void physicsDrawMoon(C& c, PhysicsState& s, float dt) {
   }
 }
 
+// ---- Atoms: the shell model. Not to scale; speeds keep Bohr's 1/n^3 ratio, enormously slowed ----
+template <class C>
+void physicsDrawAtom(C& c, PhysicsState& s, float dt) {
+  const PhysicsElement& element = PHYSICS_ELEMENTS[s.param];
+  const int cx = 184, cy = 58, nucleus = 9, spacing = 11;
+  s.t += dt;
+  if (s.t > 3600.0f) s.t = 0;
+  int outer = 0;
+  for (int shell = 0; shell < 4; shell++) {
+    if (element.shells[shell] > 0) outer = shell;
+  }
+  for (int shell = 0; shell <= outer; shell++) {
+    const int radius = nucleus + (shell + 1) * spacing;
+    c.drawCircle(cx, cy, radius, PHYSICS_DARK);
+    const int count = element.shells[shell];
+    const int n = shell + 1;
+    const float turn = s.t * PHYSICS_ATOM_SPEED / (float)(n * n * n);
+    for (int k = 0; k < count; k++) {
+      const float a = turn + 2.0f * PHYSICS_PI * k / count;
+      c.fillCircle(cx + (int)(radius * cosf(a)), cy + (int)(radius * sinf(a)), 3,
+                   shell == outer ? PHYSICS_CITRUS : PHYSICS_BLUE);
+    }
+  }
+  c.fillCircle(cx, cy, nucleus, PHYSICS_RED);
+
+  char text[28];
+  physicsText(c, s.big, element.symbol, 4, 26, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, s.german ? element.de : element.en, 4, 50, PHYSICS_WHITE, textdatum_t::baseline_left);
+  const int protons = s.param + 1;
+  snprintf(text, sizeof(text), "%d %s", protons, protons == 1 ? physicsPick(s, "Proton", "proton") : physicsPick(s, "Protonen", "protons"));
+  physicsText(c, s.normal, text, 4, 72, PHYSICS_RED, textdatum_t::baseline_left);
+  snprintf(text, sizeof(text), "%d %s", protons, protons == 1 ? physicsPick(s, "Elektron", "electron") : physicsPick(s, "Elektronen", "electrons"));
+  physicsText(c, s.normal, text, 4, 92, PHYSICS_BLUE, textdatum_t::baseline_left);
+  // Electrons per shell, inside out
+  char shells[20] = "";
+  size_t used = 0;
+  for (int shell = 0; shell <= outer; shell++) {
+    used += (size_t)snprintf(shells + used, sizeof(shells) - used, shell == outer ? "%d" : "%d  ", element.shells[shell]);
+  }
+  physicsText(c, s.normal, shells, 4, 112, PHYSICS_CITRUS, textdatum_t::baseline_left);
+}
+
 // ---- The list ----
 
 // Starts the current scene over with the current setting
@@ -970,5 +1011,6 @@ void physicsDrawFrame(C& c, PhysicsState& s, float dt) {
     case PHYSICS_MATTER: physicsDrawMatter(c, s, dt); break;
     case PHYSICS_SEASONS: physicsDrawSeasons(c, s, dt); break;
     case PHYSICS_MOON: physicsDrawMoon(c, s, dt); break;
+    case PHYSICS_ATOM: physicsDrawAtom(c, s, dt); break;
   }
 }

@@ -1,0 +1,8 @@
+ZTL1	railways	Q3565868	Schienenverkehr	Rail transport	7	47758
+Q777026	1829	-	0	Rocket	Stephenson's Rocket	0	4193	138	96	52ef241e	-
+Q1398696	1830	-	0	Liverpool and Manchester Railway	Liverpool and Manchester Railway	4193	4378	119	96	04718b06	-
+Q688618	1882	-	0	Gotthardtunnel	Gotthard Tunnel	8571	7350	240	96	e19e6190	Mike Knell, CC BY-SA 2.0
+Q3175270	1923	-	0	LNER 4472 Flying Scotsman	LNER 4472 Flying Scotsman	15921	8221	240	96	e139a2fb	-
+Q164338	1964	-	0	Shinkansen	Shinkansen	24142	9650	240	96	9fd643b9	Rsa, CC BY-SA 3.0
+Q129337	1981	-	0	TGV	TGV	33792	7637	240	96	837a2eaf	S23725, CC BY-SA 4.0
+Q193002	2016	-	0	Gotthard-Basistunnel	Gotthard Base Tunnel	41429	6329	240	96	73dd6af2	Hannes Ortlieb ( Diskussion ), CC BY-SA 3.0 de

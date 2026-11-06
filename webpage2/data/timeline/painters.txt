@@ -1,0 +1,8 @@
+ZTL1	painters	Q11629	Malerei	Painting	7	16720
+Q762	1452	-	0	Leonardo da Vinci	Leonardo da Vinci	0	2122	67	96	4cde594c	-
+Q5598	1606	-	0	Rembrandt van Rijn	Rembrandt	2122	1608	74	96	b3fb1c03	-
+Q296	1840	-	0	Claude Monet	Claude Monet	3730	2155	72	96	133f70ca	-
+Q5582	1853	-	0	Vincent van Gogh	Vincent van Gogh	5885	2506	70	96	761d7d3a	Vincent van Gogh, CC BY-SA 4.0
+Q44007	1879	-	0	Paul Klee	Paul Klee	8391	2745	69	96	f627c13c	-
+Q5593	1881	-	0	Pablo Picasso	Pablo Picasso	11136	3286	82	96	6dd3c5ee	-
+Q5588	1907	-	0	Frida Kahlo	Frida Kahlo	14422	2298	80	96	9cfd89e0	-

@@ -1,0 +1,7 @@
+ZTL1	ancient_egypt	Q11768	Altes Ägypten	Ancient Egypt	6	27105
+Q37200	-2560	-	1	Cheops-Pyramide	Great Pyramid of Giza	0	6753	240	96	439d8540	Douwe C. van der Zee, CC BY-SA 4.0
+Q522862	-1900	-	0	Karnak-Tempel	Karnak Temple Complex	6753	5325	240	96	898fe491	Vyacheslav Argenberg, CC BY 4.0
+Q12154	-1343	-	1	Tutanchamun	Tutankhamun	12078	2651	68	96	9c592037	en:User:MykReeve, CC BY-SA 3.0
+Q134140	-1274	-	0	Tempel von Abu Simbel	Abu Simbel	14729	7919	240	96	ab9fe981	-
+Q48584	-196	-	0	Stein von Rosette	Rosetta Stone	22648	2262	82	96	f00bf7c0	Awikimate, CC BY-SA 4.0
+Q635	-69	-	1	Kleopatra VII.	Cleopatra	24910	2195	72	96	876c3784	-

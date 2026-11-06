@@ -1,0 +1,8 @@
+ZTL1	composers	Q36834	Komponist	Composer	7	18221
+Q1339	1685	-	0	Johann Sebastian Bach	Johann Sebastian Bach	0	2230	74	96	7570f693	-
+Q254	1756	-	0	Wolfgang Amadeus Mozart	Wolfgang Amadeus Mozart	2230	1935	75	96	ceba08b1	-
+Q255	1770	-	0	Ludwig van Beethoven	Ludwig van Beethoven	4165	2638	80	96	59b69e4e	-
+Q132232	1819	-	0	Clara Schumann	Clara Schumann	6803	2404	75	96	fa103b46	-
+Q7294	1833	-	0	Johannes Brahms	Johannes Brahms	9207	2136	73	96	94bb8c62	-
+Q7314	1882	-	0	Igor Strawinsky	Igor Stravinsky	11343	2493	79	96	37a5d9ce	-
+Q1299	1960	-	0	The Beatles	The Beatles	13836	4385	124	96	4e697a71	-

@@ -1,0 +1,8 @@
+ZTL1	explorers	Q133641	Zeitalter der Entdeckungen	Age of Discovery	7	39077
+Q18578423	1492	1504	0	Entdeckung Amerikas 1492	Voyages by Christopher Columbus	0	9314	240	96	c48da280	-
+Q1225170	1519	1522	0	Magellan-Expedition	Magellan-Elcano expedition	9314	6540	157	96	ee56854d	-
+Q3178839	1768	1771	0	Erste Reise von James Cook	First voyage of James Cook	15854	3257	240	96	571d33df	-
+Q505802	1804	1806	0	Lewis-und-Clark-Expedition	Lewis and Clark Expedition	19111	4258	123	96	11cecdae	-
+Q8414	1910	1912	0	Amundsens Fram-Expedition	Amundsen's South Pole expedition	23369	3003	157	96	22a0111b	-
+Q4567715	1953	-	0	Britische Mount-Everest-Expedition 1953	1953 British Mount Everest Expedition	26372	8359	240	96	df9e79b4	Pavel Novak, CC BY-SA 2.5
+Q43653	1969	-	0	Apollo 11	Apollo 11	34731	4346	122	96	8cdaf77e	-

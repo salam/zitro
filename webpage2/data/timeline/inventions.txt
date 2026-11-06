@@ -1,6 +1,8 @@
-ZTL1	inventions	Q12579633	Erfindung	Invention	5	16921
-Q11035	1876	-	0	Telefon	Telephone	0	3209	122	96	b2674573	Berthold Werner, CC BY-SA 3.0, resized
-Q47616	1879	-	0	Glühlampe	Incandescent light bulb	3209	1485	58	96	c206e5ba	KMJ, CC BY-SA 3.0, resized
-Q326248	1886	-	0	Benz Patent-Motorwagen Nummer 1	Benz Patent-Motorwagen	4694	6349	240	96	8f4b3e2c	DaimlerChrysler AG, CC BY-SA 3.0, resized
-Q688605	1903	-	0	Wright Flyer	Flyer I	11043	3652	240	96	6d7d7a32	Public domain
-Q466	1989	-	0	World Wide Web	World Wide Web	14695	2226	76	96	8fa54587	Web Summit, CC BY 2.0, resized
+ZTL1	inventions	Q12579633	Erfindung	Invention	7	26948
+Q144334	1439	-	1	Druckpresse	Printing press	0	2555	72	96	1363670d	-
+Q11035	1876	-	0	Telefon	Telephone	2555	3718	122	96	d50efa6f	Berthold Werner, CC BY-SA 3.0
+Q47616	1879	-	0	Glühlampe	Incandescent light bulb	6273	1648	58	96	bf08d5d2	KMJ, CC BY-SA 3.0
+Q326248	1886	-	0	Benz Patent-Motorwagen Nummer 1	Benz Patent-Motorwagen	7921	7323	240	96	38e07291	DaimlerChrysler AG, CC BY-SA 3.0
+Q688605	1903	-	0	Wright Flyer	Flyer I	15244	4348	240	96	28b64d3f	-
+Q12190	1928	-	0	Penicilline	Penicillin	19592	4796	196	96	6ac235bf	-
+Q466	1989	-	0	World Wide Web	World Wide Web	24388	2560	76	96	da05697c	Web Summit, CC BY 2.0

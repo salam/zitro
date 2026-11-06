@@ -1,0 +1,8 @@
+ZTL1	medicine	Q380274	Medizingeschichte	History of medicine	7	18405
+Q5264	-460	-	1	Hippokrates von Kos	Hippocrates	0	2648	69	96	db7fdd9e	-
+Q1037810	1798	-	0	Pockenimpfstoff	Smallpox vaccine	2648	3649	145	96	39e33577	-
+Q37103	1820	-	0	Florence Nightingale	Florence Nightingale	6297	2632	69	96	a619d35d	-
+Q529	1822	-	0	Louis Pasteur	Louis Pasteur	8929	2020	68	96	452e2ae6	-
+Q37064	1881	-	0	Alexander Fleming	Alexander Fleming	10949	2660	68	96	c7cda9a9	-
+Q12190	1928	-	0	Penicilline	Penicillin	13609	4796	196	96	6ac235bf	-
+Q1519099	1952	-	0	Polioimpfstoff	Polio vaccine	0	0	0	0	-	-

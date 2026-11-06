@@ -1,9 +1,9 @@
-ZTL1	world_wars	Q103495	Weltkrieg	World war	8	38248
-Q192050	1914	-	0	Attentat von Sarajevo	Assassination of Archduke Franz Ferdinand	0	2184	68	96	82212f95	Public domain
-Q361	1914	1918	0	Erster Weltkrieg	World War I	2184	4413	162	96	ad6b506c	CC BY-SA 2.5
-Q253224	1918	-	0	Waffenstillstand von Compiègne 1918	Armistice of Compiègne	6597	5739	240	96	2943be4f	Public domain
-Q8736	1919	-	0	Friedensvertrag von Versailles	Treaty of Versailles	12336	9383	240	96	559d5ed5	ToucanWings, CC BY-SA 3.0, resized
-Q362	1939	1945	0	Zweiter Weltkrieg	World War II	21719	3075	105	96	1ede5b48	San Jose, CC BY-SA 3.0, resized
-Q52418	1941	-	0	Angriff auf Pearl Harbor	Attack on Pearl Harbor	24794	3219	240	96	4d5c9e91	Public domain
-Q16470	1944	-	0	Operation Neptune	Normandy landings	28013	4252	155	96	51b75cd8	Public domain
-Q1065	1945	-	0	Vereinte Nationen	United Nations	32265	5983	240	96	892f0a09	Superbass, CC BY-SA 4.0, resized
+ZTL1	world_wars	Q103495	Weltkrieg	World war	8	44949
+Q192050	1914	-	0	Attentat von Sarajevo	Assassination of Archduke Franz Ferdinand	0	2470	68	96	3cd9c47f	-
+Q361	1914	1918	0	Erster Weltkrieg	World War I	2470	5261	162	96	00d2bbfe	CC BY-SA 2.5
+Q253224	1918	-	0	Waffenstillstand von Compiègne 1918	Armistice of Compiègne	7731	6793	240	96	f23ee2c1	-
+Q8736	1919	-	0	Friedensvertrag von Versailles	Treaty of Versailles	14524	11004	240	96	15a236b6	ToucanWings, CC BY-SA 3.0
+Q362	1939	1945	0	Zweiter Weltkrieg	World War II	25528	3595	105	96	257fbef3	San Jose, CC BY-SA 3.0
+Q52418	1941	-	0	Angriff auf Pearl Harbor	Attack on Pearl Harbor	29123	3869	240	96	ce94380a	-
+Q16470	1944	-	0	Operation Neptune	Normandy landings	32992	4950	155	96	b18bffbf	-
+Q1065	1945	-	0	Vereinte Nationen	United Nations	37942	7007	240	96	a9863b82	Superbass, CC BY-SA 4.0

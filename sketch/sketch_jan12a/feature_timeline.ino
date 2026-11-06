@@ -138,7 +138,10 @@ static void timelineEnd() {
   timelineFreeSlots();
   free(timelineLines);
   timelineLines = nullptr;
-  if (timelineData) modelLabel = timelineTitle();
+  if (timelineData) {
+    modelLabel = timelineTitle();
+    modelSourceName = "Wikidata";
+  }
   timelineFooterEvent = -1;
 }
 
@@ -348,7 +351,9 @@ static void timelineDrawFooter(M5Canvas& c) {
   if (timelineFooterEvent != timelineCurrent) {
     timelineFooterEvent = timelineCurrent;
     const TimelineEvent& e = timelineData->events[timelineCurrent];
-    modelLabel = e.hasImage && e.credit[0] ? e.credit : timelineTitle();
+    const bool credit = e.hasImage && e.credit[0];
+    modelLabel = credit ? e.credit : timelineTitle();
+    modelSourceName = credit ? "" : "Wikidata";  // A credit needs the room; the line is too short for both
   }
   eduDrawFooter(c, TIMELINE_COUNTER_W);
   char counter[12];

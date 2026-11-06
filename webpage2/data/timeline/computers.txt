@@ -1,0 +1,10 @@
+ZTL1	computers	Q68	Computer	Computer	9	43876
+Q169399	1946	-	0	ENIAC	ENIAC	0	9324	240	96	face617e	-
+Q223493	1975	-	0	Altair 8800	Altair 8800	9324	6066	240	96	1e5a1e65	Stahlkocher, CC BY-SA 3.0
+Q18981	1976	-	0	Apple I	Apple I	15390	6033	240	96	ac781565	-
+Q202712	1981	-	0	IBM Personal Computer	IBM Personal Computer	21423	2827	144	96	f70a714e	Rama & Musée Bolo, CC BY-SA 2.0 fr
+Q99775	1982	-	0	Commodore 64	Commodore 64	24250	5872	240	96	ea4d8e48	-
+Q1137478	1984	-	0	Macintosh 128k	Macintosh 128K	30122	2523	82	96	9667e23a	w:User:Grm wnr, CC BY-SA 3.0
+Q466	1989	-	0	World Wide Web	World Wide Web	32645	2560	76	96	da05697c	Web Summit, CC BY 2.0
+Q621427	2007	-	0	IPhone	IPhone	35205	1714	50	96	32b8d4ea	Rafael Fernandez, CC BY-SA 4.0
+Q245	2012	-	0	Raspberry Pi	Raspberry Pi	36919	6957	240	96	35402f5a	SimonWaldherr, CC BY-SA 4.0

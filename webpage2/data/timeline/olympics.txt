@@ -1,0 +1,9 @@
+ZTL1	olympics	Q5389	Olympische Spiele	Olympic Games	8	24768
+Q188468	-776	-	0	Olympische Spiele der Antike	Ancient Olympic Games	0	5534	240	96	d8553d64	-
+Q8080	1896	-	0	Olympische Sommerspiele 1896	1896 Summer Olympics	5534	10048	240	96	16554f3f	-
+Q8088	1900	-	0	Olympische Sommerspiele 1900	1900 Summer Olympics	0	0	0	0	-	-
+Q9583	1924	-	0	Olympische Winterspiele 1924	1924 Winter Olympics	15582	3422	68	96	afa4459f	-
+Q9615	1948	-	0	Olympische Winterspiele 1948	1948 Winter Olympics	0	0	0	0	-	-
+Q8420	1964	-	0	Olympische Sommerspiele 1964	1964 Summer Olympics	0	0	0	0	-	-
+Q8567	2008	-	0	Olympische Sommerspiele 2008	2008 Summer Olympics	19004	5764	198	96	394257aa	-
+Q995653	2024	-	0	Olympische Sommerspiele 2024	2024 Summer Olympics	0	0	0	0	-	-

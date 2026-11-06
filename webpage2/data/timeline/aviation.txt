@@ -1,0 +1,7 @@
+ZTL1	aviation	Q765633	Luftfahrt	Aviation	6	29488
+Q688605	1903	-	0	Wright Flyer	Flyer I	0	4348	240	96	28b64d3f	-
+Q939784	1927	-	0	Spirit of St. Louis	Spirit of St. Louis	4348	6097	240	96	ac597b3e	Raul654, CC BY-SA 3.0
+Q223365	1945	-	0	X-1	X-1	10445	3754	240	96	c87ed5da	-
+Q179	1969	-	0	Boeing 747	Boeing 747	14199	5761	240	96	1985d3a0	Iberia Airlines, CC BY 2.0
+Q6505	1969	-	0	Concorde	Concorde	19960	3605	240	96	6280966f	Eduard Marmet, CC BY-SA 3.0
+Q5830	2005	-	0	Airbus A380	Airbus A380	23565	5923	240	96	2775659d	CC BY-SA 2.0

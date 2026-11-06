@@ -1,6 +1,6 @@
-ZTL1	dinosaurs	Q430	Dinosaurier	Dinosaur	5	24875
-Q47158	-251902000	-201400000	1	Trias	Triassic	0	3943	240	96	f2cdf892	Matt Celeskey from Albuquerque, CC BY-SA 2.0, resized
-Q45805	-201400000	-145000000	1	Jura	Jurassic	3943	2991	188	96	09897ff8	Public domain
-Q44626	-145000000	-66000000	1	Kreide	Cretaceous	6934	7358	240	96	43b7e29f	Julian Fong, CC BY-SA 2.0, resized
-Q14332	-68000000	-66000000	0	Tyrannosaurus	Tyrannosaurus	14292	7931	240	96	9120d138	ScottRobertAnselmo, CC BY-SA 3.0, resized
-Q55811	-66000000	-	1	Kreide-Paläogen-Massenaussterben	Cretaceous-Paleogene mass extinction	22223	2652	138	96	18f438c3	Public domain
+ZTL1	dinosaurs	Q430	Dinosaurier	Dinosaur	5	29473
+Q47158	-251902000	-201400000	1	Trias	Triassic	0	4712	240	96	28971e01	Matt Celeskey from Albuquerque, CC BY-SA 2.0
+Q45805	-201400000	-145000000	1	Jura	Jurassic	4712	3477	188	96	9075ce16	-
+Q44626	-145000000	-66000000	1	Kreide	Cretaceous	8189	8837	240	96	bae87722	Julian Fong, CC BY-SA 2.0
+Q14332	-68000000	-66000000	0	Tyrannosaurus	Tyrannosaurus	17026	9394	240	96	6b945ced	ScottRobertAnselmo, CC BY-SA 3.0
+Q55811	-66000000	-	1	Kreide-Paläogen-Massenaussterben	Cretaceous-Paleogene mass extinction	26420	3053	138	96	5a6c1661	-

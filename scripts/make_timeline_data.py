@@ -6,8 +6,8 @@ Run with a Python that has Pillow, from anywhere:
         Builds everything, or only prints the resolved dates and labels.
     ... --candidates <topic>     Prints the Commons pictures Wikidata suggests for a topic's events.
                                  Only a list to choose from; nothing from it is used by itself.
-    ... --contact-sheets <dir>   Writes one captioned sheet per topic, of the pictures as prepared,
-                                 and a sheet of files not pinned yet. This is how you look at them.
+    ... --contact-sheets <dir>   Writes one captioned sheet per topic, of the pictures exactly as
+                                 prepared. This is how you look at them.
     ... --pin                    Records the current SHA-1 of every allow-listed picture. Do this only
                                  after looking at the sheets: from then on a changed file is refused.
 
@@ -56,7 +56,7 @@ MIN_PRECISION = 9  # Year. Deep time sets its own in the topic: millions of year
 IMAGE_W, IMAGE_H = 240, 96  # The picture band on screen; the device draws at exactly this size
 MAX_EVENTS = 20
 MAX_BUNDLE = 320 * 1024  # Downloaded into PSRAM in one go
-JPEG_QUALITY = 72
+JPEG_QUALITY = 80
 THUMB_SOURCE_WIDTH = 500  # A standard Wikimedia thumbnail step; other sizes may be refused
 LABEL_LIMIT = 60  # Bytes per label on the device
 LABEL_COMFORTABLE = 30  # Characters on one or two lines without trying a short name
@@ -142,7 +142,7 @@ def wiki_entities(client, titles):
                 "sites": "enwiki",
                 "titles": "|".join(chunk),
                 "props": "labels|claims|sitelinks",
-                "languages": "en|de",
+                "languages": "en|de|mul",
                 "sitefilter": "enwiki",
                 "redirects": "yes",
             },
@@ -231,7 +231,9 @@ def clean_label(text):
 def label_of(entity, language):
     """The Wikidata label. A short name only replaces one too long to read: short names are often
     bare abbreviations (WW2, HST) that mean nothing to a child."""
-    label = clean_label(entity.get("labels", {}).get(language, {}).get("value"))
+    labels = entity.get("labels", {})
+    # "mul" is Wikidata's label for all languages: a person's name usually only has that one
+    label = clean_label((labels.get(language) or labels.get("mul") or {}).get("value"))
     if label and len(label) <= LABEL_COMFORTABLE:
         return label
     short = [
@@ -300,11 +302,21 @@ def licence_problem(file_info):
 
 
 def credit_of(file_info):
-    """Credit for the file and the device: maker, licence, and that we resized it."""
+    """Credit for the credits page: maker, licence, and that we resized it."""
     licence = file_info["licence"] or file_info["code"]
     if not file_info["needs_credit"]:
         return licence
     return "%s, %s, resized" % (file_info["artist"], licence)
+
+
+def device_credit(file_info):
+    """What the bottom line shows: nothing if the licence asks for nothing, otherwise the maker and
+    licence, or the licence alone if that wouldn't fit. The credits page always has all of it."""
+    if not file_info["needs_credit"]:
+        return "-"
+    licence = file_info["licence"] or file_info["code"]
+    credit = "%s, %s" % (file_info["artist"], licence)
+    return credit if len(credit.encode()) <= CREDIT_LIMIT else licence
 
 
 def prepare_image(data, fit):
@@ -458,9 +470,8 @@ def build_topic(client, topic, events, infos, pins, config):
                     length = len(jpeg)
                     bundle += jpeg
                     digest = "%08x" % fnv1a(jpeg)
-                    full_credit = credit_of(infos[name])
-                    credit = full_credit if len(full_credit.encode()) <= CREDIT_LIMIT else infos[name]["licence"]
-                    credits.append((event, name, infos[name], full_credit))
+                    credit = device_credit(infos[name])
+                    credits.append((event, name, infos[name], credit_of(infos[name])))
         lines.append(
             "\t".join(
                 [event["qid"], str(event["year"]), str(event["end"]) if event["end"] else "-",

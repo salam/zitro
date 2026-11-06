@@ -1,0 +1,7 @@
+ZTL1	ancient_greece	Q11772	Antikes Griechenland	Ancient Greece	6	20417
+Q188468	-776	-	0	Olympische Spiele der Antike	Ancient Olympic Games	0	5534	240	96	d8553d64	-
+Q31900	-490	-	0	Schlacht bei Marathon	Battle of Marathon	5534	4443	240	96	43dc9231	karta24, CC BY 2.5
+Q913	-470	-	1	Sokrates	Socrates	9977	2491	72	96	d5f28583	-
+Q868	-384	-	0	Aristoteles	Aristotle	12468	2608	72	96	9ea182ef	-
+Q8409	-356	-	0	Alexander der Große	Alexander the Great	15076	3153	72	96	3d49181b	-
+Q8739	-287	-	1	Archimedes	Archimedes	18229	2188	73	96	6505211d	-

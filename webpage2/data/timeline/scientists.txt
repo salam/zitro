@@ -1,0 +1,8 @@
+ZTL1	scientists	Q901	Wissenschaftler	Scientist	7	17538
+Q307	1564	-	0	Galileo Galilei	Galileo Galilei	0	2348	78	96	5a4ee133	-
+Q1043	1707	-	0	Carl von Linné	Carl Linnaeus	2348	2219	79	96	739513df	-
+Q1035	1809	-	0	Charles Darwin	Charles Darwin	4567	2095	68	96	87a54965	-
+Q7259	1815	-	0	Ada Lovelace	Ada Lovelace	6662	2976	77	96	debd8633	-
+Q7186	1867	-	0	Marie Curie	Marie Curie	9638	2192	65	96	22818e08	-
+Q937	1879	-	0	Albert Einstein	Albert Einstein	11830	2584	78	96	cc8dff44	-
+Q17714	1942	-	0	Stephen Hawking	Stephen Hawking	14414	3124	67	96	497db0f5	-

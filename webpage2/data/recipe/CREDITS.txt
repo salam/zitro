@@ -12,7 +12,6 @@ Authors are listed in each page's history. Changes: wiki markup removed, charact
 "Basic Scrambled Eggs", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Basic_Scrambled_Eggs, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Blueberry Muffin", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Blueberry_Muffin, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Bolognese Sauce", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Bolognese_Sauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
-"Bratkartoffeln", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Bratkartoffeln, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Breakfast Waffles", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Breakfast_Waffles, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Brownies", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Brownies, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Cake Brownies", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Cake_Brownies, CC BY-SA 4.0; markup removed, characters adapted to the display.
@@ -41,7 +40,7 @@ Authors are listed in each page's history. Changes: wiki markup removed, charact
 "Gingerbread", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Gingerbread, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Griechischer Salat", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Griechischer_Salat, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Grießbrei", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Grie%C3%9Fbrei, CC BY-SA 4.0; markup removed, characters adapted to the display.
-"Grilled Cheese Sandwich", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Grilled_Cheese_Sandwich, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Grilled Cheese Sandwich II", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Grilled_Cheese_Sandwich_II, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Guacamole", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Guacamole, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Gurkensalat", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Gurkensalat, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Hamburger", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Hamburger, CC BY-SA 4.0; markup removed, characters adapted to the display.
@@ -55,7 +54,6 @@ Authors are listed in each page's history. Changes: wiki markup removed, charact
 "Lasagne Bolognese", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Lasagne_Bolognese, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Lemonade", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Lemonade, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Macaroni and Cheese I", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Macaroni_and_Cheese_I, CC BY-SA 4.0; markup removed, characters adapted to the display.
-"Marmorkuchen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Marmorkuchen, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Mashed Potatoes", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Mashed_Potatoes, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Meatballs with Honey Lime Sauce", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Meatballs_with_Honey_Lime_Sauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
 "Muffins", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Muffins, CC BY-SA 4.0; markup removed, characters adapted to the display.

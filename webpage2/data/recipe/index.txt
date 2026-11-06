@@ -84,12 +84,6 @@ kartoffelbrei|mashed-potatoes|en
 kartoffelbreis|mashed-potatoes|en
 kartoffelpueree|mashed-potatoes|en
 kartoffelpuerees|mashed-potatoes|en
-fried potatoes|fried-potatoes|de
-fried potatoe|fried-potatoes|de
-home fries|fried-potatoes|de
-home frie|fried-potatoes|de
-bratkartoffeln|fried-potatoes|de
-bratkartoffelns|fried-potatoes|de
 french fries|french-fries|en
 french frie|french-fries|en
 fries|french-fries|en
@@ -224,10 +218,6 @@ hamburger|hamburger|de
 hamburgers|hamburger|de
 burger|hamburger|de
 burgers|hamburger|de
-marble cake|marble-cake|de
-marble cakes|marble-cake|de
-marmorkuchen|marble-cake|de
-marmorkuchens|marble-cake|de
 cheesecake|cheesecake|de
 cheesecakes|cheesecake|de
 kaesekuchen|cheesecake|de

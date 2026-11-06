@@ -9,7 +9,7 @@
   - `<slug>.<de|en>.json`: `title`, `lang`, `source`, `url`, `revid`, `license`, `ingredients`, `steps`.
   - `CREDITS.txt`: every page used, with link and licence.
 - No match, a failed download or any unexpected file: `fetch` returns false and the picture shows.
-- Language: the device's language if the dish has it, otherwise the other language, marked on the bottom line as `Wikibooks (EN)` or `Wikibooks (DE)`. There is no AI translation. Of the 61 dishes, 18 have both languages, 21 only German and 22 only English, so a German stick shows English for those 22. German and English versions of a dish are separate recipes from separate pages, so their quantities can differ.
+- Language: the device's language if the dish has it, otherwise the other language, marked on the bottom line as `Wikibooks (EN)` or `Wikibooks (DE)`. There is no AI translation. Of the 59 dishes, 18 have both languages, 19 only German and 22 only English, so a German stick shows English for those 22. German and English versions of a dish are separate recipes from separate pages, so their quantities can differ.
 - Screen: ingredients first, paged, then one step at a time. Header `Schritt 3/8` or `Step 3/8`. A step too long for one screen continues on further pages, numbered `2/3` at the bottom right. Text is always the 10 pt font, 4 lines per page, and is never made smaller.
 - Button C: next page. After the last page it returns false, which goes back to the text, and the next look starts at the ingredients. Button B: previous page, stays on the first.
 - The label on the bottom line is the source page's title, so a wrong lookup is visible.
@@ -18,7 +18,7 @@
 - Limits: files over 16 KB (`RECIPE_BODY_LIMIT`), more than 40 ingredients or 40 steps, more than 12 KB of text or text that doesn't fit the page tables are refused whole. A recipe is never cut, because a missing step is worse than none.
 - The screen stays on for 5 minutes after the last button press, since a step takes longer than the usual 30 seconds. After that the normal sleep timers run. Waking from deep sleep loads the recipe again and starts at the ingredients.
 - Memory: recipe in PSRAM from `fetch` until `unload`, layout in PSRAM while the view is open. Network only in `fetch`.
-- Pages are only taken if they have a clear ingredients part and steps, no leftover markup, no character outside the font and no more than 32 screens in total. Plain text after an ingredient list ends the list. Only the first variant of a page is used. A single paragraph of steps is split into its sentences, word for word.
+- Pages are only taken if they have a clear ingredients part and steps, no leftover markup, no character outside the font and no more than 32 screens in total. Plain text after an ingredient list ends the list. Only the first variant of a page is used. A single paragraph of steps is split into its sentences, word for word. Prose next to a list of steps is treated as an introduction if it's the smaller part, and left out (the generator prints each case, to be read when the list changes), except warnings such as "Vorsicht: ...", which stay. "Either this; or that" stays one step. A page offering several methods one after the other is taken off the list by hand, because they would read as one long recipe.
 - To update the set: edit `DISHES` in the generator, run `python3 -I scripts/make_recipe_data.py --cache <scratch dir>`, read the "left out" lines, run `tests/recipe/run.sh`.
 
 ## User guide
@@ -35,7 +35,7 @@ First you see what you need, then one step at a time.
 
 An orange **"Erwachsene fragen"** marker means the step has something hot or sharp in it, or the oven. Ask a grown-up to help. Without the marker you should still take care: Zitro only looks for certain words.
 
-There are 61 dishes, such as pancakes, pizza, soups, cakes and cookies. 39 of them are in German and 40 in English. If a recipe only exists in the other language, Zitro shows it in that language and says so at the bottom, for example "Wikibooks (EN)". Recipes with alcohol are left out.
+There are 59 dishes, such as pancakes, pizza, soups, cakes and cookies. 37 of them are in German and 40 in English. If a recipe only exists in the other language, Zitro shows it in that language and says so at the bottom, for example "Wikibooks (EN)". Recipes with alcohol are left out.
 
 The recipes come from Wikibooks, written by volunteers. They aren't all written for children, so some steps are long and use cooks' words.
 
@@ -53,4 +53,4 @@ The recipes come from Wikibooks, written by volunteers. They aren't all written 
 
 **Not used: TheMealDB.** Its API page limits the free key: "You can use the test API key "1" during development of your app or for educational use. However you must become a supporter if releasing publicly on an appstore." Its terms add "You cannot publish apps to an appstore unless you are a paid subscriber" and "You cannot resell our API in any way without specific permission". The stick is sold, so the free key isn't suitable. A paid key might be, but the terms talk about app stores and don't say how a key built into a sold device counts. The text has no stated licence either, and some of it reads like it was copied from other cooking sites, which its terms themselves restrict. Checked 2026-11-06.
 
-**Fit for small screens, measured with the real font widths** (`tests/recipe/run.sh`): 79 files, longest 30 screens. Quantities and steps are the source's and the writing is for adults, so this suits cooking together with an adult better than a child reading alone.
+**Fit for small screens, measured with the real font widths** (`tests/recipe/run.sh`): 77 files, longest 30 screens. Quantities and steps are the source's and the writing is for adults, so this suits cooking together with an adult better than a child reading alone.

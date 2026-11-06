@@ -100,6 +100,16 @@ except gen.Skip:
 check(gen.split_sentences("Ca. 3 Minuten braten. Dann z.B. Salz zugeben.") == ["Ca. 3 Minuten braten.", "Dann z.B. Salz zugeben."], "abbreviations")
 check(gen.split_sentences("Stufe 2. Dann rühren!  Fertig") == ["Stufe 2. Dann rühren!", "Fertig"], "number before a dot")
 
+# A choice stays one step, word for word
+check(gen.merge_choices(["Fett in die Pfanne geben", "entweder Butter", "oder Öl", "Dann backen."]) ==
+      ["Fett in die Pfanne geben entweder Butter oder Öl", "Dann backen."], "German choice")
+check(gen.merge_choices(["Either: use a ricer; or", "Mash with a fork.", "Serve."]) ==
+      ["Either: use a ricer; or Mash with a fork.", "Serve."], "English choice")
+
+# Next to a list, plain text is an introduction and goes, unless it's a warning
+check(gen.parse_steps(["Ganz einfach.", "* Chili schneiden, gut mischen.", "Vorsicht: Finger waschen.", "* Dann servieren."]) ==
+      ["Chili schneiden, gut mischen.", "Vorsicht: Finger waschen.", "Dann servieren."], "warning kept, introduction gone")
+
 # Same rules as the stick
 check(gen.normalize_name("Spaghetti  Bolognese!") == "spaghetti bolognese", "name normalized")
 check(gen.normalize_name("Crêpes") == "crêpes", "non-ASCII kept")

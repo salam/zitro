@@ -5,7 +5,9 @@
 
 Each dish below is a hand-checked pairing of an English and a German Wikibooks page. Nothing is rewritten: only
 markup is removed and characters the stick's font lacks are replaced (a fraction sign by "1/3", a long dash by "-").
-A page that doesn't parse cleanly, contains alcohol or is too long is left out, and the run says why.
+A page that doesn't parse cleanly, contains alcohol or is too long is left out, and the run says why. A page that
+offers several methods one after the other ("Stove-top method", "Oven method") would read as one long recipe, so such
+pages are taken off the list by hand.
 
 Writes:
   index.txt           one line per name: <name>|<slug>|<languages>
@@ -45,7 +47,7 @@ DISHES = [
     ("scrambled-eggs", ["scrambled eggs", "ruehrei", "rührei"], "Basic Scrambled Eggs", "Rührei"),
     ("fried-eggs", ["fried eggs", "fried egg", "spiegelei"], "Fried Eggs", None),
     ("fried-rice", ["fried rice", "gebratener reis"], "Fried Rice", None),
-    ("grilled-cheese", ["grilled cheese sandwich", "grilled cheese"], "Grilled Cheese Sandwich", None),
+    ("grilled-cheese", ["grilled cheese sandwich", "grilled cheese"], "Grilled Cheese Sandwich II", None),
     ("white-bread", ["white bread", "bread", "brot", "weissbrot"], "White Bread", None),
     ("omelette", ["omelette", "omelet", "omelett"], "Cheese Omelette", "Omelette"),
     ("pizza", ["pizza", "pizza dough", "pizzateig"], "Pizza Dough", "Pizza mit Rukola"),
@@ -54,7 +56,6 @@ DISHES = [
     ("lasagna", ["lasagna", "lasagne"], "Basic Lasagna", "Lasagne Bolognese"),
     ("macaroni-and-cheese", ["macaroni and cheese", "mac and cheese", "macaroni cheese", "kaesemakkaroni"], "Macaroni and Cheese I", None),
     ("mashed-potatoes", ["mashed potatoes", "kartoffelbrei", "kartoffelpueree"], "Mashed Potatoes", None),
-    ("fried-potatoes", ["fried potatoes", "home fries", "bratkartoffeln"], None, "Bratkartoffeln"),
     ("french-fries", ["french fries", "fries", "chips", "pommes", "pommes frites"], "French Fries", None),
     ("potato-salad", ["potato salad", "kartoffelsalat"], "Potato Salad", "Kartoffelsalat"),
     ("potato-gratin", ["potato gratin", "gratin", "kartoffelgratin"], None, "Kartoffelgratin"),
@@ -84,7 +85,6 @@ DISHES = [
     ("peanut-butter-cookies", ["peanut butter cookies", "erdnussbutterkekse"], "Peanut Butter Cookies", None),
     ("shortbread", ["shortbread"], "Shortbread", None),
     ("hamburger", ["hamburger", "burger"], None, "Hamburger"),
-    ("marble-cake", ["marble cake", "marmorkuchen"], None, "Marmorkuchen"),
     ("cheesecake", ["cheesecake", "kaesekuchen", "käsekuchen"], None, "Käsekuchen"),
     ("carrot-cake", ["carrot cake", "rueblikuchen", "rüblikuchen", "möhrenkuchen"], None, "Rüblikuchen"),
     ("banana-cake", ["banana cake", "bananenkuchen"], None, "Bananenkuchen"),
@@ -273,6 +273,19 @@ def parse_ingredients(lines):
     return items
 
 
+def merge_choices(steps):
+    """"Either this; or" and "that" are one choice, not two things to do one after the other. Word for word."""
+    merged = []
+    for step in steps:
+        joins_previous = re.match(r"^(entweder|oder|or)\b", step, re.I)
+        previous_open = merged and re.search(r"(\b(or|oder)|;)\s*$", merged[-1])
+        if merged and (joins_previous or previous_open):
+            merged[-1] += " " + step
+        else:
+            merged.append(step)
+    return merged
+
+
 def parse_steps(lines):
     """List items and paragraphs. Prose next to a list is an introduction if it's the smaller part, and left out."""
     entries = []  # (is a list item, text)
@@ -301,13 +314,18 @@ def parse_steps(lines):
         if text.endswith(":") or re.match(r"^Schritt \d+\b", text):
             label = text.rstrip(":")
             continue
-        entries.append((line[0] in "*#:", label + ": " + text if label else text))
+        # A warning counts as a step even in plain text: it's never left out as an introduction
+        counts = line[0] in "*#:" or re.match(r"^(vorsicht|achtung|warnung|warning|caution|careful)\b", text, re.I)
+        entries.append((bool(counts), label + ": " + text if label else text))
         label = ""
     listed = sum(len(t) for is_list, t in entries if is_list)
     prose = sum(len(t) for is_list, t in entries if not is_list)
     if listed > prose:
+        for is_list, text in entries:
+            if not is_list:
+                print("    prose next to a list, left out: " + text[:90])
         entries = [e for e in entries if e[0]]
-    steps = [t for _, t in entries]
+    steps = merge_choices([t for _, t in entries])
     if len(steps) == 1:
         steps = split_sentences(steps[0])
     return steps

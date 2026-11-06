@@ -4847,8 +4847,6 @@ bool fetchWolframSimpleImage(const String &englishQuery) {
 
   String url = "https://api.wolframalpha.com/v1/simple?units=metric&fontsize=8&width=240&layout=labelbar&appid=" WOLFRAM_APPID "&i=" + encoded;
 
-  Serial.println("Wolfram URL: " + url);
-
   HTTPClient http;
   WiFiClientSecure client;
   client.setInsecure();

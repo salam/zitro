@@ -32,7 +32,10 @@ class M5Canvas {
   int textProblems = 0;
   std::string context;
 
-  void fillSprite(uint16_t c) { for (auto& row : px) for (auto& p : row) p = c; }
+  void fillSprite(uint16_t c) {
+    for (auto& row : px) for (auto& p : row) p = c;
+    drawnCount = 0;
+  }
   void drawPixel(int x, int y, uint16_t c) { if (x >= 0 && y >= 0 && x < W && y < H) px[y][x] = c; }
   void fillRect(int x, int y, int w, int h, uint16_t c) {
     for (int j = y; j < y + h; j++) for (int i = x; i < x + w; i++) drawPixel(i, j, c);
@@ -90,7 +93,7 @@ class M5Canvas {
     if (datum == textdatum_t::baseline_center) x -= w / 2;
     if (datum == textdatum_t::baseline_right) x -= w;
     if (x < 0 || x + w > W) problem("text runs off the side", s);
-    if (!inFooter && (y > H - 18 || y - 12 < 0)) problem("text too high or over the footer", s);
+    if (!inFooter) checkTextPlace(s, x, y, w);
     forEachChar(s, [&](uint32_t u) {
       if (!font || u < font->first || u > font->last) return;
       const GFXglyph& g = font->glyph[u - font->first];
@@ -131,6 +134,29 @@ class M5Canvas {
   textdatum_t datum = textdatum_t::baseline_left;
   uint16_t textColor = 0xFFFF;
   bool inFooter = false;
+  struct Box { int x0, y0, x1, y1; };
+  Box drawn[32];
+  int drawnCount = 0;
+  // Real glyph extents, so a descender cut off by the footer counts, and so does text on text
+  void checkTextPlace(const char* s, int x, int y, int w) {
+    if (!font) return;
+    int top = y, bottom = y;
+    forEachChar(s, [&](uint32_t u) {
+      if (u < font->first || u > font->last) return;
+      const GFXglyph& g = font->glyph[u - font->first];
+      if (g.width == 0 || u == ' ') return;
+      top = std::min(top, y + g.yOffset);
+      bottom = std::max(bottom, y + g.yOffset + g.height);
+    });
+    if (top < 0) problem("text above the screen", s);
+    if (bottom > H - 18) problem("text cut off by the footer", s);
+    const Box box = {x, top, x + w, bottom};
+    for (int i = 0; i < drawnCount; i++) {
+      const Box& o = drawn[i];
+      if (box.x0 < o.x1 && o.x0 < box.x1 && box.y0 < o.y1 && o.y0 < box.y1) problem("text over other text", s);
+    }
+    if (drawnCount < 32) drawn[drawnCount++] = box;
+  }
   void problem(const char* what, const char* s) {
     textProblems++;
     fprintf(stderr, "  TEXT %s: %s: '%s'\n", context.c_str(), what, s);

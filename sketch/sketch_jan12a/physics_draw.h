@@ -21,6 +21,9 @@ struct PhysicsState {
   const GFXfont* normal;
   float t;        // Seconds since this run started
   float a, b, c;  // The moving quantities of the scene
+  bool clockKnown;   // Sky scenes: the device knows today's date...
+  double startDay;   // ...which is this Julian day
+  PhysicsMatter matter;
   // Magnets: field lines, worked out once for each setting
   PhysicsPole poles[4];
   uint8_t poleCount, lineCount;
@@ -456,7 +459,7 @@ void physicsDrawMagnet(C& c, PhysicsState& s, float dt) {
   if (s.param > 0) {
     const char* word = s.param == 1 ? physicsPick(s, "ziehen sich an", "attract") : physicsPick(s, "stossen sich ab", "repel");
     c.fillRect(0, 99, PHYSICS_W, PHYSICS_H - 99, PHYSICS_BLACK);
-    physicsText(c, s.normal, word, PHYSICS_W / 2, 113, PHYSICS_WHITE, textdatum_t::baseline_center);
+    physicsText(c, s.normal, word, PHYSICS_W / 2, 112, PHYSICS_WHITE, textdatum_t::baseline_center);
   }
 }
 
@@ -489,7 +492,7 @@ void physicsDrawShadow(C& c, PhysicsState& s, float dt) {
 
   char text[28];
   physicsValue(text, sizeof(text), height, 0, "cm", s.german);
-  physicsText(c, s.normal, text, 2, 113, PHYSICS_BLUE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, text, 2, 112, PHYSICS_BLUE, textdatum_t::baseline_left);
   const float length = fabsf(endX - objectX);
   char number[16], line[32];
   if (lands && length < 500.0f) {
@@ -498,7 +501,7 @@ void physicsDrawShadow(C& c, PhysicsState& s, float dt) {
     snprintf(number, sizeof(number), "%s", physicsPick(s, "sehr lang", "very long"));
   }
   snprintf(line, sizeof(line), "%s %s", physicsPick(s, "Schatten", "Shadow"), number);
-  physicsText(c, s.normal, line, PHYSICS_W - 2, 113, PHYSICS_WHITE, textdatum_t::baseline_right);
+  physicsText(c, s.normal, line, PHYSICS_W - 2, 112, PHYSICS_WHITE, textdatum_t::baseline_right);
 }
 
 // ---- Mirrors ----
@@ -580,7 +583,7 @@ void physicsDrawMirror(C& c, PhysicsState& s, float dt) {
   static const char* const de[3] = {"flacher Spiegel", "Hohlspiegel", "W\xC3\xB6lbspiegel"};
   static const char* const en[3] = {"Flat mirror", "Concave mirror", "Convex mirror"};
   c.fillRect(0, 101, PHYSICS_W, PHYSICS_H - 101, PHYSICS_BLACK);
-  physicsText(c, s.normal, s.german ? de[s.param] : en[s.param], 2, 113, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, s.german ? de[s.param] : en[s.param], 2, 112, PHYSICS_WHITE, textdatum_t::baseline_left);
 }
 
 // ---- Refraction ----
@@ -657,10 +660,251 @@ void physicsDrawSound(C& c, PhysicsState& s, float dt) {
     lastY = y;
   }
   char text[20];
-  physicsText(c, s.normal, s.german ? tone.de : tone.en, 2, 113, PHYSICS_WHITE, textdatum_t::baseline_left);
-  physicsText(c, s.normal, physicsPick(s, "Zeitlupe", "slowed"), 138, 113, PHYSICS_GREY, textdatum_t::baseline_center);
+  physicsText(c, s.normal, s.german ? tone.de : tone.en, 2, 112, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, physicsPick(s, "Zeitlupe", "slowed"), 138, 112, PHYSICS_GREY, textdatum_t::baseline_center);
   physicsValue(text, sizeof(text), tone.hertz, 0, "Hz", s.german);
-  physicsText(c, s.normal, text, PHYSICS_W - 2, 113, PHYSICS_CITRUS, textdatum_t::baseline_right);
+  physicsText(c, s.normal, text, PHYSICS_W - 2, 112, PHYSICS_CITRUS, textdatum_t::baseline_right);
+}
+
+// ---- Circuit ----
+template <class C>
+void physicsDrawBulb(C& c, int x, int y, float brightness) {
+  const int r = 13;
+  c.fillCircle(x, y, r, PHYSICS_BLACK);
+  if (brightness > 0) {
+    c.fillCircle(x, y, r, physicsShade565(PHYSICS_CITRUS, 0.25f + 0.75f * brightness));
+    // Rays, as long as the bulb is bright
+    const int reach = (int)(9.0f * brightness);
+    for (int i = 0; i < 8 && reach > 0; i++) {
+      const float a = i * PHYSICS_PI / 4.0f;
+      const float cs = cosf(a), sn = sinf(a);
+      if (sn > 0.5f) continue;  // Screen y points down: leave the wire below free
+      c.drawLine(x + (int)((r + 2) * cs), y - (int)((r + 2) * sn), x + (int)((r + 2 + reach) * cs),
+                 y - (int)((r + 2 + reach) * sn), PHYSICS_CITRUS);
+    }
+  }
+  c.drawCircle(x, y, r, PHYSICS_LIGHT);
+}
+
+// A point on the wire loop, going round from the battery's minus through the switch and bulbs to its plus
+inline void physicsWirePoint(float along, int& x, int& y) {
+  const int left = 20, right = 140, top = 18, bottom = 104;
+  const int width = right - left, height = bottom - top;
+  const float loop = 2.0f * (width + height);
+  float d = along - loop * floorf(along / loop);
+  if (d < width) { x = left + (int)d; y = bottom; return; }
+  d -= width;
+  if (d < height) { x = right; y = bottom - (int)d; return; }
+  d -= height;
+  if (d < width) { x = right - (int)d; y = top; return; }
+  d -= width;
+  x = left;
+  y = top + (int)d;
+}
+
+template <class C>
+void physicsDrawCircuit(C& c, PhysicsState& s, float dt) {
+  const PhysicsCircuit& circuit = PHYSICS_CIRCUITS[s.param];
+  const int left = 20, right = 140, top = 18, bottom = 104;
+  const float amps = circuit.closed ? physicsOhmCurrent(circuit.volts, physicsSeriesResistance(PHYSICS_BULB_OHMS, circuit.bulbs)) : 0.0f;
+  // Electrons move with the current. The dots show its way and strength, not their true pace
+  s.t += dt * amps * 100.0f;
+  if (s.t > 416.0f) s.t -= 416.0f;
+
+  c.drawRect(left, top, right - left + 1, bottom - top + 1, PHYSICS_LIGHT);
+  for (int i = 0; i < 16; i++) {
+    int x, y;
+    physicsWirePoint(s.t + i * 26.0f, x, y);
+    // Inside the battery there is no wire to show them on
+    if (x == left && y > 42 && y < 80) continue;
+    c.fillCircle(x, y, 2, PHYSICS_BLUE);
+  }
+  // Battery on the left: long plate plus, short plate minus, in a stack
+  const int cells = circuit.volts > 5.0f ? 2 : 1;
+  const int battery = (top + bottom) / 2;
+  c.fillRect(left - 6, battery - 16, 13, 33, PHYSICS_BLACK);
+  for (int i = 0; i < cells; i++) {
+    const int y = battery - 6 * cells + i * 12 + 3;
+    c.fillRect(left - 9, y - 1, 19, 3, PHYSICS_WHITE);
+    c.fillRect(left - 4, y + 5, 9, 3, PHYSICS_WHITE);
+  }
+  physicsText(c, s.normal, "+", left + 13, battery - 8, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, "-", left + 13, battery + 18, PHYSICS_WHITE, textdatum_t::baseline_left);
+  // Switch at the bottom
+  const int switchX = (left + right) / 2;
+  c.fillRect(switchX - 14, bottom - 1, 28, 3, PHYSICS_BLACK);
+  c.fillCircle(switchX - 14, bottom, 3, PHYSICS_WHITE);
+  c.fillCircle(switchX + 14, bottom, 3, PHYSICS_WHITE);
+  if (circuit.closed) physicsThickLine(c, switchX - 14, bottom, switchX + 14, bottom, PHYSICS_WHITE);
+  else physicsThickLine(c, switchX - 14, bottom, switchX + 10, bottom - 14, PHYSICS_WHITE);
+  // Bulbs on top: as bright as the power each one gets
+  const float power = physicsPower(amps, PHYSICS_BULB_OHMS);
+  const float brightest = physicsPower(physicsOhmCurrent(9.0f, PHYSICS_BULB_OHMS), PHYSICS_BULB_OHMS);
+  const float brightness = sqrtf(power / brightest);
+  if (circuit.bulbs == 1) {
+    physicsDrawBulb(c, switchX, top, brightness);
+  } else {
+    physicsDrawBulb(c, switchX - 28, top, brightness);
+    physicsDrawBulb(c, switchX + 28, top, brightness);
+  }
+  char text[20];
+  const int textX = 160;
+  physicsText(c, s.big, circuit.closed ? physicsPick(s, "AN", "ON") : physicsPick(s, "AUS", "OFF"), textX, 30,
+              circuit.closed ? PHYSICS_GREEN : PHYSICS_RED, textdatum_t::baseline_left);
+  physicsValue(text, sizeof(text), circuit.volts, 1, "V", s.german);
+  physicsText(c, s.big, text, textX, 66, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsValue(text, sizeof(text), amps, 2, "A", s.german);
+  physicsText(c, s.big, text, textX, 100, PHYSICS_CITRUS, textdatum_t::baseline_left);
+}
+
+// ---- States of matter ----
+template <class C>
+void physicsDrawMatter(C& c, PhysicsState& s, float dt) {
+  static const uint16_t colors[3] = {PHYSICS_BLUE, PHYSICS_GREEN, PHYSICS_RED};
+  static const float targets[3] = {PHYSICS_MATTER_SOLID_T, PHYSICS_MATTER_LIQUID_T, PHYSICS_MATTER_GAS_T};
+  static const char* const de[3] = {"fest", "fl\xC3\xBCssig", "gasf\xC3\xB6rmig"};
+  static const char* const en[3] = {"solid", "liquid", "gas"};
+  static const char* const heatDe[3] = {"kalt", "warm", "heiss"};
+  static const char* const heatEn[3] = {"cold", "warm", "hot"};
+  const int boxX = 6, boxY = 2;
+  const float perUnit = 228.0f / PHYSICS_MATTER_WIDTH;
+  const int boxHeight = (int)(PHYSICS_MATTER_HEIGHT * perUnit);
+  s.t += dt;
+  // One unit of the model's time per second; a long frame can't make it run away
+  int steps = (int)(s.t / PHYSICS_MATTER_DT);
+  s.t -= steps * PHYSICS_MATTER_DT;
+  if (steps > 24) steps = 24;
+  for (int i = 0; i < steps; i++) physicsMatterStep(s.matter, targets[s.param]);
+
+  c.drawRect(boxX - 1, boxY - 1, 230, boxHeight + 2, colors[s.param]);
+  for (int i = 0; i < PHYSICS_MATTER_COUNT; i++) {
+    const int x = boxX + (int)(s.matter.x[i] * perUnit);
+    const int y = boxY + boxHeight - (int)(s.matter.y[i] * perUnit);
+    c.fillCircle(x, y, 5, colors[s.param]);
+  }
+  physicsText(c, s.normal, s.german ? de[s.param] : en[s.param], 4, 112, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, s.german ? heatDe[s.param] : heatEn[s.param], PHYSICS_W - 4, 112, colors[s.param], textdatum_t::baseline_right);
+}
+
+// ---- Seasons ----
+template <class C>
+void physicsDrawSeasons(C& c, PhysicsState& s, float dt) {
+  static const char* const de[4] = {"Fr\xC3\xBChling", "Sommer", "Herbst", "Winter"};
+  static const char* const en[4] = {"Spring", "Summer", "Autumn", "Winter"};
+  // s.a: where the Earth is in the year now, s.b: where it is heading, s.t: time of day
+  float gap = s.b - s.a;
+  if (gap < 0) gap += 2.0f * PHYSICS_PI;
+  const float move = 80.0f * PHYSICS_DEG * dt;
+  if (gap <= move) s.a = s.b;
+  else s.a += move;
+  if (s.a >= 2.0f * PHYSICS_PI) s.a -= 2.0f * PHYSICS_PI;
+  s.t += dt / 8.0f;  // A day takes eight seconds
+  if (s.t >= 1.0f) s.t -= 1.0f;
+
+  const float declination = physicsSunDeclination(s.a);
+  const float hours = physicsDayHours(PHYSICS_HOME_LATITUDE, declination);
+  const int cx = 124, cy = 52, r = 38;
+  c.fillCircle(-6, cy, 28, PHYSICS_CITRUS);
+  for (int y = cy - 24; y <= cy + 24; y += 12) c.drawFastHLine(26, y, cx - r - 30, PHYSICS_CITRUS);
+
+  float axis[3];
+  physicsEarthAxis(s.a, axis);
+  const int reach = r + 11;
+  physicsThickLine(c, cx - (int)(axis[0] * reach), cy + (int)(axis[1] * reach), cx + (int)(axis[0] * reach),
+                   cy - (int)(axis[1] * reach), PHYSICS_WHITE);
+  // Day side towards the Sun on the left, night side away from it
+  for (int y = -r; y <= r; y++) {
+    const int half = (int)sqrtf((float)(r * r - y * y));
+    c.drawFastHLine(cx - half, cy + y, half, PHYSICS_BLUE);
+    c.drawFastHLine(cx, cy + y, half + 1, (uint16_t)0x10A6);
+  }
+  // Home's circle of latitude, front half: yellow in sunlight, grey at night. Its lit share is the day.
+  const int segments = 48;
+  int lastX = 0, lastY = 0;
+  bool lastSeen = false;
+  for (int i = 0; i <= segments; i++) {
+    float p[3];
+    physicsLatitudePoint(axis, PHYSICS_HOME_LATITUDE, 2.0f * PHYSICS_PI * i / segments, p);
+    const int x = cx + (int)(p[0] * r), y = cy - (int)(p[1] * r);
+    const bool seen = p[2] > 0;
+    if (seen && lastSeen) c.drawLine(lastX, lastY, x, y, p[0] < 0 ? PHYSICS_CITRUS : PHYSICS_GREY);
+    lastX = x;
+    lastY = y;
+    lastSeen = seen;
+  }
+  // Home goes around once a day
+  float home[3];
+  physicsLatitudePoint(axis, PHYSICS_HOME_LATITUDE, 2.0f * PHYSICS_PI * s.t, home);
+  if (home[2] > 0) c.fillCircle(cx + (int)(home[0] * r), cy - (int)(home[1] * r), 4, PHYSICS_RED);
+
+  const int dayRounded = (int)(hours + 0.5f);
+  char text[12];
+  physicsText(c, s.big, s.german ? de[physicsSeasonIndex(s.a)] : en[physicsSeasonIndex(s.a)], 2, 20, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, "47\xC2\xB0 N", 2, 94, PHYSICS_RED, textdatum_t::baseline_left);
+  const int textX = 170;
+  physicsText(c, s.normal, physicsPick(s, "Tag", "Day"), textX, 18, PHYSICS_CITRUS, textdatum_t::baseline_left);
+  snprintf(text, sizeof(text), "%d h", dayRounded);
+  physicsText(c, s.big, text, textX, 44, PHYSICS_CITRUS, textdatum_t::baseline_left);
+  physicsText(c, s.normal, physicsPick(s, "Nacht", "Night"), textX, 66, PHYSICS_LIGHT, textdatum_t::baseline_left);
+  snprintf(text, sizeof(text), "%d h", 24 - dayRounded);
+  physicsText(c, s.big, text, textX, 92, PHYSICS_LIGHT, textdatum_t::baseline_left);
+  // A day of 24 hours as a bar: noon in the middle
+  const int barWidth = PHYSICS_W - 8;
+  const int lit = (int)(barWidth * hours / 24.0f);
+  c.fillRect(4, 102, barWidth, 11, (uint16_t)0x10A6);
+  c.fillRect(4 + (barWidth - lit) / 2, 102, lit, 11, PHYSICS_CITRUS);
+}
+
+// ---- Moon phases ----
+template <class C>
+void physicsDrawLitDisc(C& c, int cx, int cy, int r, float lit, bool growing, uint16_t light, uint16_t dark) {
+  c.fillCircle(cx, cy, r, dark);
+  for (int y = -r; y <= r; y++) {
+    float from, to;
+    physicsLitSpan((float)y, (float)r, lit, growing, from, to);
+    const int x0 = (int)floorf(from + 0.5f), x1 = (int)floorf(to + 0.5f);
+    if (x1 > x0) c.drawFastHLine(cx + x0, cy + y, x1 - x0, light);
+  }
+}
+
+template <class C>
+void physicsDrawMoon(C& c, PhysicsState& s, float dt) {
+  static const char* const de[8] = {"Neumond", "Zunehmende Sichel", "Erstes Viertel", "Zunehmender Mond",
+                                    "Vollmond", "Abnehmender Mond", "Letztes Viertel", "Abnehmende Sichel"};
+  static const char* const en[8] = {"New moon", "Waxing crescent", "First quarter", "Waxing gibbous",
+                                    "Full moon", "Waning gibbous", "Last quarter", "Waning crescent"};
+  const uint16_t light = 0xFFD9, dark = 0x2945;
+  // Today stands still. Otherwise, or with no clock to know today, the month runs: two days a second
+  if (s.param == 1 || !s.clockKnown) {
+    s.t += dt * 2.0f;
+    if (s.t >= 30.0f) s.t -= 30.0f;
+  } else {
+    s.t = 0;
+  }
+  const double day = s.startDay + s.t;
+  const float elongation = physicsMoonElongation(day);
+  const float lit = physicsMoonIllumination(elongation);
+  const bool growing = elongation < 180.0f;
+  // The Moon as we see it from here in the north
+  physicsDrawLitDisc(c, 48, 50, 44, lit, growing, light, dark);
+
+  // The same seen from high above: the Sun far off to the right lights one half of Earth and Moon
+  const int ex = 166, ey = 58, orbit = 36;
+  c.drawCircle(ex, ey, orbit, PHYSICS_DARK);
+  physicsDrawLitDisc(c, ex, ey, 8, 0.5f, true, PHYSICS_BLUE, (uint16_t)0x10A6);
+  const float a = elongation * PHYSICS_DEG;
+  physicsDrawLitDisc(c, ex + (int)(orbit * cosf(a)), ey - (int)(orbit * sinf(a)), 6, 0.5f, true, light, dark);
+  c.fillCircle(PHYSICS_W - 1, ey, 13, PHYSICS_CITRUS);
+
+  physicsText(c, s.normal, s.german ? de[physicsMoonPhaseIndex(elongation)] : en[physicsMoonPhaseIndex(elongation)], 2, 112,
+              PHYSICS_WHITE, textdatum_t::baseline_left);
+  if (s.clockKnown) {
+    char text[16];
+    const int days = (int)s.t;
+    if (s.param == 0) snprintf(text, sizeof(text), "%s", physicsPick(s, "heute", "today"));
+    else snprintf(text, sizeof(text), "+%d %s", days, days == 1 ? physicsPick(s, "Tag", "day") : physicsPick(s, "Tage", "days"));
+    physicsText(c, s.normal, text, PHYSICS_W - 2, 15, PHYSICS_CITRUS, textdatum_t::baseline_right);
+  }
 }
 
 // ---- The list ----
@@ -681,6 +925,14 @@ inline void physicsSceneReset(PhysicsState& s) {
     case PHYSICS_MAGNET:
       physicsMagnetBuild(s);
       break;
+    case PHYSICS_MATTER:
+      physicsMatterInit(s.matter);
+      break;
+    case PHYSICS_SEASONS:
+      // Today's place in the year; with no clock, midsummer
+      s.a = s.clockKnown ? physicsSunLongitude(s.startDay) : PHYSICS_PI / 2.0f;
+      s.b = s.a;
+      break;
     default:
       break;
   }
@@ -689,8 +941,13 @@ inline void physicsSceneReset(PhysicsState& s) {
 inline void physicsSceneNextParam(PhysicsState& s) {
   const uint8_t count = PHYSICS_SCENES[s.sceneIndex].paramCount;
   s.param = (uint8_t)((s.param + 1) % count);
-  // The lever keeps its tilt: you see it move from the old load to the new one
-  if (s.scene != PHYSICS_LEVER) physicsSceneReset(s);
+  // These carry on from where they are, so you see the change happen
+  if (s.scene == PHYSICS_LEVER || s.scene == PHYSICS_MATTER) return;
+  if (s.scene == PHYSICS_SEASONS) {
+    s.b = physicsNextSeasonLongitude(s.b);
+    return;
+  }
+  physicsSceneReset(s);
 }
 
 template <class C>
@@ -709,5 +966,9 @@ void physicsDrawFrame(C& c, PhysicsState& s, float dt) {
     case PHYSICS_MIRROR: physicsDrawMirror(c, s, dt); break;
     case PHYSICS_REFRACTION: physicsDrawRefraction(c, s, dt); break;
     case PHYSICS_SOUND: physicsDrawSound(c, s, dt); break;
+    case PHYSICS_CIRCUIT: physicsDrawCircuit(c, s, dt); break;
+    case PHYSICS_MATTER: physicsDrawMatter(c, s, dt); break;
+    case PHYSICS_SEASONS: physicsDrawSeasons(c, s, dt); break;
+    case PHYSICS_MOON: physicsDrawMoon(c, s, dt); break;
   }
 }

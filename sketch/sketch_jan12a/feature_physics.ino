@@ -34,6 +34,7 @@ static bool physicsBegin(M5Canvas& c) {
   physicsState->german = physicsGerman;
   physicsState->big = FontManager::getFont16pt();
   physicsState->normal = FontManager::getFont12pt();
+  physicsState->clockKnown = physicsDayFromClock((double)time(nullptr), physicsState->startDay);
   physicsSceneReset(*physicsState);
   return true;
 }

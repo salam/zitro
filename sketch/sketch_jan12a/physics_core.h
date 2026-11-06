@@ -268,10 +268,10 @@ inline float physicsPower(float amps, float ohms) { return amps * amps * ohms; }
 // The Lennard-Jones model in its usual units: energy and distance scale 1, mass 1.
 #define PHYSICS_MATTER_COUNT 30
 static const float PHYSICS_MATTER_DT = 0.005f;
-static const float PHYSICS_MATTER_GRAVITY = 0.15f;
+static const float PHYSICS_MATTER_GRAVITY = 0.6f;
 static const float PHYSICS_MATTER_COOLING = 0.02f;  // Share of the temperature gap closed per step
 static const float PHYSICS_MATTER_SOLID_T = 0.05f;
-static const float PHYSICS_MATTER_LIQUID_T = 0.55f;
+static const float PHYSICS_MATTER_LIQUID_T = 0.5f;
 static const float PHYSICS_MATTER_GAS_T = 3.0f;
 static const float PHYSICS_MATTER_WIDTH = 18.0f;
 static const float PHYSICS_MATTER_HEIGHT = 7.6f;
@@ -478,7 +478,11 @@ enum PhysicsSceneId : uint8_t {
   PHYSICS_SHADOW,
   PHYSICS_MIRROR,
   PHYSICS_REFRACTION,
-  PHYSICS_SOUND
+  PHYSICS_SOUND,
+  PHYSICS_CIRCUIT,
+  PHYSICS_MATTER,
+  PHYSICS_SEASONS,
+  PHYSICS_MOON
 };
 
 struct PhysicsSceneInfo {
@@ -502,6 +506,10 @@ static const PhysicsSceneInfo PHYSICS_SCENES[] = {
     {"mirror", "Spiegel", "Mirror", PHYSICS_MIRROR, 3},
     {"refraction", "Lichtbrechung", "Refraction", PHYSICS_REFRACTION, 4},
     {"sound", "Schall", "Sound", PHYSICS_SOUND, 4},
+    {"circuit", "Stromkreis", "Circuit", PHYSICS_CIRCUIT, 4},
+    {"matter", "Aggregatzust\xC3\xA4nde", "States of matter", PHYSICS_MATTER, 3},
+    {"seasons", "Jahreszeiten", "Seasons", PHYSICS_SEASONS, 4},
+    {"moon", "Mondphasen", "Moon phases", PHYSICS_MOON, 2},
 };
 static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
 
@@ -509,9 +517,10 @@ static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_S
 static const char PHYSICS_PROMPT_RULE[] =
     "PHYSIK: Setze 'model' auf 'physics:<id>' NUR wenn der Nutzer fragt, wie etwas Physikalisches funktioniert "
     "oder warum es passiert, und eine dieser Szenen genau passt (z.B. 'Wie funktioniert ein Hebel?' ergibt "
-    "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Warum knickt ein Stab im Wasser?' ergibt refraction). "
+    "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Warum knickt ein Stab im Wasser?' ergibt refraction, "
+    "'Warum gibt es Jahreszeiten?' ergibt seasons, 'Warum sieht der Mond mal rund, mal schmal aus?' ergibt moon). "
     "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
-    "sound. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
+    "sound circuit matter seasons moon. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";
 
 // Scene from "<id>", case and spaces ignored. -1 if it isn't on the list.
@@ -590,3 +599,39 @@ static const float PHYSICS_SOUND_LONGEST = 1.0f;        // Seconds, the slowest 
 
 #define PHYSICS_MAGNET_LINES 28
 #define PHYSICS_MAGNET_POINTS 100
+
+struct PhysicsCircuit { bool closed; float volts; uint8_t bulbs; };
+static const PhysicsCircuit PHYSICS_CIRCUITS[4] = {{false, 4.5f, 1}, {true, 4.5f, 1}, {true, 9.0f, 1}, {true, 4.5f, 2}};
+static const float PHYSICS_BULB_OHMS = 15.0f;  // A small torch bulb, taken as constant
+
+// A new moon, Meeus; only used when the device has no clock to say what day it is
+static const double PHYSICS_REFERENCE_NEW_MOON = 2451550.26;
+// Clock values before this mean the device hasn't got the time yet (2024-01-01)
+static const double PHYSICS_CLOCK_VALID_FROM = 1704067200.0;
+
+// Scales an RGB565 colour by 0..1
+inline uint16_t physicsShade565(uint16_t color, float brightness) {
+  brightness = physicsClamp(brightness, 0.0f, 1.0f);
+  const uint16_t r = (uint16_t)(((color >> 11) & 0x1F) * brightness + 0.5f);
+  const uint16_t g = (uint16_t)(((color >> 5) & 0x3F) * brightness + 0.5f);
+  const uint16_t b = (uint16_t)((color & 0x1F) * brightness + 0.5f);
+  return (uint16_t)((r << 11) | (g << 5) | b);
+}
+
+// The day for the sky scenes, from the clock. False and a fixed known day if it isn't set yet.
+inline bool physicsDayFromClock(double unixSeconds, double& julianDay) {
+  if (!(unixSeconds >= PHYSICS_CLOCK_VALID_FROM)) {
+    julianDay = PHYSICS_REFERENCE_NEW_MOON;
+    return false;
+  }
+  julianDay = physicsJulianDayFromUnix(unixSeconds);
+  return true;
+}
+
+// Button B in the seasons: on to the start of the next season, just past the line so it counts
+inline float physicsNextSeasonLongitude(float longitude) {
+  const float quarter = PHYSICS_PI / 2.0f;
+  int next = (int)(longitude / quarter) + 1;
+  if (next > 3) next = 0;
+  return next * quarter + 0.5f * PHYSICS_DEG;
+}

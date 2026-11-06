@@ -50,6 +50,8 @@ static void renderScenes() {
       state.german = lang == 0;
       state.big = &Roboto_Regular14pt8b;
       state.normal = &Roboto_Regular10pt8b;
+      // English runs without a clock, German with one: both must draw
+      state.clockKnown = physicsDayFromClock(lang == 0 ? 1793000000.0 : 0.0, state.startDay);
       physicsSceneReset(state);
       for (int p = 0; p < info.paramCount; p++) {
         char name[64];

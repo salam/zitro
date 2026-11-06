@@ -338,6 +338,65 @@ static void testMatter() {
   CHECK(wG > wL);        // Gas: they fly around
   CHECK(hG > hL);        // ...and fill the box
   CHECK(hG > 0.35f * PHYSICS_MATTER_HEIGHT);
+  // A liquid lies on the floor over time: never a blob hanging in the air. Sampled for a while.
+  static PhysicsMatter m;
+  physicsMatterInit(m);
+  for (int i = 0; i < 6000; i++) physicsMatterStep(m, PHYSICS_MATTER_LIQUID_T);
+  float highestParticle = 0, lowestParticleMax = 0, widest = 0;
+  for (int i = 0; i < 12000; i++) {
+    physicsMatterStep(m, PHYSICS_MATTER_LIQUID_T);
+    if (i % 100) continue;
+    float low = 99, high = 0, left = 99, right = 0;
+    for (int k = 0; k < PHYSICS_MATTER_COUNT; k++) {
+      low = fminf(low, m.y[k]);
+      high = fmaxf(high, m.y[k]);
+      left = fminf(left, m.x[k]);
+      right = fmaxf(right, m.x[k]);
+    }
+    highestParticle = fmaxf(highestParticle, high);
+    lowestParticleMax = fmaxf(lowestParticleMax, low);
+    widest = fmaxf(widest, right - left);
+  }
+  printf("liquid: lowest particle stays under %.2f, highest %.2f, widest %.2f\n", lowestParticleMax, highestParticle, widest);
+  CHECK(lowestParticleMax < 1.2f);
+  CHECK(highestParticle < 0.9f * PHYSICS_MATTER_HEIGHT);
+}
+
+// Heated to a gas and cooled again, the sample comes back down and stops wandering
+static void testMatterRecools() {
+  static PhysicsMatter m;
+  physicsMatterInit(m);
+  for (int i = 0; i < 6000; i++) physicsMatterStep(m, PHYSICS_MATTER_GAS_T);
+  for (int i = 0; i < 40000; i++) physicsMatterStep(m, PHYSICS_MATTER_SOLID_T);
+  float x0[PHYSICS_MATTER_COUNT], y0[PHYSICS_MATTER_COUNT];
+  memcpy(x0, m.x, sizeof(x0));
+  memcpy(y0, m.y, sizeof(y0));
+  for (int i = 0; i < 4000; i++) physicsMatterStep(m, PHYSICS_MATTER_SOLID_T);
+  float wander = 0;
+  for (int i = 0; i < PHYSICS_MATTER_COUNT; i++) wander += hypotf(m.x[i] - x0[i], m.y[i] - y0[i]) / PHYSICS_MATTER_COUNT;
+  printf("matter recooled: wander %.2f height %.2f\n", wander, matterMeanHeight(m));
+  CHECK(wander < 0.4f);
+  CHECK(matterMeanHeight(m) < 2.6f);
+}
+
+static void testClock() {
+  double day = 0;
+  CHECK(!physicsDayFromClock(0, day));  // Not set yet: no "today"
+  NEAR(day, PHYSICS_REFERENCE_NEW_MOON, 1e-6);
+  NEAR(physicsMoonIllumination(physicsMoonElongation(day)), 0, 0.002);  // And it really is a new moon
+  CHECK(!physicsDayFromClock(1000000.0, day));
+  CHECK(!physicsDayFromClock(-5.0, day));
+  CHECK(!physicsDayFromClock(NAN, day));
+  CHECK(physicsDayFromClock(1775000000.0, day));
+  NEAR(day, physicsJulianDayFromUnix(1775000000.0), 1e-6);
+  // Button B through the year comes back around, one season at a time
+  float longitude = 100 * PHYSICS_DEG;
+  const int order[4] = {2, 3, 0, 1};
+  for (int i = 0; i < 8; i++) {
+    longitude = physicsNextSeasonLongitude(longitude);
+    CHECK(physicsSeasonIndex(longitude) == order[i % 4]);
+  }
+  CHECK(physicsSeasonIndex(physicsNextSeasonLongitude(359.9f * PHYSICS_DEG)) == 0);
 }
 
 static void testJulianDay() {
@@ -543,6 +602,8 @@ int main() {
   testSoundPressure();
   testCircuit();
   testMatter();
+  testMatterRecools();
+  testClock();
   testJulianDay();
   testSeasons();
   testMoon();

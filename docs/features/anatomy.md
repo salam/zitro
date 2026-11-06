@@ -9,11 +9,11 @@
 - Files: `EDU_DATA_BASE_URL "anatomy/<id>.bin"` for the outside, `"anatomy/<id>-cut.bin"` for the cutaway. A cell has one file, `<id>.bin`, which is already cut open. Format `ZAN1`, described at the top of `anatomy_core.h`. At most 2500 vertices, 3500 triangles, 8 colours, 8 legend lines; `ANATOMY_BODY_LIMIT` is 39,949 bytes per file, in PSRAM.
 - `fetch()` downloads what was asked for first, and that one must be there. Then the other view, within the same 10 seconds; if that one fails there's just no second view, and Button C goes straight to the text. The two downloads were not timed on a stick.
 - Before use the whole file is checked: magic, flags, counts against the caps before any multiplication, exact length, CRC-32, id equals the requested id, text fields terminated and valid UTF-8, every index in range, no degenerate triangle, colour index in range, coordinates within radius 1 plus rounding. Also: the cut flag matches the view being loaded; the schematic flag matches the closed list, so a cell can't show as data and an organ can't show as a drawing; first filled triangle in range; legend count, colours and ASCII-only words.
-- Label from the file, in the device language, plus ", innen" / ", inside" for a cutaway. Footer: label and source short form. Each view brings its own source: the outside of the heart says BodyParts3D, its cut says HuBMAP HRA.
+- Label from the file, in the device language, plus ", innen" / ", inside" for a cutaway, unless the name has an umlaut ("Schädel"): the wider font would cut the word. Footer: label and source short form. Each view brings its own source: the outside of the heart says BodyParts3D, its cut says HuBMAP HRA.
 - A file with the schematic flag shows "Schema" / "Schematic" as its source, and "Vereinfachtes Schema" / "Simplified schematic" on an amber tag in every frame. The firmware decides this from the flag, so a schematic can't show as data.
 - Button A: new question. Button B: zoom, 3 steps. Button C: from the view asked for to the other view, if there is one, and then to the text answer. From the text it opens the view asked for again. So `heart`: outside, inside, text. `heart-inside`: inside, outside, text. `stomach` or a cell: straight to the text.
 - Outside view: `turnsWithGyro` as before, with the idle spin.
-- Cutaway: faces the viewer at all times, or there would be nothing to see but the back of half an organ. The frame undoes the shared idle spin, which is what made the old cell look like a plain ball, and rocks gently by 0.2 radians instead. The hand can turn it up to 55 degrees away from the cut, and there it stops. `model_view.ino` is unchanged. Zoom step 0 shows the legend, with the model on the left. Steps 1 and 2 show only the model, in the middle.
+- Cutaway: faces the viewer at all times, or there would be nothing to see but the back of half an organ. The frame undoes the shared idle spin, which is what made the old cell look like a plain ball, and rocks gently by 0.2 radians instead. The hand can turn it up to 55 degrees away from the cut, and there it stops, rocking included: faces past that are not in the file. `model_view.ino` is unchanged, but `ANATOMY_STILL_DPS` has to stay equal to `MODEL_STILL_DPS`. Zoom step 0 shows the legend, with the model on the left. Steps 1 and 2 show only the model, in the middle.
 - Legend: one colour chip and one word per line, in DejaVu12, which is ASCII only, so words are chosen that need no umlaut. The data script measures each word in pixels against the column. A line without a chip is a note ("Gewebe entfernt" / "Tissue removed").
 - Drawing: flat-shaded faces with a fixed light, faces turned away dropped, far to near by 256 depth buckets, cost linear in triangles whatever the turn. The filled faces of a cut lie on the cut plane, so they are always in front: they're drawn last, in file order, at one fixed brightness. Working arrays in internal RAM if there's room, otherwise PSRAM, sized once for the larger of the two views. All freed in `end()` and `unload()`.
 - Budget: measured on the stick, 21-24 frames per second at up to 625 drawn triangles with `drawMs` 6-8 ms. Every cutaway is kept below 625 at all allowed turns; `tests/anatomy` fails if one isn't. The legend adds text drawing to each frame at zoom step 0. **Cutaways and legend are not yet measured on a stick.** Every 5 s the serial log prints `anatomy <id> view= triangles= drawnMax= zoom= fps= drawMs= drawMaxMs= work= sprite= freeHeap=`.
@@ -31,16 +31,16 @@
 | kidney | 900 | 542 | 9,132 | BodyParts3D |
 | kidney inside | 1061 | 544 | 12,997 | Human Reference Atlas |
 | skull | 1538 | 762 | 16,154 | BodyParts3D |
-| skull inside | 1084 | 543 | 12,609 | BodyParts3D |
+| skull inside | 1084 | 543 | 12,650 | BodyParts3D |
 | eye | 998 | 508 | 10,172 | BodyParts3D |
 | eye inside | 991 | 573 | 12,157 | Human Reference Atlas |
 | stomach | 900 | 468 | 9,132 | BodyParts3D |
 | skeleton | 1802 | 766 | 20,870 | BodyParts3D |
 | hand | 1174 | 611 | 12,214 | BodyParts3D |
 | animal-cell | 1102 | 535 | 12,934 | Schematic |
-| plant-cell | 1325 | 557 | 14,628 | Schematic |
+| plant-cell | 1325 | 570 | 14,628 | Schematic |
 | red-blood-cell | 875 | 362 | 9,729 | Schematic |
-| neuron | 1140 | 344 | 13,310 | Schematic |
+| neuron | 1140 | 346 | 13,310 | Schematic |
 
 What each cutaway shows, all of it from the source named:
 
@@ -48,7 +48,7 @@ What each cutaway shows, all of it from the source named:
 - **Eye:** front to back through the middle. Sclera, choroid with ciliary body, retina, vitreous, lens, iris, cornea. The water in front of the lens is left out, so it's a gap.
 - **Kidney:** along the long axis through the hilum, 6 mm behind the middle, where the pyramids show best. Cortex with columns, pyramids, papillae, hilum, renal pelvis.
 - **Brain:** from the side, 3 mm beside the middle. Cortex, white matter, corpus callosum, ventricles, thalamus, caudate, putamen, pallidus, cerebellum, brain stem. Facets are hard, as in the outside view.
-- **Skull:** down the middle. The inside of the real bones and the teeth.
+- **Skull:** down the middle. The inside of the real bones and the teeth. Bone and its inner surface share a colour, so the cut faces have their own, with the legend word "Schnitt" / "Cut".
 - **Liver:** portal vein, hepatic veins, hepatic arteries, bile ducts and gall bladder, inside the far half of the liver surface. The screen says "Gewebe entfernt": the near half of the tissue is left out. It's not hollow.
 - **Lungs:** the bronchial tree inside the far half of the lung surface, also marked "Gewebe entfernt". This is the weakest one: thin branches turn to spikes at this budget, and the small gaps between segments show as holes.
 - **No cutaway:** stomach (one closed outer surface in BodyParts3D, no second source with an inside; cutting it would show either a solid lump or an empty bag, and neither is in the data), skeleton and hand (bones, with nothing modelled inside them).

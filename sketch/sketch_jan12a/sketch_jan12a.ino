@@ -6051,6 +6051,13 @@ bool handleImageRetrieval(const GPTResponse &gptResponse, const String &original
       Serial.printf("Freed audio buffer, heap now: %d bytes\n", ESP.getFreeHeap());
     }
 
+    // The last answer's picture is gone either way, and a plot needs the room
+    if (imageBuffer) {
+      free(imageBuffer);
+      imageBuffer = nullptr;
+      imageBufferSize = 0;
+    }
+
     const String englishQuery = translateToEnglishForWolfram(originalQuestion);
 
     // Sharp text and formulas if Wolfram's answer can be read (feature_wolfram.ino); it opens right away

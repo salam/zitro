@@ -27,6 +27,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 // AI providers (OpenAI, Claude, Infomaniak, OpenAI-compatible, Zitro relay) and conversation memory
 #include "ai_provider.h"
 #include "model_core.h"
+#include "edu_feature.h"
 #include "button_rules.h"
 #include <SPIFFS.h>
 
@@ -202,6 +203,7 @@ bool hasImage = false;
 bool hasModel = false;
 String modelRefText;
 String modelLabel;
+String modelSourceName;
 ModelMolecule* currentMolecule = nullptr;
 Mat3 modelRotation;
 uint8_t modelZoomStep = 0;
@@ -421,11 +423,14 @@ void handleDeepSleepWake();
 bool modelViewBegin();
 void modelViewEnd();
 bool modelViewActive();
-void modelViewFrame(const char* footer);
+void modelViewRender(float dt);
+bool modelViewSpriteInPsram();
 void modelBench(int atoms);
 bool fetchModel(const ModelRef& ref);
+void eduUnloadActive();
 bool modelViewShow();
-void modelCycleZoom();
+void modelButtonB();
+bool modelButtonC();
 void drawModelHint(M5Canvas& c);
 void modelViewTick();
 void leaveModelView();
@@ -4699,6 +4704,9 @@ GPTResponse askGPT(const String &question) {
     systemPrompt += dateTimeContext + " ";
   }
   systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Spiele ab', 'Sing mir', 'Erzähle mir', 'Play a song', 'Tell me a story'). WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen und Kurven ('Molmasse von Koffein', 'Visualisiere sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
+    if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
+  }
 
   // Language: EN answers are requested explicitly (German is the prompt's default)
   String userText = question;
@@ -8620,6 +8628,7 @@ void handleVoiceQuery(bool playAudio) {
   // A real 3D model replaces the picture; without one, the picture is the answer as before
   hasModel = false;
   modelRefText = "";
+  eduUnloadActive();
   ModelRef modelRef;
   if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
     drawScreen("Finding 3D model...");
@@ -8966,6 +8975,7 @@ void loop() {
     currentImageUrl = "";
     hasModel = false;
     modelRefText = "";
+    eduUnloadActive();
 
     if (wikiQuery.length() > 0) {
       Serial.printf("Fetching Wikipedia image for: %s\n", wikiQuery.c_str());
@@ -9240,7 +9250,7 @@ void loop() {
     Serial.printf("Button B single-click detected! displaySleeping=%d, mode=%d, hasImage=%d\n",
                   displaySleeping, currentDisplayMode, hasImage);
     if (!displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
-      modelCycleZoom();
+      modelButtonB();
       resetToActiveState();
     } else if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       int scrollStep = HEIGHT / 5;
@@ -9257,8 +9267,10 @@ void loop() {
     if (!displaySleeping && hasModel && response.length() > 0 &&
         (currentDisplayMode == SHOW_MODEL || currentDisplayMode == SHOW_TEXT)) {
       if (currentDisplayMode == SHOW_MODEL) {
-        leaveModelView();
-        drawScreen(response);
+        if (!modelButtonC()) {
+          leaveModelView();
+          drawScreen(response);
+        }
       } else {
         modelViewShow();
       }

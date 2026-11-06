@@ -28,14 +28,16 @@ static bool parse(const std::string& s) { return parseSdf(s.c_str(), s.size(), m
 static void testRefs() {
   ModelRef r;
   CHECK(parseModelRef("molecule:caffeine", r));
-  CHECK(r.kind == MODEL_MOLECULE);
+  CHECK(strcmp(r.kind, "molecule") == 0);
   CHECK(strcmp(r.query, "caffeine") == 0);
   CHECK(parseModelRef("molecule:sodium lauryl sulfate", r));
+  CHECK(parseModelRef("globe:Matterhorn", r));
+  CHECK(strcmp(r.kind, "globe") == 0);
   const char* bad[] = {"", "molecule:", "sphere:x", ":x", "caffeine", "molecule:a\nb"};
   for (const char* s : bad) {
-    r.kind = MODEL_MOLECULE;
+    strcpy(r.kind, "molecule");
     CHECK(!parseModelRef(s, r));
-    CHECK(r.kind == MODEL_NONE);
+    CHECK(r.kind[0] == 0);
   }
   CHECK(!parseModelRef(nullptr, r));
   std::string longOne = "molecule:" + std::string(64, 'a');

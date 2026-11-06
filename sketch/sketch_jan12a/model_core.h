@@ -13,10 +13,12 @@
 #define MODEL_MAX_ATOMS 200
 #define MODEL_MAX_BONDS 250
 
-enum ModelKind { MODEL_NONE, MODEL_MOLECULE };
+// Every kind of result. A kind whose feature isn't finished is simply not available.
+static const char* const MODEL_KINDS[] = {"molecule", "music",  "graph", "recipe", "globe",    "protein",
+                                          "crystal",  "sky",    "physics", "solid", "timeline", "anatomy"};
 
 struct ModelRef {
-  ModelKind kind;
+  char kind[12];
   char query[64];
 };
 
@@ -39,24 +41,28 @@ struct Mat3 {
   float m[9];
 };
 
-// "<kind>:<query>" as sent by the AI. Anything unexpected gives MODEL_NONE and false.
+// "<kind>:<query>" as sent by the AI. Anything unexpected gives an empty kind and false.
 inline bool parseModelRef(const char* text, ModelRef& out) {
-  out.kind = MODEL_NONE;
+  out.kind[0] = 0;
   out.query[0] = 0;
   if (!text) return false;
   const char* colon = strchr(text, ':');
   if (!colon) return false;
-  ModelKind kind = MODEL_NONE;
-  if (colon - text == 8 && strncmp(text, "molecule", 8) == 0) kind = MODEL_MOLECULE;
-  if (kind == MODEL_NONE) return false;
+  const size_t kindLen = colon - text;
+  bool known = false;
+  for (const char* kind : MODEL_KINDS) {
+    if (strlen(kind) == kindLen && strncmp(text, kind, kindLen) == 0) known = true;
+  }
+  if (!known || kindLen >= sizeof(out.kind)) return false;
   const char* query = colon + 1;
   size_t len = strlen(query);
   if (len == 0 || len >= sizeof(out.query)) return false;
   for (size_t i = 0; i < len; i++) {
     if ((unsigned char)query[i] < 0x20 || query[i] == 0x7F) return false;
   }
+  memcpy(out.kind, text, kindLen);
+  out.kind[kindLen] = 0;
   memcpy(out.query, query, len + 1);
-  out.kind = kind;
   return true;
 }
 

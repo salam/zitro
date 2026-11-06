@@ -21,3 +21,8 @@ tmp/
 .worktrees/
 .claude/settings.local.json
 .claudine/
+
+# Old installer and unreviewed desktop screenshots
+installer/*.zip
+screenshots/Screenshot */
+screenshots/Screenshot *

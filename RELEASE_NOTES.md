@@ -37,6 +37,7 @@
 - **Print the answer too**: "Half + text" puts the picture on top and the answer in small text below it, ready for the school folder.
 - **Every print shows its source**: a small footnote names where the picture comes from, next to a little lemon and https://zitro.spot.
 - **GIFs in true colors**: GIF pictures now show their real colors, not scrambled ones.
+- **Alarms that keep ringing**: when a timer goes off, the sound now repeats along with the blinking until you press the button. Press it once and it goes quiet right away.
 - **A friendlier home screen**: a little lemon says hello right next to "Press M5 button", M5 looks like the real key on your stick, and a tilted phone icon shows how to shake for a random fact.
 - **Setup made clearer**: the setup address is underlined like a link, and "Then press BUTTON to retry." tells you what to do next.
 - **Settings with a QR code**: triple-press the side button and Zitro shows the QR code right away. Scan it to join the setup WiFi.

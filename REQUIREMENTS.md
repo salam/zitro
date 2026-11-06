@@ -424,7 +424,8 @@ Voice-controlled timer and reminder system. Users set timers via natural languag
 - The bell swings with the blink: turned -10° (white frame) and +10° (black frame) around its hanger (`drawIconRotated()`)
 - Portrait: bell above the label (14 pt, up to 3 lines; longer labels 10 pt, up to 4 lines), clear of the A tab
 - ✓ tab next to Button A (same edge tabs as the print screens); no instruction text
-- Alert sound: embedded WAV (16-bit PCM mono 16kHz, ~0.93 seconds)
+- Alert sound: embedded WAV (16-bit PCM mono 16kHz, ~0.93 seconds), repeated with a 0.3 s pause until dismissed. Non-blocking, so the blink and Button A keep working; Button A cuts the sound off at once
+- The sound keeps going while the display sleeps and ends when the stick enters light sleep (default 90 s without a button press), because light sleep switches the speaker off. Waking the stick with the alert still open starts it again
 - Alert stays on screen until Button A is pressed to dismiss
 - During alert, all other button actions are blocked
 

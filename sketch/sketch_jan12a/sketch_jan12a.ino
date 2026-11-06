@@ -283,6 +283,8 @@ String timerSetWhen;
 bool inTimerListMode = false;
 int timerListIndex = 0;
 bool timerAlertActive = false;
+unsigned long lastAlertRing = 0;
+const unsigned long ALERT_RING_INTERVAL = 1230;  // Sound (0.93 s) plus a 0.3 s pause
 int timerAlertIndex = -1;
 // Rotation the "timer set" card was last drawn in (it turns with the stick, portrait included)
 int timerSetDrawnRotation = -1;
@@ -8116,8 +8118,11 @@ String formatTimeRemaining(time_t fireTime) {
   return String(secs) + "s";
 }
 
+// One ring. Doesn't wait for the sound to end, so the blink and Button A keep working;
+// loop() calls this again every ALERT_RING_INTERVAL until the alert is dismissed.
 void playAlarmSound() {
   Serial.println("Playing alert sound...");
+  lastAlertRing = millis();
   // Re-initialize speaker (may be in undefined state after light sleep)
   M5.Speaker.begin();
   // Restore volume from settings
@@ -8128,15 +8133,7 @@ void playAlarmSound() {
   M5.Speaker.setVolume(vol);
   delay(50);  // Allow speaker to settle
 
-  // Play alert sound twice for emphasis
-  for (int i = 0; i < 2; i++) {
-    M5.Speaker.playRaw(alertSoundData, ALERT_SOUND_SAMPLES, ALERT_SOUND_SAMPLE_RATE, false, 1, 0, false);
-    while (M5.Speaker.isPlaying()) {
-      delay(50);
-    }
-    if (i == 0) delay(300);  // Pause between plays
-  }
-  Serial.println("Alert sound complete");
+  M5.Speaker.playRaw(alertSoundData, ALERT_SOUND_SAMPLES, ALERT_SOUND_SAMPLE_RATE, false, 1, 0, true);
 }
 
 // 1-bit icon at an integer scale, turned by angleDeg around a pivot given in icon pixels.
@@ -8835,6 +8832,7 @@ void loop() {
   if (timerAlertActive) {
     if (M5.BtnA.wasPressed() || M5.BtnA.wasClicked() || M5.BtnA.wasSingleClicked() || M5.BtnA.wasDoubleClicked()) {
       Serial.println("Timer alert dismissed");
+      M5.Speaker.stop();
       timerAlertActive = false;
       timerAlertIndex = -1;
       // Restore previous display
@@ -8849,6 +8847,11 @@ void loop() {
       }
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
+    }
+    // Keep ringing until dismissed. Light sleep ends it, as it switches the speaker off;
+    // waking the stick with the alert still open starts it again.
+    if (timerAlertActive && millis() - lastAlertRing >= ALERT_RING_INTERVAL) {
+      playAlarmSound();
     }
     // Blink between a white and a black screen until dismissed (stops when the display sleeps)
     if (timerAlertActive && !displaySleeping) {

@@ -179,7 +179,7 @@ The project includes deployment scripts for building and uploading firmware to y
   - ✓ (next to Button A): exit timer list
   - ▼ (next to Button C): show next timer (only with two or more timers)
   - Trash can (next to Button B): delete the currently shown timer
-- When a timer fires, the device plays an alert sound and shows a swinging bell with the reminder text, even if the display is asleep or in light sleep. The screen blinks white and black until you press Button A (✓ tab).
+- When a timer fires, the device plays an alert sound and shows a swinging bell with the reminder text, even if the display is asleep or in light sleep. The screen blinks white and black and the sound keeps repeating until you press Button A (✓ tab). If nobody reacts, the screen goes dark after the display sleep time (default 30 seconds) and the sound stops at the light sleep time (default 90 seconds).
 - Hold the stick upright and the timer card, the timer list and the alert turn to portrait with it.
 - Maximum 5 concurrent timers. Active timers prevent deep sleep so they can fire on time.
 
@@ -392,7 +392,7 @@ The organs are real shapes from anatomy research, made simple enough for this sm
 - Timer / Reminder
   - Timer confirmation screen (white card: stopwatch with check, name, "in 10 Min")
   - Timer list view (white card, stopwatch; tabs: ✓ Button A back, ▼ Button C next, trash Button B delete)
-  - Timer alert (swinging bell + text, blinking white/black, sound, Button A to dismiss)
+  - Timer alert (swinging bell + text, blinking white/black, repeating sound, Button A to dismiss)
   - All three also in portrait when the stick is held upright
 - Sleep states
   - Display sleep

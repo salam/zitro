@@ -2,6 +2,7 @@
 
 ## Fri 6 Nov, 2026
 
+- **No more empty promises**: ask for music Zitro can't play and it now tells you so and suggests a song it knows. Try "Play Ode to Joy" to watch Beethoven's famous tune scroll by on the note band!
 - **Sharp math from Wolfram**: calculations now open as crisp fractions, powers and roots made for your Zitro's screen. Press the button to step through the result, its plot and more!
 - Look inside! Ask "Was ist im Herz?" and Zitro cuts it open: real chambers and valves, brain, eye, kidney and more. Cells open up too, with every part named.
 - **A playful hello**: switch on your stick and two quick little pops greet you along with the logo. Waking from deep sleep stays quiet, and setting the volume to 0 silences it.

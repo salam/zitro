@@ -129,10 +129,17 @@ static const char* const MUSIC_PROMPT_RULE =
     "wer-hat-die-schoensten-schaefchen, haensel-und-gretel, twinkle-twinkle, frere-jacques, row-your-boat, "
     "london-bridge, jingle-bells, ode-to-joy, happy-birthday, mulberry-bush "
     "(z.B. 'Spiel Alle meine Entchen' ergibt 'music:alle-meine-entchen', 'Wie geht Bruder Jakob?' ergibt "
-    "'music:frere-jacques', 'Play Silent Night' ergibt 'music:stille-nacht'). Bei anderen Liedern und bei Fragen ueber "
-    "ein Lied ('Wer schrieb Stille Nacht?') bleibt model leer. Nenne nie selbst Noten oder Melodien: sie kommen aus "
-    "einer geprueften Tabelle. Wenn model mit 'music:' gesetzt ist, ist is_audio false und answer nennt nur kurz das "
-    "Lied. Fuelle image_query auch dann wie immer.";
+    "'music:frere-jacques', 'Play Silent Night' ergibt 'music:stille-nacht'). 'Spiel die Ode an die Freude', 'Spiel "
+    "Beethovens Neunte', 'Spiel Beethovens Sinfonie' und 'Play Beethovens symphony' ergeben 'music:ode-to-joy', auch "
+    "ohne genaue Nummer der Sinfonie; dann sagt answer, dass die Melodie der Ode an die Freude aus der 9. Sinfonie "
+    "klingt, nicht die ganze Sinfonie. Bei Fragen ueber ein Lied ('Wer schrieb Stille Nacht?') bleibt model leer. "
+    "Zitro hat keine Aufnahmen und kann nicht singen: es spielt nur diese Melodien. Will der Nutzer andere Musik "
+    "hoeren ('Spiel Beethovens Fuenfte', 'Play Mozart', 'Sing mir ein Lied'), bleibt model leer und answer sagt "
+    "ehrlich, dass du das nicht spielen kannst, und nennt als Beispiel ein Lied aus der Liste. Schreibe ohne 'music:' "
+    "nie 'Ich spiele', 'Ich singe', 'Playing' oder Aehnliches. Auch hier gilt: answer in der Sprache der Frage und in "
+    "der Ich-Form; auf 'Play Mozart' antwortest du englisch, z.B. 'I can\'t play Mozart, but I can play Twinkle "
+    "Twinkle.' Nenne nie selbst Noten oder Melodien: sie kommen aus einer geprueften Tabelle. Wenn model mit 'music:' "
+    "gesetzt ist, ist is_audio false und answer nennt nur kurz das Lied. Fuelle image_query auch dann wie immer.";
 
 // Only an exact id counts, in any case: a near match would play the wrong song under its name.
 inline const MusicSong* musicFindSong(const char* id) {

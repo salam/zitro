@@ -213,7 +213,7 @@ Proteins, anatomy, recipes, timelines and the detailed globe load their data fro
 
 Ask for a song by name, for example "Spiel Alle meine Entchen", "Wie geht Bruder Jakob?" or "Play Silent Night". The notes move across the screen and the one on the line plays.
 
-Zitro knows these 26 songs. Others get a normal answer with a picture.
+Zitro knows these 26 songs. It has no recordings, so for other music it tells you it can't play that and suggests a song it knows, and you still get a picture. Ask for "Ode to Joy" to hear the famous tune from Beethoven's Ninth. If you just ask for "Beethoven's symphony", Zitro may play that tune or suggest it.
 
 German: Alle meine Entchen, Hänschen klein, Fuchs du hast die Gans gestohlen, Kommt ein Vogel geflogen, Ein Männlein steht im Walde, Alle Vögel sind schon da, Der Kuckuck und der Esel, Kuckuck Kuckuck ruft's aus dem Wald, Backe backe Kuchen, Schlaf Kindlein schlaf, Guten Abend gut' Nacht, Häschen in der Grube, Summ summ summ, O Tannenbaum, Stille Nacht, Schneeflöckchen Weißröckchen, Wer hat die schönsten Schäfchen, Hänsel und Gretel, Bruder Jakob, Zum Geburtstag viel Glück.
 

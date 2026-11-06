@@ -284,6 +284,9 @@ static void testPromptRule() {
   for (const char* c = MUSIC_PROMPT_RULE; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
   CHECK(strstr(MUSIC_PROMPT_RULE, "is_audio false") != nullptr);
   CHECK(strstr(MUSIC_PROMPT_RULE, "music:<id>") != nullptr);
+  // Only a song from the table makes a sound, so the AI may never promise anything else
+  CHECK(strstr(MUSIC_PROMPT_RULE, "ohne 'music:' nie 'Ich spiele'") != nullptr);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "ergeben 'music:ode-to-joy'") != nullptr);
   // Every example in the rule leads to a real song
   for (const char* p = MUSIC_PROMPT_RULE; (p = strstr(p, "ergibt 'music:")) != nullptr;) {
     p += strlen("ergibt 'music:");

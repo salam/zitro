@@ -3,6 +3,9 @@
 ## Requirements
 
 - `model` value `music:<song id>` opens the music band. The id must exactly match the table in `sketch/sketch_jan12a/music_songs.h` (case aside). Anything else makes `fetch` return false, so the normal Wikipedia picture shows.
+- Zitro has no recordings and can't sing. If someone asks for music outside the table, `model` stays empty and the answer must say plainly that Zitro can't play it, and name a song from the list as an example. It must never claim to play or sing. This is a prompt rule, so the wording comes from the AI and needs checking on the stick, several times per question with memory cleared (serial `forget`).
+- A request for Beethoven's Ninth, or for "Beethoven's symphony" without a number, should open `ode-to-joy`. The answer must say it is the Ode to Joy melody from the Ninth, not the whole symphony.
+- Measured on the stick on 2026-11-06, 12 questions 3 times each with memory cleared: no answer claimed to play something that wasn't playing. "Play Beethoven's symphony" opened the melody 2 of 3 times and "Play a Beethoven symphony" 0 of 3; the other times the answer honestly offered it. "Spiel Beethovens Sinfonie" opened it 3 of 3 times. One answer in 36 came in German to an English question. A prompt rule can't make these certain.
 - Notes never come from the AI. The AI only picks an id; the prompt rule lists the ids and forbids it from supplying notes. Pitch, length, tempo and song name all come from the table.
 - The table holds 26 melodies. Each is compared note by note with a published score (`tests/music/references.txt`, `tests/music/check_references.py`), and seven are also pinned by pitch and length in `tests/music/test_music.cpp`. Each song's bars must add up, with a lead-in made up by the last bar, so the loop stays in time. Every song must be public domain; see below.
 - Tempo is the table's choice, not a fact from a source: scores rarely give one.
@@ -24,7 +27,7 @@
 
 Ask for a song by name, for example "Spiel Alle meine Entchen", "Wie geht Bruder Jakob?" or "Play Silent Night". The notes move across the screen and the one on the line plays.
 
-Zitro knows these 26 songs. Others get a normal answer with a picture.
+Zitro knows these 26 songs. It has no recordings, so for other music it tells you it can't play that and suggests a song it knows, and you still get a picture. Ask for "Ode to Joy" to hear the famous tune from Beethoven's Ninth. If you just ask for "Beethoven's symphony", Zitro may play that tune or suggest it.
 
 German: Alle meine Entchen, Hänschen klein, Fuchs du hast die Gans gestohlen, Kommt ein Vogel geflogen, Ein Männlein steht im Walde, Alle Vögel sind schon da, Der Kuckuck und der Esel, Kuckuck Kuckuck ruft's aus dem Wald, Backe backe Kuchen, Schlaf Kindlein schlaf, Guten Abend gut' Nacht, Häschen in der Grube, Summ summ summ, O Tannenbaum, Stille Nacht, Schneeflöckchen Weißröckchen, Wer hat die schönsten Schäfchen, Hänsel und Gretel, Bruder Jakob, Zum Geburtstag viel Glück.
 

@@ -1,5 +1,6 @@
 // Host tests of anatomy_core.h: closed list, file check with broken and hostile input, drawing order.
 // Fixtures are the real generated files in webpage2/data/anatomy/.
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -250,14 +251,18 @@ static void testDrawing(const std::string& dataDir) {
   for (int id = 0; id < ANATOMY_ID_COUNT; id++) {
     const std::string name = ANATOMY_IDS[id];
     Bytes file = readFile(dataDir + "/" + name + ".bin");
+    CHECK(!file.empty());  // Every id on the closed list has its file
     if (file.empty()) continue;
     printf("  real file %s: %zu bytes\n", name.c_str(), file.size());
     AnatomyModel real;
     CHECK(anatomyParse(file.data(), file.size(), name.c_str(), real));
     if (!real.vertexCount) continue;
     CHECK(real.triangleCount <= ANATOMY_MAX_TRIANGLES);
-    // No model on the list ships with a nameless source; schematics say so
     CHECK(strlen(real.source) > 0);
+    // Drawn cells must say so, and measured organs must not: this is the line between data and a drawing
+    const bool isCell = name == "animal-cell" || name == "plant-cell" || name == "red-blood-cell" || name == "neuron";
+    CHECK(((real.flags & ANATOMY_FLAG_SCHEMATIC) != 0) == isCell);
+    CHECK((strcmp(real.source, "Schema") == 0) == isCell);
     std::vector<int8_t> n(real.triangleCount * 3);
     anatomyComputeNormals(real, n.data());
     uint16_t s[ANATOMY_MAX_PALETTE * ANATOMY_SHADES];
@@ -286,11 +291,33 @@ static void testDrawing(const std::string& dataDir) {
   }
 }
 
+// The audience includes small children: no part with one of these names may be in any file
+static void testNothingUnsuitable(const std::string& dataDir) {
+  Bytes raw = readFile(dataDir + "/index.json");
+  CHECK(!raw.empty());
+  std::string index(raw.begin(), raw.end());
+  // An empty index would pass the check below without looking at anything
+  for (int id = 0; id < ANATOMY_ID_COUNT; id++) {
+    CHECK(index.find(std::string("\"id\": \"") + ANATOMY_IDS[id] + "\"") != std::string::npos);
+  }
+  CHECK(index.find("\"parts\": []") == std::string::npos);
+  for (const char* credit : {"The Database Center for Life Science", "Human Reference Atlas", "Not measured"}) {
+    CHECK(index.find(credit) != std::string::npos);
+  }
+  for (char& c : index) c = (char)tolower((unsigned char)c);
+  for (const char* no : {"penis", "testis", "prostate", "scrot", "semin", "epididym", "uter", "ovar", "vagin", "vulv",
+                         "breast", "mammary", "skin", "nipple", "pubic hair"}) {
+    CHECK(index.find(no) == std::string::npos);
+  }
+}
+
 int main(int argc, char** argv) {
   testClosedList();
   testValidFile();
   testBrokenAndHostile();
-  testDrawing(argc > 1 ? argv[1] : "../../webpage2/data/anatomy");
+  const std::string dataDir = argc > 1 ? argv[1] : "../../webpage2/data/anatomy";
+  testDrawing(dataDir);
+  testNothingUnsuitable(dataDir);
   if (failures) {
     printf("%d failure(s)\n", failures);
     return 1;

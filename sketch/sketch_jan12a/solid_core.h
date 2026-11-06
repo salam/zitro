@@ -172,7 +172,7 @@ inline void solidPlaceAndScale(SolidMesh& m) {
 // on one side span a face, and every corner on that plane belongs to it. No hand-typed face
 // lists to get wrong. The corners must be centred first. False if the shape doesn't close.
 inline bool solidHullFaces(SolidMesh& m) {
-  static const float EPS = 1e-3f;
+  const float tolerance = 1e-3f;
   const int n = m.vertexCount;
   if (n > 32) return false;  // Only polyhedra come here; the search grows quickly
   for (int a = 0; a < n; a++) {
@@ -185,15 +185,15 @@ inline bool solidHullFaces(SolidMesh& m) {
         const float vx = C[0] - A[0], vy = C[1] - A[1], vz = C[2] - A[2];
         float nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
         const float length = sqrtf(nx * nx + ny * ny + nz * nz);
-        if (length < EPS) continue;  // In a straight line
+        if (length < tolerance) continue;  // In a straight line
         nx /= length; ny /= length; nz /= length;
         int above = 0, below = 0;
         uint8_t on[16];
         int onCount = 0;
         for (int i = 0; i < n; i++) {
           const float d = (m.v[i][0] - A[0]) * nx + (m.v[i][1] - A[1]) * ny + (m.v[i][2] - A[2]) * nz;
-          if (d > EPS) above++;
-          else if (d < -EPS) below++;
+          if (d > tolerance) above++;
+          else if (d < -tolerance) below++;
           else if (onCount < 16) on[onCount++] = (uint8_t)i;
         }
         if (above && below) continue;

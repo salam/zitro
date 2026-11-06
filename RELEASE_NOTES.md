@@ -2,6 +2,7 @@
 
 ## Fri 6 Nov, 2026
 
+- Look inside! Ask "Was ist im Herz?" and Zitro cuts it open: real chambers and valves, brain, eye, kidney and more. Cells open up too, with every part named.
 - **A playful hello**: switch on your stick and two quick little pops greet you along with the logo. Waking from deep sleep stays quiet, and setting the volume to 0 silences it.
 - **See it all on zitro.spot**: the homepage now shows music, graphs, the globe, proteins, organs, the night sky, physics, timelines and recipes with real screenshots from the stick.
 - Ask Zitro for a song like "Alle meine Entchen": watch real notes scroll by on a never-ending band and hear each one play!

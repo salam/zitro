@@ -1,8 +1,10 @@
 // Host preview: draws a model file with the device's own pipeline at the real 240x135, as a PPM.
-// Usage: render_bin <file.bin> <id> <out.ppm> <xAngle> <yAngle> <zoomStep>
+// Usage: render_bin <file.bin> <id> <out.ppm> <xAngle> <yAngle> <zoomStep> [cut]
+// With "cut" the angles are added to the view's start pose, and the legend lines are printed as "legend <rgb565> <de>|<en>".
 // tests/anatomy/preview.py turns these into a contact sheet to check by eye.
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <vector>
 
 #include "../../sketch/sketch_jan12a/anatomy_core.h"
@@ -37,8 +39,9 @@ int main(int argc, char** argv) {
   // Host allocations are aligned, as ps_malloc's are on the device
   const size_t n = fread(raw.data(), 1, raw.size(), f);
   fclose(f);
+  const bool cut = argc > 7 && strcmp(argv[7], "cut") == 0;
   AnatomyModel m;
-  if (!anatomyParse(raw.data(), n, argv[2], m)) {
+  if (!anatomyParse(raw.data(), n, argv[2], cut, m)) {
     fprintf(stderr, "%s: rejected\n", argv[1]);
     return 4;
   }
@@ -52,15 +55,24 @@ int main(int argc, char** argv) {
 
   Mat3 rotation;
   mat3Identity(rotation);
+  if (cut) anatomyCutStart(rotation);
   mat3Rotate(rotation, (float)atof(argv[4]), (float)atof(argv[5]), 0);
+  if (cut) anatomyClampCut(rotation);
   const int zoom = atoi(argv[6]);
   const int viewH = H - ANATOMY_VIEW_FOOTER;
-  const uint16_t drawn = anatomyRender(m, normals.data(), shades, rotation, anatomyViewScale(viewH, zoom), ANATOMY_VIEW_CAMERA,
-                                       W / 2, viewH / 2, W, viewH, w,
+  const uint16_t drawn = anatomyRender(m, normals.data(), shades, rotation, anatomyViewScaleFor(viewH, m.legendCount, zoom), ANATOMY_VIEW_CAMERA,
+                                       anatomyViewCentreX(W, m.legendCount, zoom), viewH / 2, W, viewH, w,
                                        [](int a, int b, int c, int d, int e, int g, uint16_t color) {
                                          fillTriangle(a, b, c, d, e, g, color);
                                        });
   printf("%s tris=%d verts=%d drawn=%d\n", argv[2], m.triangleCount, m.vertexCount, drawn);
+  if (anatomyViewShowsLegend(m.legendCount, zoom)) {
+    printf("top %d %d\n", anatomyLegendTop(viewH, m.legendCount, (m.flags & ANATOMY_FLAG_SCHEMATIC) != 0), (m.flags & ANATOMY_FLAG_SCHEMATIC) != 0);
+    for (int i = 0; i < m.legendCount; i++) {
+      const uint8_t color = anatomyLegendColor(m, i);
+      printf("legend %d %s|%s\n", color == ANATOMY_LEGEND_NOTE ? -1 : m.palette[color], anatomyLegendText(m, i, true), anatomyLegendText(m, i, false));
+    }
+  }
   f = fopen(argv[3], "wb");
   fprintf(f, "P6 %d %d 255\n", W, H);
   for (int y = 0; y < H; y++) {

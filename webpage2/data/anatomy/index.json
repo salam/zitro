@@ -6,15 +6,36 @@
    "attribution": "BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution 4.0 International",
    "source_url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html",
    "licence_url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
-   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised.",
+   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised. Cutaways: cut open along a plane; the cut of each closed part filled.",
    "note": "The BodyParts3D licence page (updated 2025-02-27) says CC BY 4.0. The headers inside the OBJ files, dated 2013, still say CC BY-SA 2.1 Japan. These derived files are therefore also offered under CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/), which satisfies both: clause 5.2 of the 2.1 Japan licence allows a later version with the same licence elements."
   },
   "hra": {
    "short": "HuBMAP HRA CC BY",
-   "attribution": "3D Reference Organ for Lung, Male, v1.3, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
-   "source_url": "https://lod.humanatlas.io/ref-organ/lung-male/v1.3/",
+   "attribution": "3D Reference Organ for Lung, Male, v1.3, by Kristen Browne, Heidi Schlehlein, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
+   "source_url": "https://lod.humanatlas.io/ref-organ/lung-male/v1.3",
    "licence_url": "https://creativecommons.org/licenses/by/4.0/",
    "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised."
+  },
+  "hra-eye": {
+   "short": "HuBMAP HRA CC BY",
+   "attribution": "3D Reference Organ for Eye, Male, Right, v1.3, by Kristen Browne, Heidi Schlehlein, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
+   "source_url": "https://lod.humanatlas.io/ref-organ/eye-male-right/v1.3",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised. Cut open along a plane; the cut of each closed part filled."
+  },
+  "hra-heart": {
+   "short": "HuBMAP HRA CC BY",
+   "attribution": "3D Reference Organ for Heart, Male, v1.3, by Kristen Browne, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
+   "source_url": "https://lod.humanatlas.io/ref-organ/heart-male/v1.3",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised. Cut open along a plane; the cut of each closed part filled."
+  },
+  "hra-kidney": {
+   "short": "HuBMAP HRA CC BY",
+   "attribution": "3D Reference Organ for Kidney, Male, Right, v1.3 and 3D Reference Organ for Renal Pelvis, Male, Right, v1.0, by Kristen Browne, Heidi Schlehlein, Human Reference Atlas, HuBMAP, licensed under CC Attribution 4.0 International",
+   "source_url": "https://lod.humanatlas.io/ref-organ/kidney-male-right/v1.3 and https://lod.humanatlas.io/ref-organ/renal-pelvis-male-right/v1.0",
+   "licence_url": "https://creativecommons.org/licenses/by/4.0/",
+   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised. Cut open along a plane; the cut of each closed part filled."
   },
   "schematic": {
    "short": "Schema",
@@ -30,15 +51,19 @@
    "label_de": "Tierzelle",
    "label_en": "Animal cell",
    "schematic": true,
-   "triangles": 1340,
-   "vertices": 818,
-   "bytes": 14408,
+   "triangles": 1102,
+   "vertices": 802,
+   "bytes": 12934,
    "source": "schematic",
    "parts": [
-    "cell membrane, cut open",
+    "cell membrane",
+    "cytoplasm, drawn on the inside of the membrane",
     "endoplasmic reticulum 1",
     "endoplasmic reticulum 2",
     "endoplasmic reticulum 3",
+    "golgi apparatus 1",
+    "golgi apparatus 2",
+    "golgi apparatus 3",
     "mitochondrion 1",
     "mitochondrion 2",
     "mitochondrion 3",
@@ -51,7 +76,144 @@
     "vesicle 4",
     "vesicle 5"
    ],
+   "filled_triangles": 192,
+   "filled_parts": [
+    "cell membrane",
+    "endoplasmic reticulum 1",
+    "endoplasmic reticulum 2",
+    "endoplasmic reticulum 3",
+    "golgi apparatus 1",
+    "golgi apparatus 2",
+    "golgi apparatus 3",
+    "mitochondrion 1",
+    "mitochondrion 4",
+    "nucleolus",
+    "nucleus"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Zellmembran",
+     "en": "Membrane"
+    },
+    {
+     "de": "Zellkern",
+     "en": "Nucleus"
+    },
+    {
+     "de": "Nukleolus",
+     "en": "Nucleolus"
+    },
+    {
+     "de": "Mitochondrien",
+     "en": "Mitochondria"
+    },
+    {
+     "de": "Retikulum",
+     "en": "Reticulum"
+    },
+    {
+     "de": "Golgi",
+     "en": "Golgi"
+    },
+    {
+     "de": "Vesikel",
+     "en": "Vesicles"
+    }
+   ],
    "schematic_of": "Which parts an animal cell has and roughly where, as in school textbooks. Not measured."
+  },
+  {
+   "id": "brain",
+   "file": "brain-cut.bin",
+   "label_de": "Gehirn",
+   "label_en": "Brain",
+   "schematic": false,
+   "triangles": 1152,
+   "vertices": 772,
+   "bytes": 13145,
+   "source": "bp3d",
+   "parts": [
+    "Cerebellum",
+    "Fourth ventricle",
+    "Left angular gyrus",
+    "Left caudate nucleus",
+    "Left cingulate gyrus",
+    "Left fusiform gyrus",
+    "Left globus pallidus",
+    "Left inferior frontal gyrus",
+    "Left inferior temporal gyrus",
+    "Left insula",
+    "Left lateral ventricle",
+    "Left middle frontal gyrus",
+    "Left middle temporal gyrus",
+    "Left occipital lobe",
+    "Left parahippocampal gyrus",
+    "Left postcentral gyrus",
+    "Left precentral gyrus",
+    "Left putamen",
+    "Left superior frontal gyrus",
+    "Left superior parietal lobule",
+    "Left supramarginal gyrus",
+    "Left thalamus",
+    "Medulla oblongata",
+    "Midbrain",
+    "Pons",
+    "Third ventricle",
+    "White matter of left cerebral hemisphere"
+   ],
+   "filled_triangles": 101,
+   "filled_parts": [
+    "Cerebellum",
+    "Fourth ventricle",
+    "Left caudate nucleus",
+    "Left cingulate gyrus",
+    "Left lateral ventricle",
+    "Left occipital lobe",
+    "Left precentral gyrus",
+    "Left superior frontal gyrus",
+    "Left superior parietal lobule",
+    "Left thalamus",
+    "Medulla oblongata",
+    "Midbrain",
+    "Pons",
+    "Third ventricle"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Hirnrinde",
+     "en": "Cortex"
+    },
+    {
+     "de": "Hirnmark",
+     "en": "White matter"
+    },
+    {
+     "de": "Balken",
+     "en": "Callosum"
+    },
+    {
+     "de": "Hirnkammern",
+     "en": "Ventricles"
+    },
+    {
+     "de": "Thalamus",
+     "en": "Thalamus"
+    },
+    {
+     "de": "Kerne",
+     "en": "Deep nuclei"
+    },
+    {
+     "de": "Kleinhirn",
+     "en": "Cerebellum"
+    },
+    {
+     "de": "Hirnstamm",
+     "en": "Brain stem"
+    }
+   ]
   },
   {
    "id": "brain",
@@ -100,6 +262,70 @@
     "Right supramarginal gyrus",
     "White matter of left cerebral hemisphere",
     "White matter of right cerebral hemisphere"
+   ]
+  },
+  {
+   "id": "eye",
+   "file": "eye-cut.bin",
+   "label_de": "Auge",
+   "label_en": "Eye",
+   "schematic": false,
+   "triangles": 991,
+   "vertices": 802,
+   "bytes": 12157,
+   "source": "hra-eye",
+   "parts": [
+    "VH_M_ciliary_body_R",
+    "VH_M_cornea_R",
+    "VH_M_iris_R",
+    "VH_M_lens_R",
+    "VH_M_optic_choroid_R",
+    "VH_M_retina_R",
+    "VH_M_sclera_R",
+    "VH_M_vitreous_humor_R"
+   ],
+   "filled_triangles": 249,
+   "filled_parts": [
+    "VH_M_ciliary_body_R",
+    "VH_M_cornea_R",
+    "VH_M_lens_R",
+    "VH_M_optic_choroid_R",
+    "VH_M_retina_R",
+    "VH_M_sclera_R",
+    "VH_M_vitreous_humor_R"
+   ],
+   "left_open_parts": [
+    "VH_M_iris_R"
+   ],
+   "legend": [
+    {
+     "de": "Hornhaut",
+     "en": "Cornea"
+    },
+    {
+     "de": "Iris",
+     "en": "Iris"
+    },
+    {
+     "de": "Linse",
+     "en": "Lens"
+    },
+    {
+     "de": "Klares Gel",
+     "en": "Clear gel"
+    },
+    {
+     "de": "Netzhaut",
+     "en": "Retina"
+    },
+    {
+     "de": "Aderhaut",
+     "en": "Choroid"
+    },
+    {
+     "de": "Lederhaut",
+     "en": "Sclera"
+    }
    ]
   },
   {
@@ -160,6 +386,73 @@
   },
   {
    "id": "heart",
+   "file": "heart-cut.bin",
+   "label_de": "Herz",
+   "label_en": "Heart",
+   "schematic": false,
+   "triangles": 966,
+   "vertices": 777,
+   "bytes": 11832,
+   "source": "hra-heart",
+   "parts": [
+    "VH_M_heart_left_ventricle",
+    "VH_M_heart_right_ventricle",
+    "VH_M_interventricular_septum",
+    "VH_M_left_cardiac_atrium",
+    "VH_M_mitral_valve",
+    "VH_M_papillary_muscle_of_heart_anterolateral",
+    "VH_M_papillary_muscle_of_heart_medial",
+    "VH_M_papillary_muscle_of_heart_posterior",
+    "VH_M_papillary_muscle_of_heart_posteromedial",
+    "VH_M_right_cardiac_atrium",
+    "VH_M_tricuspid_valve"
+   ],
+   "filled_triangles": 245,
+   "filled_parts": [
+    "VH_M_heart_left_ventricle",
+    "VH_M_heart_right_ventricle",
+    "VH_M_interventricular_septum",
+    "VH_M_left_cardiac_atrium",
+    "VH_M_mitral_valve",
+    "VH_M_papillary_muscle_of_heart_anterolateral",
+    "VH_M_papillary_muscle_of_heart_posteromedial",
+    "VH_M_right_cardiac_atrium",
+    "VH_M_tricuspid_valve"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Linker Vorhof",
+     "en": "Left atrium"
+    },
+    {
+     "de": "Linke Kammer",
+     "en": "Left ventricle"
+    },
+    {
+     "de": "Rechter Vorhof",
+     "en": "Right atrium"
+    },
+    {
+     "de": "Rechte Kammer",
+     "en": "Right ventricle"
+    },
+    {
+     "de": "Scheidewand",
+     "en": "Septum"
+    },
+    {
+     "de": "Herzklappen",
+     "en": "Valves"
+    },
+    {
+     "de": "Papillarmuskeln",
+     "en": "Papillary muscle"
+    }
+   ]
+  },
+  {
+   "id": "heart",
    "file": "heart.bin",
    "label_de": "Herz",
    "label_en": "Heart",
@@ -188,6 +481,66 @@
   },
   {
    "id": "kidney",
+   "file": "kidney-cut.bin",
+   "label_de": "Niere",
+   "label_en": "Kidney",
+   "schematic": false,
+   "triangles": 1061,
+   "vertices": 874,
+   "bytes": 12997,
+   "source": "hra-kidney",
+   "parts": [
+    "VH_M_hilum_of_kidney_R",
+    "VH_M_outer_cortex_of_kidney_R",
+    "VH_M_renal_column_R",
+    "VH_M_renal_pelvis_R",
+    "VH_M_renal_pyramid_a",
+    "VH_M_renal_pyramid_d",
+    "VH_M_renal_pyramid_f",
+    "VH_M_renal_pyramid_h",
+    "VH_M_renal_pyramid_i",
+    "VH_M_renal_pyramid_j"
+   ],
+   "filled_triangles": 230,
+   "filled_parts": [
+    "VH_M_outer_cortex_of_kidney_R",
+    "VH_M_renal_pyramid_a",
+    "VH_M_renal_pyramid_d",
+    "VH_M_renal_pyramid_f",
+    "VH_M_renal_pyramid_h",
+    "VH_M_renal_pyramid_i"
+   ],
+   "left_open_parts": [
+    "VH_M_hilum_of_kidney_R",
+    "VH_M_renal_column_R",
+    "VH_M_renal_pelvis_R",
+    "VH_M_renal_pyramid_j"
+   ],
+   "legend": [
+    {
+     "de": "Rinde",
+     "en": "Cortex"
+    },
+    {
+     "de": "Pyramiden",
+     "en": "Pyramids"
+    },
+    {
+     "de": "Papillen",
+     "en": "Papillae"
+    },
+    {
+     "de": "Nierenpforte",
+     "en": "Hilum"
+    },
+    {
+     "de": "Nierenbecken",
+     "en": "Renal pelvis"
+    }
+   ]
+  },
+  {
+   "id": "kidney",
    "file": "kidney.bin",
    "label_de": "Niere",
    "label_en": "Kidney",
@@ -198,6 +551,97 @@
    "source": "bp3d",
    "parts": [
     "Right kidney"
+   ]
+  },
+  {
+   "id": "liver",
+   "file": "liver-cut.bin",
+   "label_de": "Leber",
+   "label_en": "Liver",
+   "schematic": false,
+   "triangles": 1263,
+   "vertices": 702,
+   "bytes": 13420,
+   "source": "bp3d",
+   "parts": [
+    "Anterior inferior segmental branch of right portal vein",
+    "Anterior inferior segmental hepatic artery",
+    "Anterior inferior segmental tributary of middle hepatic vein",
+    "Anterior inferior tributary of right hepatic biliary tree",
+    "Anterior superior segmental branch of right portal vein",
+    "Anterior superior segmental hepatic artery",
+    "Anterior superior tributary of right hepatic biliary tree",
+    "Caudate lobe branch of left portal vein",
+    "Caudate lobe branch of right portal vein",
+    "Caudate lobe of liver",
+    "Caudate lobe tributary of left hepatic biliary tree",
+    "Common hepatic artery",
+    "Common hepatic duct",
+    "Cystic duct",
+    "Gallbladder",
+    "Hepatic artery proper",
+    "Hepatic portal vein",
+    "Hepatovenous segment II",
+    "Hepatovenous segment III",
+    "Hepatovenous segment IV",
+    "Hepatovenous segment V",
+    "Hepatovenous segment VI",
+    "Hepatovenous segment VII",
+    "Hepatovenous segment VIII",
+    "Lateral inferior segmental branch of left portal vein",
+    "Lateral inferior segmental hepatic artery",
+    "Lateral inferior tributary of left hepatic biliary tree",
+    "Lateral superior segmental branch of left portal vein",
+    "Lateral superior segmental hepatic artery",
+    "Lateral superior tributary of left hepatic biliary tree",
+    "Left hepatic duct",
+    "Left hepatic vein",
+    "Left portal vein",
+    "Medial inferior segmental branch of left portal vein",
+    "Medial inferior segmental hepatic artery",
+    "Medial inferior tributary of left hepatic biliary tree",
+    "Medial superior segmental branch of left portal vein",
+    "Medial superior segmental hepatic artery",
+    "Medial superior tributary of left hepatic biliary tree",
+    "Posterior inferior segmental branch of right portal vein",
+    "Posterior inferior segmental hepatic artery",
+    "Posterior inferior tributary of right hepatic biliary tree",
+    "Posterior superior segmental branch of right portal vein",
+    "Posterior superior segmental hepatic artery",
+    "Posterior superior tributary of right hepatic biliary tree",
+    "Pre-hepatic portal vein",
+    "Right hepatic duct",
+    "Right hepatic vein",
+    "Right portal vein"
+   ],
+   "filled_triangles": 0,
+   "filled_parts": [],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Pfortader",
+     "en": "Portal vein"
+    },
+    {
+     "de": "Lebervenen",
+     "en": "Hepatic veins"
+    },
+    {
+     "de": "Leberarterie",
+     "en": "Hepatic artery"
+    },
+    {
+     "de": "Gallenwege",
+     "en": "Bile ducts"
+    },
+    {
+     "de": "Leber",
+     "en": "Liver"
+    },
+    {
+     "de": "Gewebe entfernt",
+     "en": "Tissue removed"
+    }
    ]
   },
   {
@@ -219,6 +663,82 @@
     "Hepatovenous segment VI",
     "Hepatovenous segment VII",
     "Hepatovenous segment VIII"
+   ]
+  },
+  {
+   "id": "lungs",
+   "file": "lungs-cut.bin",
+   "label_de": "Lunge",
+   "label_en": "Lungs",
+   "schematic": false,
+   "triangles": 1242,
+   "vertices": 741,
+   "bytes": 13384,
+   "source": "hra",
+   "parts": [
+    "VH_M_bronchus",
+    "VH_M_left_anterior_basal_bronchopulmonary_segment",
+    "VH_M_left_anterior_basal_bronchus",
+    "VH_M_left_anterior_bronchopulmonary_segment",
+    "VH_M_left_anterior_bronchus",
+    "VH_M_left_apical_bronchopulmonary_segment",
+    "VH_M_left_apical_bronchus",
+    "VH_M_left_inferior_lobar_bronchus",
+    "VH_M_left_lateral_basal_bronchopulmonary_segment",
+    "VH_M_left_lateral_basal_bronchus",
+    "VH_M_left_lingula_inferior_bronchopulmonary_segment",
+    "VH_M_left_lingula_inferior_bronchus",
+    "VH_M_left_lingula_superior_bronchopulmonary_segment",
+    "VH_M_left_lingula_superior_bronchus",
+    "VH_M_left_lingular_bronchus",
+    "VH_M_left_medial_basal_bronchopulmonary_segment",
+    "VH_M_left_medial_basal_bronchus",
+    "VH_M_left_posetrior_basal_bronchopulmonary_segment",
+    "VH_M_left_posterior_basal_bronchus",
+    "VH_M_left_posterior_bronchopulmonary_segment",
+    "VH_M_left_superior_bronchopulmonary_segment",
+    "VH_M_left_superior_bronchus",
+    "VH_M_left_superior_lobar_bronchus",
+    "VH_M_right_anterior_basal_bronchopulmonary_segment",
+    "VH_M_right_anterior_basal_bronchus",
+    "VH_M_right_anterior_bronchopulmonary_segment",
+    "VH_M_right_anterior_bronchus",
+    "VH_M_right_apical_bronchopulmonary_segment",
+    "VH_M_right_apical_bronchus",
+    "VH_M_right_intermediate_bronchus",
+    "VH_M_right_lateral_basal_bronchopulmonary_segment",
+    "VH_M_right_lateral_basal_bronchus",
+    "VH_M_right_lateral_bronchopulmonary_segment",
+    "VH_M_right_lateral_bronchus",
+    "VH_M_right_lower_lobar_bronchus",
+    "VH_M_right_medial_basal_bronchopulmonary_segment",
+    "VH_M_right_medial_basal_bronchus",
+    "VH_M_right_medial_bronchus",
+    "VH_M_right_middle_lobar_bronchus",
+    "VH_M_right_posterior_basal",
+    "VH_M_right_posterior_basal_bronchopulmonary_segment",
+    "VH_M_right_posterior_bronchopulmonary_segment",
+    "VH_M_right_posterior_bronchus",
+    "VH_M_right_superior_bronchopulmonary_segment",
+    "VH_M_right_superior_bronchus",
+    "VH_M_right_superior_lobar_bronchus"
+   ],
+   "filled_triangles": 0,
+   "filled_parts": [],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Bronchien",
+     "en": "Bronchi"
+    },
+    {
+     "de": "Lunge",
+     "en": "Lung"
+    },
+    {
+     "de": "Gewebe entfernt",
+     "en": "Tissue removed"
+    }
    ]
   },
   {
@@ -267,9 +787,9 @@
    "label_de": "Nervenzelle",
    "label_en": "Neuron",
    "schematic": true,
-   "triangles": 1072,
-   "vertices": 584,
-   "bytes": 11128,
+   "triangles": 1140,
+   "vertices": 834,
+   "bytes": 13310,
    "source": "schematic",
    "parts": [
     "axon",
@@ -297,6 +817,40 @@
     "myelin sheath 5",
     "nucleus"
    ],
+   "filled_triangles": 183,
+   "filled_parts": [
+    "axon",
+    "cell body",
+    "myelin sheath 1",
+    "myelin sheath 2",
+    "myelin sheath 3",
+    "myelin sheath 4",
+    "myelin sheath 5",
+    "nucleus"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Zellleib",
+     "en": "Cell body"
+    },
+    {
+     "de": "Zellkern",
+     "en": "Nucleus"
+    },
+    {
+     "de": "Axon",
+     "en": "Axon"
+    },
+    {
+     "de": "Myelin",
+     "en": "Myelin"
+    },
+    {
+     "de": "Endknopf",
+     "en": "Terminal"
+    }
+   ],
    "schematic_of": "Cell body, dendrites, axon with myelin, terminals, as in school textbooks. Not measured."
   },
   {
@@ -305,12 +859,12 @@
    "label_de": "Pflanzenzelle",
    "label_en": "Plant cell",
    "schematic": true,
-   "triangles": 820,
-   "vertices": 446,
-   "bytes": 8536,
+   "triangles": 1325,
+   "vertices": 831,
+   "bytes": 14628,
    "source": "schematic",
    "parts": [
-    "cell wall, cut open",
+    "cell wall",
     "chloroplast 1",
     "chloroplast 2",
     "chloroplast 3",
@@ -319,11 +873,46 @@
     "chloroplast 6",
     "chloroplast 7",
     "chloroplast 8",
+    "cytoplasm, drawn on the inside of the wall",
     "mitochondrion 1",
     "mitochondrion 2",
     "nucleolus",
     "nucleus",
     "vacuole"
+   ],
+   "filled_triangles": 101,
+   "filled_parts": [
+    "cell wall",
+    "nucleolus",
+    "nucleus",
+    "vacuole"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Zellwand",
+     "en": "Cell wall"
+    },
+    {
+     "de": "Vakuole",
+     "en": "Vacuole"
+    },
+    {
+     "de": "Zellkern",
+     "en": "Nucleus"
+    },
+    {
+     "de": "Nukleolus",
+     "en": "Nucleolus"
+    },
+    {
+     "de": "Chloroplasten",
+     "en": "Chloroplasts"
+    },
+    {
+     "de": "Mitochondrien",
+     "en": "Mitochondria"
+    }
    ],
    "schematic_of": "Which parts a plant cell has and roughly where, as in school textbooks. Not measured."
   },
@@ -333,12 +922,31 @@
    "label_de": "Rote Blutzelle",
    "label_en": "Red blood cell",
    "schematic": true,
-   "triangles": 1012,
-   "vertices": 508,
-   "bytes": 10252,
+   "triangles": 875,
+   "vertices": 560,
+   "bytes": 9729,
    "source": "schematic",
    "parts": [
     "biconcave disc"
+   ],
+   "filled_triangles": 116,
+   "filled_parts": [
+    "biconcave disc"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Zellmembran",
+     "en": "Membrane"
+    },
+    {
+     "de": "Blutfarbstoff",
+     "en": "Hemoglobin"
+    },
+    {
+     "de": "Kein Zellkern",
+     "en": "No nucleus"
+    }
    ],
    "schematic_of": "Idealised shape from the Evans and Fung (1972) formula, fitted to measured cells. Not a scan."
   },
@@ -567,6 +1175,80 @@
     "Twelfth thoracic vertebra",
     "Vomer",
     "Xiphoid process"
+   ]
+  },
+  {
+   "id": "skull",
+   "file": "skull-cut.bin",
+   "label_de": "Schädel",
+   "label_en": "Skull",
+   "schematic": false,
+   "triangles": 1084,
+   "vertices": 803,
+   "bytes": 12650,
+   "source": "bp3d",
+   "parts": [
+    "Ethmoid",
+    "Frontal bone",
+    "Left maxilla",
+    "Left nasal bone",
+    "Left palatine bone",
+    "Left parietal bone",
+    "Mandible",
+    "Occipital bone",
+    "Right inferior nasal concha",
+    "Right lacrimal bone",
+    "Right lower central secondary incisor tooth",
+    "Right lower first secondary molar tooth",
+    "Right lower first secondary premolar tooth",
+    "Right lower lateral secondary incisor tooth",
+    "Right lower second secondary molar tooth",
+    "Right lower second secondary premolar tooth",
+    "Right lower secondary canine tooth",
+    "Right maxilla",
+    "Right nasal bone",
+    "Right palatine bone",
+    "Right parietal bone",
+    "Right temporal bone",
+    "Right upper central secondary incisor tooth",
+    "Right upper first secondary molar tooth",
+    "Right upper first secondary premolar tooth",
+    "Right upper lateral secondary incisor tooth",
+    "Right upper second secondary premolar tooth",
+    "Right upper secondary canine tooth",
+    "Right zygomatic bone",
+    "Sphenoid bone",
+    "Vomer"
+   ],
+   "filled_triangles": 138,
+   "filled_parts": [
+    "Ethmoid",
+    "Frontal bone",
+    "Left maxilla",
+    "Left nasal bone",
+    "Left palatine bone",
+    "Left parietal bone",
+    "Mandible",
+    "Occipital bone",
+    "Right maxilla",
+    "Right parietal bone",
+    "Sphenoid bone",
+    "Vomer"
+   ],
+   "left_open_parts": [],
+   "legend": [
+    {
+     "de": "Knochen",
+     "en": "Bone"
+    },
+    {
+     "de": "Zahn",
+     "en": "Tooth"
+    },
+    {
+     "de": "Schnitt",
+     "en": "Cut"
+    }
    ]
   },
   {

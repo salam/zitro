@@ -707,18 +707,21 @@ h1 {
 /* Cover: a real recording of the stick's screen (16:9, like the display itself). */
 .card-cover {
     display: block;
-    margin-bottom: 20px;
+    width: 60%;
+    border: 5px var(--citrus) solid;
+    align-content: center;
+    margin: 0 auto 25px;
     border-radius: 14px;
     overflow: hidden;
-    background: #000;
-    aspect-ratio: 16 / 9;
+    box-shadow: 5px 5px 5px #00000095;
+    padding-left: 10%;
+    background: var(--citrus);
 }
 
 .card-cover img {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
 }
 
 /* ---------- Edges (who it's for) ---------- */

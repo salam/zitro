@@ -4,6 +4,7 @@
 
 - **See the science on zitro.spot**: the website now shows molecules, graphs, moving pictures and printed pages as short recordings from a real stick. Check them out in the features section.
 - **Know where it comes from**: a new "Sources, not guesses" card explains that the AI only picks what to look up, and PubChem, Wikipedia or Wolfram Alpha supply what you see.
+- **Spot the real screen**: the recordings on zitro.spot now sit in a little stick-shaped frame, so you can see right away that they come straight from the device.
 
 ## Thu 5 Nov, 2026 (late evening)
 

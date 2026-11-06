@@ -38,6 +38,7 @@
 - **Every print shows its source**: a small footnote names where the picture comes from, next to a little lemon and https://zitro.spot.
 - **GIFs in true colors**: GIF pictures now show their real colors, not scrambled ones.
 - **Alarms that keep ringing**: when a timer goes off, the sound now repeats along with the blinking until you press the button. Press it once and it goes quiet right away.
+- **Setup details stand out**: the WiFi name "zitro" and the address "zitro.local" are now bold and lemon yellow, so you spot right away what to connect to and open.
 - **Deleted timers stay gone**: after you delete a timer or it rings, its card no longer pops back up when you press the M5 button.
 - **A friendlier home screen**: a little lemon says hello right next to "Press M5 button", M5 looks like the real key on your stick, and a tilted phone icon shows how to shake for a random fact.
 - **Setup made clearer**: the setup address is underlined like a link, and "Then press BUTTON to retry." tells you what to do next.

@@ -1958,14 +1958,21 @@ void drawSetupScreen(bool openingSettings) {
     canvas.drawString("SETUP: Connect to:", textX, textY);
   }
   textY += lineHeight;
+  // The words to remember stand out in citrus. Font 2 has no bold cut: draw them twice, 1 px apart
+  canvas.setTextColor(CITRUS);
   canvas.drawString(AP_NAME, textX, textY);
+  canvas.drawString(AP_NAME, textX + 1, textY);
+  canvas.setTextColor(TFT_WHITE);
   textY += lineHeight;
   canvas.drawString("and open:", textX, textY);
   textY += lineHeight;
-  // The address reads as a link: underlined
+  // The address reads as a link: bold and underlined
   const char* setupUrl = "zitro.local";
+  canvas.setTextColor(CITRUS);
   canvas.drawString(setupUrl, textX, textY);
-  canvas.drawFastHLine(textX, textY + 15, canvas.textWidth(setupUrl), TFT_WHITE);
+  canvas.drawString(setupUrl, textX + 1, textY);
+  canvas.drawFastHLine(textX, textY + 15, canvas.textWidth(setupUrl) + 1, CITRUS);
+  canvas.setTextColor(TFT_WHITE);
   textY += lineHeight * 1.25;
 
   if (wifiNetworkCount > 0) {

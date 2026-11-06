@@ -164,6 +164,6 @@ const EduFeature FEATURE_CRYSTAL = {
     "Setze 'model' auf 'crystal:<Wert>' NUR wenn nach dem Kristallgitter oder Aufbau eines dieser Stoffe als Feststoff "
     "gefragt wird oder ausdruecklich ein 3D-Modell davon gewuenscht ist. Werte: salt, diamond, graphite, ice, quartz, "
     "calcite, pyrite, fluorite, copper, gold, silver, iron, silicon; andere gibt es nicht. Dafuer nie 'molecule:' "
-    "(z.B. 'Wie ist Kochsalz aufgebaut?' ergibt 'crystal:salt', 'Zeig mir Diamant in 3D' ergibt 'crystal:diamond'). "
+    "(z.B. 'Wie ist Kochsalz aufgebaut?' und 'Wie sieht ein Salzkristall aus?' ergeben 'crystal:salt', 'Zeig mir Diamant in 3D' ergibt 'crystal:diamond'). "
     "Bei 'Was ist ein Diamant?' oder 'Wie sieht ein Diamant aus?' bleibt model leer.",
     true, crystalFetch, crystalUnload, crystalBegin, crystalFrame, crystalEnd, nullptr, nullptr, nullptr};

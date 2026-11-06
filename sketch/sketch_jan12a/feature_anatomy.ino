@@ -162,5 +162,9 @@ static void anatomyFrame(M5Canvas& c, float dt) {
 
 const EduFeature FEATURE_ANATOMY = {
     "anatomy", "",
-    nullptr,  // The prompt rule comes once every file on the list is checked
+    "ANATOMIE: Setze 'model' auf 'anatomy:<id>' nur, wenn jemand ausdruecklich fragt, wie ein Koerperteil oder eine Zelle "
+    "innen aussieht oder aufgebaut ist, oder ein 3D-Modell davon sehen will. Erlaubte id, genau so geschrieben: heart, brain, "
+    "lungs, stomach, liver, kidney, skeleton, skull, eye, hand, animal-cell, plant-cell, red-blood-cell, neuron. Fragen nach "
+    "Aufgabe oder Funktion wie 'Was macht das Herz?' und alle anderen Koerperteile: 'model' leer lassen, dann kommt ein Foto. "
+    "Niemals Geschlechtsorgane oder nackte Koerper. Liefere nie selbst Daten.",
     true, anatomyFetch, anatomyUnload, anatomyBegin, anatomyFrame, anatomyEnd, nullptr, nullptr, nullptr};

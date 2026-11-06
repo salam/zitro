@@ -173,7 +173,7 @@ The project includes deployment scripts for building and uploading firmware to y
   - "Alert for tomorrow 5:30am"
 - List active timers: "Liste mir die Timer" or "List pending timers"
 - Clear all timers: "Loesche alle Timer" or "Cancel all timers"
-- When you set a timer, a white card confirms it: a stopwatch with a check mark, the timer's name and when it rings (for example "in 10 Min").
+- When you set a timer, a white card confirms it: a stopwatch with a check mark, the timer's name and when it rings (for example "in 10 Min"). Once that timer is deleted or has rung, the card is gone and Zitro shows the home screen instead.
 - Timer list: one timer at a time on a white card with a stopwatch, its name and the time left (counting down live). Dots show which timer of how many. Works like the printer list: the ▼ button (Button C) scrolls, the trash button (Button B) deletes.
   Small tabs at the screen edge sit next to their buttons:
   - ✓ (next to Button A): exit timer list

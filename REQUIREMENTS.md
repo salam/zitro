@@ -416,6 +416,7 @@ Voice-controlled timer and reminder system. Users set timers via natural languag
 - The spoken/stored response text stays "Timer: <label> in <duration>"; `drawScreen()` draws the card whenever that exact response is redrawn (wake, rotation)
 - Portrait (stick upright): stopwatch on top, label (10 pt, up to 3 lines) and time (14 pt, 10 pt if too wide) centered below; the card follows the stick (checked every 200 ms)
 - Errors (timer limit, no free slot) stay plain text
+- The card lives only as long as its timer: once that timer is deleted or has fired, the card is forgotten and redraws show the home screen instead
 
 ## Timer Alert Behavior
 

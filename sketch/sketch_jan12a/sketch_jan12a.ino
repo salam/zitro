@@ -280,6 +280,7 @@ int timerCount = 0;
 String timerSetResponse;
 String timerSetLabel;
 String timerSetWhen;
+int timerSetIndex = -1;  // Slot of the timer the card belongs to
 bool inTimerListMode = false;
 int timerListIndex = 0;
 bool timerAlertActive = false;
@@ -7940,6 +7941,7 @@ String addTimer(int minutes, const String& label) {
       timers[i].fireTime = time(NULL) + (time_t)minutes * 60;
       timers[i].label = label;
       timerCount++;
+      timerSetIndex = i;
       Serial.printf("Timer added: '%s' in %d min (fires at %ld)\n", label.c_str(), minutes, (long)timers[i].fireTime);
 
       return "Timer: " + label + " in " + formatTimerDuration(minutes);
@@ -8064,11 +8066,23 @@ void drawTimerSet(const String &label, const String &when) {
   canvas.deleteSprite();
 }
 
+// The "timer set" card is only valid while its timer runs. Once the timer is gone,
+// later redraws (wake, cancelled recording, rotation) must not bring the card back.
+void forgetTimerCard(int index) {
+  if (index != timerSetIndex) return;
+  if (timerSetResponse.length() > 0 && response == timerSetResponse) response = MAIN_QUESTION;
+  timerSetResponse = "";
+  timerSetLabel = "";
+  timerSetWhen = "";
+  timerSetIndex = -1;
+}
+
 void removeTimer(int index) {
   if (index < 0 || index >= MAX_TIMERS || !timers[index].active) return;
   timers[index].active = false;
   timers[index].label = "";
   timerCount--;
+  forgetTimerCard(index);
   if (timerCount < 0) timerCount = 0;
   Serial.printf("Timer %d removed, %d remaining\n", index, timerCount);
 }
@@ -8437,6 +8451,7 @@ void checkTimers() {
       // Mark timer as inactive
       timers[i].active = false;
       timerCount--;
+      forgetTimerCard(i);
       if (timerCount < 0) timerCount = 0;
 
       return; // Process one at a time

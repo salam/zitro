@@ -35,24 +35,24 @@ static const char* const RECIPE_ALCOHOL_PARTS[] = {
     "süßwein", "kochwein",  "weinbrand", "weinessig", "bierteig",  "bierbrot",  "weizenbier", "malzbier",
     "rumaroma", "rumrosine", "rumtopf",  "kirschwasser", "eierpunsch"};
 
-// Hot, sharp or oven work: "ask an adult". Over-marking is the safe direction, so German stems are broad.
+// Hot, sharp or oven work: "ask an adult". Over-marking is the safe direction, so stems are broad. Whole words only
+// where a stem would hit harmless words: heat in wheat, pan in pancake, pot in potato, hot in shot, cut in biscuit.
 static const char* const RECIPE_ADULT_WORDS[] = {
-    "bake",   "bakes",  "baked",  "baking",  "blender", "boil",    "boils",    "boiled",   "boiling", "broil",
-    "broiled", "burner", "chop",  "chopped", "chopping", "cook",   "cooks",    "cooked",   "cooking", "cut",
-    "cuts",   "dice",   "diced",  "flame",   "fried",   "fries",   "fry",      "frying",   "grate",   "grated",
-    "grater", "griddle", "grill", "grilled", "grilling", "heat",   "heated",   "heating",  "hob",     "hot",
-    "knife",  "knives", "melt",   "melted",  "melting", "microwave", "microwaved", "mince", "minced", "oven",
-    "ovens",  "pan",    "pans",   "peel",    "peeled",  "peeler",  "pot",      "pots",     "preheat", "preheated",
-    "reheat", "roast",  "roasted", "roasting", "saucepan", "saute", "sauté",   "scald",    "sear",    "seared",
-    "simmer", "simmers", "simmering", "skillet", "slice", "sliced", "slicing", "steam",    "steamed", "stove",
-    "stovetop", "toast", "toasted",
-    "garen",  "heiß",   "heiße",  "heißem",  "heißen",  "heißer",  "heißes",   "heiss",    "heisse",  "heissem",
-    "heissen", "heisser", "heisses", "herd", "warm"};
+    "bake",   "bakes",  "baked",   "baking",  "cook",   "cooks",   "cooked",  "cooking", "cooker",  "cut",
+    "cuts",   "cutting", "cutter", "dice",    "dices",  "diced",   "dicing",  "fried",   "fries",   "griddle",
+    "heat",   "heats",  "heated",  "heating", "hob",    "hot",     "mince",   "minces",  "minced",  "mincing",
+    "oven",   "ovens",  "pan",     "pans",    "pot",    "pots",    "saucepan", "skillet", "sear",   "sears",
+    "seared", "searing", "warm",   "warms",   "warmed", "warming",
+    "garen",  "heiß",   "heiße",   "heißem",  "heißen", "heißer",  "heißes",  "heiss",   "heisse",  "heissem",
+    "heissen", "heisser", "heisses"};
 static const char* const RECIPE_ADULT_PARTS[] = {
-    "ofen",     "back",    "brat",    "brät",    "koch",     "köchel", "sied",    "frittier", "erhitz",
-    "erwärm",   "aufwärm", "schmelz", "zerlass", "dünst",    "dämpf",  "grill",   "röst",   "pfanne",   "topf",
-    "messer",   "schneid", "schnitt", "hack",    "hobel",    "reibe",  "reiben",  "gerieben", "schäl",  "würfel",
-    "mixer",    "pürier",  "blanchier", "flambier", "mikrowelle"};
+    "blend",   "boil",    "broil",   "burn",    "chop",    "flam",    "fry",     "grat",    "grill",    "knife",
+    "knive",   "melt",    "microwav", "peel",   "preheat", "processor", "reheat", "roast",  "saut",     "scald",
+    "scissor", "simmer",  "slic",    "steam",   "stove",   "toast",
+    "ofen",    "back",    "brat",    "brät",    "koch",    "köchel",  "sied",    "frittier", "erhitz",  "hitze",
+    "herd",    "erwärm",  "aufwärm", "schmelz", "zerlass", "dünst",   "dämpf",   "röst",    "pfanne",   "topf",
+    "messer",  "schere",  "schneid", "schnitt", "hack",    "hobel",   "reibe",   "reiben",  "gerieben", "schäl",
+    "würfel",  "mixer",   "pürier",  "blanchier", "mikrowelle"};
 // These contain a keyword but mean nothing hot or sharp
 static const char* const RECIPE_ADULT_EXCEPTIONS[] = {"baking powder", "baking soda", "backpulver", "messerspitze"};
 

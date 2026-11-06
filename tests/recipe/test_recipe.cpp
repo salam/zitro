@@ -160,7 +160,12 @@ static void testAdult() {
                            "Simmer gently.", "Slice the bread", "Peel the potatoes", "Use a sharp knife",
                            "Im Backofen backen", "In der Pfanne braten", "Wasser kochen", "Zwiebeln schneiden",
                            "Kartoffeln schälen", "in heißem Fett", "SCHÄLEN", "fein hacken", "Butter schmelzen",
-                           "mit dem Messer teilen", "in den Ofen schieben", "Topf nehmen", "Käse reiben", "auf dem Herd"}) {
+                           "mit dem Messer teilen", "in den Ofen schieben", "Topf nehmen", "Käse reiben", "auf dem Herd",
+                           "Cutting the bread", "Add the slices", "It chops well", "Keep peeling", "Grating cheese",
+                           "It heats up", "Let it simmered", "Steaming rice", "Butter melts", "Roasts well",
+                           "Searing meat", "Preheating", "Sautéed onions", "Sauteed onions", "the broiler", "Grills well",
+                           "Toasting", "use scissors", "a food processor", "Blend until smooth", "Warming oil",
+                           "bei schwacher Hitze", "auf der Herdplatte", "mit der Schere"}) {
     CHECK(adult(text));
   }
   for (const char* text : {"Mix the flour and baking powder.", "Add baking soda", "Stir the milk", "Eat the pancake",

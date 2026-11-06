@@ -222,7 +222,7 @@
                 {"wiki": "1924 Winter Olympics", "expect": 1924, "fit": "contain", "image": "1924WOlympicPoster.jpg", "tag": "artwork"},
                 {"wiki": "1948 Winter Olympics", "expect": 1948, "image": None},
                 {"wiki": "1964 Summer Olympics", "expect": 1964, "image": None},
-                {"wiki": "2008 Summer Olympics", "expect": 2008, "fit": "contain", "image": "Olympic rings with white rims.svg", "tag": "flag"},
+                {"wiki": "2008 Summer Olympics", "expect": 2008, "image": "Beijing National Stadium from the Central Axis (20220905140702).jpg", "tag": "building"},
                 {"wiki": "2024 Summer Olympics", "expect": 2024, "image": None},
             ],
         },
@@ -304,7 +304,7 @@
             "events": [
                 {"wiki": "Berlin Blockade", "expect": 1948, "image": "C-54 landing at Tempelhof.jpg", "tag": "vehicle"},
                 {"wiki": "Berlin Wall", "expect": 1961, "image": "Berlin Wall Potsdamer Platz November 1975 looking east crop.jpg", "tag": "building"},
-                {"wiki": "Cuban Missile Crisis", "expect": 1962, "fit": "contain", "image": "Soviet-R-12-nuclear-ballistic missile.jpg", "tag": "vehicle"},
+                {"wiki": "Cuban Missile Crisis", "expect": 1962, "image": "CubaMap1b w.jpg", "tag": "map"},
                 {"wiki": "Fall of the Berlin Wall", "expect": 1989, "image": "BerlinWall-BrandenburgGate.jpg", "tag": "building"},
                 {"wiki": "Dissolution of the Soviet Union", "expect": 1991, "image": "RIAN archive 140800 Signing of Protocol on Establishing Commonwealth of Independent States.jpg", "tag": "portrait"},
             ],

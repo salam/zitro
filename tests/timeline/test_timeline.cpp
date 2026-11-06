@@ -455,6 +455,18 @@ static void testGeneratedFiles(const std::string& dir) {
     for (int i = 0; i < t.eventCount; i++) {
       CHECK(t.events[i].bandX > last);
       last = t.events[i].bandX;
+      // Nobody should have to read a cut-off label
+      for (const char* label : {t.events[i].labelDe, t.events[i].labelEn}) {
+        char a[80], b[80];
+        timelineWrapLabel(label, 232, labelWidth, nullptr, a, b, sizeof(a));
+        const bool cut = strstr(b, "...") != nullptr;
+        CHECK(!cut);
+        if (cut) printf("cut off: %s\n", label);
+        if (labelWidth(a, nullptr) > 232 || labelWidth(b, nullptr) > 232) {
+          failures++;
+          printf("FAIL too wide: %s\n", label);
+        }
+      }
     }
     // Serves as the check that the file names match the list: no others are referenced
     std::vector<char> copy(text.begin(), text.end());

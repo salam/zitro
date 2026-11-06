@@ -1,5 +1,5 @@
 ZTL1	world_wars	Q103495	Weltkrieg	World war	8	44949
-Q192050	1914	-	0	Attentat von Sarajevo	Assassination of Archduke Franz Ferdinand	0	2470	68	96	3cd9c47f	-
+Q192050	1914	-	0	Attentat von Sarajevo	Sarajevo assassination	0	2470	68	96	3cd9c47f	-
 Q361	1914	1918	0	Erster Weltkrieg	World War I	2470	5261	162	96	00d2bbfe	CC BY-SA 2.5
 Q253224	1918	-	0	Waffenstillstand von Compiègne 1918	Armistice of Compiègne	7731	6793	240	96	f23ee2c1	-
 Q8736	1919	-	0	Friedensvertrag von Versailles	Treaty of Versailles	14524	11004	240	96	15a236b6	ToucanWings, CC BY-SA 3.0

@@ -18,8 +18,9 @@ What it guarantees, or else it leaves the event out:
 
 Output per topic, read by sketch_jan12a/timeline_core.h:
     <id>.txt   UTF-8, tab-separated. First line: ZTL1, id, subject QID, title DE, title EN, event count,
-               bundle bytes. Then one line per event: QID, year, end year or -, ca flag, label DE,
-               label EN, image offset, image length, width, height, FNV-1a of the image in hex, credit.
+               bundle bytes. Then one line per event: QID, year, end year or -, flags (1 circa, 2 the
+               year is a birth), label DE, label EN, image offset, image length, width, height,
+               FNV-1a of the image in hex, credit.
                No image: offset, length, width, height are 0, hash and credit are -.
     <id>.jpgs  The event pictures, baseline JPEGs one after the other.
 Also credits.html (who made every picture, licence, link) and timeline_topics.h in the sketch.
@@ -59,7 +60,7 @@ MAX_BUNDLE = 320 * 1024  # Downloaded into PSRAM in one go
 JPEG_QUALITY = 80
 THUMB_SOURCE_WIDTH = 500  # A standard Wikimedia thumbnail step; other sizes may be refused
 LABEL_LIMIT = 60  # Bytes per label on the device
-LABEL_COMFORTABLE = 30  # Characters on one or two lines without trying a short name
+LABEL_COMFORTABLE = 38  # Characters that fit two lines; tests/timeline checks it with the real font
 SHORT_NAME_MIN = 8  # A shorter "short name" is an abbreviation
 CREDIT_LIMIT = 60
 
@@ -141,7 +142,7 @@ def wiki_entities(client, titles):
                 "action": "wbgetentities",
                 "sites": "enwiki",
                 "titles": "|".join(chunk),
-                "props": "labels|claims|sitelinks",
+                "props": "labels|aliases|claims|sitelinks",
                 "languages": "en|de|mul",
                 "sitefilter": "enwiki",
                 "redirects": "yes",
@@ -229,26 +230,30 @@ def clean_label(text):
 
 
 def label_of(entity, language):
-    """The Wikidata label. A short name only replaces one too long to read: short names are often
-    bare abbreviations (WW2, HST) that mean nothing to a child."""
+    """The Wikidata label. A label too long for two lines on the stick gives way to Wikidata's short
+    name or alias, the shortest that isn't a bare abbreviation (WW2, HST means nothing to a child)."""
     labels = entity.get("labels", {})
     # "mul" is Wikidata's label for all languages: a person's name usually only has that one
     label = clean_label((labels.get(language) or labels.get("mul") or {}).get("value"))
     if label and len(label) <= LABEL_COMFORTABLE:
         return label
-    short = [
+    other = [
         c["mainsnak"]["datavalue"]["value"]["text"]
         for c in statements(entity, "P1813")
         if c["mainsnak"]["datavalue"]["value"].get("language") == language
     ]
-    short = [t for t in (clean_label(t) for t in short) if t and len(t) >= SHORT_NAME_MIN]
-    short.sort(key=len)
-    return short[0] if short else label
+    other += [a["value"] for a in entity.get("aliases", {}).get(language, [])]
+    other = [t for t in (clean_label(t) for t in other) if t and SHORT_NAME_MIN <= len(t) <= LABEL_COMFORTABLE]
+    other.sort(key=len)
+    return other[0] if other else label
 
 
 def strip_html(text):
     text = re.sub(r"<[^>]+>", " ", text or "")
-    return re.sub(r"\s+", " ", html.unescape(text)).strip()
+    text = re.sub(r"\s+", " ", html.unescape(text)).strip()
+    # Wiki leftovers in a name
+    text = re.sub(r"^(\w+:)?User:", "", text)
+    return re.sub(r"\s*\(\s*(Diskussion|talk)\s*\)", "", text).strip()
 
 
 def commons_info(client, names):
@@ -283,6 +288,7 @@ def commons_info(client, names):
                 "code": meta.get("License", {}).get("value", ""),
                 "artist": strip_html(meta.get("Artist", {}).get("value", "")),
                 "needs_credit": meta.get("AttributionRequired", {}).get("value", "") == "true",
+                "restrictions": meta.get("Restrictions", {}).get("value", ""),
                 "categories": [c["title"] for c in page.get("categories", [])],
             }
     return info
@@ -426,8 +432,11 @@ def check_image(topic, item, file_info, pins, config):
     name = item["image"]
     if not file_info:
         return "no such file on Commons"
-    if item.get("author") and not file_info["artist"]:
+    if item.get("author"):
         file_info["artist"] = item["author"]
+    restrictions = set(file_info["restrictions"].split("|"))
+    if restrictions & {"trademarked", "insignia"}:
+        return "restricted beyond its licence: " + file_info["restrictions"]
     if topic.get("sensitive") and item.get("tag") not in config["safe_tags"]:
         return "tag %r not allowed in a sensitive topic" % item.get("tag")
     problem = licence_problem(file_info)
@@ -475,7 +484,8 @@ def build_topic(client, topic, events, infos, pins, config):
         lines.append(
             "\t".join(
                 [event["qid"], str(event["year"]), str(event["end"]) if event["end"] else "-",
-                 "1" if event["circa"] else "0", field(event["de"]), field(event["en"]),
+                 str((1 if event["circa"] else 0) + (2 if event["prop"] == "P569" else 0)),
+                 field(event["de"]), field(event["en"]),
                  str(offset), str(length), str(width), str(height), digest, field(credit)]
             )
         )
@@ -484,6 +494,8 @@ def build_topic(client, topic, events, infos, pins, config):
 
 def write_credits(all_credits):
     rows = []
+    for name in sorted({c[2] for c in all_credits if "personality" in c[3]["restrictions"]}):
+        print("  note: %s shows a person whose rights may also apply (Commons: personality)" % name)
     for topic_id, event, name, info, credit in all_credits:
         rows.append(
             "<tr><td>%s</td><td>%s</td><td><a href=\"%s\">%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>"

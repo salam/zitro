@@ -1,6 +1,6 @@
-ZTL1	cold_war	Q8683	Kalter Krieg	Cold War	5	37759
+ZTL1	cold_war	Q8683	Kalter Krieg	Cold War	5	35557
 Q151349	1948	1949	0	Berlin-Blockade	Berlin Blockade	0	7704	240	96	2276e245	-
 Q5086	1961	-	0	Berliner Mauer	Berlin Wall	7704	8906	240	96	f3ffd56b	CC BY-SA 2.0
-Q128160	1962	-	0	Kubakrise	Cuban Missile Crisis	16610	6051	142	96	f64f52d9	-
-Q69163529	1989	-	0	Mauerfall	Fall of the Berlin Wall	22661	10726	240	96	35e314e7	CC BY 3.0
-Q5167679	1991	-	0	Auflösung der Sowjetunion	Dissolution of the Soviet Union	33387	4372	144	96	e9d592d3	Yuriy Kuydin / Юрий Куйдин, CC BY-SA 3.0
+Q128160	1962	-	0	Kubakrise	Cuban Missile Crisis	16610	3849	111	96	f24e1684	-
+Q69163529	1989	-	0	Mauerfall	Fall of the Berlin Wall	20459	10726	240	96	35e314e7	CC BY 3.0
+Q5167679	1991	-	0	Auflösung der Sowjetunion	Dissolution of the Soviet Union	31185	4372	144	96	e9d592d3	Yuriy Kuydin / Юрий Куйдин, CC BY-SA 3.0

@@ -261,9 +261,11 @@ static void anatomyFrame(M5Canvas& c, float dt) {
 
 const EduFeature FEATURE_ANATOMY = {
     "anatomy", "",
-    "ANATOMIE: Setze 'model' auf 'anatomy:<id>' nur, wenn jemand ausdruecklich fragt, wie ein Koerperteil oder eine Zelle "
-    "innen aussieht oder aufgebaut ist, oder ein 3D-Modell davon sehen will. Erlaubte id, genau so geschrieben: heart, brain, "
-    "lungs, stomach, liver, kidney, skeleton, skull, eye, hand, animal-cell, plant-cell, red-blood-cell, neuron. Fragen nach "
-    "Aufgabe oder Funktion wie 'Was macht das Herz?' und alle anderen Koerperteile: 'model' leer lassen, dann kommt ein Foto. "
-    "Niemals Geschlechtsorgane oder nackte Koerper. Liefere nie selbst Daten.",
+    "ANATOMIE: Setze 'model' auf 'anatomy:<id>', wenn jemand ein 3D-Modell eines Koerperteils oder einer Zelle sehen will. "
+    "Fragt jemand, was drin ist, wie es innen aussieht oder wie es aufgebaut ist ('Was ist im Herz?', 'Wie sieht das Auge "
+    "innen aus?'), setze 'anatomy:<id>-inside'. Erlaubte id, genau so geschrieben: heart, brain, lungs, stomach, liver, "
+    "kidney, skeleton, skull, eye, hand, animal-cell, plant-cell, red-blood-cell, neuron. '-inside' gibt es nicht fuer "
+    "stomach, skeleton und hand: Fragen nach deren Innerem, nach Aufgabe oder Funktion wie 'Was macht das Herz?' und alle "
+    "anderen Koerperteile: 'model' leer lassen, dann kommt ein Foto. Niemals Geschlechtsorgane oder nackte Koerper. Liefere "
+    "nie selbst Daten.",
     true, anatomyFetch, anatomyUnload, anatomyBegin, anatomyFrame, anatomyEnd, nullptr, anatomyButtonC, nullptr};

@@ -1566,19 +1566,9 @@ void saveWiFiCredential(String ssid, String password) {
       wifiNetworkCount++;
       prefs.putInt("count", wifiNetworkCount);
     } else {
-      // Replace oldest (first) credential
-      Serial.println("Max networks reached, replacing oldest");
-
-      // Shift all networks down
-      for (int i = 0; i < MAX_WIFI_NETWORKS - 1; i++) {
-        wifiNetworks[i] = wifiNetworks[i + 1];
-        String ssidKey = "ssid_" + String(i);
-        String passKey = "pass_" + String(i);
-        prefs.putString(ssidKey.c_str(), wifiNetworks[i].ssid);
-        prefs.putString(passKey.c_str(), wifiNetworks[i].password);
-      }
-
-      // Add new network at the end
+      // Replace the last one: a successful connection moves a network to the front,
+      // so the last is the least recently used and the first is the one that works now
+      Serial.println("Max networks reached, replacing least recently used");
       wifiNetworks[MAX_WIFI_NETWORKS - 1].ssid = ssid;
       wifiNetworks[MAX_WIFI_NETWORKS - 1].password = password;
       String ssidKey = "ssid_" + String(MAX_WIFI_NETWORKS - 1);

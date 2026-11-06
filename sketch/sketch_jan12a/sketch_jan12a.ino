@@ -45,6 +45,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 
 // Alert sound for timer alarms
 #include "alert_sound_data.h"
+#include "splash_jingle_data.h"
 
 // Launch logo
 #include "logo_data.h"
@@ -7831,9 +7832,23 @@ void setup() {
   // Initialize custom fonts with European language support
   FontManager::init();
 
+  // Initialize speaker for the jingle and TTS playback
+  M5.Speaker.begin();
+  {
+    Preferences volumePrefs;
+    volumePrefs.begin("settings", true);
+    M5.Speaker.setVolume(volumePrefs.getInt("volume", 210));
+    volumePrefs.end();
+  }
+
   // Show launch logo
   M5.Display.fillScreen(TFT_BLACK);
   M5.Display.drawPng(logo_png, logo_png_len, 0, 0);
+  // Jingle on power-on and restart only: a wake from deep sleep also passes through here,
+  // and shouldn't make a sound the user didn't ask for.
+  if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_UNDEFINED) {
+    M5.Speaker.playRaw(splashJingleData, SPLASH_JINGLE_SAMPLES, SPLASH_JINGLE_SAMPLE_RATE, false, 1, 0, true);
+  }
   delay(2000);  // Show logo for 2 seconds
 
   // Configure button timing for better detection
@@ -7856,15 +7871,6 @@ void setup() {
   M5.Imu.begin();
   setGyroEnabled(false);  // Gyro only runs in image view (see updateGyroPower)
   Serial.println("IMU initialized");
-
-  // Initialize speaker for TTS playback
-  M5.Speaker.begin();
-  {
-    Preferences volumePrefs;
-    volumePrefs.begin("settings", true);
-    M5.Speaker.setVolume(volumePrefs.getInt("volume", 210));
-    volumePrefs.end();
-  }
 
   Serial.printf("Free heap: %d bytes\n", ESP.getFreeHeap());
 

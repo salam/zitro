@@ -2636,7 +2636,7 @@ void handleDeepSleepWake() {
 
   // A 3D model is fetched again, like a picture
   if (modelRefText.length() > 0) {
-    drawScreen("Restoring 3D model...");
+    drawScreen("Restoring...");
     ModelRef ref;
     const bool wasShowingModel = currentDisplayMode == SHOW_MODEL;
     if (parseModelRef(modelRefText.c_str(), ref) && fetchModel(ref)) {
@@ -8631,7 +8631,7 @@ void handleVoiceQuery(bool playAudio) {
   eduUnloadActive();
   ModelRef modelRef;
   if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
-    drawScreen("Finding 3D model...");
+    drawScreen("Looking it up...");
     fetchModel(modelRef);
   }
 

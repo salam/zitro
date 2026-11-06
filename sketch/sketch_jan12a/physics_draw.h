@@ -21,6 +21,12 @@ struct PhysicsState {
   const GFXfont* normal;
   float t;        // Seconds since this run started
   float a, b, c;  // The moving quantities of the scene
+  // Magnets: field lines, worked out once for each setting
+  PhysicsPole poles[4];
+  uint8_t poleCount, lineCount;
+  uint8_t lineLength[PHYSICS_MAGNET_LINES];
+  int16_t lineX[PHYSICS_MAGNET_LINES][PHYSICS_MAGNET_POINTS];
+  int16_t lineY[PHYSICS_MAGNET_LINES][PHYSICS_MAGNET_POINTS];
 };
 
 template <class C>
@@ -369,6 +375,294 @@ void physicsDrawRamp(C& c, PhysicsState& s, float dt) {
   physicsDrawEnergyBar(c, s, physicsPick(s, "W\xC3\xA4rme", "Heat"), heat / start, 86, PHYSICS_ORANGE);
 }
 
+// ---- Magnets ----
+inline void physicsMagnetBuild(PhysicsState& s) {
+  PhysicsPole* p = s.poles;
+  if (s.param == 0) {
+    s.poleCount = 2;
+    p[0] = {96, 54, 1};
+    p[1] = {144, 54, -1};
+  } else {
+    s.poleCount = 4;
+    const float facing = s.param == 1 ? -1.0f : 1.0f;  // The left magnet's right end: south attracts, north repels
+    p[0] = {30, 54, -facing};
+    p[1] = {90, 54, facing};
+    p[2] = {150, 54, 1};
+    p[3] = {210, 54, -1};
+  }
+  int norths = 0;
+  for (int i = 0; i < s.poleCount; i++) {
+    if (p[i].strength > 0) norths++;
+  }
+  const int seeds = PHYSICS_MAGNET_LINES / norths;
+  s.lineCount = 0;
+  for (int i = 0; i < s.poleCount; i++) {
+    if (p[i].strength <= 0) continue;
+    for (int k = 0; k < seeds; k++) {
+      const float a = 2.0f * PHYSICS_PI * (k + 0.5f) / seeds;
+      const int n = physicsTraceFieldLine(p, s.poleCount, p[i].x + 3 * cosf(a), p[i].y + 3 * sinf(a), 4.0f, -8, -8,
+                                          PHYSICS_W + 8, PHYSICS_H + 8, s.lineX[s.lineCount], s.lineY[s.lineCount],
+                                          PHYSICS_MAGNET_POINTS);
+      s.lineLength[s.lineCount++] = (uint8_t)n;
+    }
+  }
+}
+
+template <class C>
+void physicsDrawBar(C& c, const PhysicsState& s, float northX, float southX) {
+  const int y = 54, half = 9, reach = 6;
+  const bool northLeft = northX < southX;
+  const int left = (int)(northLeft ? northX : southX) - reach, right = (int)(northLeft ? southX : northX) + reach;
+  const int middle = (left + right) / 2;
+  c.fillRect(left, y - half, middle - left, 2 * half, northLeft ? PHYSICS_RED : PHYSICS_BLUE);
+  c.fillRect(middle, y - half, right - middle, 2 * half, northLeft ? PHYSICS_BLUE : PHYSICS_RED);
+  physicsText(c, s.normal, northLeft ? "N" : "S", (left + middle) / 2, y + 6, PHYSICS_WHITE, textdatum_t::baseline_center);
+  physicsText(c, s.normal, northLeft ? "S" : "N", (middle + right) / 2, y + 6, PHYSICS_WHITE, textdatum_t::baseline_center);
+}
+
+template <class C>
+void physicsDrawMagnet(C& c, PhysicsState& s, float dt) {
+  s.t += dt;
+  for (int i = 0; i < s.lineCount; i++) {
+    const int n = s.lineLength[i];
+    for (int k = 1; k < n; k++) c.drawLine(s.lineX[i][k - 1], s.lineY[i][k - 1], s.lineX[i][k], s.lineY[i][k], PHYSICS_GREY);
+    // Dots run the way the field points, from north to south
+    if (n > 8) {
+      const int at = ((int)(s.t * 10.0f) + i * 7) % n;
+      c.fillRect(s.lineX[i][at] - 1, s.lineY[i][at] - 1, 3, 3, PHYSICS_CITRUS);
+    }
+  }
+  if (s.poleCount == 2) {
+    physicsDrawBar(c, s, s.poles[0].x, s.poles[1].x);
+  } else {
+    physicsDrawBar(c, s, s.poles[0].strength > 0 ? s.poles[0].x : s.poles[1].x, s.poles[0].strength > 0 ? s.poles[1].x : s.poles[0].x);
+    physicsDrawBar(c, s, s.poles[2].x, s.poles[3].x);
+  }
+  // A compass travels around and turns the way the field points where it is
+  const float way = s.t * 0.35f;
+  const int cx = 120 + (int)(100.0f * cosf(way)), cy = 54 + (int)(40.0f * sinf(way));
+  float bx, by;
+  physicsPoleField(s.poles, s.poleCount, (float)cx, (float)cy, bx, by);
+  const float length = sqrtf(bx * bx + by * by);
+  if (length > 0) {
+    bx /= length;
+    by /= length;
+  }
+  c.fillCircle(cx, cy, 11, PHYSICS_BLACK);
+  c.drawCircle(cx, cy, 11, PHYSICS_LIGHT);
+  physicsThickLine(c, cx, cy, cx + (int)(9 * bx), cy + (int)(9 * by), PHYSICS_RED);
+  physicsThickLine(c, cx, cy, cx - (int)(9 * bx), cy - (int)(9 * by), PHYSICS_WHITE);
+
+  if (s.param > 0) {
+    const char* word = s.param == 1 ? physicsPick(s, "ziehen sich an", "attract") : physicsPick(s, "stossen sich ab", "repel");
+    c.fillRect(0, 99, PHYSICS_W, PHYSICS_H - 99, PHYSICS_BLACK);
+    physicsText(c, s.normal, word, PHYSICS_W / 2, 113, PHYSICS_WHITE, textdatum_t::baseline_center);
+  }
+}
+
+// ---- Shadow: a lamp moving around an object, as in a classroom ----
+template <class C>
+void physicsDrawShadow(C& c, PhysicsState& s, float dt) {
+  const int floorY = 92, objectX = PHYSICS_W / 2;
+  const float reach = 76.0f;
+  const float height = s.param == 0 ? 16.0f : 36.0f;
+  s.t += dt;
+  // Back and forth over the object, from low on one side to low on the other
+  const float angle = (90.0f + 72.0f * cosf(2.0f * PHYSICS_PI * s.t / 12.0f)) * PHYSICS_DEG;
+  const float lampX = objectX - reach * cosf(angle) * 1.4f, lampHeight = reach * sinf(angle);
+  const int lx = (int)lampX, ly = floorY - (int)lampHeight;
+
+  c.fillRect(0, floorY, PHYSICS_W, 7, PHYSICS_LIGHT);
+  float endX = 0;
+  const bool lands = physicsShadowEnd(lampX, lampHeight, (float)objectX, height, endX);
+  // A lamp no higher than the top throws the shadow beyond the floor
+  if (!lands) endX = lampX < objectX ? PHYSICS_W + 40.0f : -40.0f;
+  const float limited = physicsClamp(endX, -40.0f, PHYSICS_W + 40.0f);
+  const int shadowLeft = (int)(limited < objectX ? limited : (float)objectX);
+  const int shadowRight = (int)(limited < objectX ? (float)objectX : limited);
+  // The light ray just past the top of the object lands where the shadow ends
+  c.drawLine(lx, ly, (int)limited, floorY, PHYSICS_CITRUS);
+  c.fillRect(shadowLeft, floorY, shadowRight - shadowLeft, 7, PHYSICS_BLACK);
+  c.fillRect(objectX - 6, floorY - (int)height, 12, (int)height, PHYSICS_BLUE);
+  c.fillCircle(lx, ly, 7, PHYSICS_CITRUS);
+  c.drawFastVLine(lx, 0, ly, PHYSICS_GREY);
+
+  char text[28];
+  physicsValue(text, sizeof(text), height, 0, "cm", s.german);
+  physicsText(c, s.normal, text, 2, 113, PHYSICS_BLUE, textdatum_t::baseline_left);
+  const float length = fabsf(endX - objectX);
+  char number[16], line[32];
+  if (lands && length < 500.0f) {
+    physicsValue(number, sizeof(number), length, 0, "cm", s.german);
+  } else {
+    snprintf(number, sizeof(number), "%s", physicsPick(s, "sehr lang", "very long"));
+  }
+  snprintf(line, sizeof(line), "%s %s", physicsPick(s, "Schatten", "Shadow"), number);
+  physicsText(c, s.normal, line, PHYSICS_W - 2, 113, PHYSICS_WHITE, textdatum_t::baseline_right);
+}
+
+// ---- Mirrors ----
+template <class C>
+void physicsDrawRay(C& c, float x0, float y0, float x1, float y1, float phase, uint16_t color) {
+  c.drawLine((int)x0, (int)y0, (int)x1, (int)y1, color);
+  c.drawLine((int)x0, (int)y0 + 1, (int)x1, (int)y1 + 1, color);
+  // A pulse of light travels along the ray
+  const float at = phase - floorf(phase);
+  c.fillCircle((int)(x0 + (x1 - x0) * at), (int)(y0 + (y1 - y0) * at), 2, PHYSICS_WHITE);
+}
+
+template <class C>
+void physicsDrawFlatMirror(C& c, PhysicsState& s) {
+  const int hitX = PHYSICS_W / 2, hitY = 88;
+  const float angle = (42.0f + 26.0f * sinf(s.t * 0.7f)) * PHYSICS_DEG;
+  const float ray = 100.0f;
+  // Screen y points down, and the normal up
+  float rx, ry;
+  const float dx = sinf(angle), dy = cosf(angle);
+  physicsReflect(dx, dy, 0, -1, rx, ry);
+  for (int y = 6; y < hitY; y += 6) c.drawFastVLine(hitX, y, 3, PHYSICS_GREY);
+  physicsDrawRay(c, hitX - ray * dx, hitY - ray * dy, (float)hitX, (float)hitY, s.t, PHYSICS_CITRUS);
+  physicsDrawRay(c, (float)hitX, (float)hitY, hitX + ray * rx, hitY + ray * ry, s.t, PHYSICS_ORANGE);
+  c.fillRect(20, hitY + 1, PHYSICS_W - 40, 4, PHYSICS_LIGHT);
+  for (int x = 24; x < PHYSICS_W - 20; x += 8) c.drawLine(x, hitY + 5, x - 4, hitY + 10, PHYSICS_GREY);
+  char text[12];
+  snprintf(text, sizeof(text), "%d\xC2\xB0", (int)(angle / PHYSICS_DEG + 0.5f));
+  c.fillRect(0, 2, 42, 22, PHYSICS_BLACK);
+  c.fillRect(PHYSICS_W - 42, 2, 42, 22, PHYSICS_BLACK);
+  physicsText(c, s.big, text, 2, 22, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.big, text, PHYSICS_W - 2, 22, PHYSICS_WHITE, textdatum_t::baseline_right);
+}
+
+// Parallel rays on a round mirror. hollow: seen from inside the circle; otherwise from outside.
+template <class C>
+void physicsDrawRoundMirror(C& c, PhysicsState& s, bool hollow) {
+  const float middleY = 50.0f;
+  const float radius = hollow ? 150.0f : 100.0f;
+  const float cx = hollow ? 60.0f : 270.0f;
+  static const float offsets[4] = {-34.0f, -14.0f, 14.0f, 34.0f};
+  for (int i = 0; i < 4; i++) {
+    const float startY = middleY + offsets[i];
+    float t;
+    if (!physicsRayCircle(0, startY, 1, 0, cx, middleY, radius, hollow, t)) continue;
+    const float hitX = t, hitY = startY;
+    float rx, ry;
+    physicsReflect(1, 0, (hitX - cx) / radius, (hitY - middleY) / radius, rx, ry);
+    physicsDrawRay(c, 0, startY, hitX, hitY, s.t * 0.5f + i * 0.25f, PHYSICS_CITRUS);
+    const float back = hollow ? 160.0f : 240.0f;
+    physicsDrawRay(c, hitX, hitY, hitX + back * rx, hitY + back * ry, s.t * 0.5f + i * 0.25f, PHYSICS_ORANGE);
+    if (!hollow) {
+      // Seen in the mirror, the light seems to come from one point behind it
+      for (float k = 6; k < 60; k += 8) {
+        c.drawPixel((int)(hitX - k * rx), (int)(hitY - k * ry), PHYSICS_LIGHT);
+      }
+    }
+  }
+  int lastX = 0, lastY = 0;
+  for (int i = 0; i <= 20; i++) {
+    const int y = 2 + i * 5;
+    const float dy = y - middleY;
+    const float dx = sqrtf(radius * radius - dy * dy);
+    const int x = (int)(hollow ? cx + dx : cx - dx);
+    if (i > 0) physicsThickLine(c, lastX, lastY, x, y, PHYSICS_LIGHT);
+    lastX = x;
+    lastY = y;
+  }
+  // The burning point of the hollow mirror, or the point the rays seem to come from: half the radius
+  const int focusX = (int)(hollow ? cx + radius / 2 : cx - radius / 2);
+  c.fillCircle(focusX, (int)middleY, 3, PHYSICS_RED);
+}
+
+template <class C>
+void physicsDrawMirror(C& c, PhysicsState& s, float dt) {
+  s.t += dt;
+  if (s.param == 0) physicsDrawFlatMirror(c, s);
+  else physicsDrawRoundMirror(c, s, s.param == 1);
+  static const char* const de[3] = {"flacher Spiegel", "Hohlspiegel", "W\xC3\xB6lbspiegel"};
+  static const char* const en[3] = {"Flat mirror", "Concave mirror", "Convex mirror"};
+  c.fillRect(0, 101, PHYSICS_W, PHYSICS_H - 101, PHYSICS_BLACK);
+  physicsText(c, s.normal, s.german ? de[s.param] : en[s.param], 2, 113, PHYSICS_WHITE, textdatum_t::baseline_left);
+}
+
+// ---- Refraction ----
+template <class C>
+void physicsDrawRefraction(C& c, PhysicsState& s, float dt) {
+  static const uint16_t tints[4] = {PHYSICS_BLACK, 0x0B38, 0x3A8D, 0x5ACB};
+  const PhysicsLightPath& path = PHYSICS_LIGHT_PATHS[s.param];
+  const int hitX = PHYSICS_W / 2, hitY = 56;
+  const float ray = 90.0f;
+  s.t += dt;
+  const float angleIn = (38.0f + 36.0f * sinf(s.t * 0.5f)) * PHYSICS_DEG;
+
+  c.fillRect(0, 0, PHYSICS_W, hitY, tints[path.tintUpper]);
+  c.fillRect(0, hitY, PHYSICS_W, PHYSICS_H - hitY, tints[path.tintLower]);
+  for (int y = 2; y < PHYSICS_H; y += 8) c.drawFastVLine(hitX, y, 4, PHYSICS_LIGHT);
+
+  physicsThickLine(c, hitX - (int)(ray * sinf(angleIn)), hitY - (int)(ray * cosf(angleIn)), hitX, hitY, PHYSICS_CITRUS);
+  float angleOut = 0;
+  const bool through = physicsSnell(path.nUpper, path.nLower, angleIn, angleOut);
+  if (through) {
+    physicsThickLine(c, hitX, hitY, hitX + (int)(ray * sinf(angleOut)), hitY + (int)(ray * cosf(angleOut)), PHYSICS_CITRUS);
+  } else {
+    float rx, ry;
+    physicsReflect(sinf(angleIn), cosf(angleIn), 0, -1, rx, ry);
+    physicsThickLine(c, hitX, hitY, hitX + (int)(48.0f * rx), hitY + (int)(48.0f * ry), PHYSICS_CITRUS);
+  }
+  char number[12], text[28];
+  physicsFormatNumber(number, sizeof(number), path.nUpper, 2, s.german);
+  snprintf(text, sizeof(text), "%s %s", s.german ? path.upperDe : path.upperEn, number);
+  physicsText(c, s.normal, text, PHYSICS_W - 2, 16, PHYSICS_WHITE, textdatum_t::baseline_right);
+  snprintf(text, sizeof(text), "%d\xC2\xB0", (int)(angleIn / PHYSICS_DEG + 0.5f));
+  physicsText(c, s.big, text, PHYSICS_W - 2, 42, PHYSICS_WHITE, textdatum_t::baseline_right);
+  physicsFormatNumber(number, sizeof(number), path.nLower, 2, s.german);
+  snprintf(text, sizeof(text), "%s %s", s.german ? path.lowerDe : path.lowerEn, number);
+  physicsText(c, s.normal, text, 2, 78, PHYSICS_WHITE, textdatum_t::baseline_left);
+  if (through) {
+    snprintf(text, sizeof(text), "%d\xC2\xB0", (int)(angleOut / PHYSICS_DEG + 0.5f));
+    physicsText(c, s.big, text, 2, 106, PHYSICS_WHITE, textdatum_t::baseline_left);
+  } else {
+    physicsText(c, s.normal, physicsPick(s, "Totalreflexion", "Total reflection"), 2, 104, PHYSICS_RED, textdatum_t::baseline_left);
+  }
+}
+
+// ---- Sound ----
+template <class C>
+void physicsDrawSound(C& c, PhysicsState& s, float dt) {
+  const PhysicsTone& tone = PHYSICS_TONES[s.param];
+  const float perMetre = 60.0f;
+  const float wavelength = physicsWavelength(PHYSICS_SOUND_SPEED, tone.hertz) * perMetre;
+  // Slowed so that the eye can follow: the wave crosses the screen at the same pace for every tone,
+  // because sound speed doesn't depend on pitch
+  const float period = wavelength / PHYSICS_SOUND_SCREEN_SPEED;
+  const float amplitude = tone.push * wavelength / (2.0f * PHYSICS_PI);  // Equal push, equal pressure
+  s.t += dt;
+  // Keeps the sine's argument small enough to stay exact however long it runs
+  if (s.t > 64.0f * PHYSICS_SOUND_LONGEST) s.t = 0;
+
+  const int startX = 16;
+  const float cone = physicsWaveDisplacement(amplitude, wavelength, period, 0, s.t);
+  c.fillRect(0, 6, 6, 40, PHYSICS_GREY);
+  c.fillRect(6 + (int)cone, 6, 3, 40, PHYSICS_LIGHT);
+  for (int x = startX + 8; x < PHYSICS_W; x += 5) {
+    const float rel = (float)(x - startX);
+    const int shifted = x + (int)physicsWaveDisplacement(amplitude, wavelength, period, rel, s.t);
+    for (int row = 0; row < 5; row++) c.fillRect(shifted, 8 + row * 8, 2, 2, PHYSICS_WHITE);
+  }
+  // Below it, the air pressure along the way: a wave
+  const int midY = 76;
+  c.drawFastHLine(startX, midY, PHYSICS_W - startX, PHYSICS_DARK);
+  int lastY = midY;
+  for (int x = startX; x < PHYSICS_W; x += 2) {
+    const int y = midY - (int)physicsWavePressure(tone.push * 24.0f, wavelength, period, (float)(x - startX), s.t);
+    if (x > startX) c.drawLine(x - 2, lastY, x, y, PHYSICS_CITRUS);
+    lastY = y;
+  }
+  char text[20];
+  physicsText(c, s.normal, s.german ? tone.de : tone.en, 2, 113, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsText(c, s.normal, physicsPick(s, "Zeitlupe", "slowed"), 138, 113, PHYSICS_GREY, textdatum_t::baseline_center);
+  physicsValue(text, sizeof(text), tone.hertz, 0, "Hz", s.german);
+  physicsText(c, s.normal, text, PHYSICS_W - 2, 113, PHYSICS_CITRUS, textdatum_t::baseline_right);
+}
+
 // ---- The list ----
 
 // Starts the current scene over with the current setting
@@ -383,6 +677,9 @@ inline void physicsSceneReset(PhysicsState& s) {
       break;
     case PHYSICS_RAMP:
       s.a = PHYSICS_RAMP_START;
+      break;
+    case PHYSICS_MAGNET:
+      physicsMagnetBuild(s);
       break;
     default:
       break;
@@ -407,5 +704,10 @@ void physicsDrawFrame(C& c, PhysicsState& s, float dt) {
     case PHYSICS_BUOYANCY: physicsDrawBuoyancy(c, s, dt); break;
     case PHYSICS_PENDULUM: physicsDrawPendulum(c, s, dt); break;
     case PHYSICS_RAMP: physicsDrawRamp(c, s, dt); break;
+    case PHYSICS_MAGNET: physicsDrawMagnet(c, s, dt); break;
+    case PHYSICS_SHADOW: physicsDrawShadow(c, s, dt); break;
+    case PHYSICS_MIRROR: physicsDrawMirror(c, s, dt); break;
+    case PHYSICS_REFRACTION: physicsDrawRefraction(c, s, dt); break;
+    case PHYSICS_SOUND: physicsDrawSound(c, s, dt); break;
   }
 }

@@ -262,6 +262,28 @@ static void testSound() {
   NEAR(physicsWaveDisplacement(2, 4, 1, 1.3f, 0.2f), physicsWaveDisplacement(2, 4, 1, 1.3f + 0.4f, 0.3f), 1e-4);
 }
 
+// Pressure is -dxi/dx: checked against the displacement itself, by small differences
+static void testSoundPressure() {
+  const float wavelength = 94, period = 1, amplitude = 5;
+  const float k = 2 * PHYSICS_PI / wavelength;
+  for (float x = 0; x < 200; x += 7) {
+    for (float t : {0.0f, 0.13f, 0.6f}) {
+      const float h = 0.5f;
+      const float slope = (physicsWaveDisplacement(amplitude, wavelength, period, x + h, t) -
+                           physicsWaveDisplacement(amplitude, wavelength, period, x - h, t)) / (2 * h);
+      NEAR(physicsWavePressure(amplitude * k, wavelength, period, x, t), -slope, 0.002);
+    }
+  }
+  // Air pushed together from both sides, the highest pressure: left of it pushed right, right of it pushed left
+  float best = -1e9f, bestX = 0;
+  for (float x = 0; x < wavelength; x += 0.25f) {
+    const float p = physicsWavePressure(1, wavelength, period, x, 0);
+    if (p > best) { best = p; bestX = x; }
+  }
+  CHECK(physicsWaveDisplacement(amplitude, wavelength, period, bestX - wavelength / 8, 0) > 0);
+  CHECK(physicsWaveDisplacement(amplitude, wavelength, period, bestX + wavelength / 8, 0) < 0);
+}
+
 static void testCircuit() {
   NEAR(physicsOhmCurrent(4.5f, 15), 0.3, 1e-5);
   NEAR(physicsOhmCurrent(9, 15), 0.6, 1e-5);
@@ -518,6 +540,7 @@ int main() {
   testMirror();
   testRefraction();
   testSound();
+  testSoundPressure();
   testCircuit();
   testMatter();
   testJulianDay();

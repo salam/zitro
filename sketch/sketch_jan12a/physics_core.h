@@ -253,6 +253,12 @@ inline float physicsWaveDisplacement(float amplitude, float wavelength, float pe
   return amplitude * sinf(2.0f * PHYSICS_PI * (x / wavelength - t / period));
 }
 
+// Air pressure above normal: p is proportional to -dxi/dx, so it peaks where the air is squeezed,
+// a quarter wave from the largest push. Scaled so that its largest value is peak.
+inline float physicsWavePressure(float peak, float wavelength, float period, float x, float t) {
+  return -peak * cosf(2.0f * PHYSICS_PI * (x / wavelength - t / period));
+}
+
 // ---- Circuit: Ohm's law, I = U / R, and bulbs in a row add up their resistance ----
 inline float physicsOhmCurrent(float volts, float ohms) { return ohms > 0 ? volts / ohms : 0; }
 inline float physicsSeriesResistance(float each, int count) { return each * count; }
@@ -467,7 +473,12 @@ enum PhysicsSceneId : uint8_t {
   PHYSICS_PULLEY,
   PHYSICS_BUOYANCY,
   PHYSICS_PENDULUM,
-  PHYSICS_RAMP
+  PHYSICS_RAMP,
+  PHYSICS_MAGNET,
+  PHYSICS_SHADOW,
+  PHYSICS_MIRROR,
+  PHYSICS_REFRACTION,
+  PHYSICS_SOUND
 };
 
 struct PhysicsSceneInfo {
@@ -486,6 +497,11 @@ static const PhysicsSceneInfo PHYSICS_SCENES[] = {
     {"buoyancy", "Schwimmen und Sinken", "Float or sink", PHYSICS_BUOYANCY, 5},
     {"pendulum", "Pendel", "Pendulum", PHYSICS_PENDULUM, 3},
     {"ramp", "Energie", "Energy", PHYSICS_RAMP, 2},
+    {"magnet", "Magnetfeld", "Magnetic field", PHYSICS_MAGNET, 3},
+    {"shadow", "Licht und Schatten", "Light and shadow", PHYSICS_SHADOW, 2},
+    {"mirror", "Spiegel", "Mirror", PHYSICS_MIRROR, 3},
+    {"refraction", "Lichtbrechung", "Refraction", PHYSICS_REFRACTION, 4},
+    {"sound", "Schall", "Sound", PHYSICS_SOUND, 4},
 };
 static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
 
@@ -493,9 +509,9 @@ static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_S
 static const char PHYSICS_PROMPT_RULE[] =
     "PHYSIK: Setze 'model' auf 'physics:<id>' NUR wenn der Nutzer fragt, wie etwas Physikalisches funktioniert "
     "oder warum es passiert, und eine dieser Szenen genau passt (z.B. 'Wie funktioniert ein Hebel?' ergibt "
-    "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Wie funktioniert ein Flaschenzug?' ergibt pulley). "
-    "id genau eine von: falling friction lever pulley buoyancy pendulum ramp. Allgemeine Fragen ('Was ist Holz?', "
-    "'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
+    "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Warum knickt ein Stab im Wasser?' ergibt refraction). "
+    "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
+    "sound. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";
 
 // Scene from "<id>", case and spaces ignored. -1 if it isn't on the list.
@@ -551,3 +567,26 @@ static const float PHYSICS_PENDULUM_START = 25.0f * PHYSICS_DEG;
 static const float PHYSICS_RAMP_SHAPE = 1.0f;  // y = x^2, metres
 static const float PHYSICS_RAMP_START = -0.95f;
 static const float PHYSICS_RAMP_LOSS = 0.25f;  // Per second, with friction on
+
+struct PhysicsLightPath {
+  const char* upperDe; const char* upperEn; float nUpper;
+  const char* lowerDe; const char* lowerEn; float nLower;
+  uint8_t tintUpper, tintLower;
+};
+// Refractive indices from physics tables: yellow light, ordinary glass
+static const PhysicsLightPath PHYSICS_LIGHT_PATHS[4] = {
+    {"Luft", "Air", 1.0f, "Wasser", "Water", 1.33f, 0, 1},
+    {"Luft", "Air", 1.0f, "Glas", "Glass", 1.5f, 0, 2},
+    {"Luft", "Air", 1.0f, "Diamant", "Diamond", 2.42f, 0, 3},
+    {"Wasser", "Water", 1.33f, "Luft", "Air", 1.0f, 1, 0}};
+
+struct PhysicsTone { const char* de; const char* en; float hertz; float push; };
+static const PhysicsTone PHYSICS_TONES[4] = {{"tief, leise", "low, quiet", 220.0f, 0.35f},
+                                             {"tief, laut", "low, loud", 220.0f, 0.75f},
+                                             {"hoch, leise", "high, quiet", 880.0f, 0.35f},
+                                             {"hoch, laut", "high, loud", 880.0f, 0.75f}};
+static const float PHYSICS_SOUND_SCREEN_SPEED = 94.0f;  // Pixels per second, all tones alike
+static const float PHYSICS_SOUND_LONGEST = 1.0f;        // Seconds, the slowest tone's period on screen
+
+#define PHYSICS_MAGNET_LINES 28
+#define PHYSICS_MAGNET_POINTS 100

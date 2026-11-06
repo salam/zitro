@@ -1,42 +1,5 @@
 {
  "format": "ZAN1, see sketch/sketch_jan12a/anatomy_core.h",
- "credits": {
-  "bp3d": {
-   "short": "BodyParts3D CC BY",
-   "attribution": "BodyParts3D, (c) The Database Center for Life Science licensed under CC Attribution 4.0 International",
-   "licence_url": "https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html",
-   "changes": "Selected parts of the mesh, reduced to a low polygon count, recoloured, quantised.",
-   "note": "The BodyParts3D licence page (updated 2025-02-27) says CC BY 4.0. The headers inside the OBJ files, dated 2013, still say CC BY-SA 2.1 Japan. These derived files are therefore also offered under CC BY-SA, which satisfies both."
-  }
- },
- "models": [
-  {
-   "id": "kidney",
-   "file": "kidney.bin",
-   "label_de": "Niere",
-   "label_en": "Kidney",
-   "schematic": false,
-   "triangles": 900,
-   "vertices": 452,
-   "bytes": 9132,
-   "source": "bp3d",
-   "parts": [
-    "Right kidney"
-   ]
-  },
-  {
-   "id": "stomach",
-   "file": "stomach.bin",
-   "label_de": "Magen",
-   "label_en": "Stomach",
-   "schematic": false,
-   "triangles": 900,
-   "vertices": 452,
-   "bytes": 9132,
-   "source": "bp3d",
-   "parts": [
-    "Stomach"
-   ]
-  }
- ]
+ "credits": {},
+ "models": []
 }

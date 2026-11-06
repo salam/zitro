@@ -5,6 +5,7 @@
 #include <string>
 #include "mock_canvas.h"
 #include "test_common.h"
+#include "../../sketch/sketch_jan12a/physics_draw.h"
 #include "../../sketch/sketch_jan12a/solid_draw.h"
 
 static M5Canvas canvas;
@@ -36,9 +37,44 @@ static void renderSolids() {
   }
 }
 
+static PhysicsState state;
+
+// Every scene, every setting, both languages: half a minute of simulated play at 25 frames per second
+static void renderScenes() {
+  for (int lang = 0; lang < 2; lang++) {
+    for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+      const PhysicsSceneInfo& info = PHYSICS_SCENES[i];
+      memset(&state, 0, sizeof(state));
+      state.sceneIndex = (uint8_t)i;
+      state.scene = info.scene;
+      state.german = lang == 0;
+      state.big = &Roboto_Regular14pt8b;
+      state.normal = &Roboto_Regular10pt8b;
+      physicsSceneReset(state);
+      for (int p = 0; p < info.paramCount; p++) {
+        char name[64];
+        canvas.context = std::string("physics ") + info.id + (lang == 0 ? " DE" : " EN") + " setting " + std::to_string(p);
+        physicsDrawFrame(canvas, state, 0.0f);  // The first frame has no time step
+        for (int frame = 0; frame < 750; frame++) {
+          // Frame times as on the stick: mostly steady, sometimes a slow one
+          physicsDrawFrame(canvas, state, frame % 40 == 7 ? 0.1f : 0.04f);
+          if (lang == 0 && (frame == 25 || frame == 110)) {
+            canvas.footerStandIn(info.de);
+            snprintf(name, sizeof(name), "scene_%02d_%s_%d_%03d", i, info.id, p, frame);
+            save(name);
+          }
+        }
+        physicsSceneNextParam(state);
+      }
+      CHECK(state.param == 0);  // Button B comes back around to the start
+    }
+  }
+}
+
 int main() {
   outDir = getenv("ZITRO_RENDER_DIR");
   renderSolids();
+  renderScenes();
   CHECK(canvas.textProblems == 0);
   return finish("render");
 }

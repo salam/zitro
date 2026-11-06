@@ -458,3 +458,96 @@ inline void physicsLitSpan(float y, float radius, float lit, bool growing, float
     to = -edge;
   }
 }
+
+// ---- The scenes: a closed list, in the order a school would teach them ----
+enum PhysicsSceneId : uint8_t {
+  PHYSICS_FALLING,
+  PHYSICS_FRICTION,
+  PHYSICS_LEVER,
+  PHYSICS_PULLEY,
+  PHYSICS_BUOYANCY,
+  PHYSICS_PENDULUM,
+  PHYSICS_RAMP
+};
+
+struct PhysicsSceneInfo {
+  const char* id;
+  const char* de;
+  const char* en;
+  PhysicsSceneId scene;
+  uint8_t paramCount;  // Button B steps through these
+};
+
+static const PhysicsSceneInfo PHYSICS_SCENES[] = {
+    {"falling", "Freier Fall", "Falling", PHYSICS_FALLING, 3},
+    {"friction", "Reibung", "Friction", PHYSICS_FRICTION, 3},
+    {"lever", "Hebel", "Lever", PHYSICS_LEVER, 5},
+    {"pulley", "Flaschenzug", "Pulley", PHYSICS_PULLEY, 3},
+    {"buoyancy", "Schwimmen und Sinken", "Float or sink", PHYSICS_BUOYANCY, 5},
+    {"pendulum", "Pendel", "Pendulum", PHYSICS_PENDULUM, 3},
+    {"ramp", "Energie", "Energy", PHYSICS_RAMP, 2},
+};
+static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
+
+// Added to the AI prompt. Every id in it is in PHYSICS_SCENES and the other way round (tested).
+static const char PHYSICS_PROMPT_RULE[] =
+    "PHYSIK: Setze 'model' auf 'physics:<id>' NUR wenn der Nutzer fragt, wie etwas Physikalisches funktioniert "
+    "oder warum es passiert, und eine dieser Szenen genau passt (z.B. 'Wie funktioniert ein Hebel?' ergibt "
+    "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Wie funktioniert ein Flaschenzug?' ergibt pulley). "
+    "id genau eine von: falling friction lever pulley buoyancy pendulum ramp. Allgemeine Fragen ('Was ist Holz?', "
+    "'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
+    "Nenne nur die id, alle Werte berechnet das Geraet.";
+
+// Scene from "<id>", case and spaces ignored. -1 if it isn't on the list.
+inline int physicsFindScene(const char* query) {
+  if (!query) return -1;
+  char clean[32];
+  size_t n = 0;
+  for (const char* p = query; *p; p++) {
+    if (n + 1 >= sizeof(clean)) return -1;
+    char c = *p;
+    if (c >= 'A' && c <= 'Z') c = (char)(c - 'A' + 'a');
+    if (c == ' ' || c == '_') c = '-';
+    clean[n++] = c;
+  }
+  clean[n] = 0;
+  for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+    if (strcmp(PHYSICS_SCENES[i].id, clean) == 0) return i;
+  }
+  return -1;
+}
+
+// ---- Published values the scenes use ----
+struct PhysicsWorld { const char* de; const char* en; float g; };
+// m/s2: Earth standard rounded, Moon and Mars from NASA's planetary fact sheets
+static const PhysicsWorld PHYSICS_WORLDS[3] = {
+    {"Erde", "Earth", 9.81f}, {"Mond", "Moon", 1.62f}, {"Mars", "Mars", 3.71f}};
+
+struct PhysicsSurface { const char* de; const char* en; float mu; };
+// Typical sliding friction from physics tables; real surfaces vary
+static const PhysicsSurface PHYSICS_SURFACES[3] = {
+    {"Eis", "Ice", 0.03f}, {"Holz", "Wood", 0.3f}, {"Gummi", "Rubber", 0.8f}};
+static const float PHYSICS_PUSH_SPEEDS[3] = {1.0f, 1.5f, 2.0f};  // m/s
+
+struct PhysicsLeverLoad { float mass, marks; };
+// Against 2 kg at mark 2 on the left. Some balance, some don't.
+static const PhysicsLeverLoad PHYSICS_LEVER_LOADS[5] = {{1, 2}, {1, 4}, {2, 4}, {2, 2}, {4, 1}};
+static const float PHYSICS_LEVER_LEFT_MASS = 2, PHYSICS_LEVER_LEFT_MARKS = 2;
+
+static const uint8_t PHYSICS_PULLEY_ROPES[3] = {1, 2, 4};
+
+struct PhysicsMaterial { const char* de; const char* en; float density; };
+// g/cm3 from physics tables. Natural materials vary: wood as pine, stone as granite.
+static const PhysicsMaterial PHYSICS_MATERIALS[5] = {{"Kork", "Cork", 0.24f},
+                                                     {"Holz", "Wood", 0.5f},
+                                                     {"Eis", "Ice", 0.92f},
+                                                     {"Stein", "Stone", 2.7f},
+                                                     {"Eisen", "Iron", 7.87f}};
+
+// Lengths chosen so that one there-and-back takes about 1, 2 and 3 seconds
+static const float PHYSICS_PENDULUM_LENGTHS[3] = {0.25f, 1.0f, 2.25f};  // m
+static const float PHYSICS_PENDULUM_START = 25.0f * PHYSICS_DEG;
+
+static const float PHYSICS_RAMP_SHAPE = 1.0f;  // y = x^2, metres
+static const float PHYSICS_RAMP_START = -0.95f;
+static const float PHYSICS_RAMP_LOSS = 0.25f;  // Per second, with friction on

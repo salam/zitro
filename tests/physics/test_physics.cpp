@@ -460,7 +460,51 @@ static void testNumbers() {
   CHECK(strlen(buffer) == 3);
 }
 
+static void testScenes() {
+  CHECK(physicsFindScene("pendulum") >= 0);
+  CHECK(physicsFindScene("PENDULUM") == physicsFindScene("pendulum"));
+  const char* bad[] = {"", " ", "pendulu", "pendulums", "pendulum ", "pendulum;x", "../lever", "%6Cever",
+                       ("Pendel"), "\xFF\xFE", "orbital-2p", "a very long name that is not on any list at all"};
+  for (const char* s : bad) CHECK(physicsFindScene(s) == -1);
+  CHECK(physicsFindScene(nullptr) == -1);
+  std::string huge(100000, 'a');
+  CHECK(physicsFindScene(huge.c_str()) == -1);
+  for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+    CHECK(PHYSICS_SCENES[i].paramCount >= 1);
+    CHECK(strlen(PHYSICS_SCENES[i].id) < 32);
+  }
+}
+
+// The closed list in the prompt and the table are the same, in both directions
+static void testPromptRule() {
+  const std::string rule = PHYSICS_PROMPT_RULE;
+  for (char c : rule) CHECK((unsigned char)c < 0x80);  // Plain ASCII
+  const std::string marker = "id genau eine von: ";
+  const size_t start = rule.find(marker);
+  CHECK(start != std::string::npos);
+  const size_t end = rule.find('.', start);
+  std::vector<std::string> listed;
+  std::string word;
+  for (size_t i = start + marker.size(); i <= end; i++) {
+    if (rule[i] == ' ' || rule[i] == '.') {
+      if (!word.empty()) listed.push_back(word);
+      word.clear();
+    } else {
+      word += rule[i];
+    }
+  }
+  CHECK((int)listed.size() == PHYSICS_SCENE_COUNT);
+  for (const std::string& id : listed) CHECK(physicsFindScene(id.c_str()) >= 0);
+  for (int i = 0; i < PHYSICS_SCENE_COUNT; i++) {
+    bool found = false;
+    for (const std::string& id : listed) found = found || id == PHYSICS_SCENES[i].id;
+    CHECK(found);
+  }
+}
+
 int main() {
+  testScenes();
+  testPromptRule();
   testNumbers();
   testFalling();
   testFriction();

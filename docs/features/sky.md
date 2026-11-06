@@ -6,7 +6,7 @@ Kind: `sky`. All data is built into the firmware, about 33 KB with its code (see
 
 - `sky:<constellation>` opens the star map centred on that constellation, with its lines in citrus, its name big at the top left and on the bottom line, and the names of up to 3 of its brightest IAU-named stars next to those stars. 29 of the 88 constellations have no star with an IAU name above the catalogue limit, so they show no star names.
 - `sky:all` opens the whole dome, all lines the same, with the names of up to 3 constellations nearest the middle of the picture.
-- Queries are a closed list from `sky_data.h`: the 88 IAU names, their English and German names and a few aliases (Great Bear, Big Dipper, Southern Cross, Scorpio, Grosser Wagen...), folded to lower-case letters. "the" and "constellation" are ignored. Anything else, including stars such as `sky:Sirius` or any character outside letters, space, `'`, `.`, `-`, makes `fetch()` return false and Zitro shows the picture.
+- Queries are a closed list from `sky_data.h`: the 88 IAU names, their English and German names and a few aliases (Great Bear, Big Dipper, Southern Cross, Scorpio, Grosser Wagen...), folded to lower-case letters. "the" and "constellation" are ignored. Anything else, including stars such as `sky:Sirius` or any character outside letters, space, `'`, `.`, `-`, makes `fetch()` return false and Zitro shows the picture. The prompt rule also leaves single stars to the picture: the AI choosing a star's constellation from its own knowledge would put a wrong answer under a correct label.
 - The script fails if a key would mean two constellations. d3-celestial calls both Circinus and Pyxis "Compass": neither accepts plain "Compass".
 - Label: `DE` shows the German name, `EN` the IAU name. It comes from the table, so a wrong lookup is visible.
 - Stars: every Bright Star Catalogue star down to magnitude 5.0 (1630), plus the 35 dimmer ones that constellation lines end on: 1665 in all, 743 line segments. Dot size and brightness by magnitude in 6 steps, colour from B-V in 6 bands kept well towards white. Stars without a B-V value (9 of those down to magnitude 5) are white.
@@ -25,7 +25,7 @@ Kind: `sky`. All data is built into the firmware, about 33 KB with its code (see
 
 Ask about a constellation or the stars: "Where is Orion?", "What does the Great Bear look like?", "Show me the night sky."
 
-Zitro opens a star map. Turn the stick and look around. The sky stays still while you turn, and stops when you stop.
+Zitro opens a star map. Turn the stick and look around. The stars move when you turn, and stay put when you stop.
 
 The constellation you asked for is drawn in yellow. If you lose it, follow the yellow arrow.
 

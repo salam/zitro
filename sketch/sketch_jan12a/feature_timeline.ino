@@ -421,8 +421,16 @@ static bool timelineButtonC() {
   return false;
 }
 
+static const char TIMELINE_PROMPT_RULE[] =
+    "ZEITSTRAHL: Setze 'model' auf 'timeline:<id>' NUR wenn der Nutzer ausdruecklich einen Zeitstrahl, eine Zeitleiste "
+    "oder die zeitliche Abfolge von Ereignissen sehen will (z.B. 'Zeig mir den Zeitstrahl der Weltkriege' ergibt "
+    "'timeline:world_wars', 'Was geschah nacheinander bei den Roemern?' ergibt 'timeline:roman_empire'). "
+    "Bei einzelnen Fragen zur Geschichte ('Wann war der Erste Weltkrieg?', 'Wer war Caesar?') bleibt model leer. "
+    "Erlaubte <id>, nur genau diese: " TIMELINE_TOPIC_LIST ". Passt keine, bleibt model leer. "
+    "Erfinde nie Daten oder Ereignisse: du nennst nur die id, die Daten kommen aus einer Datenbank. "
+    "Fuelle image_query auch dann wie immer.";
+
 const EduFeature FEATURE_TIMELINE = {
-    "timeline", "Wikidata",
-    nullptr,  // Comes with the prompt rule, once all the rest is in
+    "timeline", "Wikidata", TIMELINE_PROMPT_RULE,
     false, timelineFetch, timelineUnload, timelineBegin, timelineFrame, timelineEnd, timelineButtonB, timelineButtonC,
     nullptr};

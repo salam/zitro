@@ -18,10 +18,10 @@ waffles|waffles|de en
 waffle|waffles|de en
 waffeln|waffles|de en
 waffelns|waffles|de en
-french toast|french-toast|en
-french toasts|french-toast|en
-arme ritter|french-toast|en
-arme ritters|french-toast|en
+french toast|french-toast|de en
+french toasts|french-toast|de en
+arme ritter|french-toast|de en
+arme ritters|french-toast|de en
 scrambled eggs|scrambled-eggs|de en
 scrambled egg|scrambled-eggs|de en
 ruehrei|scrambled-eggs|de en
@@ -220,6 +220,84 @@ erdnussbutterkekse|peanut-butter-cookies|en
 erdnussbutterkekses|peanut-butter-cookies|en
 shortbread|shortbread|en
 shortbreads|shortbread|en
+hamburger|hamburger|de
+hamburgers|hamburger|de
+burger|hamburger|de
+burgers|hamburger|de
+marble cake|marble-cake|de
+marble cakes|marble-cake|de
+marmorkuchen|marble-cake|de
+marmorkuchens|marble-cake|de
+cheesecake|cheesecake|de
+cheesecakes|cheesecake|de
+kaesekuchen|cheesecake|de
+kaesekuchens|cheesecake|de
+käsekuchen|cheesecake|de
+käsekuchens|cheesecake|de
+carrot cake|carrot-cake|de
+carrot cakes|carrot-cake|de
+rueblikuchen|carrot-cake|de
+rueblikuchens|carrot-cake|de
+rüblikuchen|carrot-cake|de
+rüblikuchens|carrot-cake|de
+möhrenkuchen|carrot-cake|de
+möhrenkuchens|carrot-cake|de
+banana cake|banana-cake|de
+banana cakes|banana-cake|de
+bananenkuchen|banana-cake|de
+bananenkuchens|banana-cake|de
+braided bread|braided-bread|de
+braided breads|braided-bread|de
+challah|braided-bread|de
+challahs|braided-bread|de
+hefezopf|braided-bread|de
+hefezopfs|braided-bread|de
+zopf|braided-bread|de
+zopfs|braided-bread|de
+pumpkin soup|pumpkin-soup|de
+pumpkin soups|pumpkin-soup|de
+kuerbissuppe|pumpkin-soup|de
+kuerbissuppes|pumpkin-soup|de
+kürbissuppe|pumpkin-soup|de
+kürbissuppes|pumpkin-soup|de
+pasta salad|pasta-salad|de
+pasta salads|pasta-salad|de
+nudelsalat|pasta-salad|de
+nudelsalats|pasta-salad|de
+cucumber salad|cucumber-salad|de
+cucumber salads|cucumber-salad|de
+gurkensalat|cucumber-salad|de
+gurkensalats|cucumber-salad|de
+greek salad|greek-salad|de
+greek salads|greek-salad|de
+griechischer salat|greek-salad|de
+griechischer salats|greek-salad|de
+semolina pudding|semolina-pudding|de
+semolina puddings|semolina-pudding|de
+griessbrei|semolina-pudding|de
+griessbreis|semolina-pudding|de
+grießbrei|semolina-pudding|de
+grießbreis|semolina-pudding|de
+fried noodles|fried-noodles|de
+fried noodle|fried-noodles|de
+gebratene nudeln|fried-noodles|de
+gebratene nudelns|fried-noodles|de
+rice|steamed-rice|de
+rices|steamed-rice|de
+steamed rice|steamed-rice|de
+steamed rices|steamed-rice|de
+reis|steamed-rice|de
+rei|steamed-rice|de
+pesto|pesto|de
+pestos|pesto|de
+fruit ice cream|fruit-ice-cream|de
+fruit ice creams|fruit-ice-cream|de
+ice cream|fruit-ice-cream|de
+ice creams|fruit-ice-cream|de
+fruchteis|fruit-ice-cream|de
+fruchtei|fruit-ice-cream|de
+eis|fruit-ice-cream|de
+ei|fruit-ice-cream|de
 gingerbread|gingerbread|en
 gingerbreads|gingerbread|en
 lebkuchen|gingerbread|en

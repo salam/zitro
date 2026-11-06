@@ -373,6 +373,7 @@ static void testGeneratedSet(const std::string& dir) {
         CHECK(code >= 0x20 && code <= 0x5FF);
       }
     }
+    if (layout.pageCount > 32) printf("  too long: %s has %d pages\n", name.c_str(), layout.pageCount);
     if (layout.pageCount > mostPages) { mostPages = layout.pageCount; worst = name; }
     for (uint16_t i = 0; i < layout.pageCount; i++) {
       if (layout.pages[i].subPage == 0 && layout.pages[i].step >= 0) {

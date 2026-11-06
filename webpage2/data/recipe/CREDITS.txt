@@ -1,0 +1,66 @@
+Recipes shown by Zitro. Text from Wikibooks, by its contributors, under CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/).
+Authors are listed in each page's history. Changes: wiki markup removed, characters adapted to the display, only the first variant of a page used.
+
+"Apfelkuchen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Apfelkuchen, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Apfelpfannkuchen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Apfelpfannkuchen, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Apple Cake", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Apple_Cake, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Banana Milkshake", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Banana_Milkshake, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Bananenbrot", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Bananenbrot, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Basic Lasagna", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Basic_Lasagna, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Basic Pizza Sauce", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Basic_Pizza_Sauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Basic Scrambled Eggs", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Basic_Scrambled_Eggs, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Blueberry Muffin", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Blueberry_Muffin, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Bolognese Sauce", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Bolognese_Sauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Bratkartoffeln", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Bratkartoffeln, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Breakfast Waffles", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Breakfast_Waffles, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Brownies", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Brownies, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Cake Brownies", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Cake_Brownies, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Cheese Omelette", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Cheese_Omelette, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chicken Soup I", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Chicken_Soup_I, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chili con Carne einfach", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Chili_con_Carne_einfach, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chocolate Chip Cookies II", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Chocolate_Chip_Cookies_II, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chocolate Cookies", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Chocolate_Cookies, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chocolate Milkshake", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Chocolate_Milkshake, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Chunky Guacamole", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Chunky_Guacamole, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Classic Vanilla Milkshake", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Classic_Vanilla_Milkshake, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Crêpes I", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Cr%C3%AApes_I, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Easy Chili", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Easy_Chili, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Egyptian Lentil Soup", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Egyptian_Lentil_Soup, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Eierpfannkuchen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Eierpfannkuchen, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"French Fries", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:French_Fries, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"French Toast", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:French_Toast, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Fried Eggs", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Fried_Eggs, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Fried Rice", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Fried_Rice, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Frikadellen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Frikadellen, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Fruit Salad with Orange Juice", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Fruit_Salad_with_Orange_Juice, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Gingerbread", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Gingerbread, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Grilled Cheese Sandwich", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Grilled_Cheese_Sandwich, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Guacamole", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Guacamole, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Hot Chocolate", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Hot_Chocolate, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Hummus I", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Hummus_I, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Hühnersuppe", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_H%C3%BChnersuppe, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Kartoffelgratin", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Kartoffelgratin, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Lasagne Bolognese", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Lasagne_Bolognese, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Lemonade", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Lemonade, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Macaroni and Cheese I", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Macaroni_and_Cheese_I, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Mashed Potatoes", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Mashed_Potatoes, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Meatballs with Honey Lime Sauce", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Meatballs_with_Honey_Lime_Sauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Muffins", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Muffins, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Obstsalat", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Obstsalat, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Omelette", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Omelette, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Pancakes (North American)", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Pancakes_%28North_American%29, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Peanut Butter Cookies", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Peanut_Butter_Cookies, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Pizza Dough", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Pizza_Dough, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Pizza mit Rukola", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Pizza_mit_Rukola, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Popcorn", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Popcorn, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Potato Salad", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Potato_Salad, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Rice Pudding", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Rice_Pudding, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Rührei", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_R%C3%BChrei, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Schokokuchen", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Schokokuchen, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Shortbread", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Shortbread, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Spaetzle", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Spaetzle, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Spätzle", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Sp%C3%A4tzle, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Tomatensauce", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Tomatensauce, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Vanillepudding", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Vanillepudding, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Vegetable Soup", Wikibooks contributors, https://en.wikibooks.org/wiki/Cookbook:Vegetable_Soup, CC BY-SA 4.0; markup removed, characters adapted to the display.
+"Waffeln", Wikibooks contributors, https://de.wikibooks.org/wiki/Kochbuch/_Waffeln, CC BY-SA 4.0; markup removed, characters adapted to the display.

@@ -595,6 +595,18 @@ static void testTicks() {
   checkValueText(1e-17, 1e-16, "1e-17");  // ...but not if that's the scale of the graph
 }
 
+static void testTurning() {
+  CHECK(graphTurnRate(0, 0) == 0);
+  CHECK(graphTurnRate(3.9f, -3.9f) == 0);   // Sensor noise
+  CHECK(graphTurnRate(30, 0) == 30);        // Screen swings to face right
+  CHECK(graphTurnRate(-30, 0) == -30);
+  CHECK(graphTurnRate(0, -30) == 30);       // Rocked clockwise
+  CHECK(graphTurnRate(0, 30) == -30);
+  CHECK(graphTurnRate(10, -50) == 50);      // The stronger one counts
+  CHECK(graphTurnRate(50, 10) == 50);
+  CHECK(graphTurnRate(-4, 0) == -4);        // At the limit it moves
+}
+
 static void testStart() {
   double center = 99;
   CHECK(compile("sin(x)"));
@@ -667,6 +679,7 @@ int main() {
   testPixels();
   testFit();
   testTicks();
+  testTurning();
   testStart();
   testHostileThroughTheView();
   testArithmetic();

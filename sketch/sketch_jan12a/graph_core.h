@@ -576,6 +576,18 @@ inline void graphFormatValue(double value, double scale, char* out, size_t size)
   }
 }
 
+// ----- Moving by turning the stick -----
+
+static const float GRAPH_STILL_DPS = 4.0f;  // Below this the hand isn't turning: sensor noise
+
+// Turning speed along the curve from the gyro, in degrees per second, positive towards larger x.
+// Both ways of turning count, whichever is stronger: rocking the stick like a steering wheel, clockwise
+// (screen axis z, gz negative), and swinging it so the screen faces right (screen axis y, gy positive).
+inline float graphTurnRate(float gy, float gz) {
+  const float rate = std::fabs(gy) >= std::fabs(gz) ? gy : -gz;
+  return std::fabs(rate) >= GRAPH_STILL_DPS ? rate : 0.0f;
+}
+
 // ----- Where to start -----
 
 // The window to open with: around 0 if the curve is there, otherwise where it is.

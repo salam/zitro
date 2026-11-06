@@ -1,10 +1,13 @@
 // Function graphs: the AI names the expression, every point is computed here. See edu_feature.h.
-// Button B zooms (default handler, modelZoomStep), Button C goes back to the text.
+// Turning the stick moves along the curve. Button B zooms (default handler, modelZoomStep),
+// Button C goes back to the text.
 
 #include "graph_core.h"
 
 // Half the visible width of x, by modelZoomStep: normal, closer, far. Back at normal it also recentres.
 static const double GRAPH_HALF_WIDTHS[3] = {5, 1, 20};
+static const float GRAPH_COLUMNS_PER_DEGREE = 3.0f;  // A quarter turn crosses the screen more than once
+static const float GRAPH_TILT_SIGN = 1.0f;  // Set from the molecule view's turning sign; flip if it runs backwards
 static const unsigned long GRAPH_FRAME_BUDGET_US = 15000;  // Computing per frame; the rest waits for the next
 static const int GRAPH_DOT_COLUMN = GRAPH_COLUMNS / 2;
 static const int GRAPH_MAX_X_TICKS = 5;
@@ -17,6 +20,7 @@ static GraphYView graphYView = {-1, 1, -1, 1, false};
 static double graphStartCenter = 0;
 static double graphCenter = 0;
 static uint8_t graphAppliedZoom = 0;
+static float graphPanCarry = 0;  // Part of a column not moved yet, so slow turning still moves
 
 static bool graphFetch(const char* query) {
   if (!graphCompile(query, graphProgram) ||
@@ -38,6 +42,7 @@ static bool graphBegin(M5Canvas& c) {
   graphAppliedZoom = modelZoomStep;
   graphSetWindow(*graphSamples, graphCenter, GRAPH_HALF_WIDTHS[graphAppliedZoom]);
   graphYView.ready = false;
+  graphPanCarry = 0;
   return true;
 }
 
@@ -165,6 +170,14 @@ static void graphFrame(M5Canvas& c, float dt) {
     graphAppliedZoom = modelZoomStep;
     // Back at normal zoom is also the way home
     graphSetWindow(s, graphAppliedZoom == 0 ? graphStartCenter : graphCenterX(s), GRAPH_HALF_WIDTHS[graphAppliedZoom]);
+    graphPanCarry = 0;
+  }
+
+  graphPanCarry += GRAPH_TILT_SIGN * graphTurnRate(modelGyroDps[1], modelGyroDps[2]) * GRAPH_COLUMNS_PER_DEGREE * dt;
+  const long wholeColumns = (long)graphPanCarry;
+  if (wholeColumns != 0) {
+    graphPan(s, wholeColumns);
+    graphPanCarry -= wholeColumns;
   }
 
   bool changed = false;

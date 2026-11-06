@@ -3,6 +3,7 @@
 import os
 import sys
 
+sys.dont_write_bytecode = True
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "scripts"))
 import make_protein_data as m  # noqa: E402
 
@@ -34,7 +35,6 @@ HEADER = (
     "COMPND    MOL_ID: 1; MOLECULE: HEMOGLOBIN\n"
     "SEQRES   1 A    3  ALA MSE GLY                                                \n"
 )
-HEADER_DOWN = HEADER
 
 # Checks parse_backbone against each rule in turn
 PDB = HEADER + "\n".join(

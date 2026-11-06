@@ -469,7 +469,10 @@ static void checkRealView(const std::string& dataDir, const std::string& name, c
         mat3Rotate(rot, 0.05f, 0.11f, 0.02f);
       }
       Mat3 shown = rot;
-      if (cut) mat3Rotate(shown, 0, ANATOMY_CUT_SWAY_RAD * sinf(turn * 0.5f), 0);
+      if (cut) {
+        mat3Rotate(shown, 0, ANATOMY_CUT_SWAY_RAD * sinf(turn * 0.5f), 0);
+        anatomyClampCut(shown);
+      }
       int calls = 0;
       bool onScreenSizes = true;
       const uint16_t drawn = anatomyRender(real, n.data(), s, shown, anatomyViewScaleFor(117, real.legendCount, zoom), ANATOMY_VIEW_CAMERA,

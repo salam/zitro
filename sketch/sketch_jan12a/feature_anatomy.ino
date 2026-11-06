@@ -77,7 +77,12 @@ static bool anatomyLoadView(int view, int index, unsigned long deadline) {
 static void anatomySetFooter() {
   const AnatomyModel& m = anatomyModels[anatomyViews.showingCut ? ANATOMY_CUT : ANATOMY_OUTSIDE];
   modelLabel = anatomyGerman ? m.labelDe : m.labelEn;
-  if (anatomyViews.showingCut) modelLabel += anatomyGerman ? ", innen" : ", inside";
+  bool ascii = true;
+  for (const char* p = modelLabel.c_str(); *p; p++) {
+    if ((uint8_t)*p >= 0x80) ascii = false;
+  }
+  // A name with an umlaut needs the wide font, and the bottom line would cut the word: the picture says it anyway
+  if (anatomyViews.showingCut && ascii) modelLabel += anatomyGerman ? ", innen" : ", inside";
   if (m.flags & ANATOMY_FLAG_SCHEMATIC) {
     modelSourceName = anatomyGerman ? "Schema" : "Schematic";
   } else {
@@ -235,6 +240,7 @@ static void anatomyFrame(M5Canvas& c, float dt) {
     anatomySwayPhase += dt * ANATOMY_SWAY_RAD_PER_S;
     if (anatomySwayPhase > 2.0f * (float)M_PI) anatomySwayPhase -= 2.0f * (float)M_PI;
     mat3Rotate(turn, 0.0f, sinf(anatomySwayPhase) * ANATOMY_CUT_SWAY_RAD, 0.0f);
+    anatomyClampCut(turn);  // The rocking may not reach further than the file has faces for
   }
   c.fillSprite(TFT_BLACK);
   const int viewHeight = HEIGHT - EDU_FOOTER_HEIGHT;

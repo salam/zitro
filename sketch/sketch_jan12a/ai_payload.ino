@@ -1,6 +1,65 @@
 // Chat request bodies and response parsing for all providers - see ai_provider.h
 // Pure functions (no network), unit-tested on the host by test/host/run_tests.sh.
 
+// What may be stored as AI settings. The setup page and the installer share these rules.
+bool isValidAiProvider(const String& provider) {
+  return provider == AI_PROVIDER_ZITRO || provider == AI_PROVIDER_OPENAI || provider == AI_PROVIDER_ANTHROPIC ||
+         provider == AI_PROVIDER_INFOMANIAK || provider == AI_PROVIDER_CUSTOM;
+}
+
+bool isValidSecretValue(const String& value) {
+  return value.length() >= 8 && value.length() <= 300 && value.indexOf(' ') < 0;
+}
+
+bool isValidAiTextValue(const char* key, const String& value) {
+  if (strcmp(key, "customUrl") == 0 && value.length() > 0 && !value.startsWith("https://")) return false;
+  return value.length() <= 200;
+}
+
+// Checks settings from the installer: a flat JSON object of strings with the keys
+// provider, ssid, password, and the secret and text keys above.
+// Returns "" when all of it may be stored, otherwise which kind of field is wrong.
+// Never includes a value: the answer goes out over serial.
+String provisioningError(JsonVariantConst settings) {
+  if (!settings.is<JsonObjectConst>()) return "json";
+  JsonObjectConst fields = settings.as<JsonObjectConst>();
+  if (fields.size() == 0) return "json";
+
+  bool hasSsid = false, hasPassword = false;
+  for (JsonPairConst field : fields) {
+    const char* key = field.key().c_str();
+    if (!field.value().is<const char*>()) return "json";
+    String value = field.value().as<const char*>();
+
+    if (strcmp(key, "provider") == 0) {
+      if (!isValidAiProvider(value)) return "provider";
+    } else if (strcmp(key, "ssid") == 0) {
+      if (value.length() < 1 || value.length() > 32) return "ssid";
+      hasSsid = true;
+    } else if (strcmp(key, "password") == 0) {
+      if (value.length() != 0 && (value.length() < 8 || value.length() > 63)) return "password";
+      hasPassword = true;
+    } else {
+      bool known = false;
+      for (const char* secretKey : SECRET_SETTING_KEYS) {
+        if (strcmp(key, secretKey) == 0) {
+          if (!isValidSecretValue(value)) return "key";
+          known = true;
+        }
+      }
+      for (const char* textKey : AI_TEXT_SETTING_KEYS) {
+        if (strcmp(key, textKey) == 0) {
+          if (!isValidAiTextValue(key, value)) return "text";
+          known = true;
+        }
+      }
+      if (!known) return "unknown";
+    }
+  }
+  if (hasPassword && !hasSsid) return "ssid";
+  return "";
+}
+
 String httpErrorText(int code, const String& provider) {
   if (code == 401 || code == 403) return "API key rejected";
   if (code == 402 || (code == 429 && provider == AI_PROVIDER_ZITRO)) return "Zitro quota reached";

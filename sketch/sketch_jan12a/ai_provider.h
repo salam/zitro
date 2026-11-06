@@ -14,6 +14,11 @@
 #define AI_PROVIDER_CUSTOM     "custom"
 #define AI_PROVIDER_DEFAULT    AI_PROVIDER_OPENAI
 
+// Secret API keys stored in Preferences ("settings" namespace). Never sent back to the browser.
+static const char* const SECRET_SETTING_KEYS[] = {"apiKey", "claudeKey", "ikKey", "customKey", "zitroKey"};
+// Plain-text AI settings editable on the setup page
+static const char* const AI_TEXT_SETTING_KEYS[] = {"oaModel", "claudeModel", "ikModel", "ikProduct", "customUrl", "customModel"};
+
 // Hosts
 #define OPENAI_HOST       "api.openai.com"
 #define ANTHROPIC_HOST    "api.anthropic.com"
@@ -21,6 +26,11 @@
 #define ZITRO_RELAY_HOST  "relay.zitro.spot"   // OpenAI-compatible relay, see docs/ZITRO_RELAY_DESIGN.md
 
 #define ANTHROPIC_VERSION "2026-10-21"
+
+bool isValidAiProvider(const String& provider);
+bool isValidSecretValue(const String& value);
+bool isValidAiTextValue(const char* key, const String& value);
+String provisioningError(JsonVariantConst settings);
 
 // Default models per provider (overridable on the setup page)
 #define DEFAULT_OPENAI_MODEL     "gpt-6-luna"

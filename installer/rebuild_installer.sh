@@ -1,9 +1,12 @@
 #!/bin/bash
-
-# Quick Rebuild Script for AI Stick Flasher Installer
-# This script compiles the firmware and rebuilds the DMG installer
-
-set -e
+# Build the release from the sketch as it is now: firmware, tests, app, signed and notarized DMG.
+#
+#   ./rebuild_installer.sh                 Full release (needs notary credentials, see below)
+#   ./rebuild_installer.sh --no-notarize   Local test build; macOS warns on other Macs
+#
+# Notary credentials, either:  NOTARY_PROFILE=<keychain profile>
+#                         or:  NOTARY_KEY=<AuthKey.p8> NOTARY_KEY_ID=<id> NOTARY_ISSUER=<uuid>
+set -euo pipefail
 
 # Wolfram answers need the AppID, which isn't in git
 if ! grep -q 'WOLFRAM_APPID "[A-Z0-9-]\{6,\}"' "$(dirname "$0")/../sketch/sketch_jan12a/local_secrets.h" 2>/dev/null; then
@@ -11,129 +14,40 @@ if ! grep -q 'WOLFRAM_APPID "[A-Z0-9-]\{6,\}"' "$(dirname "$0")/../sketch/sketch
   exit 1
 fi
 
-echo "======================================"
-echo "  AI Stick Installer - Quick Rebuild"
-echo "======================================"
-echo ""
-
-# Get the project root (parent of installer directory)
 INSTALLER_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(dirname "$INSTALLER_DIR")"
+SKETCH="$PROJECT_ROOT/sketch/sketch_jan12a/sketch_jan12a.ino"
+FQBN="esp32:esp32:m5stack_stickc_plus2"
+export INSTALLER_VERSION="1.1"
 
-echo "Project root: $PROJECT_ROOT"
-echo "Installer directory: $INSTALLER_DIR"
-echo ""
+BUILD=$(mktemp -d)
+trap 'rm -rf "$BUILD"' EXIT
 
-# Step 1: Compile firmware
-echo "Step 1/6: Compiling firmware..."
-echo "--------------------------------"
-cd "$PROJECT_ROOT"
-./verify.sh
+echo "== 1/6 Compiling the firmware from scratch"
+# Always a new build folder. Copying from an old one is how January's firmware,
+# with an API key in it, kept shipping in the February installers.
+arduino-cli compile --fqbn "$FQBN" \
+    --build-property "compiler.c.elf.extra_flags=-Wl,--allow-multiple-definition" \
+    --build-path "$BUILD/build" --output-dir "$BUILD/out" "$SKETCH" | tail -2
 
-if [ ! -f ".build/sketch_jan12a.ino.merged.bin" ]; then
-    echo "Error: Firmware binary not found after compilation!"
-    exit 1
-fi
+COMMIT=$(git -C "$PROJECT_ROOT" rev-parse --short HEAD)
+DIRTY=""
+git -C "$PROJECT_ROOT" diff --quiet HEAD -- sketch/sketch_jan12a ':!sketch/sketch_jan12a/build' || DIRTY="+local"
+[ -z "$(git -C "$PROJECT_ROOT" ls-files --others --exclude-standard sketch/sketch_jan12a)" ] || DIRTY="+local"
+LABEL="$(date +%Y-%m-%d) ($COMMIT$DIRTY)"
 
-echo ""
-echo "✓ Firmware compiled successfully"
-echo ""
+echo "== 2/6 Packaging and checking the firmware"
+python3 "$INSTALLER_DIR/scripts/package_firmware.py" "$BUILD/out" "$INSTALLER_DIR/firmware" "$LABEL"
+python3 "$INSTALLER_DIR/scripts/scan_secrets.py" "$INSTALLER_DIR/firmware"
 
-# Step 2: Build native flasher (universal binary)
-echo "Step 2/6: Building native flasher (universal)..."
-echo "--------------------------------------------------"
-cd "$INSTALLER_DIR"
-./native_flasher/build.sh
-echo ""
+echo "== 3/6 Building the flasher"
+"$INSTALLER_DIR/native_flasher/build.sh"
 
-# Step 3: Update firmware in installer
-echo "Step 3/6: Updating firmware in installer..."
-echo "--------------------------------------------"
+echo "== 4/6 Testing the flasher against a simulated ESP32"
+python3 "$INSTALLER_DIR/native_flasher/tests/run_tests.py"
 
-# Find boot_app0.bin from Arduino SDK
-BOOT_APP0=$(find ~/Library/Arduino15/packages/esp32/hardware/esp32 -name "boot_app0.bin" | head -1)
-if [ -z "$BOOT_APP0" ]; then
-    echo "Warning: boot_app0.bin not found in Arduino SDK, using existing copy"
-fi
+echo "== 5/6 Building the app"
+"$INSTALLER_DIR/gui_installer/build.sh"
 
-# Update individual firmware parts
-cp .build/sketch_jan12a.ino.bootloader.bin "$INSTALLER_DIR/firmware/bootloader.bin"
-echo "✓ Updated bootloader.bin"
-cp .build/sketch_jan12a.ino.partitions.bin "$INSTALLER_DIR/firmware/partitions.bin"
-echo "✓ Updated partitions.bin"
-if [ -n "$BOOT_APP0" ]; then
-    cp "$BOOT_APP0" "$INSTALLER_DIR/firmware/boot_app0.bin"
-    echo "✓ Updated boot_app0.bin"
-fi
-cp .build/sketch_jan12a.ino.bin "$INSTALLER_DIR/firmware/application.bin"
-echo "✓ Updated application.bin"
-
-# Update firmware in app bundle
-APP_FW_DIR="$INSTALLER_DIR/Install Firebird AI Stick.app/Contents/Resources/firmware"
-mkdir -p "$APP_FW_DIR"
-cp "$INSTALLER_DIR/firmware/bootloader.bin" "$APP_FW_DIR/"
-cp "$INSTALLER_DIR/firmware/partitions.bin" "$APP_FW_DIR/"
-cp "$INSTALLER_DIR/firmware/boot_app0.bin" "$APP_FW_DIR/"
-cp "$INSTALLER_DIR/firmware/application.bin" "$APP_FW_DIR/"
-echo "✓ Updated app bundle firmware"
-
-# Show firmware sizes
-echo "  Firmware parts:"
-for f in bootloader.bin partitions.bin boot_app0.bin application.bin; do
-    SIZE=$(ls -lh "$INSTALLER_DIR/firmware/$f" | awk '{print $5}')
-    echo "    $f: $SIZE"
-done
-echo ""
-
-# Step 4: Build GUI installer (universal binary)
-echo "Step 4/6: Building GUI installer (universal)..."
-echo "-------------------------------------------------"
-cd "$INSTALLER_DIR"
-./gui_installer/build.sh
-
-# Copy rebuilt app bundle to installer root
-echo "Copying rebuilt app bundle..."
-rm -rf "$INSTALLER_DIR/Install Firebird AI Stick.app"
-cp -R "$INSTALLER_DIR/gui_installer/build/Install Firebird AI Stick.app" "$INSTALLER_DIR/"
-echo "✓ App bundle updated"
-echo ""
-
-# Step 5: Rebuild DMG
-echo "Step 5/6: Rebuilding DMG installer..."
-echo "-------------------------------------"
-cd "$INSTALLER_DIR"
-./build_dmg.sh
-
-echo ""
-
-# Step 6: Verify DMG
-echo "Step 6/6: Verifying DMG..."
-echo "--------------------------"
-DMG_FILE="$INSTALLER_DIR/Firebird-AI-Stick-Installer-1.0.dmg"
-
-if [ ! -f "$DMG_FILE" ]; then
-    echo "Error: DMG file not found!"
-    exit 1
-fi
-
-hdiutil verify "$DMG_FILE" > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo "✓ DMG verification successful"
-else
-    echo "✗ DMG verification failed!"
-    exit 1
-fi
-
-DMG_SIZE=$(du -h "$DMG_FILE" | cut -f1)
-echo "  DMG size: $DMG_SIZE"
-
-echo ""
-echo "======================================"
-echo "✓ Installer rebuilt successfully!"
-echo "======================================"
-echo ""
-echo "Output: $DMG_FILE"
-echo ""
-echo "The installer is ready for distribution."
-echo "Users can double-click the DMG to install."
-echo ""
+echo "== 6/6 Signing, notarizing and checking the DMG"
+"$INSTALLER_DIR/build_dmg.sh" "$@"

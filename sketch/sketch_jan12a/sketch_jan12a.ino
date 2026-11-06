@@ -280,9 +280,12 @@ int timerCount = 0;
 String timerSetResponse;
 String timerSetLabel;
 String timerSetWhen;
+int timerSetIndex = -1;  // Slot of the timer the card belongs to
 bool inTimerListMode = false;
 int timerListIndex = 0;
 bool timerAlertActive = false;
+unsigned long lastAlertRing = 0;
+const unsigned long ALERT_RING_INTERVAL = 1230;  // Sound (0.93 s) plus a 0.3 s pause
 int timerAlertIndex = -1;
 // Rotation the "timer set" card was last drawn in (it turns with the stick, portrait included)
 int timerSetDrawnRotation = -1;
@@ -443,6 +446,8 @@ void modelViewTick();
 void leaveModelView();
 void modelGyroNoise();
 extern bool modelResetRotateToggle;
+const int SERIAL_LINE_MAX = 2048;  // Longest serial command: a provisioning line (see provisioning.ino)
+void handleProvisionCommand(const String& json);
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();
@@ -1566,19 +1571,9 @@ void saveWiFiCredential(String ssid, String password) {
       wifiNetworkCount++;
       prefs.putInt("count", wifiNetworkCount);
     } else {
-      // Replace oldest (first) credential
-      Serial.println("Max networks reached, replacing oldest");
-
-      // Shift all networks down
-      for (int i = 0; i < MAX_WIFI_NETWORKS - 1; i++) {
-        wifiNetworks[i] = wifiNetworks[i + 1];
-        String ssidKey = "ssid_" + String(i);
-        String passKey = "pass_" + String(i);
-        prefs.putString(ssidKey.c_str(), wifiNetworks[i].ssid);
-        prefs.putString(passKey.c_str(), wifiNetworks[i].password);
-      }
-
-      // Add new network at the end
+      // Replace the last one: a successful connection moves a network to the front,
+      // so the last is the least recently used and the first is the one that works now
+      Serial.println("Max networks reached, replacing least recently used");
       wifiNetworks[MAX_WIFI_NETWORKS - 1].ssid = ssid;
       wifiNetworks[MAX_WIFI_NETWORKS - 1].password = password;
       String ssidKey = "ssid_" + String(MAX_WIFI_NETWORKS - 1);
@@ -1748,11 +1743,6 @@ void handleSave() {
   ESP.restart();
 }
 
-// Secret API keys stored in Preferences ("settings" namespace). Never sent back to the browser.
-static const char* const SECRET_SETTING_KEYS[] = {"apiKey", "claudeKey", "ikKey", "customKey", "zitroKey"};
-// Plain-text AI settings editable on the setup page
-static const char* const AI_TEXT_SETTING_KEYS[] = {"oaModel", "claudeModel", "ikModel", "ikProduct", "customUrl", "customModel"};
-
 void handleGetSettings() {
   Serial.println("Serving settings JSON");
   Preferences settingsPrefs;
@@ -1823,8 +1813,7 @@ void handleSaveSettings() {
 
   if (server.hasArg("provider")) {
     String provider = server.arg("provider");
-    if (provider == AI_PROVIDER_ZITRO || provider == AI_PROVIDER_OPENAI || provider == AI_PROVIDER_ANTHROPIC ||
-        provider == AI_PROVIDER_INFOMANIAK || provider == AI_PROVIDER_CUSTOM) {
+    if (isValidAiProvider(provider)) {
       settingsPrefs.putString("provider", provider);
     }
   }
@@ -1833,8 +1822,7 @@ void handleSaveSettings() {
     if (!server.hasArg(key)) continue;
     String value = server.arg(key);
     value.trim();
-    if (strcmp(key, "customUrl") == 0 && value.length() > 0 && !value.startsWith("https://")) continue;
-    if (value.length() <= 200) settingsPrefs.putString(key, value);
+    if (isValidAiTextValue(key, value)) settingsPrefs.putString(key, value);
   }
 
   // Empty key fields mean "keep the stored key"
@@ -1842,7 +1830,7 @@ void handleSaveSettings() {
     if (!server.hasArg(key)) continue;
     String value = server.arg(key);
     value.trim();
-    if (value.length() >= 8 && value.length() <= 300 && value.indexOf(' ') < 0) {
+    if (isValidSecretValue(value)) {
       settingsPrefs.putString(key, value);
       Serial.printf("%s saved\n", key);
     }
@@ -1965,14 +1953,21 @@ void drawSetupScreen(bool openingSettings) {
     canvas.drawString("SETUP: Connect to:", textX, textY);
   }
   textY += lineHeight;
+  // The words to remember stand out in citrus. Font 2 has no bold cut: draw them twice, 1 px apart
+  canvas.setTextColor(CITRUS);
   canvas.drawString(AP_NAME, textX, textY);
+  canvas.drawString(AP_NAME, textX + 1, textY);
+  canvas.setTextColor(TFT_WHITE);
   textY += lineHeight;
   canvas.drawString("and open:", textX, textY);
   textY += lineHeight;
-  // The address reads as a link: underlined
+  // The address reads as a link: bold and underlined
   const char* setupUrl = "zitro.local";
+  canvas.setTextColor(CITRUS);
   canvas.drawString(setupUrl, textX, textY);
-  canvas.drawFastHLine(textX, textY + 15, canvas.textWidth(setupUrl), TFT_WHITE);
+  canvas.drawString(setupUrl, textX + 1, textY);
+  canvas.drawFastHLine(textX, textY + 15, canvas.textWidth(setupUrl) + 1, CITRUS);
+  canvas.setTextColor(TFT_WHITE);
   textY += lineHeight * 1.25;
 
   if (wifiNetworkCount > 0) {
@@ -7813,6 +7808,7 @@ M5.Speaker.begin();
 }
 
 void setup() {
+  Serial.setRxBufferSize(SERIAL_LINE_MAX);  // Must come before begin()
   Serial.begin(115200);
   delay(1000);
   
@@ -7948,6 +7944,7 @@ String addTimer(int minutes, const String& label) {
       timers[i].fireTime = time(NULL) + (time_t)minutes * 60;
       timers[i].label = label;
       timerCount++;
+      timerSetIndex = i;
       Serial.printf("Timer added: '%s' in %d min (fires at %ld)\n", label.c_str(), minutes, (long)timers[i].fireTime);
 
       return "Timer: " + label + " in " + formatTimerDuration(minutes);
@@ -8072,11 +8069,23 @@ void drawTimerSet(const String &label, const String &when) {
   canvas.deleteSprite();
 }
 
+// The "timer set" card is only valid while its timer runs. Once the timer is gone,
+// later redraws (wake, cancelled recording, rotation) must not bring the card back.
+void forgetTimerCard(int index) {
+  if (index != timerSetIndex) return;
+  if (timerSetResponse.length() > 0 && response == timerSetResponse) response = MAIN_QUESTION;
+  timerSetResponse = "";
+  timerSetLabel = "";
+  timerSetWhen = "";
+  timerSetIndex = -1;
+}
+
 void removeTimer(int index) {
   if (index < 0 || index >= MAX_TIMERS || !timers[index].active) return;
   timers[index].active = false;
   timers[index].label = "";
   timerCount--;
+  forgetTimerCard(index);
   if (timerCount < 0) timerCount = 0;
   Serial.printf("Timer %d removed, %d remaining\n", index, timerCount);
 }
@@ -8126,8 +8135,11 @@ String formatTimeRemaining(time_t fireTime) {
   return String(secs) + "s";
 }
 
+// One ring. Doesn't wait for the sound to end, so the blink and Button A keep working;
+// loop() calls this again every ALERT_RING_INTERVAL until the alert is dismissed.
 void playAlarmSound() {
   Serial.println("Playing alert sound...");
+  lastAlertRing = millis();
   // Re-initialize speaker (may be in undefined state after light sleep)
   M5.Speaker.begin();
   // Restore volume from settings
@@ -8138,15 +8150,7 @@ void playAlarmSound() {
   M5.Speaker.setVolume(vol);
   delay(50);  // Allow speaker to settle
 
-  // Play alert sound twice for emphasis
-  for (int i = 0; i < 2; i++) {
-    M5.Speaker.playRaw(alertSoundData, ALERT_SOUND_SAMPLES, ALERT_SOUND_SAMPLE_RATE, false, 1, 0, false);
-    while (M5.Speaker.isPlaying()) {
-      delay(50);
-    }
-    if (i == 0) delay(300);  // Pause between plays
-  }
-  Serial.println("Alert sound complete");
+  M5.Speaker.playRaw(alertSoundData, ALERT_SOUND_SAMPLES, ALERT_SOUND_SAMPLE_RATE, false, 1, 0, true);
 }
 
 // 1-bit icon at an integer scale, turned by angleDeg around a pivot given in icon pixels.
@@ -8450,6 +8454,7 @@ void checkTimers() {
       // Mark timer as inactive
       timers[i].active = false;
       timerCount--;
+      forgetTimerCard(i);
       if (timerCount < 0) timerCount = 0;
 
       return; // Process one at a time
@@ -8845,6 +8850,7 @@ void loop() {
   if (timerAlertActive) {
     if (M5.BtnA.wasPressed() || M5.BtnA.wasClicked() || M5.BtnA.wasSingleClicked() || M5.BtnA.wasDoubleClicked()) {
       Serial.println("Timer alert dismissed");
+      M5.Speaker.stop();
       timerAlertActive = false;
       timerAlertIndex = -1;
       // Restore previous display
@@ -8859,6 +8865,11 @@ void loop() {
       }
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
+    }
+    // Keep ringing until dismissed. Light sleep ends it, as it switches the speaker off;
+    // waking the stick with the alert still open starts it again.
+    if (timerAlertActive && millis() - lastAlertRing >= ALERT_RING_INTERVAL) {
+      playAlarmSound();
     }
     // Blink between a white and a black screen until dismissed (stops when the display sleeps)
     if (timerAlertActive && !displaySleeping) {

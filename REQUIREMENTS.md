@@ -20,7 +20,7 @@
 - **Keys** (Preferences, never returned to the browser; only the last 4 characters are shown):
   - `apiKey` (OpenAI), `claudeKey`, `ikKey` (Infomaniak token), `customKey`, `zitroKey`
   - Empty key fields on save keep the stored key
-  - No key is compiled into the firmware
+  - No key is compiled into the firmware. Open item: the Wolfram AppID from the untracked `local_secrets.h` still is (awaiting a decision)
 - **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`
 - Device enters setup mode (AP) at boot if the selected chat provider is not configured
 - Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-1.5`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
@@ -97,7 +97,7 @@
 - Setup hotspot (open WiFi) is named "zitro"; mDNS makes the setup page reachable at `zitro.local`. The WiFi QR code (`WIFI:T:nopass;S:zitro;P:;;`, QR version 3, 93x93 px) is made by `generate_wifi_qr.py` and `convert_wifi_qr.sh`
 - Setup page follows zitro.spot (webpage2/styles.css): paper palette, Sniglet headings, lemon-shaped citrus buttons. Sniglet is served from flash (`setup_fonts.h`, `/f/sniglet-400.woff2`, `/f/sniglet-800.woff2`, made by `scripts/make_setup_fonts.py`) because setup mode has no internet
 - Home screen (`drawHomeScreen()`, drawn whenever `MAIN_QUESTION` is shown): "[lemon] Press [M5] button" on one line: small citrus lemon (#f2b705, with leaf), then "Press", a keycap labeled "M5" like the stick's front button (rounded dark grey face with white outline, smaller DejaVu 12 text, 2 px mid-grey key side showing bottom and right), then "button"; "to ask a question"; half-line gap; shake icon (`shakeIcon`, phone slightly tilted) + "Shake for random fact."
-- Setup screen: "SETUP: Connect to:" / zitro / "and open:" / underlined "zitro.local" / "Then press BUTTON" "to retry." (retry lines only with stored networks), WiFi QR code on the right
+- Setup screen: "SETUP: Connect to:" / bold citrus (#f2b705) zitro / "and open:" / bold underlined citrus "zitro.local" / "Then press BUTTON" "to retry." (retry lines only with stored networks), WiFi QR code on the right
 - "Opening settings" (Button C triple-press or voice request) uses the same QR screen with "Opening settings..." / "Connect to:" as its first lines, before the hotspot starts
 - Recording progress: one slightly rounded box (3 px radius) per second, filled when recorded
 - Volume changes ("Lautstaerke auf N gesetzt.") show a 2x speaker icon (`volumeIcon`) left of the word-wrapped text, also when the response is redrawn later
@@ -143,6 +143,19 @@
 ### Screenshots
 - Full-screen draws pass their canvas to `captureCanvas()`; the serial commands `tour` and `shot` stream run-length encoded RGB565 frames, decoded by `scripts/capture_screens.py` into `screenshots/states/`
 - App icon source: `designs/zitro-app-icon.png`
+
+## Installer (macOS)
+
+- One installer: `installer/Install-Zitro-<version>.dmg`, published at `https://zitro.spot/downloads/`. Signed with Developer ID, hardened runtime, notarized and stapled. macOS 11+, universal. There is no Windows installer
+- `installer/rebuild_installer.sh` always compiles from scratch and copies nothing from earlier builds. Build output is not tracked in git
+- A release must pass: parts match the merged image at their offsets, partition layout as expected, no part overlaps NVS, credential scan of the firmware and of every file in the final DMG, flasher tests (`native_flasher/tests/run_tests.py`), signature and notarization checks
+- The credential scan lets one known item through and warns on every run: the Wolfram AppID from `local_secrets.h`. This is an open item, not a decision to keep it
+- Before writing, the flasher verifies the package against `manifest.json` (SHA-256), then that the chip is an ESP32 and the flash at least 8 MB. It has no chip erase and can't write arbitrary files
+- Writes are compressed at 460800 baud (921600 is unreliable on this board), with one retry at 115200. The chip verifies each region by MD5 from its flash
+- Stored WiFi networks are ordered by last successful connection. With a full list (5), adding a network replaces the last one, on the setup page and from the installer
+- Updates keep NVS (`0x9000`-`0xDFFF`): settings, keys and WiFi networks stay. The first SPIFFS sector (`0x670000`) is wiped: installers before 1.1 left credentials there in plain text
+- AI service and WiFi are optional in the wizard. Sent over USB after the restart (`zitro-ping`, `provision <JSON>`, see `docs/CONFIG_HANDOVER.md`), validated by the same functions as the setup page, all or nothing, then the stick restarts. Failing to store settings doesn't count as a failed firmware install; the app says so and offers another try
+- Secrets reach the flasher through a pipe only: never in arguments, files or logs. No serial command reads a key back. Device serial output isn't shown in the app, because it names WiFi networks
 
 ## i18n (Internationalization) System
 
@@ -416,6 +429,7 @@ Voice-controlled timer and reminder system. Users set timers via natural languag
 - The spoken/stored response text stays "Timer: <label> in <duration>"; `drawScreen()` draws the card whenever that exact response is redrawn (wake, rotation)
 - Portrait (stick upright): stopwatch on top, label (10 pt, up to 3 lines) and time (14 pt, 10 pt if too wide) centered below; the card follows the stick (checked every 200 ms)
 - Errors (timer limit, no free slot) stay plain text
+- The card lives only as long as its timer: once that timer is deleted or has fired, the card is forgotten and redraws show the home screen instead
 
 ## Timer Alert Behavior
 
@@ -424,7 +438,8 @@ Voice-controlled timer and reminder system. Users set timers via natural languag
 - The bell swings with the blink: turned -10° (white frame) and +10° (black frame) around its hanger (`drawIconRotated()`)
 - Portrait: bell above the label (14 pt, up to 3 lines; longer labels 10 pt, up to 4 lines), clear of the A tab
 - ✓ tab next to Button A (same edge tabs as the print screens); no instruction text
-- Alert sound: embedded WAV (16-bit PCM mono 16kHz, ~0.93 seconds)
+- Alert sound: embedded WAV (16-bit PCM mono 16kHz, ~0.93 seconds), repeated with a 0.3 s pause until dismissed. Non-blocking, so the blink and Button A keep working; Button A cuts the sound off at once
+- The sound keeps going while the display sleeps and ends when the stick enters light sleep (default 90 s without a button press), because light sleep switches the speaker off. Waking the stick with the alert still open starts it again
 - Alert stays on screen until Button A is pressed to dismiss
 - During alert, all other button actions are blocked
 

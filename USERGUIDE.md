@@ -30,7 +30,7 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 Visit the [Firebird landing page](webpage/index.html) for:
 - Product overview and feature showcase
 - Product comparison table vs other AI wearables (Ray-Ban Meta, Humane AI Pin, Rabbit R1, and more)
-- Download links for installers (macOS and Windows)
+- A form to request the installer (macOS)
 - User testimonials and success stories
 - Direct access to GitHub repository
 - Information about the project creator
@@ -39,43 +39,36 @@ The website is located in the `/webpage` folder and can be deployed to any stati
 
 ## macOS Installer
 
-For easy firmware installation on macOS, use the pre-built installer:
+### Install Zitro (End Users)
 
-### Quick Install (End Users)
+1. Download [Install-Zitro-1.1.dmg](https://zitro.spot/downloads/Install-Zitro-1.1.dmg) (macOS 11 or newer)
+2. Double-click to open it, then double-click "Install Zitro"
+3. Choose your AI service and enter its key, or click "Set up later"
+4. Enter your WiFi, or click "Set up later"
+5. Plug in your M5StickC Plus2 with a USB-C data cable and click "Install Zitro"
 
-1. Download [AI-Stick-Flasher-1.0.dmg](installer/AI-Stick-Flasher-1.0.dmg)
-2. Double-click to mount the disk image
-3. Connect your M5StickC Plus2 via USB
-4. Double-click "AI Stick Flasher"
-5. Follow the on-screen prompts
+It takes about a minute. Your stick restarts on its own when it's done.
 
-The installer includes:
+- **Already using Zitro?** Click "Set up later" twice to just update. Your keys, WiFi networks and settings stay.
+- **Set something up later?** Join the WiFi called "zitro" and open zitro.local.
+- **Your keys:** they go from the app straight to the stick over the USB cable. They aren't saved on your Mac or sent anywhere else.
+- **If the WiFi list is full:** the stick keeps 5 networks. Adding a sixth replaces the one it hasn't used for the longest time.
+- **Something failed?** Click "Try again". Your stick is fine and can always be installed again.
+- **Wrong board plugged in?** The installer checks the chip first and leaves anything but an M5StickC Plus2 untouched.
 
-- Native macOS GUI with AppleScript dialogs
-- Automatic device detection
-- Pre-compiled firmware (no build tools required)
-- Progress monitoring in Terminal
-- Size: 1.0 MB (compressed DMG)
-
-For detailed instructions and troubleshooting, see [installer/INSTALLER_GUIDE.md](installer/INSTALLER_GUIDE.md).
+There's no Windows installer yet.
 
 ### Rebuilding the Installer (Developers)
 
-After updating firmware, rebuild the installer:
+After changing the firmware:
 
 ```bash
 cd installer
-./rebuild_installer.sh
+NOTARY_PROFILE=<keychain profile> ./rebuild_installer.sh
+./publish.sh
 ```
 
-This will:
-
-1. Compile the latest firmware
-2. Update the app bundle
-3. Rebuild the DMG
-4. Verify integrity
-
-The installer is dependency-free (except esptool) and uses native macOS dialogs.
+This compiles the sketch from scratch, tests the flasher, signs and notarizes the app, and checks the finished DMG, including a scan for API keys. Details: [installer/INSTALLER_GUIDE.md](installer/INSTALLER_GUIDE.md).
 
 ## Development and Deployment
 
@@ -173,13 +166,13 @@ The project includes deployment scripts for building and uploading firmware to y
   - "Alert for tomorrow 5:30am"
 - List active timers: "Liste mir die Timer" or "List pending timers"
 - Clear all timers: "Loesche alle Timer" or "Cancel all timers"
-- When you set a timer, a white card confirms it: a stopwatch with a check mark, the timer's name and when it rings (for example "in 10 Min").
+- When you set a timer, a white card confirms it: a stopwatch with a check mark, the timer's name and when it rings (for example "in 10 Min"). Once that timer is deleted or has rung, the card is gone and Zitro shows the home screen instead.
 - Timer list: one timer at a time on a white card with a stopwatch, its name and the time left (counting down live). Dots show which timer of how many. Works like the printer list: the ▼ button (Button C) scrolls, the trash button (Button B) deletes.
   Small tabs at the screen edge sit next to their buttons:
   - ✓ (next to Button A): exit timer list
   - ▼ (next to Button C): show next timer (only with two or more timers)
   - Trash can (next to Button B): delete the currently shown timer
-- When a timer fires, the device plays an alert sound and shows a swinging bell with the reminder text, even if the display is asleep or in light sleep. The screen blinks white and black until you press Button A (✓ tab).
+- When a timer fires, the device plays an alert sound and shows a swinging bell with the reminder text, even if the display is asleep or in light sleep. The screen blinks white and black and the sound keeps repeating until you press Button A (✓ tab). If nobody reacts, the screen goes dark after the display sleep time (default 30 seconds) and the sound stops at the light sleep time (default 90 seconds).
 - Hold the stick upright and the timer card, the timer list and the alert turn to portrait with it.
 - Maximum 5 concurrent timers. Active timers prevent deep sleep so they can fire on time.
 
@@ -392,7 +385,7 @@ The organs are real shapes from anatomy research, made simple enough for this sm
 - Timer / Reminder
   - Timer confirmation screen (white card: stopwatch with check, name, "in 10 Min")
   - Timer list view (white card, stopwatch; tabs: ✓ Button A back, ▼ Button C next, trash Button B delete)
-  - Timer alert (swinging bell + text, blinking white/black, sound, Button A to dismiss)
+  - Timer alert (swinging bell + text, blinking white/black, repeating sound, Button A to dismiss)
   - All three also in portrait when the stick is held upright
 - Sleep states
   - Display sleep

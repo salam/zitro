@@ -31,11 +31,20 @@
 - **GIFs come alive**: animated GIFs now play on the screen at their own speed. Very large ones stay a still picture, so your buttons stay quick.
 - **See-through GIFs print clean**: transparent parts of a GIF now print white instead of black.
 - **Smoother GIF scrolling**: GIFs now scroll at the right speed and stop at the end of the picture.
+- **Install Zitro in about a minute**: the new installer for Mac is checked by Apple, so it opens with a double-click, and installing now takes less than a minute instead of over 3.
+- **Your key and WiFi really work now**: enter them in the installer and your stick is ready to go. Choose OpenAI, Claude, Infomaniak or any compatible service, or set it up later.
+- **Your home WiFi stays**: when your stick's list of 5 WiFi networks is full, adding a new one now replaces the network you haven't used for the longest time, not the one you're using right now.
+- **Updates keep your settings**: update Zitro any time, and your keys and WiFi networks stay on the stick.
+- **Safer keys**: your key goes straight from the installer to the stick over USB. Nothing stays behind on your Mac, and the plain-text copy left on your stick by older installers gets wiped.
+- **Installs you can trust**: the installer checks it has the right board first, confirms every byte landed, and tells you in plain words what to do if something goes wrong. One click tries again.
 - **Works with more printers**: Zitro now asks your printer what it can take. Black-and-white printers get a grey page, and if a printer refuses a page, Zitro tries another resolution by itself.
 - **Choose your print size**: after picking a printer, choose how the picture lands on the page: Fit to page, Fill page, Half + text, Half page, or your own zoom. Zitro remembers your favorite.
 - **Print the answer too**: "Half + text" puts the picture on top and the answer in small text below it, ready for the school folder.
 - **Every print shows its source**: a small footnote names where the picture comes from, next to a little lemon and https://zitro.spot.
 - **GIFs in true colors**: GIF pictures now show their real colors, not scrambled ones.
+- **Alarms that keep ringing**: when a timer goes off, the sound now repeats along with the blinking until you press the button. Press it once and it goes quiet right away.
+- **Setup details stand out**: the WiFi name "zitro" and the address "zitro.local" are now bold and lemon yellow, so you spot right away what to connect to and open.
+- **Deleted timers stay gone**: after you delete a timer or it rings, its card no longer pops back up when you press the M5 button.
 - **A friendlier home screen**: a little lemon says hello right next to "Press M5 button", M5 looks like the real key on your stick, and a tilted phone icon shows how to shake for a random fact.
 - **Setup made clearer**: the setup address is underlined like a link, and "Then press BUTTON to retry." tells you what to do next.
 - **Settings with a QR code**: triple-press the side button and Zitro shows the QR code right away. Scan it to join the setup WiFi.

@@ -18,8 +18,7 @@ static bool musicOpen = false;
 static MusicPlayback musicPlayback;
 static int musicStoredVolume = 210;
 static int musicVolumeLevel = MUSIC_VOLUME_START;
-static float musicVolumeLabelSeconds = 0;  // How much longer the level's name stays on screen
-static const float MUSIC_VOLUME_LABEL_SECONDS = 1.5f;
+static const int MUSIC_VOLUME_TAB_RESERVE = 46;
 
 static void musicUnload() {
   free(musicNotes);
@@ -59,13 +58,11 @@ static bool musicBegin(M5Canvas& c) {
   (void)c;
   if (!musicNotes || musicNoteCount <= 0) return false;
   musicPlaybackReset(musicPlayback);
-  M5.Speaker.begin();
   Preferences prefs;
   prefs.begin("settings", true);
   musicStoredVolume = prefs.getInt("volume", 210);
   prefs.end();
   M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
-  musicVolumeLabelSeconds = 0;
   musicOpen = true;
   return true;
 }
@@ -86,8 +83,8 @@ static void musicButtonB() {
 static bool musicButtonC() {
   musicVolumeLevel = musicNextVolumeLevel(musicVolumeLevel);
   M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
-  musicVolumeLabelSeconds = MUSIC_VOLUME_LABEL_SECONDS;
-  Serial.printf("Music: volume level %s, speaker %d\n", musicVolumeName(musicVolumeLevel, false), M5.Speaker.getVolume());
+  if (!musicVolumeSounds(musicVolumeLevel)) M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
+  Serial.printf("Music: volume level %d, speaker %d\n", musicVolumeLevel, M5.Speaker.getVolume());
   return true;
 }
 
@@ -100,7 +97,8 @@ static void musicFrame(M5Canvas& c, float dt) {
   uint8_t midi = 0;
   uint32_t toneMs = 0;
   // Band and sound run on the same clock, and each tone ends by itself: nothing here waits
-  if (musicAdvance(musicPlayback, musicNotes, musicNoteCount, musicTickMs, dt, midi, toneMs)) {
+  if (musicAdvance(musicPlayback, musicNotes, musicNoteCount, musicTickMs, dt, midi, toneMs) &&
+      musicVolumeSounds(musicVolumeLevel)) {
     M5.Speaker.begin();  // Sleep switches it off; returns at once if it's running
     M5.Speaker.tone(musicFrequencyHz(midi), toneMs, MUSIC_SPEAKER_CHANNEL, true);
   }
@@ -134,18 +132,10 @@ static void musicFrame(M5Canvas& c, float dt) {
     c.fillRect(WIDTH - 20, 3, 5, 15, TFT_WHITE);
     c.fillRect(WIDTH - 11, 3, 5, 15, TFT_WHITE);
   }
-  // The level's name after a press. Silent stays up, or it would look broken.
-  if (musicVolumeLabelSeconds > 0) musicVolumeLabelSeconds -= dt;
-  if (musicVolumeLabelSeconds > 0 || musicVolumeLevel == MUSIC_VOLUME_SILENT) {
-    const char* level = musicVolumeName(musicVolumeLevel, musicGerman);
-    c.setFont(&fonts::DejaVu12);
-    c.setTextDatum(textdatum_t::top_right);
-    const int right = WIDTH - 26;
-    c.fillRect(right - c.textWidth(level) - 3, 2, c.textWidth(level) + 6, 16, TFT_BLACK);
-    c.setTextColor(MUSIC_COLOR_NOW);
-    c.drawString(level, right, 4);
-  }
-  eduDrawFooter(c, 0);
+  const int rotation = M5.Display.getRotation();
+  // Button C sits at the bottom right in rotation 1, so a long song name must stop before its tab
+  eduDrawFooter(c, rotation == 1 ? MUSIC_VOLUME_TAB_RESERVE : 0);
+  drawButtonHints(c, rotation, HINT_NONE, HINT_NONE, HINT_SPEAKER + musicVolumeLevel);
 }
 
 const EduFeature FEATURE_MUSIC = {

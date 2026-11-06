@@ -295,10 +295,13 @@ static void testVolumeLevels() {
   // A stored value outside the range can't wrap round to something loud
   CHECK(musicVolumeAt(300, MUSIC_VOLUME_LOUD) == 255);
   CHECK(musicVolumeAt(-5, MUSIC_VOLUME_LOUD) == 0);
-  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_SILENT, true), "Stumm") == 0);
-  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_LOUD, true), "Laut") == 0);
-  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_REGULAR, false), "Regular") == 0);
-  CHECK(strcmp(musicVolumeName(MUSIC_VOLUME_LOW, false), "Low") == 0);
+  // Silent starts no tones at all: the buzzer clicks when a tone starts, even at volume 0
+  CHECK(!musicVolumeSounds(MUSIC_VOLUME_SILENT));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_LOW));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_REGULAR));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_LOUD));
+  // The level is also the number of sound waves on the speaker symbol
+  CHECK(MUSIC_VOLUME_SILENT == 0 && MUSIC_VOLUME_LOW == 1 && MUSIC_VOLUME_REGULAR == 2 && MUSIC_VOLUME_LOUD == 3);
 }
 
 static void testPromptRule() {

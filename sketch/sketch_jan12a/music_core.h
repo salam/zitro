@@ -130,6 +130,7 @@ inline void musicPlaybackReset(MusicPlayback& p) {
 }
 
 // What Button C steps through while a song plays. Loud is the stored volume setting.
+// The value is also the number of sound waves on the speaker symbol.
 enum MusicVolumeLevel { MUSIC_VOLUME_SILENT, MUSIC_VOLUME_LOW, MUSIC_VOLUME_REGULAR, MUSIC_VOLUME_LOUD };
 static const int MUSIC_VOLUME_START = MUSIC_VOLUME_LOUD;
 
@@ -143,10 +144,9 @@ inline int musicVolumeAt(int stored, int level) {
   return stored * level / MUSIC_VOLUME_LOUD;
 }
 
-inline const char* musicVolumeName(int level, bool german) {
-  static const char* const NAMES[2][MUSIC_VOLUME_LOUD + 1] = {{"Silent", "Low", "Regular", "Loud"},
-                                                              {"Stumm", "Leise", "Normal", "Laut"}};
-  return NAMES[german ? 1 : 0][level];
+// Silent starts no tones at all: the buzzer clicks when a tone starts, even at volume 0.
+inline bool musicVolumeSounds(int level) {
+  return level != MUSIC_VOLUME_SILENT;
 }
 
 inline float musicMsPerTick(int beatsPerMinute) {

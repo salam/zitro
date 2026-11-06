@@ -221,7 +221,7 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** change the volume: silent, low, regular, loud, and round again. Each new song starts loud.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
 - **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
 The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.

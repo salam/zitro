@@ -346,6 +346,8 @@ void handleSerialCommands() {
         Serial.printf("Hold C left the view: %d\n", modelButtonCHold());
       }
       Serial.printf("Mode %d, speaker %d\n", currentDisplayMode, M5.Speaker.getVolume());
+    } else if (line == "speaker") {
+      Serial.printf("Speaker volume %d, tone sounding %d\n", M5.Speaker.getVolume(), M5.Speaker.isPlaying(1) ? 1 : 0);
     } else if (line == "forget") {
       // So repeated "ask" runs can't copy each other's answers
       memoryClear();

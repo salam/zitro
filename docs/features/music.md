@@ -17,7 +17,7 @@
 - After a stall the clock jumps to the note it should be on and sounds only that one. Tied notes sound once for their combined length.
 - `end()` stops the sound. `begin()` starts the song from its beginning, so going to the text and back starts over.
 - Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button A: new question, as everywhere. No gyro turning.
-- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. The level's name shows for 1.5 seconds at the top right; silent stays up, because a silent band would otherwise look broken.
+- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. A tab at Button C's edge, like the ones in the print menu, always shows the level: a speaker with no sound waves for silent, then one, two or three. Silent starts no tones at all, because the buzzer clicks when a tone starts, even at volume 0. The tab sits at the top left, or at the bottom right when the stick is held the other way round, where the song name stops short of it.
 - Hold Button C for 1 second: back to the text. From the text, a click on Button C opens the song again from the start, at the same level.
 - The level is for this song only and is never saved. A new song starts loud, and `end()` puts the speaker back to the stored volume, so speech and alarms never come out silent. An alarm during a silent song still rings at the stored volume. The user approved this change to Button C on 2026-11-06. It applies to music only: in other views a Button C click still does what it did.
 - `keepAwake` is true while playing. **Addition to the brief:** after 5 minutes of playing without a Button B press it pauses by itself, and then the normal sleep timers apply. An endless melody that kept the stick awake would otherwise break the 3D spec's anti-goal of a forgotten stick draining its battery.
@@ -38,7 +38,7 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** change the volume: silent, low, regular, loud, and round again. Each new song starts loud.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
 - **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
 The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.

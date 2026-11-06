@@ -3221,6 +3221,7 @@ void discoverPrinters() {
 #define HINT_CANCEL  1  // cross
 #define HINT_OK      2  // check mark
 #define HINT_DELETE  3  // trash can
+#define HINT_SPEAKER 4  // speaker; plus 0 to 3 sound waves: use HINT_SPEAKER + waves
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3288,6 +3289,18 @@ void drawTrashMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
   canvas.drawFastVLine(cx + 1, cy + 1, 4, color);
 }
 
+// A speaker with 0 to 3 sound waves
+void drawSpeakerMark(M5Canvas &canvas, int cx, int cy, int waves, uint16_t color) {
+  const int x = cx - 8;
+  canvas.fillRect(x, cy - 2, 4, 5, color);
+  canvas.fillTriangle(x + 3, cy, x + 8, cy - 5, x + 8, cy + 5, color);
+  for (int i = 0; i < waves; i++) {
+    const int waveX = x + 11 + i * 3;
+    const int reach = 2 + i;
+    canvas.drawFastVLine(waveX, cy - reach, reach * 2 + 1, color);
+  }
+}
+
 // A tab that sticks out of the screen edge, with a symbol in its visible part.
 // pos: center along that edge. filled: main action (Button A). invert: screen is white.
 // The "next" triangle points down on top/bottom tabs and right on side tabs.
@@ -3337,6 +3350,8 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     drawCrossMark(canvas, cx, cy, 8, symbolColor);
   } else if (kind == HINT_DELETE) {
     drawTrashMark(canvas, cx, cy, symbolColor);
+  } else if (kind >= HINT_SPEAKER) {
+    drawSpeakerMark(canvas, cx, cy, kind - HINT_SPEAKER, symbolColor);
   } else {
     drawCheckMark(canvas, cx, cy, 9, symbolColor);
   }

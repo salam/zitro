@@ -336,13 +336,19 @@ The big year runs while the band moves. A long empty stretch between two picture
 
 #### Organs, skeleton and cells
 
-Ask for a body part in 3D, or ask how a cell looks inside: "Zeig mir das Herz in 3D", "Zeig mir das Gehirn in 3D", "Wie ist eine Pflanzenzelle aufgebaut?"
+Ask for a body part in 3D, or ask what's inside: "Zeig mir das Herz in 3D", "Was ist im Herz?", "Wie sieht das Auge innen aus?", "Wie ist eine Pflanzenzelle aufgebaut?"
 
 Zitro knows the heart, brain, lungs, stomach, liver, kidney, skeleton, skull, eye and hand bones. It also knows the animal cell, plant cell, red blood cell and nerve cell. For anything else, or when a model can't be loaded, you see a picture as usual.
 
-Turn the stick and the model turns with it. Button B zooms in. Button C shows the text answer. Button A asks something new.
+Turn the stick and the model turns with it. Button B zooms in. Button A asks something new.
 
-The organs are real shapes from anatomy research, made simple enough for this small screen. They show the outside of the organ. The cells are drawn from what school books describe. They carry the sign "Vereinfachtes Schema", because they are simple drawings and not measurements.
+Button C shows the other view: from the outside to the inside, or the other way round. Press it again for the text answer.
+
+The inside view is cut open, with the name of each part beside it in its colour. It always stays turned towards you. Zoom in and the words make room for the model.
+
+Heart, brain, kidney, eye, liver, lungs and skull have a real inside, from anatomy research, made simple enough for this small screen. With liver and lungs, part of the tissue is taken away so you can see the tubes inside: the screen says "Gewebe entfernt". The stomach, skeleton and hand have no inside view, because the research models don't have one.
+
+The cells are always shown open. They are drawn from what school books describe, and they carry the sign "Vereinfachtes Schema", because they are simple drawings and not measurements.
 
 ### Answer sources and media
 - Calculations are answered with Wolfram Alpha. Plain function plots ("Draw x^2") get Zitro's own sharp graph.

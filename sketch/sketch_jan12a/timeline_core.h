@@ -24,7 +24,7 @@ static const float TIMELINE_CARD_SPACE = 240.0f;   // One picture fills the scre
 static const float TIMELINE_GAP_TYPICAL = 120.0f;  // The usual distance between two events
 static const float TIMELINE_GAP_MIN = 24.0f;       // Events close in time stay apart
 static const float TIMELINE_GAP_MAX = 720.0f;      // A longer time is shortened, and marked as a break
-static const float TIMELINE_EXACT_PX = 30.0f;      // This close to an event the year is the event's
+static const float TIMELINE_EXACT_PX = TIMELINE_CARD_SPACE / 2;  // While its picture fills the screen, the year is the event's
 
 // Band motion
 static const float TIMELINE_SPEED_MAX = 900.0f;  // Pixels per second: a long gap takes longer to cross
@@ -41,6 +41,7 @@ struct TimelineEvent {
   int32_t year;     // Negative is BC. Never 0
   int32_t endYear;  // 0: no end
   bool circa;
+  bool born;  // The year is this person's birth
   const char* labelDe;
   const char* labelEn;
   const char* credit;  // Empty: nothing to show on screen
@@ -179,7 +180,7 @@ inline bool timelineParse(char* text, size_t textLen, size_t capacity, const cha
     if (strcmp(fields[2], "-") != 0) {
       if (!timelineParseInt(fields[2], INT32_MIN + 1, INT32_MAX, endYear) || endYear <= year) return false;
     }
-    if (strcmp(fields[3], "0") != 0 && strcmp(fields[3], "1") != 0) return false;
+    if (fields[3][0] < '0' || fields[3][0] > '3' || fields[3][1] != 0) return false;  // Bit 0 circa, bit 1 born
     if (!timelineValidText(fields[4], TIMELINE_LABEL_LIMIT, false)) return false;
     if (!timelineValidText(fields[5], TIMELINE_LABEL_LIMIT, false)) return false;
     if (!timelineParseInt(fields[6], 0, TIMELINE_BUNDLE_LIMIT, offset)) return false;
@@ -191,7 +192,8 @@ inline bool timelineParse(char* text, size_t textLen, size_t capacity, const cha
     e.qid = fields[0];
     e.year = (int32_t)year;
     e.endYear = (int32_t)endYear;
-    e.circa = fields[3][0] == '1';
+    e.circa = (fields[3][0] - '0') & 1;
+    e.born = (fields[3][0] - '0') & 2;
     e.labelDe = fields[4];
     e.labelEn = fields[5];
     e.credit = "";
@@ -317,8 +319,17 @@ inline float timelineMove(float position, float target, float dt) {
   return position + (distance > 0 ? step : -step);
 }
 
+// Distance per year in the gap after an event, the part of the band where the year runs. 0: same year.
+// One value across a timeline, except where the minimum or maximum gap applies.
+inline float timelineGapPxPerYear(const Timeline& t, int event) {
+  const double years = (double)t.events[event + 1].year - (double)t.events[event].year;
+  if (years <= 0) return 0;
+  return (float)((t.events[event + 1].bandX - t.events[event].bandX - TIMELINE_CARD_SPACE) / years);
+}
+
 // The year under a band position. Sets exactEvent to the event if the position is on it, else -1.
-// Between two events the year runs evenly from one to the other; it's never 0, there was no year 0.
+// Across the gap between two pictures the year runs evenly from one event's year to the next;
+// it's never 0, there was no year 0.
 inline int32_t timelineYearAt(const Timeline& t, float position, int& exactEvent) {
   exactEvent = -1;
   if (t.eventCount == 0) return 1;
@@ -339,7 +350,7 @@ inline int32_t timelineYearAt(const Timeline& t, float position, int& exactEvent
   }
   const TimelineEvent& a = t.events[i];
   const TimelineEvent& b = t.events[i + 1];
-  const double f = (position - a.bandX) / (b.bandX - a.bandX);
+  const double f = (position - a.bandX - TIMELINE_CARD_SPACE / 2) / (b.bandX - a.bandX - TIMELINE_CARD_SPACE);
   const double y = (double)a.year + f * ((double)b.year - (double)a.year);
   int32_t rounded = (int32_t)floor(y + 0.5);
   if (rounded == 0) rounded = y < 0 ? -1 : 1;
@@ -391,10 +402,10 @@ inline void timelineFormatMillions(int32_t year, bool english, char* out, size_t
 
 static const int32_t TIMELINE_DEEP_TIME = -1000000;
 
-// The year as text: big is the number, small what it means ("v. Chr.", "Mio. Jahre her").
+// The year as text: big is the number, small what it means ("v. Chr.", "Mio. Jahre her", "geb.").
 // Dates always come from the file; this only writes them down.
-inline void timelineFormatYear(int32_t year, int32_t endYear, bool circa, bool english, char* big, size_t bigSize,
-                               char* small, size_t smallSize) {
+inline void timelineFormatYear(int32_t year, int32_t endYear, bool circa, bool born, bool english, char* big,
+                               size_t bigSize, char* small, size_t smallSize) {
   char first[16], second[16];
   const char* prefix = circa ? (english ? "c. " : "ca. ") : "";
   small[0] = 0;
@@ -410,6 +421,17 @@ inline void timelineFormatYear(int32_t year, int32_t endYear, bool circa, bool e
     return;
   }
   const char* bc = english ? "BC" : "v. Chr.";
+  const char* bornText = english ? "born" : "geb.";
+  if (born) {
+    if (year < 0) {
+      snprintf(big, bigSize, "%s%ld", prefix, -(long)year);
+      snprintf(small, smallSize, "%s %s", bc, bornText);
+    } else {
+      snprintf(big, bigSize, "%s%ld", prefix, (long)year);
+      snprintf(small, smallSize, "%s", bornText);
+    }
+    return;
+  }
   if (year < 0) {
     if (endYear < 0) {
       snprintf(big, bigSize, "%s%ld-%ld", prefix, -(long)year, -(long)endYear);

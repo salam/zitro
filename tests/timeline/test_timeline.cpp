@@ -42,6 +42,33 @@ static bool parseText(std::string text, const char* id, Timeline& t, std::vector
   return timelineParse(storage.data(), text.size(), storage.size(), id, t);
 }
 
+// The font the stick uses for labels, read directly so these widths are real ones
+#define PROGMEM
+struct GFXglyph {
+  uint16_t bitmapOffset;
+  uint8_t width, height, xAdvance;
+  int8_t xOffset, yOffset;
+};
+struct GFXfont {
+  uint8_t* bitmap;
+  GFXglyph* glyph;
+  uint16_t first, last;
+  uint8_t yAdvance;
+};
+#include "../../sketch/sketch_jan12a/fonts/PrimaryFont10pt.h"
+
+// As textWidth does it for this font: advances added up, per Unicode character
+static int labelWidth(const char* text, void*) {
+  const GFXfont& font = Roboto_Regular10pt8b;
+  int width = 0;
+  for (const unsigned char* p = (const unsigned char*)text; *p;) {
+    uint32_t codepoint = *p++;
+    if (codepoint >= 0xC0 && *p) codepoint = ((codepoint & 0x1F) << 6) | (*p++ & 0x3F);
+    if (codepoint >= font.first && codepoint <= font.last) width += font.glyph[codepoint - font.first].xAdvance;
+  }
+  return width;
+}
+
 static const char* GOOD =
     "ZTL1\tdemo\tQ1\tTitel\tTitle\t3\t100\n"
     "Q10\t1914\t1918\t0\tErster\tFirst\t0\t40\t100\t96\t00000000\t-\n"
@@ -59,6 +86,7 @@ static void testParseGood() {
   CHECK_STR(t.events[0].qid, "Q10");
   CHECK(t.events[0].year == 1914 && t.events[0].endYear == 1918 && !t.events[0].circa);
   CHECK(t.events[1].circa && t.events[1].endYear == 0);
+  CHECK(!t.events[1].born);
   CHECK_STR(t.events[1].credit, "Someone, CC BY 2.0, resized");
   CHECK_STR(t.events[0].credit, "");
   CHECK(t.events[0].hasImage && t.events[1].hasImage && !t.events[2].hasImage);
@@ -93,6 +121,11 @@ static void testParseHostile() {
   CHECK(!parseText(good.substr(0, good.size() - 30), "demo", t, s));  // Cut off in the last line
   CHECK(!parseText(good.substr(0, good.find("Q12")), "demo", t, s));  // Cut off between lines
   CHECK(!parseText(replaced(good, "Q10", "X10"), "demo", t, s));
+  CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t4\t"), "demo", t, s));   // Unknown flags
+  CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t11\t"), "demo", t, s));
+  CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t\t"), "demo", t, s));
+  CHECK(parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t3\t"), "demo", t, s));
+  CHECK(t.events[2].circa && t.events[2].born);
   CHECK(!parseText(replaced(good, "\t1939\t", "\t1900\t"), "demo", t, s));  // Out of order
   CHECK(!parseText(replaced(good, "\t1939\t", "\t0\t"), "demo", t, s));     // No year 0
   CHECK(!parseText(replaced(good, "\t1939\t", "\t19x9\t"), "demo", t, s));
@@ -180,8 +213,17 @@ static void testTopics() {
 static void testYears() {
   char big[40], small[24];
   const auto f = [&](int32_t y, int32_t e, bool c, bool en) {
-    timelineFormatYear(y, e, c, en, big, sizeof(big), small, sizeof(small));
+    timelineFormatYear(y, e, c, false, en, big, sizeof(big), small, sizeof(small));
   };
+  timelineFormatYear(1879, 0, false, true, false, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "1879");
+  CHECK_STR(small, "geb.");
+  timelineFormatYear(-356, 0, false, true, true, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "356");
+  CHECK_STR(small, "BC born");
+  timelineFormatYear(-470, 0, true, true, false, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "ca. 470");
+  CHECK_STR(small, "v. Chr. geb.");
   f(1969, 0, false, false);
   CHECK_STR(big, "1969");
   CHECK_STR(small, "");
@@ -256,6 +298,16 @@ static void testLayout() {
   int exact = -2;
   CHECK(timelineYearAt(t, t.events[1].bandX, exact) == 1910 && exact == 1);
   CHECK(timelineYearAt(t, t.events[1].bandX + 20, exact) == 1910 && exact == 1);
+  CHECK(timelineYearAt(t, t.events[1].bandX + TIMELINE_EXACT_PX - 1, exact) == 1910 && exact == 1);
+  // The picture is gone once the gap starts, and that's where the year starts to run
+  CHECK(timelineYearAt(t, t.events[0].bandX + TIMELINE_CARD_SPACE / 2 + 1, exact) == 1900 && exact == -1);
+  CHECK(timelineYearAt(t, t.events[1].bandX - TIMELINE_CARD_SPACE / 2 - 1, exact) == 1910 && exact == -1);
+  // Equal time is equal distance across the gaps, except where the limits apply
+  CHECK(fabsf(timelineGapPxPerYear(t, 0) - t.pxPerYear) < 0.01f);
+  CHECK(fabsf(timelineGapPxPerYear(t, 1) - t.pxPerYear) < 0.01f);
+  CHECK(fabsf(timelineGapPxPerYear(t, 3) - t.pxPerYear) < 0.01f);
+  CHECK(timelineGapPxPerYear(t, 2) == 0);                 // Same year
+  CHECK(timelineGapPxPerYear(t, 4) < t.pxPerYear);        // Shortened, and marked
   const float middle = (t.events[0].bandX + t.events[1].bandX) / 2;
   CHECK(timelineYearAt(t, middle, exact) == 1905 && exact == -1);
   CHECK(timelineYearAt(t, -500, exact) == 1900 && exact == 0);
@@ -423,7 +475,21 @@ static void testGeneratedFiles(const std::string& dir) {
          topics, images, images ? totalImage / images : 0, largestImage, largest, withEnd);
 }
 
+static void printFontMetrics() {
+  const GFXfont& font = Roboto_Regular10pt8b;
+  int top = 0, bottom = 0;
+  for (int c = font.first; c <= font.last; c++) {
+    const GFXglyph& g = font.glyph[c - font.first];
+    if (c >= 0x20 && c < 0x180) {  // The letters the labels use
+      if (g.yOffset < top) top = g.yOffset;
+      if (g.yOffset + g.height > bottom) bottom = g.yOffset + g.height;
+    }
+  }
+  printf("Label font: line advance %d, Latin letters reach %d above and %d below the baseline\n", font.yAdvance, -top, bottom);
+}
+
 int main(int argc, char** argv) {
+  printFontMetrics();
   testParseGood();
   testParseHostile();
   testImages();

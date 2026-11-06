@@ -12,7 +12,7 @@ static const int TIMELINE_LINE_SIZE = TIMELINE_LABEL_LIMIT + 4;
 static const int TIMELINE_AXIS_Y = 2;
 static const int TIMELINE_IMAGE_Y = 5;
 static const int TIMELINE_LABEL_Y = TIMELINE_IMAGE_Y + TIMELINE_IMAGE_H;
-static const int TIMELINE_LINE_H = 16;
+static const int TIMELINE_LINE_H = 17;  // The font reaches about 14 above and 4 below its baseline
 static const int TIMELINE_YEAR_LARGE_H = 31;  // Digits of FreeSansBold18pt, with a margin
 static const int TIMELINE_YEAR_SMALL_H = 23;  // The same for FreeSansBold12pt
 static const int TIMELINE_LABEL_MAX_W = WIDTH - 8;
@@ -255,7 +255,7 @@ static void timelineDrawCard(M5Canvas& c, int event) {
   c.setTextColor(TFT_WHITE);
   const char* first = timelineLine(event, 0);
   const char* second = timelineLine(event, 1);
-  const int baseline = TIMELINE_LABEL_Y + TIMELINE_LINE_H - 3;
+  const int baseline = TIMELINE_LABEL_Y + 12;  // Letters that go below it end just above the bottom line
   if (second[0]) {
     c.fillRect(x, TIMELINE_LABEL_Y - TIMELINE_LINE_H, WIDTH, TIMELINE_LINE_H, TFT_BLACK);
     c.drawString(first, x + WIDTH / 2, baseline - TIMELINE_LINE_H);
@@ -287,12 +287,14 @@ static void timelineDrawAxis(M5Canvas& c) {
           c.drawLine((int)middle - 5, 4, (int)middle - 1, 0, TFT_WHITE);
           c.drawLine((int)middle + 1, 4, (int)middle + 5, 0, TFT_WHITE);
         } else if (span > 0) {
+          // Year marks only across the gap: that's the stretch where distance means time
+          const float pixelsPerYear = timelineGapPxPerYear(t, i);
+          const float gapLeft = ax + TIMELINE_CARD_SPACE / 2;
           const double step = t.tickYears;
-          const double pixelsPerYear = (bx - ax) / span;
           double year = ceil((double)a.year / step) * step;
-          if (ax < 0) year = ceil(((double)a.year - ax / pixelsPerYear) / step) * step;
+          if (gapLeft < 0) year = ceil(((double)a.year - gapLeft / pixelsPerYear) / step) * step;
           for (int guard = 0; guard < 64 && year < b.year; guard++, year += step) {
-            const float x = ax + (float)((year - a.year) * pixelsPerYear);
+            const float x = gapLeft + (float)((year - a.year) * pixelsPerYear);
             if (x > WIDTH) break;
             c.drawFastVLine((int)x, TIMELINE_AXIS_Y - 2, 5, grey);
           }
@@ -319,9 +321,9 @@ static void timelineDrawYear(M5Canvas& c) {
   char big[40], small[24];
   if (exact >= 0) {
     const TimelineEvent& e = timelineData->events[exact];
-    timelineFormatYear(e.year, e.endYear, e.circa, timelineEnglish, big, sizeof(big), small, sizeof(small));
+    timelineFormatYear(e.year, e.endYear, e.circa, e.born, timelineEnglish, big, sizeof(big), small, sizeof(small));
   } else {
-    timelineFormatYear(year, 0, false, timelineEnglish, big, sizeof(big), small, sizeof(small));
+    timelineFormatYear(year, 0, false, false, timelineEnglish, big, sizeof(big), small, sizeof(small));
   }
   c.setTextSize(1);
   c.setFreeFont(FontManager::getFont12pt());

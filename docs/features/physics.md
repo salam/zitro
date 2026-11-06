@@ -7,7 +7,7 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 ### Common
 
 - The AI only names an id from a closed list, in the answer field `model`: `physics:<id>` or `solid:<id>`. Case, spaces and underscores are ignored; anything else gives no model, and Zitro shows the normal picture.
-- Motion, numbers and shapes come from textbook equations in `physics_core.h` and `solid_core.h`. No drawing is hand-animated. Where a scene isn't real time or true to scale, this document says so, and the sound scene says "Zeitlupe" on screen.
+- Results, numbers and shapes come from textbook equations in `physics_core.h` and `solid_core.h`. Where something only follows a set schedule, or a scene isn't real time or true to scale, this document says so, and the sound scene says "Zeitlupe" on screen.
 - Labels come from built-in tables, in the device language (`settings/language`, read once per lookup). Decimal mark in German is a comma.
 - Footer: the scene or solid name and "berechnet" / "computed" (atoms: "PubChem").
 - `keepAwake` stays unset: a running animation never holds off the normal sleep timers.
@@ -41,13 +41,17 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 
 Chosen the way primary and lower-secondary school teaches physics, for up to 12-year-olds: forces first, then energy, light, sound, electricity, matter, the sky and atoms.
 
+Set by a schedule, with the result computed from it (no equation of motion for these inputs): the pulley's lift, the shadow lamp's path, and the swept angles in `mirror` and `refraction`.
+
+Chosen rather than measured, because a real value depends on the object: the lever beam's damping and how far its centre of mass hangs below the pivot, which set how quickly it settles, not where; the wave damping and drag of the floating cube, which set how long it bobs, not how deep it floats (tested).
+
 Known simplifications, none of them on-screen claims:
 
 - `falling`: no air. Over 5 m and for compact balls it hardly matters.
 - `magnet`: each pole is a point source (Gilbert's model), good outside the bar.
 - `shadow`: a nearby classroom lamp, not the Sun, so similar triangles hold exactly.
 - `sound`: particle displacement is hugely exaggerated, and time is slowed. Equal loudness gives equal pressure, so high tones push the air less far, as in reality.
-- `circuit`: bulb resistance is taken as constant. Dots show the way and strength of the current, not the electrons' true speed.
+- `circuit`: bulb resistance is taken as constant. The dots are electrons, going from minus to plus: the opposite of the conventional current direction many school books draw. Their pace follows the current, and isn't their true speed.
 - `matter`: a model substance in its usual units, not water, with gravity far stronger than real so that a liquid lies on the floor. A sample cooled from gas may freeze with defects, as real ones do. The whole sample's sideways drift is removed each step, standard practice in such simulations.
 - `seasons`: day length is geometric (Sun's centre on the horizon, no refraction). A day passes in 8 seconds. Latitude is fixed at 47 degrees north, shown on screen.
 - `moon`: lit side as seen from the northern hemisphere. No clock yet: the month runs from a known new moon, with no "today".
@@ -74,7 +78,7 @@ Known simplifications, none of them on-screen claims:
 Ask how something works, and Zitro shows it moving.
 
 - "Wie funktioniert ein Hebel?", "Warum schwimmt Holz?", "Warum gibt es Jahreszeiten?", "Warum knickt ein Stab im Wasser?", "Wie ist ein Kohlenstoffatom aufgebaut?"
-- For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?"
+- For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism.
 
 Questions like "Was ist ein Magnet?" still bring a photo.
 

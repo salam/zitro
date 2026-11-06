@@ -441,6 +441,8 @@ bool modelButtonC();
 void drawModelHint(M5Canvas& c);
 void modelViewTick();
 void leaveModelView();
+bool wolframLookUp(const String& englishQuery);
+bool wolframSwitchToPicture();
 bool fetchWolframSimpleImage(const String &englishQuery);
 void modelGyroNoise();
 extern bool modelResetRotateToggle;
@@ -6049,8 +6051,19 @@ bool handleImageRetrieval(const GPTResponse &gptResponse, const String &original
       Serial.printf("Freed audio buffer, heap now: %d bytes\n", ESP.getFreeHeap());
     }
 
-    // Fetch Wolfram Alpha image
-    hasImage = fetchWolframAlphaImage(originalQuestion);
+    const String englishQuery = translateToEnglishForWolfram(originalQuestion);
+
+    // Sharp text and formulas if Wolfram's answer can be read (feature_wolfram.ino); it opens right away
+    if (wolframLookUp(englishQuery)) {
+      Serial.println("Wolfram Alpha text result ready");
+      hasImage = false;
+      isWolframImage = false;
+      currentImageUrl = "";
+      return true;
+    }
+
+    // Otherwise Wolfram's picture of the result page
+    hasImage = fetchWolframSimpleImage(englishQuery);
     isWolframImage = true;
     wolframScrollOffset = 0;  // Reset scroll position
     currentImageUrl = "";
@@ -9234,6 +9247,9 @@ void loop() {
     Serial.printf("  displaySleeping=%d, mode=%d, hasImage=%d\n",
                   displaySleeping, currentDisplayMode, hasImage);
     Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+    // A Wolfram text result has nothing to print yet: this loads its picture
+    if (!displaySleeping) wolframSwitchToPicture();
 
     if (!displaySleeping && currentDisplayMode == SHOW_IMAGE && hasImage) {
       Serial.println("Button B long press: Starting printer discovery...");

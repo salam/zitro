@@ -15,7 +15,8 @@
 
 // Every kind of result. A kind whose feature isn't finished is simply not available.
 static const char* const MODEL_KINDS[] = {"molecule", "music",  "graph", "recipe", "globe",    "protein",
-                                          "crystal",  "sky",    "physics", "solid", "timeline", "anatomy"};
+                                          "crystal",  "sky",    "physics", "solid", "timeline", "anatomy",
+                                          "wolfram"};
 
 struct ModelRef {
   char kind[12];

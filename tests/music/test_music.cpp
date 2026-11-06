@@ -274,6 +274,46 @@ static void testEverySong() {
   }
 }
 
+static void testPromptRule() {
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
+    if (!strstr(MUSIC_PROMPT_RULE, MUSIC_SONGS[i].id)) {
+      fprintf(stderr, "  rule doesn't name %s\n", MUSIC_SONGS[i].id);
+      CHECK(false);
+    }
+  }
+  for (const char* c = MUSIC_PROMPT_RULE; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "is_audio false") != nullptr);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "music:<id>") != nullptr);
+  // Every example in the rule leads to a real song
+  for (const char* p = MUSIC_PROMPT_RULE; (p = strstr(p, "ergibt 'music:")) != nullptr;) {
+    p += strlen("ergibt 'music:");
+    const char* end = strchr(p, '\'');
+    CHECK(end != nullptr);
+    if (!end) break;
+    const std::string id(p, end - p);
+    CHECK(musicFindSong(id.c_str()) != nullptr);
+  }
+  // The list in the rule has no id that the table lacks
+  const char* list = strstr(MUSIC_PROMPT_RULE, "dieser id: ");
+  CHECK(list != nullptr);
+  if (list) {
+    list += strlen("dieser id: ");
+    const char* stop = strstr(list, " (z.B.");
+    CHECK(stop != nullptr);
+    int named = 0;
+    while (stop && list < stop) {
+      const char* comma = strchr(list, ',');
+      const char* end = (comma && comma < stop) ? comma : stop;
+      const std::string id(list, end - list);
+      CHECK(musicFindSong(id.c_str()) != nullptr);
+      named++;
+      list = end;
+      if (*list == ',') list += 2;
+    }
+    CHECK(named == MUSIC_SONG_COUNT);
+  }
+}
+
 static void testFindSong() {
   CHECK(musicFindSong("twinkle-twinkle") != nullptr);
   CHECK(musicFindSong("Twinkle-Twinkle") != nullptr);
@@ -430,6 +470,7 @@ int main(int argc, char** argv) {
   testPinnedMelodies();
   testEverySong();
   testFindSong();
+  testPromptRule();
   testDrawing();
   printf("music tests: %d checks, %d failures\n", checks, failures);
   return failures ? 1 : 0;

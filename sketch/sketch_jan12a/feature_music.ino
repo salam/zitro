@@ -120,5 +120,5 @@ static void musicFrame(M5Canvas& c, float dt) {
 
 const EduFeature FEATURE_MUSIC = {
     "music", "",
-    nullptr,  // Asked for once the rule is in; until then only the serial command opens it
+    MUSIC_PROMPT_RULE,
     false, musicFetch, musicUnload, musicBegin, musicFrame, musicEnd, musicButtonB, nullptr, musicKeepAwake};

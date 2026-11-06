@@ -120,6 +120,20 @@ static const MusicSong MUSIC_SONGS[] = {
 };
 static const int MUSIC_SONG_COUNT = sizeof(MUSIC_SONGS) / sizeof(MUSIC_SONGS[0]);
 
+// Added to the AI prompt. The test checks that every id above is named here.
+static const char* const MUSIC_PROMPT_RULE =
+    "MUSIK: Setze 'model' auf 'music:<id>' NUR wenn der Nutzer eines dieser Lieder hoeren, spielen oder seine Noten "
+    "sehen will, mit genau dieser id: alle-meine-entchen, haenschen-klein, fuchs-du-hast-die-gans, kommt-ein-vogel, "
+    "ein-maennlein, alle-voegel, kuckuck-und-esel, kuckuck-ruft, backe-backe-kuchen, schlaf-kindlein, "
+    "guten-abend-gut-nacht, haeschen-in-der-grube, summ-summ-summ, o-tannenbaum, stille-nacht, schneefloeckchen, "
+    "wer-hat-die-schoensten-schaefchen, haensel-und-gretel, twinkle-twinkle, frere-jacques, row-your-boat, "
+    "london-bridge, jingle-bells, ode-to-joy, happy-birthday, mulberry-bush "
+    "(z.B. 'Spiel Alle meine Entchen' ergibt 'music:alle-meine-entchen', 'Wie geht Bruder Jakob?' ergibt "
+    "'music:frere-jacques', 'Play Silent Night' ergibt 'music:stille-nacht'). Bei anderen Liedern und bei Fragen ueber "
+    "ein Lied ('Wer schrieb Stille Nacht?') bleibt model leer. Nenne nie selbst Noten oder Melodien: sie kommen aus "
+    "einer geprueften Tabelle. Wenn model mit 'music:' gesetzt ist, ist is_audio false und answer nennt nur kurz das "
+    "Lied. Fuelle image_query auch dann wie immer.";
+
 // Only an exact id counts, in any case: a near match would play the wrong song under its name.
 inline const MusicSong* musicFindSong(const char* id) {
   if (!id) return nullptr;

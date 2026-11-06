@@ -11,6 +11,10 @@ static void testFalling() {
   NEAR(physicsFallSpeed(9.81f, 2.0f), 19.62, 1e-4);
   NEAR(physicsFallTime(9.81f, 5.0f), 1.0096, 1e-3);
   NEAR(physicsFallTime(1.62f, 5.0f), 2.4845, 1e-3);
+  // The table holds the sources' values (docs/features/physics.md)
+  NEAR(PHYSICS_WORLDS[0].g, 9.81, 1e-4);
+  NEAR(PHYSICS_WORLDS[1].g, 1.62, 1e-4);
+  NEAR(PHYSICS_WORLDS[2].g, 3.73, 1e-4);
 }
 
 static void testFriction() {

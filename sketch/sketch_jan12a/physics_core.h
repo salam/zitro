@@ -565,9 +565,9 @@ inline int physicsFindScene(const char* query) {
 
 // ---- Published values the scenes use ----
 struct PhysicsWorld { const char* de; const char* en; float g; };
-// m/s2: Earth standard rounded, Moon and Mars from NASA's planetary fact sheets
+// m/s2: Earth's standard value rounded; Moon and Mars (mean) from NASA's planetary fact sheets
 static const PhysicsWorld PHYSICS_WORLDS[3] = {
-    {"Erde", "Earth", 9.81f}, {"Mond", "Moon", 1.62f}, {"Mars", "Mars", 3.71f}};
+    {"Erde", "Earth", 9.81f}, {"Mond", "Moon", 1.62f}, {"Mars", "Mars", 3.73f}};
 
 struct PhysicsSurface { const char* de; const char* en; float mu; };
 // Typical sliding friction from physics tables; real surfaces vary

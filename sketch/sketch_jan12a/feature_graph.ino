@@ -198,5 +198,9 @@ static void graphFrame(M5Canvas& c, float dt) {
 
 const EduFeature FEATURE_GRAPH = {
     "graph", "Zitro",
-    nullptr,  // Set once the view works on the stick and the main prompt allows it
+    "GRAPHEN: Will der Nutzer die Kurve einer einzelnen Funktion von x sehen ('Visualisiere sin(x)', 'Zeichne x^2-3', "
+    "'Wie sieht die Kurve von 1/x aus?'), setze model auf 'graph:<Ausdruck in x>', is_wolfram und create_image auf "
+    "false. Erlaubt: + - * / ^ Klammern sin cos tan sqrt abs exp ln log (Basis 10) pi e, z.B. 'graph:2*x^2-3'. "
+    "Funktionen immer mit Klammern, nur der Ausdruck ohne 'y='. Nenne nie Punkte oder Werte: das Geraet rechnet selbst. "
+    "Integrale, Ableitungen, Gleichungen loesen und Zahlenrechnungen bleiben is_wolfram mit leerem model.",
     false, graphFetch, nullptr, graphBegin, graphFrame, graphEnd, nullptr, nullptr, nullptr};

@@ -1,155 +1,105 @@
 #!/bin/bash
+# Sign the app, build the DMG, notarize it, and check the result.
+# Stops at the first problem and leaves any earlier DMG in place until the new one is good.
+set -euo pipefail
 
-# Build DMG installer for AI Stick Flasher
-# Creates a macOS disk image with the flasher app
-
-set -e
-
-echo "======================================"
-echo "  AI Stick Flasher - DMG Builder"
-echo "======================================"
-echo ""
-
-# Configuration
-APP_NAME="Install Firebird AI Stick"
-DMG_NAME="Firebird-AI-Stick-Installer"
-VERSION="1.0"
 INSTALLER_DIR="$(cd "$(dirname "$0")" && pwd)"
-BUILD_DIR="$INSTALLER_DIR/build"
-DMG_TEMP="$BUILD_DIR/${DMG_NAME}-temp.dmg"
-DMG_FINAL="$INSTALLER_DIR/${DMG_NAME}-${VERSION}.dmg"
-VOLUME_NAME="Firebird AI Stick Installer"
-VOLUME_ICON="$INSTALLER_DIR/assets/volume_icon.icns"
+APP_NAME="Install Zitro"
+VERSION="${INSTALLER_VERSION:-1.1}"
+VOLUME_NAME="Install Zitro"
+SOURCE_APP="$INSTALLER_DIR/gui_installer/build/$APP_NAME.app"
+FINAL="$INSTALLER_DIR/Install-Zitro-$VERSION.dmg"
 
-# Clean up previous builds
-echo "Cleaning previous builds..."
-rm -rf "$BUILD_DIR"
-rm -f "$DMG_FINAL"
-mkdir -p "$BUILD_DIR"
+NOTARIZE=1
+[ "${1:-}" = "--no-notarize" ] && NOTARIZE=0
 
-# Create staging directory
-STAGING="$BUILD_DIR/dmg"
-mkdir -p "$STAGING"
+SIGN_ID="${SIGN_ID:-$(security find-identity -v -p codesigning | sed -n 's/.*"\(Developer ID Application: [^"]*\)".*/\1/p' | head -1)}"
+[ -n "$SIGN_ID" ] || { echo "Error: no Developer ID Application certificate in the keychain" >&2; exit 1; }
 
-echo "Copying application..."
-cp -R "$INSTALLER_DIR/$APP_NAME.app" "$STAGING/"
-
-echo "Copying README..."
-cp "$INSTALLER_DIR/README.txt" "$STAGING/"
-
-# Calculate size needed for DMG
-echo "Calculating DMG size..."
-SIZE=$(du -sm "$STAGING" | cut -f1)
-SIZE=$((SIZE + 20))  # Add 20MB padding
-
-echo "Creating temporary DMG (${SIZE}MB)..."
-hdiutil create \
-    -volname "$VOLUME_NAME" \
-    -fs HFS+ \
-    -fsargs "-c c=64,a=16,e=16" \
-    -format UDRW \
-    -size ${SIZE}m \
-    -srcfolder "$STAGING" \
-    "$DMG_TEMP"
-
-echo "Mounting temporary DMG..."
-MOUNT_DIR=$(hdiutil attach "$DMG_TEMP" | grep Volumes | sed 's/.*\/Volumes/\/Volumes/')
-
-if [ -z "$MOUNT_DIR" ]; then
-    echo "Error: Failed to mount DMG"
-    exit 1
+NOTARY_ARGS=()
+if [ "$NOTARIZE" = 1 ]; then
+    if [ -n "${NOTARY_PROFILE:-}" ]; then
+        NOTARY_ARGS=(--keychain-profile "$NOTARY_PROFILE")
+    elif [ -n "${NOTARY_KEY:-}" ] && [ -n "${NOTARY_KEY_ID:-}" ] && [ -n "${NOTARY_ISSUER:-}" ]; then
+        NOTARY_ARGS=(--key "$NOTARY_KEY" --key-id "$NOTARY_KEY_ID" --issuer "$NOTARY_ISSUER")
+    else
+        echo "Error: no notary credentials. Set NOTARY_PROFILE, or NOTARY_KEY, NOTARY_KEY_ID and NOTARY_ISSUER." >&2
+        echo "       For a local test build use --no-notarize." >&2
+        exit 1
+    fi
 fi
 
-echo "Mounted at: $MOUNT_DIR"
+WORK=$(mktemp -d)
+MOUNT="$WORK/mount"
+cleanup() {
+    hdiutil detach "$MOUNT" -quiet -force 2>/dev/null || true
+    rm -rf "$WORK"
+}
+trap cleanup EXIT
 
-# Copy files to DMG
-echo "Copying files to DMG..."
-cp -R "$STAGING/"* "$MOUNT_DIR/"
+APP="$WORK/stage/$APP_NAME.app"
+mkdir -p "$WORK/stage"
+ditto "$SOURCE_APP" "$APP"
+cp "$INSTALLER_DIR/README.txt" "$WORK/stage/"
 
-# Create background image
-BACKGROUND_DIR="$MOUNT_DIR/.background"
-mkdir -p "$BACKGROUND_DIR"
+echo "Signing with $SIGN_ID"
+codesign --force --options runtime --timestamp --sign "$SIGN_ID" "$APP/Contents/MacOS/esp32flash"
+codesign --force --options runtime --timestamp --sign "$SIGN_ID" "$APP"
+codesign --verify --strict --deep "$APP"
 
-BACKGROUND_IMG="$INSTALLER_DIR/assets/background.png"
-if [ -f "$BACKGROUND_IMG" ]; then
-    echo "Adding background image..."
-    cp "$BACKGROUND_IMG" "$BACKGROUND_DIR/background.png"
-fi
+echo "Creating the disk image"
+hdiutil create -quiet -volname "$VOLUME_NAME" -fs HFS+ -format UDRW -srcfolder "$WORK/stage" "$WORK/rw.dmg"
+mkdir -p "$MOUNT"
+hdiutil attach -quiet -nobrowse -noautoopen -mountpoint "$MOUNT" "$WORK/rw.dmg"
 
-# Hide README
-echo "Configuring window appearance..."
-SetFile -a V "$MOUNT_DIR/README.txt" 2>/dev/null || true
+mkdir -p "$MOUNT/.background"
+cp "$INSTALLER_DIR/assets/background.png" "$MOUNT/.background/background.png"
+cp "$INSTALLER_DIR/assets/volume_icon.icns" "$MOUNT/.VolumeIcon.icns"
+SetFile -a C "$MOUNT" 2>/dev/null || true
 
-# Set custom icon if available
-if [ -f "$VOLUME_ICON" ]; then
-    echo "Setting custom volume icon..."
-    cp "$VOLUME_ICON" "$MOUNT_DIR/.VolumeIcon.icns"
-    SetFile -a C "$MOUNT_DIR"
-fi
-
-# Configure DMG window appearance with AppleScript
-echo "Setting DMG window layout..."
-sleep 2  # Give system time to register the mount
-
-osascript <<APPLESCRIPT
+# The window layout is a nicety and needs Finder automation: a refusal or a hang must not stop a release
+hdiutil detach -quiet "$MOUNT"
+hdiutil attach -quiet -noautoopen "$WORK/rw.dmg" -mountpoint "/Volumes/$VOLUME_NAME"
+perl -e 'alarm 40; exec @ARGV' osascript <<APPLESCRIPT 2>/dev/null || echo "note: window layout skipped (Finder automation not available)"
 tell application "Finder"
     tell disk "$VOLUME_NAME"
         open
         set current view of container window to icon view
         set toolbar visible of container window to false
         set statusbar visible of container window to false
-        set the bounds of container window to {400, 100, 1000, 600}
+        set the bounds of container window to {300, 200, 940, 600}
         set viewOptions to the icon view options of container window
         set arrangement of viewOptions to not arranged
         set icon size of viewOptions to 128
-
-        -- Set background (use POSIX path)
-        set background picture of viewOptions to POSIX file "${MOUNT_DIR}/.background/background.png"
-
-        -- Position icons
-        set position of item "$APP_NAME.app" of container window to {300, 200}
-        try
-            set position of item "README.txt" of container window to {800, 400}
-        end try
-
-        close
-        open
+        set background picture of viewOptions to file ".background:background.png"
+        set position of item "$APP_NAME.app" of container window to {320, 210}
+        set position of item "README.txt" of container window to {540, 330}
         update without registering applications
-        delay 2
+        delay 1
+        close
     end tell
 end tell
 APPLESCRIPT
+sync
+hdiutil detach -quiet "/Volumes/$VOLUME_NAME" -force
 
-# Set permissions
-echo "Setting permissions..."
-chmod -Rf go-w "$MOUNT_DIR" 2>/dev/null || true
+hdiutil convert -quiet "$WORK/rw.dmg" -format UDZO -imagekey zlib-level=9 -o "$WORK/final.dmg"
+codesign --force --timestamp --sign "$SIGN_ID" "$WORK/final.dmg"
 
-# Unmount
-echo "Ejecting temporary DMG..."
-hdiutil detach "$MOUNT_DIR" -quiet -force
+if [ "$NOTARIZE" = 1 ]; then
+    echo "Notarizing (this uploads the DMG to Apple)"
+    xcrun notarytool submit "$WORK/final.dmg" "${NOTARY_ARGS[@]}" --wait --timeout 20m | tee "$WORK/notary.log"
+    grep -q "status: Accepted" "$WORK/notary.log" || { echo "Error: Apple did not accept the DMG" >&2; exit 1; }
+    xcrun stapler staple -q "$WORK/final.dmg"
+fi
 
-# Compress and make final DMG
-echo "Creating final compressed DMG..."
-hdiutil convert "$DMG_TEMP" \
-    -format UDZO \
-    -imagekey zlib-level=9 \
-    -o "$DMG_FINAL"
-
-# Clean up
-echo "Cleaning up..."
-rm -rf "$BUILD_DIR"
-
-# Make DMG readable
-chmod 644 "$DMG_FINAL"
+# Only a checked image may replace the current one
+CHECK_ARGS=()
+[ "$NOTARIZE" = 1 ] || CHECK_ARGS=(--not-notarized)
+"$INSTALLER_DIR/scripts/check_release.sh" "$WORK/final.dmg" ${CHECK_ARGS[@]+"${CHECK_ARGS[@]}"}
+mv "$WORK/final.dmg" "$FINAL"
+chmod 644 "$FINAL"
 
 echo ""
-echo "======================================"
-echo "✓ DMG created successfully!"
-echo "======================================"
-echo ""
-echo "Output: $DMG_FINAL"
-echo "Size: $(du -h "$DMG_FINAL" | cut -f1)"
-echo ""
-echo "You can now distribute this DMG file."
-echo "Users can double-click to mount it and drag the app to Applications."
-echo ""
+echo "Ready: $FINAL ($(du -h "$FINAL" | cut -f1))"
+shasum -a 256 "$FINAL"

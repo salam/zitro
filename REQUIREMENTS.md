@@ -20,7 +20,7 @@
 - **Keys** (Preferences, never returned to the browser; only the last 4 characters are shown):
   - `apiKey` (OpenAI), `claudeKey`, `ikKey` (Infomaniak token), `customKey`, `zitroKey`
   - Empty key fields on save keep the stored key
-  - No key is compiled into the firmware
+  - No key is compiled into the firmware. Open item: the Wolfram AppID from the untracked `local_secrets.h` still is (awaiting a decision)
 - **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`
 - Device enters setup mode (AP) at boot if the selected chat provider is not configured
 - Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-1.5`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
@@ -143,6 +143,19 @@
 ### Screenshots
 - Full-screen draws pass their canvas to `captureCanvas()`; the serial commands `tour` and `shot` stream run-length encoded RGB565 frames, decoded by `scripts/capture_screens.py` into `screenshots/states/`
 - App icon source: `designs/zitro-app-icon.png`
+
+## Installer (macOS)
+
+- One installer: `installer/Install-Zitro-<version>.dmg`, published at `https://zitro.spot/downloads/`. Signed with Developer ID, hardened runtime, notarized and stapled. macOS 11+, universal. There is no Windows installer
+- `installer/rebuild_installer.sh` always compiles from scratch and copies nothing from earlier builds. Build output is not tracked in git
+- A release must pass: parts match the merged image at their offsets, partition layout as expected, no part overlaps NVS, credential scan of the firmware and of every file in the final DMG, flasher tests (`native_flasher/tests/run_tests.py`), signature and notarization checks
+- The credential scan lets one known item through and warns on every run: the Wolfram AppID from `local_secrets.h`. This is an open item, not a decision to keep it
+- Before writing, the flasher verifies the package against `manifest.json` (SHA-256), then that the chip is an ESP32 and the flash at least 8 MB. It has no chip erase and can't write arbitrary files
+- Writes are compressed at 460800 baud (921600 is unreliable on this board), with one retry at 115200. The chip verifies each region by MD5 from its flash
+- Stored WiFi networks are ordered by last successful connection. With a full list (5), adding a network replaces the last one, on the setup page and from the installer
+- Updates keep NVS (`0x9000`-`0xDFFF`): settings, keys and WiFi networks stay. The first SPIFFS sector (`0x670000`) is wiped: installers before 1.1 left credentials there in plain text
+- AI service and WiFi are optional in the wizard. Sent over USB after the restart (`zitro-ping`, `provision <JSON>`, see `docs/CONFIG_HANDOVER.md`), validated by the same functions as the setup page, all or nothing, then the stick restarts. Failing to store settings doesn't count as a failed firmware install; the app says so and offers another try
+- Secrets reach the flasher through a pipe only: never in arguments, files or logs. No serial command reads a key back. Device serial output isn't shown in the app, because it names WiFi networks
 
 ## i18n (Internationalization) System
 

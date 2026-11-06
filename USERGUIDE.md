@@ -30,7 +30,7 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 Visit the [Firebird landing page](webpage/index.html) for:
 - Product overview and feature showcase
 - Product comparison table vs other AI wearables (Ray-Ban Meta, Humane AI Pin, Rabbit R1, and more)
-- Download links for installers (macOS and Windows)
+- A form to request the installer (macOS)
 - User testimonials and success stories
 - Direct access to GitHub repository
 - Information about the project creator
@@ -39,43 +39,36 @@ The website is located in the `/webpage` folder and can be deployed to any stati
 
 ## macOS Installer
 
-For easy firmware installation on macOS, use the pre-built installer:
+### Install Zitro (End Users)
 
-### Quick Install (End Users)
+1. Download [Install-Zitro-1.1.dmg](https://zitro.spot/downloads/Install-Zitro-1.1.dmg) (macOS 11 or newer)
+2. Double-click to open it, then double-click "Install Zitro"
+3. Choose your AI service and enter its key, or click "Set up later"
+4. Enter your WiFi, or click "Set up later"
+5. Plug in your M5StickC Plus2 with a USB-C data cable and click "Install Zitro"
 
-1. Download [AI-Stick-Flasher-1.0.dmg](installer/AI-Stick-Flasher-1.0.dmg)
-2. Double-click to mount the disk image
-3. Connect your M5StickC Plus2 via USB
-4. Double-click "AI Stick Flasher"
-5. Follow the on-screen prompts
+It takes about a minute. Your stick restarts on its own when it's done.
 
-The installer includes:
+- **Already using Zitro?** Click "Set up later" twice to just update. Your keys, WiFi networks and settings stay.
+- **Set something up later?** Join the WiFi called "zitro" and open zitro.local.
+- **Your keys:** they go from the app straight to the stick over the USB cable. They aren't saved on your Mac or sent anywhere else.
+- **If the WiFi list is full:** the stick keeps 5 networks. Adding a sixth replaces the one it hasn't used for the longest time.
+- **Something failed?** Click "Try again". Your stick is fine and can always be installed again.
+- **Wrong board plugged in?** The installer checks the chip first and leaves anything but an M5StickC Plus2 untouched.
 
-- Native macOS GUI with AppleScript dialogs
-- Automatic device detection
-- Pre-compiled firmware (no build tools required)
-- Progress monitoring in Terminal
-- Size: 1.0 MB (compressed DMG)
-
-For detailed instructions and troubleshooting, see [installer/INSTALLER_GUIDE.md](installer/INSTALLER_GUIDE.md).
+There's no Windows installer yet.
 
 ### Rebuilding the Installer (Developers)
 
-After updating firmware, rebuild the installer:
+After changing the firmware:
 
 ```bash
 cd installer
-./rebuild_installer.sh
+NOTARY_PROFILE=<keychain profile> ./rebuild_installer.sh
+./publish.sh
 ```
 
-This will:
-
-1. Compile the latest firmware
-2. Update the app bundle
-3. Rebuild the DMG
-4. Verify integrity
-
-The installer is dependency-free (except esptool) and uses native macOS dialogs.
+This compiles the sketch from scratch, tests the flasher, signs and notarizes the app, and checks the finished DMG, including a scan for API keys. Details: [installer/INSTALLER_GUIDE.md](installer/INSTALLER_GUIDE.md).
 
 ## Development and Deployment
 

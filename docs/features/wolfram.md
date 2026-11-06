@@ -26,10 +26,10 @@ Sharp text and real formulas in place of one tall picture shrunk to 240 px. Kind
 ### Formulas (`wolfram_formula.h`, `wolfram_layout.h`)
 
 - Only `/ ^ _` and function calls bind; everything else stays a flat row in Wolfram's order. Wolfram's reading: a space is a product, left to right. `1/4 (b - 5)^2` is a quarter times the square. `1/2 e^(-i x)` has the exponential outside the bar. `d/dx(f)` has `f` outside. `(m v^2)/2` loses the parentheses to the bar.
-- Typeset: stacked fractions (`a/b` inline in scripts, with its parentheses back), powers, subscripts, `sqrt`, `cuberoot`, `integral` with limits (only with a `dx`-like word on the line), `sum_`, `product_`, `lim_`, parentheses drawn tall around tall content, words like `(cubic centimeters)` in grey.
+- Typeset: stacked fractions (`a/b` inline in scripts, with its parentheses back), powers, subscripts (one number or letter above the line keeps its parentheses: `H_k^(2)` and `f^(n)` are an order, not a power), `sqrt`, `cuberoot`, `integral` with limits (only with a `dx`-like word on the line), `sum_`, `product_`, `lim_`, parentheses drawn tall around tall content, words like `(cubic centimeters)` in small grey.
 - A line is a formula only if read fully **and** the tree written back equals the source apart from spaces. Otherwise it's plain text. That includes `0.583^_`, `[1; 2^_]`, `(2, 5]`, `7/12 | 14/24`, tables, sentences (two words of 4 letters or more), and anything with two readings: `1/2x`, `x^2y`, `1/x(x + 1)`, `a/b/c`, `x^y^z`. Words of 3 letters or more never go on a fraction bar, so `and/or` isn't a fraction and `m/s` is. Nesting is limited to 4 levels of parentheses, 120 nodes, 220 bytes.
 - Plain text wraps at spaces. A longer word wraps at any character, so a 66-digit number continues on the next row, with every digit there. `^` followed by plain digits is raised (`10^-22`, `a^2`).
-- Every text piece on screen is a slice of Wolfram's response: numbers can't change on the way. `tests/wolfram` pins this on all fixtures and on fuzzed input: the digits on screen are the digits in the source, in order; plus hand-pinned numbers.
+- Every text piece on screen is a slice of Wolfram's response: numbers can't change on the way. `tests/wolfram` pins this on all fixtures and on fuzzed input: the digits, points and signs on screen are those in the source, in order; plus hand-pinned numbers.
 - Fonts end at U+05FF. Drawn as lines, in formulas and in plain text: `≈ ≠ ≤ ≥ ∞ √ ∫ ∑ ∏ → − ∓ … ⋅`, dashes and curly quotes. Anything else above U+05FF gets a box in later sections, never a gap, and makes the picture the answer if it's on the first section.
 - Sizes: 14 pt with scripts in 10 pt if the whole section fits without wrapping; otherwise 10 pt with scripts in DejaVu 9 (Roboto 10 for non-ASCII). Too wide after breaking at `= + -` or before words, then between factors, or too tall: plain text. One layout is built when the view opens, in PSRAM; `frame()` only draws it, once per page change.
 
@@ -56,7 +56,7 @@ The printer path is unchanged: it needs a picture in `SHOW_IMAGE`. The fallback 
 
 ### Limits
 
-Flash: 26.8 KB. PSRAM: about 7 KB per answer, 17 KB more while the view is open, plus the plot. A plot adds up to about 3 s to the answer (estimate, not measured on the stick).
+Flash: 27 KB. PSRAM: about 7 KB per answer, 17 KB more while the view is open, plus the plot. A plot adds up to about 3 s to the answer (estimate, not measured on the stick).
 
 Not done: Wolfram's "You could instead try" suggestion from a 501 is only skipped, not shown.
 
@@ -64,7 +64,7 @@ Seen but unchanged: the fallback's old `Serial.println("Wolfram URL: " + url)` p
 
 ### Tests
 
-`tests/wolfram/run.sh`, with sanitizers. 26 real API responses as fixtures (24 answers, 2 refusals), with no AppID in them. Checks the first section of each, noise, assumptions, order, German titles, plots, 46 hand-written formula shapes, 42 lines that must stay plain text, numbers, symbols, layout bounds, plot helpers, broken input (cut UTF-8, NUL, CRLF, 6000-byte lines, 3000-deep parentheses, carets, too many sections and lines) and 23000 fuzzed answers and formulas. With a `.bmp` path as argument it also draws every page with the real fonts, to look at. The stick itself hasn't run any of this.
+`tests/wolfram/run.sh`, with sanitizers. 26 real API responses as fixtures (24 answers, 2 refusals), with no AppID in them. Checks the first section of each, noise, assumptions, order, German titles, plots, 48 hand-written formula shapes, 42 lines that must stay plain text, numbers, symbols, layout bounds, plot helpers, broken input (cut UTF-8, NUL, CRLF, 6000-byte lines, 3000-deep parentheses, carets, too many sections and lines) and 23000 fuzzed answers and formulas. With a `.bmp` path as argument it also draws every page with the real fonts, to look at. The stick itself hasn't run any of this.
 
 ## User guide
 
@@ -101,4 +101,5 @@ Wolfram|Alpha LLM API, read 6 Nov 2026: [documentation](https://products.wolfram
 - **Commercial terms**: "Computed by Wolfram|Alpha" with a link, a display area agreed with Wolfram, and showing Input Interpretation. The bottom line and the second page show the interpretation; the rest isn't met.
 - **Caching**: not allowed. Text results aren't stored, but the picture saved to flash before deep sleep (`REQUIREMENTS.md`, `/lastimage`, in place before this change) may count as caching.
 - **Disclaimer**: Zitro's own terms have to link Wolfram's terms and carry the sentence "Results and information from this site are not a certified or definitive source of information that can be relied on for legal, financial, medical, life-safety or any other critical purposes."
+- **Fixtures in this repo**: `tests/wolfram/fixtures/` holds 26 real Wolfram answers. The terms forbid storing or compiling copies and passing Wolfram data on, and this repo has a public origin. Decide before pushing: keep them private, or swap them for answers written by hand and lose the proof against real responses.
 - **Quota**: on your plan. An answer takes one LLM call, a fallback one more, printing one more. The plot image isn't an API call, as far as it can be told from the outside.

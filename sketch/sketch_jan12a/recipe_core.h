@@ -18,6 +18,8 @@
 #define RECIPE_MAX_LINES 700
 #define RECIPE_MAX_PAGES 260
 #define RECIPE_PAGE_LINES 4  // What fits between the header and the bottom line at a readable size
+#define RECIPE_STEP_WIDTH 232        // Text width in pixels on the 240 wide screen
+#define RECIPE_INGREDIENT_WIDTH 222  // Leaves room for the bullet
 
 // Alcohol: such a recipe isn't shown at all. Whole words, because "rum" is inside "herum" and "wein" inside
 // "Schwein". Wine vinegar and cider vinegar count too: when in doubt, it stays out.

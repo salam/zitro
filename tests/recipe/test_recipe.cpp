@@ -28,8 +28,8 @@ static int failures = 0, checks = 0;
 #define CHECK(c) do { checks++; if (!(c)) { failures++; \
   fprintf(stderr, "  FAIL %s:%d: %s\n", __FILE__, __LINE__, #c); } } while (0)
 
-static const int STEP_WIDTH = 232;
-static const int INGREDIENT_WIDTH = 222;
+static const int STEP_WIDTH = RECIPE_STEP_WIDTH;
+static const int INGREDIENT_WIDTH = RECIPE_INGREDIENT_WIDTH;
 
 static RecipeData recipe;
 static RecipeLayout layout;
@@ -387,6 +387,7 @@ static void testGeneratedSet(const std::string& dir) {
 
   // Every name in the index leads to the files it promises
   const std::string index = readFile(dir + "/index.txt");
+  CHECK(index.size() < RECIPE_BODY_LIMIT);
   size_t start = 0, lines = 0;
   while (start < index.size()) {
     size_t end = index.find('\n', start);

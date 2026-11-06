@@ -448,7 +448,8 @@ inline bool graphSegmentRows(const GraphProgram& program, GraphSamples& s, int i
   row0 = graphPixelY(y0, ymin, ymax, height);
   row1 = graphPixelY(y1, ymin, ymax, height);
   if ((row0 < 0 && row1 < 0) || (row0 >= height && row1 >= height)) return false;
-  if (std::abs(row1 - row0) <= GRAPH_JOIN_PIXELS) return true;
+  const int jump = row1 > row0 ? row1 - row0 : row0 - row1;
+  if (jump <= GRAPH_JOIN_PIXELS) return true;
   if (s.segment[i] == GRAPH_SEGMENT_UNKNOWN) {
     if (!mayClassify) return false;
     s.segment[i] = graphIsBreak(program, graphColumnX(s, i), graphColumnX(s, i + 1)) ? GRAPH_SEGMENT_BROKEN

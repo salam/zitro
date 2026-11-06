@@ -106,6 +106,7 @@ void runModelCommand(const String& text) {
     Serial.println("model: not a valid reference");
     return;
   }
+  resetToActiveState();  // Offline results don't touch the sleep timers otherwise, which misleads tests
   const unsigned long start = millis();
   const bool found = fetchModel(ref);
   Serial.printf("model %s: %s in %lu ms, label '%s'\n", text.c_str(), found ? "found" : "not available", millis() - start,

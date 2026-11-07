@@ -12,7 +12,17 @@ STEP = {"c": 0, "d": 1, "e": 2, "f": 3, "g": 4, "a": 5, "b": 6}
 
 
 def pitch_name(word, lang):
-    """Returns (letter, accidental) for a LilyPond pitch word."""
+    """Returns (letter, accidental) for a LilyPond pitch word.
+
+    nederlands (LilyPond's default): is sharp, es flat. deutsch: the same, but h is B natural and b is B flat.
+    english: s or sharp is sharp, f or flat is flat, so es is E sharp there."""
+    if word[0] not in NATURAL and not (lang == "deutsch" and word == "h"):
+        raise ValueError("unknown pitch " + word)
+    if lang == "english":
+        suffix = {"": 0, "s": 1, "sharp": 1, "f": -1, "flat": -1}.get(word[1:])
+        if suffix is None:
+            raise ValueError("unknown pitch " + word)
+        return word[0], suffix
     if lang == "deutsch":
         if word == "h":
             return "b", 0
@@ -32,7 +42,7 @@ def pitch_name(word, lang):
     raise ValueError("unknown pitch " + word)
 
 
-TOKEN = re.compile(r"^(r|[a-h](?:is|es|s)?)?([',]*)(\d+)?(\.*)(~)?$")
+TOKEN = re.compile(r"^(r|[a-h](?:sharp|flat|is|es|s|f)?)?([',]*)(\d+)?(\.*)(~)?$")
 
 
 class Reader:

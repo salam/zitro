@@ -1,4 +1,5 @@
 // Host tests for the music band. Build and run: tests/music/run.sh
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <cstring>
@@ -415,9 +416,42 @@ static void testServerData(const char* folder) {
   sdfNextLine(p, end, line);  // Header
   int songs = 0;
   int len;
+  std::vector<std::string> ids;
   while ((len = sdfNextLine(p, end, line)) >= 0) {
     const std::string row(line, len);
-    const std::string id = row.substr(0, row.find('|'));
+    // The index is sound, so the row has exactly five fields
+    std::string field[5];
+    for (size_t i = 0, from = 0; i < 5; i++) {
+      const size_t bar = i < 4 ? row.find('|', from) : row.size();
+      field[i] = row.substr(from, bar - from);
+      from = bar + 1;
+    }
+    const std::string& id = field[0];
+    for (const std::string& seen : ids) CHECK(seen != id);
+    ids.push_back(id);
+    // Each name and alias finds this song and only this one, and no built-in song is found first
+    std::vector<std::string> names = {field[1], field[2]};
+    for (size_t from = 0; !field[3].empty() && from <= field[3].size();) {
+      const size_t semi = std::min(field[3].find(';', from), field[3].size());
+      const std::string alias = field[3].substr(from, semi - from);
+      char folded[96];
+      const bool normalised = eduNormaliseName(alias.c_str(), folded, sizeof(folded), true) && alias == folded;
+      if (!normalised) fprintf(stderr, "  %s: alias '%s' is not normalised\n", id.c_str(), alias.c_str());
+      CHECK(normalised);
+      names.push_back(alias);
+      from = semi + 1;
+    }
+    for (const std::string& name : names) {
+      MusicIndexEntry entry;
+      const bool found = musicResolve(index.c_str(), index.size(), name.c_str(), entry) == MUSIC_INDEX_MATCH &&
+                         id == entry.id;
+      const bool builtIn = musicFindBuiltIn(name.c_str()) != nullptr;
+      if (!found || builtIn) {
+        fprintf(stderr, "  %s: '%s' %s\n", id.c_str(), name.c_str(),
+                builtIn ? "finds a built-in song first" : "does not find it");
+      }
+      CHECK(found && !builtIn);
+    }
     std::string file;
     if (!readFile(std::string(folder) + "/" + id + ".txt", file)) {
       fprintf(stderr, "  no song file for %s\n", id.c_str());

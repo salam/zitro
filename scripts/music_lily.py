@@ -124,8 +124,10 @@ class Reader:
         return [12 * (self.octave + 1) + NATURAL[name] + accidental, self.length, bool(tie)]
 
 
-def join(events):
-    """Ties joined, neighbouring rests merged, rests at the end dropped: those only fill up the last bar."""
+def join(events, keep_end_rests=False):
+    """Ties joined, neighbouring rests merged, rests at the end dropped: those only fill up the last bar.
+
+    The song checker keeps them (keep_end_rests), because it compares the last note with the rests after it."""
     out = []
     for midi, ticks, tied in events:
         if out and out[-1][2]:
@@ -137,11 +139,11 @@ def join(events):
             out[-1][1] += ticks
         else:
             out.append([midi, ticks, tied])
-    while out and out[-1][0] == 0:
+    while out and out[-1][0] == 0 and not keep_end_rests:
         out.pop()
     return [[e[0], e[1]] for e in out]
 
 
-def read_score(notes, lang, start):
+def read_score(notes, lang, start, keep_end_rests=False):
     tokens = [t for t in notes.replace("{", " { ").replace("}", " } ").split() if t != "|"]
-    return join(Reader(tokens, lang, start).sequence())
+    return join(Reader(tokens, lang, start).sequence(), keep_end_rests)

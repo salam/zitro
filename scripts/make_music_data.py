@@ -503,16 +503,18 @@ def fold_rests(events):
 def compare_scores(a, b):
     """None if score B equals score A up to one constant transposition, else where they first differ.
 
-    A note followed by a rest counts as one longer note (user decision, 2026-11-07), so both scores are folded first."""
+    A note followed by a rest counts as one longer note (user decision, 2026-11-07), so both scores are folded first.
+    At the end of a score the song's end is the next note: the last note and the rests after it count as one length,
+    so both scores must have the same total length (the scores come from join(keep_end_rests=True))."""
     a, b = fold_rests(a), fold_rests(b)
     shift = next((ea[0] - eb[0] for ea, eb in zip(a, b) if ea[0] and eb[0]), 0)
     for i, (ea, eb) in enumerate(zip(a, b)):
         same_pitch = (ea[0] == 0 and eb[0] == 0) or (ea[0] and eb[0] and ea[0] - eb[0] == shift)
         if not same_pitch or ea[1] != eb[1]:
-            return (f"score B differs from score A at event {i + 1} (MIDI/sixteenths, B moved by {shift:+d}): "
+            return (f"score B differs from score A at event {i + 1} (MIDI/sixteenths, B moved by {shift:+d}), after joining ties and folding rests: "
                     f"A {describe(a, i)}, B {describe([[m + shift if m else 0, t] for m, t in b], i)}")
     if len(a) != len(b):
-        return f"score B has {len(b)} events after joining ties, score A {len(a)}"
+        return f"score B has {len(b)} events after joining ties and folding rests, score A {len(a)}"
     return None
 
 
@@ -590,11 +592,11 @@ def check_song(name, text):
             problems.append(f"score-b language '{b[1]}' is not one of: {', '.join(SCORE_LANGS)}")
         elif notes and (start or b[2] == "absolute"):
             try:
-                score_b = read_score(b[3], b[1], start)
+                score_b = read_score(b[3], b[1], start, keep_end_rests=True)
             except Exception as e:  # Anything the reader can't follow is a song that stays out
                 problems.append(f"score B can't be read: {e}")
             else:
-                score_a = join([[n.midi, n.ticks, n.tied] for n in notes])
+                score_a = join([[n.midi, n.ticks, n.tied] for n in notes], keep_end_rests=True)
                 difference = compare_scores(score_a, score_b)
                 if difference and "settled" in values:
                     remarks.append(f"{difference} (settled: {values['settled']})")

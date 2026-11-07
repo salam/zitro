@@ -284,6 +284,22 @@ def test_rests_fold():
     check(cmp([[0, 2], [69, 4]], [[0, 2], [69, 4]]) is None, "same leading rest passes")
 
 
+def test_rests_fold_at_the_end():
+    """The last note and the rests after it count as one length, as if the next note were the song's end."""
+    def same(a, b):
+        """Compare two scores written as (midi, ticks) lists, the way the tool does: rests at the end are kept."""
+        return m.compare_scores(m.join([[p, t, False] for p, t in a], keep_end_rests=True),
+                                m.join([[p, t, False] for p, t in b], keep_end_rests=True))
+    head = [(67, 4), (65, 4)]
+    check(same(head + [(69, 6), (0, 2)], head + [(69, 4), (0, 4)]) is None, "A4:6 R:2 equals A4:4 R:4 at the end")
+    check(same([(67, 4), (0, 4)], [(67, 8)]) is None, "G4:4 R:4 equals G4:8 at the end")
+    check(same([(67, 4), (0, 4)], [(67, 4)]) is not None, "different total length fails")
+    check(same([(67, 4), (67, 4)], [(67, 4), (0, 4), (67, 4)]) is not None, "shifted onset fails")
+    check(same(head + [(69, 6), (0, 2)], head + [(70, 4), (0, 4)]) is not None, "different last pitch fails")
+    check(same([(0, 2), (67, 4), (0, 2)], [(67, 4), (0, 2)]) is not None, "leading rest stays strict")
+    check(m.join([[67, 4, False], [0, 4, False]]) == [[67, 4]], "join still drops end rests by default")
+
+
 def test_more_checks():
     t = "test-song.song"
     cases = [
@@ -555,6 +571,7 @@ def main():
     test_brief_cases()
     test_settled()
     test_rests_fold()
+    test_rests_fold_at_the_end()
     test_more_checks()
     test_fix_round_1()
     test_english_lilypond()

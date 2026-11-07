@@ -663,6 +663,24 @@ static void testNormaliseTitles() {
   CHECK(eduNormaliseName("Beethoven's  Symphony", out, sizeof(out), true) && !strcmp(out, "beethovens symphony"));
   CHECK(eduNormaliseName("Beethoven\xE2\x80\x99s Symphony", out, sizeof(out), true) && !strcmp(out, "beethovens symphony"));
   CHECK(eduNormaliseName("  H\xC3\xA4nschen-klein ", out, sizeof(out), true) && !strcmp(out, "haenschen klein"));
+  // Typographic quotes and dashes, as AI answers write them, are punctuation like any other
+  CHECK(eduNormaliseName("\xE2\x80\x9EStille Nacht\xE2\x80\x9C", out, sizeof(out), true) && !strcmp(out, "stille nacht"));
+  CHECK(eduNormaliseName("\xC2\xAB""Fr\xC3\xA8re Jacques\xC2\xBB", out, sizeof(out), true) && !strcmp(out, "frere jacques"));
+  CHECK(eduNormaliseName("\xE2\x80\x9CSilent Night\xE2\x80\x9D", out, sizeof(out), true) && !strcmp(out, "silent night"));
+  CHECK(eduNormaliseName("\xE2\x80\x98Silent Night\xE2\x80\x99", out, sizeof(out), true) && !strcmp(out, "silent night"));
+  CHECK(eduNormaliseName("Ode an die Freude \xE2\x80\x93 Beethoven", out, sizeof(out), true) &&
+        !strcmp(out, "ode an die freude beethoven"));
+  CHECK(eduNormaliseName("Ode\xE2\x80\x94""Freude", out, sizeof(out), true) && !strcmp(out, "ode freude"));
+  CHECK(eduNormaliseName("\xE2\x80\x9E\xE2\x80\x9C London Bridge", out, sizeof(out), true) && !strcmp(out, "london bridge"));
+  // Proteins stay strict: the same characters are no match there
+  CHECK(!eduNormaliseName("\xE2\x80\x9EInsulin\xE2\x80\x9C", out, sizeof(out), false));
+  CHECK(!eduNormaliseName("\xC2\xABInsulin\xC2\xBB", out, sizeof(out), false));
+  CHECK(!eduNormaliseName("Insulin \xE2\x80\x93 A", out, sizeof(out), false));
+  // Other characters from the same blocks still give no match
+  CHECK(!eduNormaliseName("Ode \xE2\x80\xA6", out, sizeof(out), true));
+  CHECK(!eduNormaliseName("\xC2\xA9 Ode", out, sizeof(out), true));
+  CHECK(!eduNormaliseName("Ode \xE2\x80", out, sizeof(out), true));  // Cut off
+  CHECK(!eduNormaliseName("Ode \xC2", out, sizeof(out), true));
   CHECK(!eduNormaliseName("!!!", out, sizeof(out), true));          // Nothing left
   CHECK(!eduNormaliseName("\xE6\x97\xA5\xE6\x9C\xAC", out, sizeof(out), true));  // Other scripts: no match
 }

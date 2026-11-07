@@ -8,7 +8,8 @@
 // forTitles == false (proteins): False for empty text, for any other non-ASCII character, and for the
 // index's own separators.
 // forTitles == true (songs): also folds Latin-1 accents to the base letter, drops apostrophes (' and U+2019)
-// with no space, and turns any other ASCII character that is no letter, digit or space into a space.
+// with no space, and turns into a space any other ASCII character that is no letter or digit, and the
+// typographic quotes and dashes AI answers wrap titles in (U+00AB U+00BB U+2013 U+2014 U+2018 U+201C-U+201E).
 inline bool eduNormaliseName(const char* in, char* out, size_t capacity, bool forTitles) {
   if (!in || !out || capacity == 0) return false;
   size_t n = 0;
@@ -46,6 +47,12 @@ inline bool eduNormaliseName(const char* in, char* out, size_t capacity, bool fo
       continue;
     } else if (forTitles && c == 0xE2 && p[1] == 0x80 && p[2] == 0x99) {
       p += 2;
+    } else if (forTitles && ((c == 0xC2 && (p[1] == 0xAB || p[1] == 0xBB)) ||
+                             (c == 0xE2 && p[1] == 0x80 &&
+                              (p[2] == 0x93 || p[2] == 0x94 || p[2] == 0x98 || (p[2] >= 0x9C && p[2] <= 0x9E))))) {
+      // Typographic quotes and dashes: U+00AB U+00BB, U+2013 U+2014, U+2018, U+201C U+201D U+201E
+      p += (c == 0xC2) ? 1 : 2;
+      if (n > 0 && out[n - 1] != ' ' && !put(' ')) return false;
     } else if (c == ' ' || c == '-' || c == '_' || c == '\t' ||
                (forTitles && c < 0x7F && !((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')))) {
       if (n > 0 && out[n - 1] != ' ' && !put(' ')) return false;

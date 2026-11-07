@@ -34,6 +34,7 @@ LICENCES = ("pre-1931 print", "public domain", "CC0", "CC BY")
 DIED_BEFORE = 1926
 PRINTED_BEFORE = 1931
 SCORE_LANGS = ("nederlands", "deutsch", "english")
+RESERVED_IDS = ("index", "sources")  # index.txt and SOURCES.txt, on a file system that ignores case
 
 REQUIRED = ("id", "de", "en", "tempo", "bar", "pickup", "notes", "source-a", "score-b", "footer")
 SINGLE = REQUIRED + ("aliases", "published", "settled")
@@ -323,24 +324,39 @@ def read_built_ins(path=None):
 
 # --- Song files ---
 
+def is_control(c):
+    """Control characters, C0 and C1, and the Unicode line and paragraph separators."""
+    return ord(c) < 0x20 or 0x7F <= ord(c) <= 0x9F or c in "\u2028\u2029"
+
+
 def read_song_text(text):
-    """Returns ({key: value or [values]}, problems)."""
-    values, problems = {}, []
-    for number, line in enumerate(text.splitlines(), 1):
+    """Returns ({key: value or [values]}, problems). Only a newline ends a line (a \\r before it is dropped),
+    so no other separator can start a key, and every key needs a value: an empty settled settles nothing."""
+    values, problems, given = {}, [], set()
+    for number, line in enumerate(text.split("\n"), 1):
+        if line.endswith("\r"):
+            line = line[:-1]
+        if any(is_control(c) for c in line):
+            problems.append(f"line {number} has a control or line-separator character")
+            continue
         if not line.strip() or line.startswith("#"):
             continue
         key, _, value = line.partition(" ")
         value = value.strip()
-        if key in REPEATED:
-            values.setdefault(key, []).append(value)
-        elif key in SINGLE:
-            if key in values:
-                problems.append(f"key {key} given twice (line {number})")
-            values[key] = value
-        else:
+        if key not in REPEATED and key not in SINGLE:
             problems.append(f"unknown key {key} (line {number})")
+            continue
+        if key in SINGLE and key in given:
+            problems.append(f"key {key} given twice (line {number})")
+        given.add(key)
+        if not value:
+            problems.append(f"{key} has no value (line {number})")
+        elif key in REPEATED:
+            values.setdefault(key, []).append(value)
+        else:
+            values[key] = value
     for key in REQUIRED:
-        if not values.get(key):
+        if key not in given:
             problems.append(f"missing key {key}")
     return values, problems
 
@@ -351,15 +367,29 @@ def fields(value, count):
 
 
 def host(url):
-    """The host of a web address, without www., or None if it isn't one."""
+    """The host of a web address, or None if it isn't one."""
     try:
         parts = urlsplit(url)
     except ValueError:
         return None
     if parts.scheme not in ("http", "https") or not parts.hostname or " " in url:
         return None
-    name = parts.hostname.lower()
-    return name[4:] if name.startswith("www.") else name
+    return parts.hostname.lower()
+
+
+SECOND_LEVEL = ("co", "com", "org", "gov", "ac", "edu", "net")
+
+
+def site(name):
+    """The registrable domain of a host, so en.wikipedia.org and de.wikipedia.org are one source, Wikipedia:
+    the last two labels, or three under a country's second level such as bbc.co.uk or something.ac.uk."""
+    name = name.lower().rstrip(".")
+    if name.startswith("www."):
+        name = name[4:]
+    labels = name.split(".")
+    if len(labels) >= 3 and labels[-2] in SECOND_LEVEL and len(labels[-1]) == 2:
+        return ".".join(labels[-3:])
+    return ".".join(labels[-2:])
 
 
 def year(text):
@@ -404,8 +434,8 @@ def check_legal(values, problems):
             problems.append(f"composer {name} died {died}: must be before {DIED_BEFORE}")
         check_url(url1, f"composer {name}", problems)
         check_url(url2, f"composer {name}", problems)
-        if host(url1) and host(url1) == host(url2):
-            problems.append(f"composer {name}: both URLs are on the same host, {host(url1)}; "
+        if host(url1) and host(url2) and site(host(url1)) == site(host(url2)):
+            problems.append(f"composer {name}: both URLs are on the same site, {site(host(url1))}; "
                             "needs two independent sources")
     for line in traditional:
         parts = fields(line, 3)
@@ -481,6 +511,9 @@ def check_song(name, text):
     if song_id:
         if not re.fullmatch(r"[a-z0-9-]+", song_id) or len(song_id) >= ID_SIZE:
             problems.append(f"id '{song_id}' must be 1 to {ID_SIZE - 1} of a-z, 0-9 and -")
+        elif song_id in RESERVED_IDS:
+            problems.append(f"id '{song_id}' is reserved: its file would clash with {song_id}.txt or "
+                            f"{song_id.upper()}.txt")
         elif name != song_id + ".song":
             problems.append(f"file name must be {song_id}.song")
     for key, size in (("de", NAME_SIZE), ("en", NAME_SIZE), ("footer", SOURCE_SIZE)):
@@ -603,7 +636,8 @@ def build(texts, built_ins):
     owners = {}
     built_in_ids = {s["id"] for s in built_ins}
     for s in built_ins:
-        for folded in [normalise(s["de"]), normalise(s["en"])] + s["aliases"]:
+        # The stick also finds a built-in song by its id, so that counts as one of its names
+        for folded in [normalise(s["de"]), normalise(s["en"]), normalise(s["id"])] + s["aliases"]:
             if folded:
                 owners.setdefault(folded, set()).add("built-in song " + s["id"])
     files_by_id = {}
@@ -613,7 +647,7 @@ def build(texts, built_ins):
         if song["id"] and song["id"] in files_by_id:
             problems.append(f"{song['label']}: id {song['id']} is used twice, also in {files_by_id[song['id']]}")
         files_by_id.setdefault(song["id"], song["file"])
-        for raw in (song.get("de", ""), song.get("en", "")):
+        for raw in [song.get("de", ""), song.get("en", "")] + song["alias_list"]:
             if raw and raw.lower() in built_in_ids:
                 problems.append(f"{song['label']}: name '{raw}' is a built-in song's id")
         for folded in set(song["names"] + song["alias_list"]):
@@ -652,10 +686,31 @@ def build(texts, built_ins):
     return files, problems, remarks
 
 
+def check_folder(folder, files):
+    """0 if folder holds exactly these files, byte for byte; else 1, naming each difference."""
+    present = set(os.listdir(folder)) if os.path.isdir(folder) else set()
+    differences = [f"{name}: not built from the library, remove it" for name in sorted(present - set(files))]
+    for name in sorted(files):
+        if name not in present:
+            differences.append(f"{name}: missing")
+            continue
+        with open(os.path.join(folder, name), "rb") as f:
+            if f.read() != files[name].encode("utf-8"):
+                differences.append(f"{name}: differs from what the library builds")
+    if differences:
+        print(f"{folder} is not what scripts/make_music_data.py builds; run it again:\n  "
+              + "\n  ".join(differences), file=sys.stderr)
+        return 1
+    print(f"{folder}: current, {len(files) - 2} songs")
+    return 0
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--library", default=os.path.join(HERE, "music_library"))
     parser.add_argument("--out", default=os.path.join(HERE, "..", "webpage2", "data", "music"))
+    parser.add_argument("--check", metavar="DIR", help="write nothing; fail unless DIR holds exactly what the tool "
+                        "would write, no file more or less (tests/music/run.sh uses this on webpage2/data/music)")
     args = parser.parse_args(argv)
     texts, problems = {}, []
     for name in sorted(os.listdir(args.library)):
@@ -674,6 +729,8 @@ def main(argv=None):
     if problems:
         print("Nothing written. Failed:\n  " + "\n  ".join(problems), file=sys.stderr)
         return 1
+    if args.check:
+        return check_folder(args.check, files)
     os.makedirs(args.out, exist_ok=True)
     # Each file goes in whole or not at all; nothing outside the out folder is touched, and nothing deleted
     for name, text in files.items():

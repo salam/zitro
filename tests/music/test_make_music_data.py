@@ -238,7 +238,7 @@ def test_brief_cases():
     check(has_error({t: song({"composer": "Jane Example | 1801 | 1870 | https://en.wikipedia.org/wiki/J"})},
                     "test-song:", "only one URL"), "only one composer URL")
     check(has_error({t: song({"composer": "Jane Example | 1801 | 1870 | https://en.wikipedia.org/wiki/J | "
-                                          "https://en.wikipedia.org/wiki/K"})}, "test-song:", "same host"),
+                                          "https://en.wikipedia.org/wiki/K"})}, "test-song:", "same site"),
           "two URLs on the same host")
     check(has_error({t: song({"source-a": "Example Songbook | https://archive.org/details/x | CC BY-SA"})},
                     "test-song:", "licence 'CC BY-SA'"), "source-a licence CC BY-SA")
@@ -302,7 +302,7 @@ def test_more_checks():
         (song({"composer": "Jane Example | 1801 | 1870? | https://a.org/x | https://b.org/y"}), "year"),
         (song({"composer": "Jane Example | 1871 | 1870 | https://a.org/x | https://b.org/y"}), "born after"),
         (song({"composer": "Jane Example | 1801 | 1870 | https://www.imslp.org/x | https://imslp.org/y"}),
-         "same host"),
+         "same site"),
         (song({"composer": None}), "composer or traditional"),
         (song({"published": None}), "missing key published"),
         (song(extra=["traditional Old Book | 1900 | https://archive.org/details/old"]), "not both"),
@@ -350,6 +350,47 @@ def test_more_checks():
                               "footer": "Ein sehr langer Quellenname, viel zu la"})}) == [], "47 and 39 bytes fit")
     # One song may use the same name in both languages, and an alias may repeat it
     check(errors_of({t: song({"en": "Ein Testlied", "aliases": "ein testlied"})}) == [], "same name twice")
+
+
+def test_fix_round_1():
+    t = "test-song.song"
+    wrong = {"score-b": "https://x.org/a | nederlands | relative c' | " + NOTES_B_ONE_WRONG}
+    # An empty settled line settles nothing: every single-value key needs a value
+    for line in ["settled", "settled ", "settled    ", "settled \u00a0"]:
+        check(has_error({t: song(wrong, [line])}, "test-song:", "settled has no value"), f"bare {line!r}")
+    for key in ["aliases", "published", "footer", "de"]:
+        check(has_error({t: song({key: ""})}, "test-song:", f"{key} has no value"), f"empty {key}")
+    check(has_error({t: song(extra=["composer "])}, "test-song:", "composer has no value"), "empty composer")
+    # Only a newline ends a line: other separators can't smuggle in a key, and control characters are refused
+    for sep in ["\u2028", "\u2029", "\x0b", "\x0c", "\x1c", "\x1d", "\x1e", "\x85", "\t", "\x00"]:
+        text = song(wrong).replace("footer Songbook 1900", f"footer Songbook 1900{sep}settled smuggled")
+        errors = errors_of({t: text})
+        check(any("test-song:" in e and "control or line-separator character" in e for e in errors)
+              and any("score B differs" in e for e in errors), f"separator {sep!r}: {errors}")
+    check(errors_of({t: song().replace("\n", "\r\n")}) == [], "CRLF line ends are fine")
+    # An alias equal to a built-in id, with or without hyphens: the stick finds the built-in song first
+    check(has_error({t: song({"aliases": "testlied;schneefloeckchen"})}, "test-song:", "'schneefloeckchen'",
+                    "built-in song schneefloeckchen"), "alias equal to a hyphen-less built-in id")
+    check(has_error({t: song({"aliases": "kuckuck ruft"})}, "test-song:", "'kuckuck ruft'",
+                    "built-in song kuckuck-ruft"), "alias equal to a built-in id once normalised")
+    # Ids whose file would clash with index.txt or SOURCES.txt
+    for reserved in ["index", "sources"]:
+        check(has_error({reserved + ".song": song({"id": reserved})}, reserved + ":", "reserved"),
+              f"id {reserved} is reserved")
+    # Independent sources: one site, whatever the host
+    for url1, url2 in [("https://en.wikipedia.org/wiki/J", "https://de.wikipedia.org/wiki/J"),
+                       ("https://a.org/x", "https://a.org./y"),
+                       ("https://www.bbc.co.uk/x", "https://news.bbc.co.uk/y")]:
+        composer = f"Jane Example | 1801 | 1870 | {url1} | {url2}"
+        check(has_error({t: song({"composer": composer})}, "test-song:", "same site"), f"one site: {url1} {url2}")
+    check(errors_of({t: song({"composer": "Jane Example | 1801 | 1870 | https://de.wikipedia.org/wiki/J | "
+                                          "https://imslp.org/wiki/J"})}) == [], "wikipedia.org and imslp.org")
+    sites = {"en.wikipedia.org": "wikipedia.org", "WWW.IMSLP.ORG": "imslp.org", "a.org.": "a.org",
+             "loc.gov": "loc.gov", "www.loc.gov": "loc.gov", "something.ac.uk": "something.ac.uk",
+             "x.something.ac.uk": "something.ac.uk", "news.bbc.co.uk": "bbc.co.uk", "lieder.de": "lieder.de",
+             "a.b.example.com": "example.com", "deutsche-digitale-bibliothek.de": "deutsche-digitale-bibliothek.de"}
+    for name, want in sites.items():
+        check(m.site(name) == want, f"site({name!r}) = {m.site(name)!r}, want {want!r}")
 
 
 def test_english_lilypond():
@@ -409,8 +450,48 @@ def test_main(binary):
             check(result.returncode == 1 and f.read() == before, "failed run leaves the old files")
         check(not os.path.exists(os.path.join(out, "bad-song.txt")), "failed run writes no song file")
         os.remove(os.path.join(library, "bad-song.song"))
+        test_drift_check(library, out)
         if binary:
             test_firmware_reads(binary, out)
+
+
+def check_tool(library, folder):
+    return subprocess.run([sys.executable, "-I", os.path.join(ROOT, "scripts", "make_music_data.py"),
+                           "--library", library, "--check", folder], capture_output=True, text=True)
+
+
+def test_drift_check(library, out):
+    """--check rebuilds in memory and compares with a folder, as run.sh does for webpage2/data/music."""
+    listing = sorted(os.listdir(out))
+    result = check_tool(library, out)
+    check(result.returncode == 0, f"fresh output is current: {result.stdout} {result.stderr}")
+    check(sorted(os.listdir(out)) == listing, "--check writes nothing")
+    with tempfile.TemporaryDirectory() as tmp:
+        def copy():
+            for name in os.listdir(tmp):
+                os.remove(os.path.join(tmp, name))
+            for name in os.listdir(out):
+                with open(os.path.join(out, name), "rb") as f, open(os.path.join(tmp, name), "wb") as g:
+                    g.write(f.read())
+        copy()
+        with open(os.path.join(tmp, "old-song.txt"), "w") as f:
+            f.write("ZITRO-MUSIC-SONG 1 old-song\n")
+        result = check_tool(library, tmp)
+        check(result.returncode == 1 and "old-song.txt" in result.stderr, f"stale extra file: {result.stderr}")
+        copy()
+        with open(os.path.join(tmp, "test-song.txt"), "rb") as f:
+            data = bytearray(f.read())
+        data[-2] ^= 1
+        with open(os.path.join(tmp, "test-song.txt"), "wb") as f:
+            f.write(bytes(data))
+        result = check_tool(library, tmp)
+        check(result.returncode == 1 and "test-song.txt" in result.stderr, f"changed byte: {result.stderr}")
+        copy()
+        os.remove(os.path.join(tmp, "SOURCES.txt"))
+        result = check_tool(library, tmp)
+        check(result.returncode == 1 and "SOURCES.txt" in result.stderr, f"missing file: {result.stderr}")
+        result = check_tool(library, os.path.join(tmp, "nowhere"))
+        check(result.returncode == 1, "a folder that isn't there is not current")
 
 
 def run_firmware(binary, folder):
@@ -461,6 +542,7 @@ def main():
     test_brief_cases()
     test_settled()
     test_more_checks()
+    test_fix_round_1()
     test_english_lilypond()
     test_sizes()
     test_main(binary)

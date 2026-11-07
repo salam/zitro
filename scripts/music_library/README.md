@@ -4,14 +4,15 @@ Each `<id>.song` file here is one song that Zitro can fetch from zitro.spot. The
 
 ```bash
 python3 -I scripts/make_music_data.py    # --out DIR to write elsewhere, --library DIR to read elsewhere
-tests/music/run.sh                       # The firmware's own code then reads what was written
+tests/music/run.sh                       # The firmware's own code then reads what was written,
+                                         # and the folder must be exactly what the tool builds (--check)
 ```
 
 If any check fails, the tool names the song and the reason, writes nothing and exits 1. A song is never adjusted to pass. It is fixed by hand or left out.
 
 ## The format
 
-The file is UTF-8, with one `key value` per line. Lines starting with `#` are comments, and blank lines are ignored. Fields within a line are separated by `|`.
+The file is UTF-8, with one `key value` per line. Every key needs a value, and only a newline ends a line: tabs and other control characters are refused. Lines starting with `#` are comments, and blank lines are ignored. Fields within a line are separated by `|`.
 
 ```
 id oh-susanna
@@ -34,7 +35,7 @@ settled <optional: which difference a person accepted, and why>
 
 | Key | What it holds |
 |---|---|
-| `id` | Lower-case letters, digits and `-`, at most 39 characters. The file must be named `<id>.song`. It must not be a built-in song's id. |
+| `id` | Lower-case letters, digits and `-`, at most 39 characters. The file must be named `<id>.song`. It must not be a built-in song's id, nor `index` or `sources`. |
 | `de`, `en` | The German and the English title, both required, because the AI may give either. Each is at most 47 bytes, with no `\|`. Both must normalise: accents and umlauts are fine, other scripts are not. |
 | `aliases` | Optional. Other names, `;`-separated, already in normalised form: lower case, umlauts spelled out (`ae`, `oe`, `ue`, `ss`), accents dropped, apostrophes dropped, other punctuation as single spaces. For example, `kling gloeckchen;kling gloeckchen klingelingeling`. A title that could mean several pieces, such as "Wiegenlied", gets no alias. |
 | `tempo` | Quarter notes a minute, 60 to 160. |
@@ -61,7 +62,7 @@ A melody is either by named composers or traditional, never both.
 
 | Key | What it holds |
 |---|---|
-| `composer` | One line per person who wrote the melody: `name \| born \| died \| url \| url`. Each must have died before 1926. The two URLs are two independent sources that agree on the dates, on different hosts, such as Wikipedia and IMSLP. |
+| `composer` | One line per person who wrote the melody: `name \| born \| died \| url \| url`. Each must have died before 1926. The two URLs are two independent sources that agree on the dates, on different sites, such as Wikipedia and IMSLP. Two language editions of Wikipedia (`en.wikipedia.org`, `de.wikipedia.org`) are one site, Wikipedia. |
 | `published` | `year \| url` of the first print, before 1931. Required with `composer`, optional with `traditional`. |
 | `traditional` | Instead of `composer`, for a melody with no known author: `citation \| year \| url` of a print before 1931. One line per print. |
 

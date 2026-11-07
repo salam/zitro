@@ -1,0 +1,12 @@
+id der-mond-ist-aufgegangen
+de Der Mond ist aufgegangen
+en Der Mond ist aufgegangen
+tempo 72
+bar 16
+pickup 4
+notes F4:4 | G4:4 F4:4 Bb4:4 A4:4 | G4:8 F4:4 A4:4 | A4:4 A4:4 D5:4 C5:4 | Bb4:8 A4:4 A4:4 | A4:4 A4:4 Bb4:4 A4:4 | G4:8 R:4 F4:4 | G4:4 F4:4 Bb4:4 A4:4 | G4:8 F4:4 A4:4 | A4:4 A4:4 D5:4 C5:4 | Bb4:8 A4:4 A4:4 | A4:4 A4:4 Bb4:4 A4:4 | G4:4 G4:4 F4:4
+source-a J. A. P. Schulz, Abendlied (Der Mond ist aufgegangen), in Erk's Deutscher Liederschatz Bd. I Nr. 22, S. 234, C. F. Peters, Leipzig [c. 1890] | https://archive.org/details/deutscherlieders00erkl_0/page/n243/ | pre-1931 print
+score-b https://de.wikipedia.org/wiki/Abendlied_(Matthias_Claudius) | nederlands | relative c' | \repeat volta 2 { f4 | g f bes a | g2 f4 a | a a d c | bes2 a4 a | a a bes a | } \alternative { { g2. } { g4 g f } }
+composer Johann Abraham Peter Schulz | 1747 | 1800 | https://de.wikipedia.org/wiki/Johann_Abraham_Peter_Schulz | https://imslp.org/wiki/Category:Schulz,_Johann_Abraham_Peter
+published 1790 | https://de.wikipedia.org/wiki/Abendlied_(Matthias_Claudius)
+footer Erk, Peters c. 1890

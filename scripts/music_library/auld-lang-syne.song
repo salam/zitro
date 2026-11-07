@@ -1,0 +1,15 @@
+# Verse 1 and chorus, chorus with the first-time ending ("4 first V."). Small cue notes for verse 2 left out.
+id auld-lang-syne
+de Auld Lang Syne
+en Auld Lang Syne
+aliases should auld acquaintance be forgot;nehmt abschied brueder
+tempo 76
+bar 8
+pickup 2
+notes D4:2 | G4:3 G4:1 G4:2 B4:2 | A4:3 G4:1 A4:2 B4:2 | G4:3 G4:1 B4:2 D5:2 | E5:6 E5:2 | D5:3 B4:1 B4:2 G4:2 | A4:3 G4:1 A4:2 B4:2 | G4:3 E4:1 E4:2 D4:2 | G4:6 E5:2 | D5:2 B4:2 B4:2 G4:2 | A4:3 G4:1 A4:2 B4:2 | D5:3 B4:1 B4:2 D5:2 | E5:6 E5:2 | D5:3 B4:1 B4:2 G4:2 | A4:3 G4:1 A4:2 B4:2 | G4:3 E4:1 E4:2 D4:2 | G4:6
+source-a Auld Lang Syne, arr. Sir Herbert Oakeley, in The Scottish Students' Song Book, S. 318-319, Bayley & Ferguson, London 1897 | https://archive.org/details/scottishstudents00scot_0/page/n325/ | pre-1931 print
+score-b https://en.wikipedia.org/wiki/Auld_Lang_Syne | nederlands | relative c' | c4 | f4. f8 f4 a4 | g4. f8 g4 a4 | f4. f8 a4 c4 | d2. d4 | c4. a8 a4 f4 | g4. f8 g4 a4 | f4. d8 d4 c4 | f2. d'4 | c4. a8 a4 f4 | g4. f8 g4 d'4 | c4. a8 a4 c4 | d2. d4 | c4. a8 a4 f4 | g4. f8 g4 a4 | f4. d8 d4 c4 | f2.
+traditional Traditional Scots tune, first documented with Burns's words in George Thomson's Select Collection of Original Scottish Airs, Edinburgh 1799 | 1799 | https://en.wikipedia.org/wiki/Auld_Lang_Syne
+traditional The Scottish Students' Song Book, Bayley & Ferguson, London 1897, S. 318 | 1897 | https://archive.org/details/scottishstudents00scot_0/page/n325/
+footer Scottish Students' Song Book 1897
+settled Matthias 2026-11-07: no open score of the 2/4 version exists, so B (en.wikipedia, moved +2) is 4/4 at doubled values and also differs in bar 9 (A D5:2 B4:2 B4:2 G4:2, B halved D5:3 B4:1 B4:2 G4:2) and bar 10 (A A4:3 G4:1 A4:2 B4:2, B halved A4:3 G4:1 A4:2 E5:2); Zitro plays the old print's version (1897), and a second reading of A's scan confirmed A.

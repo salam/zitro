@@ -51,36 +51,120 @@ Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 
 ## Sources and licences
 
-No melody below is under copyright, as far as could be confirmed from the sources named. This table comes from reading those pages, not from legal advice. Our transcriptions are written by hand and carry no text from any song. Lyrics are not stored or shown.
+On 2026-11-07 every melody below was checked against the legal rule of the song library (rules 1 to 3 and the evidence rule in `docs/superpowers/specs/2026-11-07-song-library-design.md`). A song passes if everyone who wrote the melody died before 1926, or if the melody is traditional and was printed before 1931. Two independent sources must agree on the author and their dates. German and English Wikipedia together count as one source. Lyrics don't count, because Zitro never stores or shows them. This is a careful reading of the sources named, not legal advice. Our transcriptions are typed in by hand and carry no text from any song.
 
-| Id | Melody | Why public domain |
-| --- | --- | --- |
-| alle-meine-entchen | German folk song, authors unknown, printed in the 19th century | Anonymous and old |
-| haenschen-klein | 19th-century German song; text Franz Wiedemann (1821-1882) | Old |
-| fuchs-du-hast-die-gans | Older folk song; printed 1824 with text by Ernst Anschütz (1780-1861) | Old |
-| kommt-ein-vogel | Folk song, oldest known text 1824 | Old |
-| ein-maennlein | Folk tune known since about 1800; text Hoffmann von Fallersleben, 1843 | Old |
-| alle-voegel | Printed with these notes by 1861; text Hoffmann von Fallersleben (1798-1874), 1835 | Old |
-| kuckuck-und-esel | After Carl Friedrich Zelter (1758-1832); text Hoffmann von Fallersleben, 1835 | Author long dead |
-| kuckuck-ruft | Printed 1868; text Hoffmann von Fallersleben | Old |
-| backe-backe-kuchen | German children's song, before 1840 | Old |
-| schlaf-kindlein | Johann Friedrich Reichardt, 1781 version of a tune from 1611 | Old |
-| guten-abend-gut-nacht | Johannes Brahms (1833-1897), 1868 | Author long dead |
-| haeschen-in-der-grube | Folk tune; text Friedrich Fröbel, 1840 | Old |
-| summ-summ-summ | Bohemian folk tune; text Hoffmann von Fallersleben | Old |
-| o-tannenbaum | Folk tune, in print in 1799; text Ernst Anschütz, 1824 | Old |
-| stille-nacht | Franz Xaver Gruber (1787-1863), 1818 | Author long dead |
-| schneefloeckchen | Composer unknown, in songbooks since 1915 | Anonymous, published over 70 years ago |
-| wer-hat-die-schoensten-schaefchen | Johann Friedrich Reichardt, 1790 | Old |
-| haensel-und-gretel | Children's song, first printed 1901, no known author | Anonymous, published over 70 years ago |
-| twinkle-twinkle | French "Ah! vous dirai-je, maman", published 1761 | Old |
-| frere-jacques | Traditional French round | Old |
-| row-your-boat | Tune first recorded with the words in 1881 | Old |
-| london-bridge | Traditional English; words about 1744, today's melody recorded in the late 19th century | Old |
-| jingle-bells | James Lord Pierpont (1822-1893), 1857 | Author long dead |
-| ode-to-joy | Ludwig van Beethoven (1770-1827), 1824 | Author long dead |
-| happy-birthday | Patty Hill (died 1946), Mildred Hill (died 1916) | EU term ended 1 January 2017; a US court ended the claim in 2015-2016 |
-| mulberry-bush | English singing game, recorded in the mid-19th century | Old |
+Numbers point to the list under the table. "Scan checked" means the page of the old print was looked at and its tune matches ours, allowing for key and for verse repeats.
+
+| Id | Melody: author and dates, or traditional with an early print | Sources | Verdict |
+| --- | --- | --- | --- |
+| alle-meine-entchen | Traditional; the tune is in dance manuscripts from about 1750. Printed with notes in Böhme, *Deutsches Kinderlied und Kinderspiel*, 1897, p. 502, no. 254 (scan checked) | 8, 2; print 1 | passes |
+| haenschen-klein | Traditional, the hunting song "Fahret hin"; tune printed 1807 in Büsching and von der Hagen, *Sammlung deutscher Volkslieder*, Melodienheft, p. 11 | 9, 10; print 11 | passes |
+| fuchs-du-hast-die-gans | Traditional, "Wer die Gans gestohlen hat"; printed 1824 in Anschütz, *Musikalisches Schulgesangbuch* 1, p. 38 (in numbers), and with notes in Böhme 1897, p. 577 (scan checked) | 12, 2; print 13, 1 | passes |
+| kommt-ein-vogel | Traditional Austrian; Wenzel Müller (died 1835) is named as its alleged composer. Printed with notes in *Das Taschen-Liederbuch*, Passau 1828, no. 76, and as "Volksweise" in *Deutsche Weisen*, Stuttgart [1900], no. 49 | 14, 2, 4; print 5 | passes |
+| ein-maennlein | Traditional, known since about 1800; printed as "Volksweise" in *Deutsche Weisen*, Stuttgart [1900], no. 261 | 15, 5; print 5 | passes |
+| alle-voegel | Traditional, after the late-18th-century tune "Nun so reis ich fort"; printed with this text in Hamburg in 1844, and as "Volksmelodie" in Hoffmann von Fallersleben, *Vierzig Kinderlieder*, Leipzig 1847, no. 33 | 16, 2, 17; print 4 | passes |
+| kuckuck-und-esel | Carl Friedrich Zelter (1758-1832), adapted from his 1810 setting of "Es ist ein Schuss gefallen" | 18, 19, 2, 4 | passes |
+| kuckuck-ruft | Traditional Austrian, from "Stieglitz, Stieglitz, 's Zeiserl is krank" (1817); printed as "Volksmelodie" in Hoffmann von Fallersleben and Richter, *Fünfzig Kinderlieder*, Leipzig 1843, no. 2 | 20, 2; print 4, 21 | passes |
+| backe-backe-kuchen | Traditional, from Saxony and Thuringia, before 1840; printed with notes in Böhme 1897, p. 46, no. 174 (scan checked) | 22, 2; print 1 | passes |
+| schlaf-kindlein | Johann Friedrich Reichardt (1752-1814), 1781, after a folk tune; first in Reichardt, *Lieder für Kinder*, Hamburg 1781; also in Böhme 1897, p. 1, no. 1 (scan checked) | 23, 24, 1, 4 | passes |
+| guten-abend-gut-nacht | Johannes Brahms (1833-1897), op. 49 no. 4, Simrock, Berlin 1868 | 25, 26, 27 | passes |
+| haeschen-in-der-grube | Traditional, "Wer die Gans gestohlen hat", per Wikipedia and Böhme 1897, p. 577, no. 409 (scan checked); Holzapfel and the Liederprojekt name Karl Enslin (1819-1875) | 28, 1, 2, 29 | passes |
+| summ-summ-summ | Traditional, from Bohemia; printed in Hoffmann von Fallersleben and Richter, *Fünfzig Kinderlieder*, Leipzig 1843, p. 49 | 30, 31; print 21 | passes |
+| o-tannenbaum | Traditional, a tune from about 1700 sung to student songs; printed in Kretzschmer and Zuccalmaglio, 1840, no. 263, and as "Lauriger Horatius" in Fink, *Musikalischer Hausschatz der Deutschen*, Leipzig 1843, p. 289 | 32, 3; print 33 | passes |
+| stille-nacht | Franz Xaver Gruber (1787-1863), 1818; first printed by Friese, Dresden 1833; the form sung today settled in the 1840s | 34, 35, 36 | passes |
+| schneefloeckchen | Composer unknown. The sources disagree on when today's tune appeared: 1915, 1927 or about 1945 | 37, 3, 38 | **unclear** |
+| wer-hat-die-schoensten-schaefchen | Johann Friedrich Reichardt (1752-1814), written in 1790 for another song | 39, 40, 3 | passes |
+| haensel-und-gretel | Author unknown; first printed 1901 by Paul Hoffmann, Halle, who may have written it | 41, 42, 2 | **unclear** |
+| twinkle-twinkle | Traditional French, "Ah! vous dirai-je, maman", first published 1761; the theme of Mozart's variations K. 265, published 1785 | 43, 44, 45 | passes |
+| frere-jacques | Traditional French, in a manuscript from about 1780 and first printed 1811 (*La Clé du Caveau*, Paris); some credit Jean-Philippe Rameau (died 1764). Printed as "French Air" in *The Golden Book of Favorite Songs*, Chicago 1923, p. 121 (scan checked) | 46, 6 | passes |
+| row-your-boat | Eliphalet Oram Lyte (1842-1913), credited in *Franklin Square Song Collection*, Harper, New York 1881, p. 69 (scan checked) | 47, 48, 49; print 50 | passes |
+| london-bridge | Traditional; today's tune first printed 1879 in A. H. Rosewig, *Illustrated National Songs and Games*, Philadelphia. Gomme, *Traditional Games* 1, London 1894, p. 333 prints a variant with the same opening (scan checked) | 51, 7 | passes |
+| jingle-bells | James Lord Pierpont (1822-1893), Oliver Ditson, Boston 1857. We play the later chorus, whose origin is unknown; it was recorded by 1898 and is printed, credited to Pierpont, in *The Golden Book of Favorite Songs*, Chicago 1923, p. 120 (scan checked) | 52, 53, 54; print 6 | passes |
+| ode-to-joy | Ludwig van Beethoven (1770-1827), Ninth Symphony, finished 1824, printed by Schott 1826 | 55, 56, 57 | passes |
+| happy-birthday | Mildred J. Hill (1859-1916), the tune of "Good Morning to All" in *Song Stories for the Kindergarten*, Chicago 1893. Her sister Patty Hill (died 1946) wrote the words, which Zitro doesn't store | 58, 59, 60, 61 | passes |
+| mulberry-bush | Traditional, the 18th-century tune "Nancy Dawson"; printed in Gomme, *Traditional Games* 1, London 1894, p. 404 (scan checked) | 62, 7 | passes |
+
+Fails or unclear (kept for now; nothing is removed without asking):
+
+- **schneefloeckchen:** The composer is unknown, so only an early print can show the tune is old. German Wikipedia finds today's tune in songbooks from 1915. Holzapfel finds it in songbooks only from 1927, with one record from 1917. The Liederprojekt says today's version has been sung since about 1945. If the 1945 date is right, the tune may be under copyright.
+- **haensel-und-gretel:** Nobody is known to have written the tune. It was first printed in 1901 in Paul Hoffmann's school songbook, and the Liederprojekt says Hoffmann may have written it. His dates are not known, so we can't tell whether he died before 1926.
+
+Where the sources differ but the verdict holds:
+
+- **haeschen-in-der-grube:** a folk tune, or Karl Enslin (1819-1875); either way it passes.
+- **kommt-ein-vogel:** a folk tune, or Wenzel Müller (died 1835); either way it passes.
+- **o-tannenbaum:** a folk tune; Holzapfel names Ernst Anschütz (1780-1861) as "Komp."; either way it passes.
+- **alle-voegel:** a folk tune; a 1919 songbook credits Mozart, which Holzapfel calls wrong; Mozart died in 1791, so it passes either way.
+- **wer-hat-die-schoensten-schaefchen:** today's tune is Reichardt's; Karl von Winterfeld (1831) and Carl Reinecke (1824-1910) wrote other tunes to the same words.
+- **frere-jacques:** a folk tune, or Jean-Philippe Rameau (1683-1764); either way it passes.
+- **row-your-boat:** the 1881 print credits Lyte, but it is unclear whether he wrote the tune or arranged it. If he wrote it, he died in 1913. If he arranged an older tune, that tune has no known author and the 1881 print is from before 1931, so it passes as traditional.
+- **jingle-bells:** Pierpont's 1857 chorus differs from the one sung today. Pierpont died in 1893, so his verse passes. The later chorus we play has no known author, was recorded by 1898 and is printed in a named book from 1923, so it passes as traditional. This is the closest pass in the table.
+- **happy-birthday:** one writer argues that the Hill sisters adapted older songs from 1858 to 1885. Another says those songs had different tunes. Every candidate author died before 1926.
+
+Sources, retrieved 2026-11-07:
+
+1. Franz Magnus Böhme, *Deutsches Kinderlied und Kinderspiel*, Leipzig 1897: https://archive.org/details/DeutschesKinderliedUndKinderspiel (p. 1, 46, 502 and 577 are scan pages n77, n122, n578 and n653)
+2. Otto Holzapfel, *Liedverzeichnis*, Lieder A–K, update March 2024, from the catalogue of the Deutsches Volksliedarchiv: https://volksmusik-forschung.de/assets/files/Downloads/Holzapfel_Lieder_A_K.pdf
+3. Otto Holzapfel, *Liedverzeichnis*, Lieder L–Z: https://volksmusik-forschung.de/assets/files/Downloads/Holzapfel_Lieder_L_Z.pdf
+4. Hoffmann von Fallersleben and Prahl, *Unsere volkstümlichen Lieder*, 4th edition, Leipzig 1900, nos. 42, 203, 775, 790 and 994: https://archive.org/details/unserevolkstmli00unkngoog
+5. IMSLP, *Deutsche Weisen*, edited by August Linder, Stuttgart [1900]: https://imslp.org/wiki/Deutsche_Weisen_(Various)
+6. *The Golden Book of Favorite Songs*, Hall & McCreary, Chicago 1923: https://archive.org/details/goldenbookoffavo00beat_0
+7. Alice B. Gomme, *The Traditional Games of England, Scotland, and Ireland*, vol. 1, London 1894: https://archive.org/details/traditionalgames01gommuoft
+8. https://de.wikipedia.org/wiki/Alle_meine_Entchen
+9. https://de.wikipedia.org/wiki/H%C3%A4nschen_klein
+10. https://liederprojekt.org/lied30300-Haenschen_klein_ging_allein.html
+11. https://books.google.de/books?id=PuFNAAAAcAAJ&pg=PA11
+12. https://de.wikipedia.org/wiki/Fuchs,_du_hast_die_Gans_gestohlen
+13. http://diglib.hab.de/show_image.php?dir=drucke/un-17-1b&pointer=47
+14. https://de.wikipedia.org/wiki/Kommt_ein_Vogel_geflogen
+15. https://de.wikipedia.org/wiki/Ein_M%C3%A4nnlein_steht_im_Walde
+16. https://de.wikipedia.org/wiki/Alle_V%C3%B6gel_sind_schon_da
+17. https://www.liederprojekt.org/lied30269-Alle-Voegel-sind-schon-da.html
+18. https://de.wikipedia.org/wiki/Der_Kuckuck_und_der_Esel
+19. https://de.wikipedia.org/wiki/Carl_Friedrich_Zelter
+20. https://de.wikipedia.org/wiki/Kuckuck,_Kuckuck,_ruft%E2%80%99s_aus_dem_Wald
+21. https://gdz.sub.uni-goettingen.de/dms/load/img/?PPN=PPN362458375
+22. https://de.wikipedia.org/wiki/Backe,_backe_Kuchen
+23. https://de.wikipedia.org/wiki/Schlaf,_Kindlein,_schlaf
+24. https://de.wikipedia.org/wiki/Johann_Friedrich_Reichardt
+25. https://de.wikipedia.org/wiki/Guten_Abend,_gut%E2%80%99_Nacht
+26. https://imslp.org/wiki/5_Lieder,_Op.49_(Brahms,_Johannes)
+27. https://imslp.org/wiki/Category:Brahms,_Johannes
+28. https://de.wikipedia.org/wiki/H%C3%A4schen_in_der_Grube
+29. https://www.liederprojekt.org/lied30247-Haeschen-in-der-Grube.html
+30. https://de.wikipedia.org/wiki/Summ,_summ,_summ
+31. https://www.liederprojekt.org/lied29905-Summ-summ-summ.html
+32. https://de.wikipedia.org/wiki/O_Tannenbaum
+33. https://books.google.de/books?id=571fAAAAcAAJ&pg=PA289
+34. https://en.wikipedia.org/wiki/Silent_Night
+35. https://imslp.org/wiki/Category:Gruber,_Franz_Xaver
+36. https://hymnary.org/tune/stille_nacht_gruber
+37. https://de.wikipedia.org/wiki/Schneefl%C3%B6ckchen,_Wei%C3%9Fr%C3%B6ckchen
+38. https://www.liederprojekt.org/lied30282.html
+39. https://de.wikipedia.org/wiki/Wer_hat_die_sch%C3%B6nsten_Sch%C3%A4fchen
+40. https://www.liederprojekt.org/lied27788.html
+41. https://de.wikipedia.org/wiki/H%C3%A4nsel_und_Gretel_verliefen_sich_im_Wald
+42. https://liederprojekt.org/lied30306-Haensel-und-Gretel.html
+43. https://en.wikipedia.org/wiki/Twinkle,_Twinkle,_Little_Star
+44. https://en.wikipedia.org/wiki/Ah!_vous_dirai-je,_maman
+45. https://imslp.org/wiki/12_Variations_on_'Ah,_vous_dirai-je_maman',_K.265/300e_(Mozart,_Wolfgang_Amadeus)
+46. https://en.wikipedia.org/wiki/Fr%C3%A8re_Jacques
+47. https://en.wikipedia.org/wiki/Row,_Row,_Row_Your_Boat
+48. https://en.wikipedia.org/wiki/Eliphalet_Oram_Lyte
+49. Library of Congress name authority "Lyte, Eliphalet Oram, 1842-1913": https://id.loc.gov/authorities/names/no2018014532
+50. *Franklin Square Song Collection*, selected by J. P. McCaskey, Harper, New York 1881: https://archive.org/details/franklinsquares04mccagoog
+51. https://en.wikipedia.org/wiki/London_Bridge_Is_Falling_Down
+52. https://en.wikipedia.org/wiki/Jingle_Bells
+53. https://en.wikipedia.org/wiki/James_Lord_Pierpont
+54. https://imslp.org/wiki/The_One_Horse_Open_Sleigh_(Pierpont,_James)
+55. https://en.wikipedia.org/wiki/Ode_to_Joy
+56. https://imslp.org/wiki/Symphony_No.9,_Op.125_(Beethoven,_Ludwig_van)
+57. https://imslp.org/wiki/Category:Beethoven,_Ludwig_van
+58. https://en.wikipedia.org/wiki/Happy_Birthday_to_You
+59. https://en.wikipedia.org/wiki/Mildred_J._Hill
+60. https://imslp.org/wiki/Song_Stories_for_the_Kindergarten_(Hill,_Mildred)
+61. https://imslp.org/wiki/Category:Hill,_Mildred
+62. https://en.wikipedia.org/wiki/Here_We_Go_Round_the_Mulberry_Bush
 
 Left out on purpose:
 

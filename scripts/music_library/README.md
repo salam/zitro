@@ -56,6 +56,16 @@ No name or alias may equal, once normalised, a name or alias of another song or 
 
 Score B, with ties joined and repeats written out, must equal score A note by note, with the same lengths. Only a constant transposition is allowed. One more difference is allowed: a note followed by a rest counts as equal to one longer note of the same pitch, as long as the next note starts at the same time (so `G4:8 R:4` equals `G4:12`, but `G4:8 R:4 A4:4` does not equal `G4:8 A4:8`). At the end of the song the same holds with the song's end as the next note: the last note and the rests after it count as one length, so both scores must still be equally long overall (`G4:4 R:4` equals `G4:8` there, but not `G4:4`). This holds in the comparison only; the served notes are never changed. If they differ, the tool refuses the song and names every place where they differ, not just the first. It finds the transposition from the whole song, the move under which the most notes agree, so a wrong first note or a repeat only one score has doesn't hide the rest. If B is written at doubled or halved values, the places are listed at A's lengths, but that is still a difference. With a `settled` line the tool accepts the song, still prints every difference, and lists them under the settled line in `SOURCES.txt`. A `settled` line on two scores that agree is refused too, so an old note can't hide a new difference.
 
+### Licences of the score B notes
+
+The melodies are public domain. The score B notes stored in these files are not all ours, so each `.song` file says in its first line where its score B notes come from and under which licence:
+
+- **Wikipedia and Wikisource (CC BY-SA 4.0).** Fifteen songs have score B notes copied from the LilyPond score on the English, German or Italian Wikipedia page or English Wikisource page named by the `score-b` URL. They are used under CC BY-SA 4.0, and that page is the attribution. They were retrieved on 2026-11-07. Only the notes are kept, with marks, chords, lyrics and other voices left out. They are used only to compare with score A and are never served: the stick gets only score A's notes.
+- **Wikimedia Commons MIDI (CC0).** Winter, ade: score B is read from Peter Gerloff's MIDI file on Commons, which is released under CC0. It was retrieved on 2026-11-07, and it is used only to compare.
+- **Blind readings (public domain).** Three Blind Mice and Weißt du, wie viel Sternlein stehen: score B is our own second reading of another print from before 1931, made without looking at score A. The print is public domain. The scan of the Weißt du print is marked for non-commercial use, so only the notes are kept, and only to compare.
+
+This is the same arrangement as `tests/music/references.txt`, which holds the scores the built-in songs are compared with. A new song with a CC BY-SA score B needs the same first line.
+
 ### The legal evidence
 
 A melody is either by named composers or traditional, never both.

@@ -1,0 +1,13 @@
+# Verse 1, 6/8 at bar 12. Each half ends with a quarter rest and an eighth rest (bars 6 and 12).
+id bunt-sind-schon-die-waelder
+de Bunt sind schon die Wälder
+en Bunt sind schon die Wälder
+tempo 100
+bar 12
+pickup 0
+notes A4:4 A4:2 A4:2 G#4:2 A4:2 | B4:6 A4:6 | C#5:4 C#5:2 C#5:2 B4:2 C#5:2 | D5:6 C#5:6 | B4:4 B4:2 A4:2 C#5:2 D#4:2 | E4:6 R:6 | C#5:4 B4:2 A4:4 G#4:2 | F#4:6 F#4:6 | D5:4 C#5:2 B4:2 C#5:2 A4:2 | G#4:6 G#4:6 | A4:2 C#5:2 E5:2 E4:2 F#4:2 G#4:2 | A4:6 R:6
+source-a J. Fr. Reichardt, Herbstlied (Bunt sind schon die Wälder), in Erk's Deutscher Liederschatz Bd. II Nr. 18, S. 19, C. F. Peters, Leipzig [c. 1890] | https://archive.org/details/deutscherlieders00erkl_1/page/n26/ | pre-1931 print
+score-b https://de.wikipedia.org/wiki/Bunt_sind_schon_die_W%C3%A4lder | nederlands | relative c'' | g4 g8 g fis g | a4. g | b4 b8 b a b | c4. b | a4 a8 g b cis, | d4. r4. | b'4 a8 g4 fis8 | e4. e | c'4 b8 a b g | fis4. fis | g8 b d d, e fis | g4. r4.
+composer Johann Friedrich Reichardt | 1752 | 1814 | https://de.wikipedia.org/wiki/Johann_Friedrich_Reichardt | https://imslp.org/wiki/Category:Reichardt,_Johann_Friedrich
+published 1799 | https://de.wikipedia.org/wiki/Bunt_sind_schon_die_W%C3%A4lder
+footer Erk Liederschatz II, Peters c. 1890

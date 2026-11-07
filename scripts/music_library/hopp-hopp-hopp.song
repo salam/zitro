@@ -1,0 +1,15 @@
+# Verse 1. The Schott page names no composer; Erk's Deutscher Liederschatz Bd. I Nr. 55 (same tune) heads it
+# "Carl Gottlieb Hering (1807)", and de.wikipedia names Hering too (published 1809).
+id hopp-hopp-hopp
+de Hopp, hopp, hopp, Pferdchen lauf Galopp
+en Hopp, hopp, hopp, Pferdchen lauf Galopp
+aliases hopp hopp hopp;pferdchen lauf galopp
+tempo 116
+bar 8
+pickup 0
+notes G4:4 B4:4 | D5:4 R:4 | D5:2 C5:2 B4:2 A4:2 | G4:4 R:4 | A4:2 A4:2 F#4:2 D4:2 | D5:2 D5:2 B4:2 G4:2 | A4:2 A4:2 F#4:2 D4:2 | D5:2 D5:2 B4:2 G4:2 | G4:2 A4:2 B4:2 C5:2 | D5:4 R:4 | D5:2 C5:2 B4:2 A4:2 | G4:4 R:4
+source-a Das Steckenpferd (Hopp, hopp, hopp!), in Unser Liederbuch: die beliebtesten Kinderlieder, Bd. 1, S. 18, B. Schott's Söhne, Mainz 1900 | https://archive.org/details/unserliederbuchd01merc/page/n21/ | pre-1931 print
+score-b https://de.wikipedia.org/wiki/Hopp,_hopp,_hopp,_Pferdchen,_lauf_Galopp | deutsch | relative g' | g4 h4 | d4 r4 | d8 c8 h8 a8 | g4 r4 | a8 a8 fis8 d8 | d'8 d8 h8 g8 | a8 a8 fis8 d8 | d'8 d8 h8 g8 | g8 a8 h8 c8 | d4 r4 | d8 c8 h8 a8 | g4 r4
+composer Carl Gottlieb Hering | 1766 | 1853 | https://de.wikipedia.org/wiki/Carl_Gottlieb_Hering | https://imslp.org/wiki/Category:Hering,_Carl_Gottlieb
+published 1809 | https://de.wikipedia.org/wiki/Hopp,_hopp,_hopp,_Pferdchen,_lauf_Galopp
+footer Unser Liederbuch, Schott 1900

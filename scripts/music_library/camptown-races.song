@@ -1,0 +1,15 @@
+# Verse 1 and chorus, melody = top note of the vocal staff (the chorus is printed in chords).
+id camptown-races
+de Camptown Races
+en Camptown Races
+aliases de camptown races;gwine to run all night;camptown ladies
+tempo 112
+bar 8
+pickup 2
+notes B4:2 | B4:2 B4:2 G#4:2 B4:2 | C#5:2 B4:2 G#4:4 | G#4:2 F#4:6 | G#4:2 F#4:4 B4:2 | B4:2 B4:2 G#4:2 B4:2 | C#5:2 B4:2 G#4:4 | F#4:4 G#4:2 F#4:2 | E4:6 B4:2 | B4:2 B4:2 G#4:2 B4:1 B4:1 | C#5:2 B4:2 G#4:4 | G#4:2 F#4:6 | G#4:2 F#4:4 B4:2 | B4:2 B4:2 G#4:2 B4:1 B4:1 | C#5:1 C#5:1 B4:1 B4:1 G#4:4 | F#4:4 G#4:2 F#4:2 | E4:6 R:2 | E4:3 E4:1 G#4:2 B4:2 | E5:6 R:2 | C#5:3 C#5:1 E5:2 C#5:2 | B4:6 G#4:1 A4:1 | B4:2 B4:2 G#4:1 G#4:1 B4:1 B4:1 | C#5:2 B4:2 G#4:4 | F#4:2 G#4:1 A4:1 G#4:2 F#4:1 F#4:1 | E4:6
+source-a Stephen C. Foster, Camptown Races, in Heart Songs Dear to the American People, pp. 352-354, Chapple Publishing, Boston 1909 | https://archive.org/details/heartsongsdearto00chap/page/n373/ | pre-1931 print
+score-b https://en.wikisource.org/wiki/Page:Camptown_Races_(1850).pdf/2 | nederlands | relative c'' | a8 | a a fis a | b a fis r8 | fis e4. | fis8 e4 a8 | a a fis a | b a fis r8 | e4 fis8 e | d4 r8 a'8 | a a fis a16 a | b8 a fis r8 | fis e4. | fis8 e4 a8 | a8 a fis a16 a | b b a a fis8 r8 | e4 fis8 e | d4. r8 | d8. d16 fis8 a | d4. r8 | b8. b16 d8 b | a4. fis16 g | a8 a fis16 fis a a | b8 a fis4 | e8 fis16 g fis e8 e16 | d2
+composer Stephen Foster | 1826 | 1864 | https://en.wikipedia.org/wiki/Stephen_Foster | https://imslp.org/wiki/Category:Foster,_Stephen
+published 1850 | https://en.wikipedia.org/wiki/Camptown_Races
+footer Heart Songs, Chapple 1909
+settled Matthias 2026-11-07: bar 23 ("Somebody bet on de"), A (Heart Songs 1909) has F#4:2 G#4:1 A4:1 G#4:2 F#4:1 F#4:1, B (Benteen 1850, moved +2) has F#4:2 G#4:1 A4:1 G#4:1 F#4:2 F#4:1; and the last note, A E4:6 closing against the pickup, B E4:8, a full last bar because Benteen's voice enters after a piano introduction; Zitro plays the old print's version (Heart Songs 1909), and a crop of A's scan confirmed A.

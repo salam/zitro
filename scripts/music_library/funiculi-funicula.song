@@ -1,0 +1,17 @@
+# Verse 1 with its chorus echoes, then the solo refrain up to "la!"; the chorus repeat of the refrain is left out.
+# The print has the English words by Edward Oxenford; the melody is Denza's, "included by arrangement with G. Ricordi".
+id funiculi-funicula
+de Funiculì, Funiculà
+en Funiculì, Funiculà
+aliases funiculi;jamme jamme
+tempo 120
+bar 12
+pickup 2
+notes Bb4:2 | Eb5:12~ | Eb5:4 Eb5:2 D5:4 D5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | G4:6 G4:6~ | G4:4 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 R:2 R:4 Bb4:2 | Eb5:12~ | Eb5:4 Eb5:2 D5:4 D5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | G4:6 G4:6~ | G4:4 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 R:2 R:4 G4:2 | G4:12~ | G4:4 G4:2 A4:4 A4:2 | G4:4 G4:2 A4:4 A4:2 | G4:6 G4:6~ | G4:4 D4:2 D4:4 D4:2 | D4:12~ | D4:2 R:2 D4:2 D4:4 D4:2 | D4:12~ | D4:2 R:2 R:2 R:4 Bb4:2 | Bb4:12~ | Bb4:4 Bb4:2 C5:4 C5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | Bb4:6 Bb4:6~ | Bb4:4 F4:2 F4:4 F4:2 | F4:12~ | F4:2 R:2 F4:2 F4:4 F4:2 | F4:12~ | F4:2 R:2 R:2 R:4 R:2 | D5:6 C5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | Eb5:4 D5:2 C5:4 Eb5:2 | D5:6~ D5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | Eb5:4 D5:2 C5:4 Eb5:2 | Bb4:2 R:2 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | Eb5:12 | F5:4 Eb5:2 C5:4 Eb5:2 | Bb4:2 R:2 G4:2 G4:4 Ab4:2 | Bb4:4 Ab4:2 G4:4 F4:2 | Eb4:2 R:2 R:2 R:4
+source-a L. Denza, Funiculi, Funicula, in The Scottish Students' Song Book, pp. 236-239, Bayley & Ferguson, London 1897 | https://archive.org/details/scottishstudents00scot_0/page/n241/ | pre-1931 print
+# Score B's refrain is a separate score with no pickup, so its last bar was full: its final rest is trimmed from
+# r4. to r4 to match A's pickup. Rests are never served, so this is notation-equivalent (controller ruling, 2026-11-07).
+score-b https://it.wikipedia.org/wiki/Funicul%C3%AC_funicul%C3%A0 | deutsch | relative c'' | b8 | es2.~ | es4 es8 d4 d8 | b4 b8 c4 c8 | g4. g~ | g4 g8 f4 es8 | es2.~ | es8 r g f4 es8 | es2.~ | es4 r8 r4 b'8 | es2.~ | es4 es8 d4 d8 | b4 b8 c4 c8 | g4. g4.~ | g4 g8 f4 es8 | es2.~ | es8 r g f4 es8 | es2.~ | es4 r8 r4 g8 | g2.~ | g4 g8 a4 a8 | g4 g8 a4 a8 | g4. g4.~ | g4 d8 d4 d8 | d2.~ | d8 r d d4 d8 | d2.~ | d4 r8 r4 b'8 | b2.~ | b4 b8 c4 c8 | b4 b8 c4 c8 | b4. b4.~ | b4 f8 f4 f8 | f2.~ | f8 r f f4 f8 | f2.~ | f4 r8 r4. | d'4. c8 r8 r | d4. c8 r8 r | es4 d8 c4 es8 | d4.~ d4 r8 | d4. c8 r8 r | d4. c8 r8 r | es4 d8 c4 es8 | b8 r g g4 g8 | g4 g8 g4 g8 | g4 g8 g4 g8 | g4 g8 g4 g8 | es'2. | f4 es8 c4 es8 | b8 r g g4 as8 | b4 as8 g4 f8 | es4 r8 r4
+composer Luigi Denza | 1846 | 1922 | https://en.wikipedia.org/wiki/Luigi_Denza | https://imslp.org/wiki/Category:Denza,_Luigi
+published 1880 | https://imslp.org/wiki/Funicul%C3%AC,_Funicul%C3%A0_(Denza,_Luigi)
+footer Scottish Students' Song Book 1897

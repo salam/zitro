@@ -1,0 +1,16 @@
+# Verse 1 and chorus. Verse: upper voice; chorus: top note of the right-hand chords.
+# Published 1881 by Charles E. Pratt (1841-1902) under the pseudonyms H. J. Fulmer / J. T. Wood; Wikipedia calls the song traditional. Filed as traditional.
+id my-bonnie
+de My Bonnie
+en My Bonnie Lies over the Ocean
+aliases my bonnie is over the ocean;bring back my bonnie to me;my bonny lies over the ocean
+tempo 120
+bar 12
+pickup 4
+notes G4:4 | E5:6 D5:2 C5:4 | D5:4 C5:4 A4:4 | G4:4 E4:8~ | E4:4 R:4 G4:4 | E5:6 D5:2 C5:4 | C5:4 B4:4 C5:4 | D5:12~ | D5:8 G4:4 | E5:6 D5:2 C5:4 | D5:4 C5:4 A4:4 | G4:4 E4:8~ | E4:4 R:4 G4:4 | A4:4 D5:4 C5:4 | B4:4 A4:4 B4:4 | C5:12~ | C5:8 R:4 | G4:12 | C5:12 | A4:12 | C5:12 | B4:4 B4:4 B4:4 | B4:4 A4:4 B4:4 | C5:8 D5:4 | E5:12 | G4:12 | C5:12 | A4:12 | D5:8 C5:4 | B4:4 B4:4 B4:4 | B4:4 A4:4 B4:4 | C5:12~ | C5:4 R:4
+source-a My Bonnie, in Songs the Whole World Sings, ed. Albert E. Wier, D. Appleton, New York 1915, p. 181 | https://archive.org/details/songswholeworlds00wier/page/n184/ | pre-1931 print
+score-b https://en.wikipedia.org/wiki/My_Bonnie_Lies_over_the_Ocean | nederlands | relative g' | \repeat volta 2 { d4 | b' a g | a g e | d b2~ b } \alternative { { d4 | b' a g | g fis g | a2.~ | a2 } { d,4 | e a g | fis e fis | g2.~ | g2 r4 | } } \repeat volta 2 { d2. | g | e | a | fis4 fis fis | fis e fis | } \alternative { { g2 a4 | b2. } { g2.~ | g } }
+traditional My Bonnie, in Songs the Whole World Sings, D. Appleton, New York 1915 | 1915 | https://archive.org/details/songswholeworlds00wier/page/n184/
+traditional Bring Back My Bonnie to Me (as H. J. Fulmer), T. B. Harms & Co., New York 1882 | 1882 | https://imslp.org/wiki/Bring_Back_My_Bonnie_to_Me_(Fulmer,_H._J.)
+footer Songs the Whole World Sings 1915
+settled Matthias 2026-11-07: bars 1, 5 and 9 ("Bonnie lies"), A (Wier 1915) has E5:6 D5:2 C5:4 (dotted), B (en.wikipedia, moved +5) E5:4 D5:4 C5:4 (even); bar 20 ("back"), A C5:12, B D5:12; bar 28 ("back, Oh,"), A D5:8 C5:4, B D5:12; and the end, A's last note C5:12~ C5:4 R:4 (20, closing against the pickup), B C5:24, so B is 4 sixteenths longer; Zitro plays the old print's version (Wier 1915), and crops of A's scan confirmed A.

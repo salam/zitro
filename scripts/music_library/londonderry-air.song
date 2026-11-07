@@ -1,0 +1,17 @@
+# Petrie's 1855 print ("Name unknown", from Miss J. Ross, Limavady), the source every later version descends from.
+# Melody = stems-up top voice of the right hand. The familiar "Danny Boy" sheet (1913) may differ in places.
+# Score B is an independent modern transcription (en.wikipedia LilyPond) of the same print, Petrie 1855;
+# it counts as score B (controller ruling, 2026-11-07).
+id londonderry-air
+de Londonderry Air
+en Danny Boy
+aliases oh danny boy
+tempo 76
+bar 16
+pickup 6
+notes D4:2 Eb4:2 F4:2 | G4:6 F4:2 G4:2 C5:2 Bb4:2 G4:2 | F4:2 Eb4:2 C4:4 R:2 Eb4:2 G4:2 Ab4:2 | Bb4:6 C5:2 Bb4:2 G4:2 Eb4:2 G4:2 | F4:8 R:2 D4:2 Eb4:2 F4:2 | G4:6 F4:2 G4:2 C5:2 Bb4:2 G4:2 | F4:2 Eb4:2 C4:2 B3:2 C4:2 D4:2 Eb4:2 F4:2 | G4:6 Ab4:2 G4:2 F4:2 Eb4:2 F4:2 | Eb4:8 R:2 Bb4:2 C5:2 D5:2 | Eb5:6 D5:2 D5:2 C5:2 Bb4:2 G4:2 | Bb4:2 G4:2 Eb4:4 R:2 Bb4:2 C5:2 D5:2 | Eb5:6 D5:2 D5:2 C5:2 Bb4:2 G4:2 | F4:8 R:2 Bb4:2 Bb4:2 Bb4:2 | G5:6 F5:2 F5:2 Eb5:2 C5:2 Eb5:2 | Bb4:2 G4:2 Eb4:4 R:2 D4:2 Eb4:2 F4:2 | G4:2 C5:2 Bb4:2 G4:2 F4:2 Eb4:2 C4:2 D4:2 | Eb4:8~ Eb4:2
+source-a Air, name unknown, in G. Petrie, The Petrie Collection of the Ancient Music of Ireland, vol. 1, p. 57, M. H. Gill, Dublin 1855 | https://archive.org/details/petriecollection01petr/page/n84/ | pre-1931 print
+score-b https://en.wikipedia.org/wiki/Londonderry_Air | nederlands | relative d' | d8 es f | g4. f8 g c bes g | f es c4 r8 es g as | bes4. c8 bes g es g | f2 r8 d es f | g4. f8 g c bes g | f es c b c d es f | g4. as8 g f es f | es2 r8 bes' c d | es4. d8 d c bes g | bes g es4 r8 bes' c d | es4. d8 d c bes g | f2 r8 bes bes bes | g'4. f8 f es c es | bes g es4 r8 d es f | g c bes g f es c d | es2~ es8
+traditional Air, name unknown (from Miss J. Ross, Limavady), in G. Petrie, The Petrie Collection of the Ancient Music of Ireland, vol. 1, p. 57, Dublin 1855 | 1855 | https://archive.org/details/petriecollection01petr/page/n84/
+traditional Londonderry Air, anonymous Irish air first published in Petrie's Ancient Music of Ireland, 1855 | 1855 | https://en.wikipedia.org/wiki/Londonderry_Air
+footer Petrie, Dublin 1855

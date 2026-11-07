@@ -1,5 +1,19 @@
-ZITRO-MUSIC-INDEX 1 4
+ZITRO-MUSIC-INDEX 1 18
 auld-lang-syne|Auld Lang Syne|Auld Lang Syne|should auld acquaintance be forgot;nehmt abschied brueder|Scottish Students' Song Book 1897
+bunt-sind-schon-die-waelder|Bunt sind schon die Wälder|Bunt sind schon die Wälder||Erk Liederschatz II, Peters c. 1890
+camptown-races|Camptown Races|Camptown Races|de camptown races;gwine to run all night;camptown ladies|Heart Songs, Chapple 1909
 der-mond-ist-aufgegangen|Der Mond ist aufgegangen|Der Mond ist aufgegangen||Erk, Peters c. 1890
+die-vogelhochzeit|Die Vogelhochzeit|Die Vogelhochzeit|vogelhochzeit;ein vogel wollte hochzeit machen|Erk Liederschatz, Peters c. 1920
+funiculi-funicula|Funiculì, Funiculà|Funiculì, Funiculà|funiculi;jamme jamme|Scottish Students' Song Book 1897
+greensleeves|Greensleeves|Greensleeves|green sleeves|Chappell, Olden Time 1859
+hickory-dickory-dock|Hickory Dickory Dock|Hickory Dickory Dock|dickory dickory dock;hickety dickety dock|Elliott, McLoughlin c. 1870
+hopp-hopp-hopp|Hopp, hopp, hopp, Pferdchen lauf Galopp|Hopp, hopp, hopp, Pferdchen lauf Galopp|hopp hopp hopp;pferdchen lauf galopp|Unser Liederbuch, Schott 1900
 ihr-kinderlein-kommet|Ihr Kinderlein, kommet|O Come, Little Children|ihr kinderlein kommt|Unser Liederbuch, Schott 1900
+londonderry-air|Londonderry Air|Danny Boy|oh danny boy|Petrie, Dublin 1855
+mary-had-a-little-lamb|Mary Had a Little Lamb|Mary Had a Little Lamb||Most Popular Mother Goose 1915
+muss-i-denn|Muss i denn zum Städtele hinaus|Muss i denn zum Städtele hinaus|muss i denn;muss i denn muss i denn zum staedtele hinaus;muss i denn zum staedtele naus|Erk Liederschatz I, Peters c. 1890
+my-bonnie|My Bonnie|My Bonnie Lies over the Ocean|my bonnie is over the ocean;bring back my bonnie to me;my bonny lies over the ocean|Songs the Whole World Sings 1915
 oh-susanna|Oh! Susanna|Oh! Susanna|oh susannah|Holt 1848
+three-blind-mice|Three Blind Mice|Three Blind Mice|see how they run|Twice 55 Community Songs 1919
+weisst-du-wie-viel-sternlein|Weißt du, wie viel Sternlein stehen|Weißt du, wie viel Sternlein stehen|weisst du wieviel sternlein stehen;weisst du wie viel sternlein|Unser Liederbuch, Schott 1900
+winter-ade|Winter, ade|Winter, ade|winter ade scheiden tut weh|Unser Liederbuch, Schott 1900

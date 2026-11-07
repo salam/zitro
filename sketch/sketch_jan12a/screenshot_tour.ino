@@ -334,6 +334,24 @@ void handleSerialCommands() {
       Serial.println("modelhost " + modelPubChemHost);
     } else if (line.startsWith("model ")) {
       runModelCommand(line.substring(6));
+    } else if (line == "pressb" || line == "pressc" || line == "holdc") {
+      // The view's button actions, for testing with no hand on the stick
+      if (currentDisplayMode != SHOW_MODEL) {
+        Serial.println("Not in the model view");
+      } else if (line == "pressb") {
+        modelButtonB();
+      } else if (line == "pressc") {
+        Serial.printf("Button C used by the view: %d\n", modelButtonC());
+      } else {
+        Serial.printf("Hold C left the view: %d\n", modelButtonCHold());
+      }
+      Serial.printf("Mode %d, speaker %d\n", currentDisplayMode, M5.Speaker.getVolume());
+    } else if (line == "speaker") {
+      Serial.printf("Speaker volume %d, tone sounding %d\n", M5.Speaker.getVolume(), M5.Speaker.isPlaying(1) ? 1 : 0);
+    } else if (line == "forget") {
+      // So repeated "ask" runs can't copy each other's answers
+      memoryClear();
+      Serial.println("Memory cleared");
     } else if (line.startsWith("ask ")) {
       serialTestQuestion = line.substring(4);
       handleVoiceQuery(false);

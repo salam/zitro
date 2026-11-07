@@ -213,7 +213,7 @@ Proteins, anatomy, recipes, timelines and the detailed globe load their data fro
 
 Ask for a song by name, for example "Spiel Alle meine Entchen", "Wie geht Bruder Jakob?" or "Play Silent Night". The notes move across the screen and the one on the line plays.
 
-Zitro knows these 26 songs. Others get a normal answer with a picture.
+Zitro knows these 26 songs. It has no recordings, so for other music it tells you it can't play that and suggests a song it knows, and you still get a picture. Ask for "Ode to Joy" to hear the famous tune from Beethoven's Ninth. If you just ask for "Beethoven's symphony", Zitro may play that tune or suggest it.
 
 German: Alle meine Entchen, Hänschen klein, Fuchs du hast die Gans gestohlen, Kommt ein Vogel geflogen, Ein Männlein steht im Walde, Alle Vögel sind schon da, Der Kuckuck und der Esel, Kuckuck Kuckuck ruft's aus dem Wald, Backe backe Kuchen, Schlaf Kindlein schlaf, Guten Abend gut' Nacht, Häschen in der Grube, Summ summ summ, O Tannenbaum, Stille Nacht, Schneeflöckchen Weißröckchen, Wer hat die schönsten Schäfchen, Hänsel und Gretel, Bruder Jakob, Zum Geburtstag viel Glück.
 
@@ -221,9 +221,10 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** show the text answer and stop the music. Press again to hear the song from the start.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
+- **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
-The music plays with one click on Button A, at your normal volume. It keeps going round until you stop it, and pauses by itself after 5 minutes.
+The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
 
 Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 

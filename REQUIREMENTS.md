@@ -384,7 +384,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 
 ## Tests
 - `tests/model/run.sh`: reference parsing, SDF parsing with real PubChem files and broken input, rotation, depth order, colours
-- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
+- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `forget` (clear conversation memory), `pressb`, `pressc`, `holdc` (the view's button actions), `speaker` (volume and whether a tone is sounding), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
 
 ---
 

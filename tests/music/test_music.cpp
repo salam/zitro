@@ -274,6 +274,36 @@ static void testEverySong() {
   }
 }
 
+static void testVolumeLevels() {
+  // Button C goes round silent, low, regular, loud; a song starts loud, at the stored volume
+  CHECK(MUSIC_VOLUME_START == MUSIC_VOLUME_LOUD);
+  int level = MUSIC_VOLUME_START;
+  const int expected[] = {MUSIC_VOLUME_SILENT, MUSIC_VOLUME_LOW, MUSIC_VOLUME_REGULAR, MUSIC_VOLUME_LOUD};
+  for (int i = 0; i < 8; i++) {
+    level = musicNextVolumeLevel(level);
+    CHECK(level == expected[i % 4]);
+  }
+  // Loud is exactly the stored setting, whatever that is; silent is really silent
+  for (int stored : {0, 1, 60, 210, 255}) {
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_LOUD) == stored);
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_SILENT) == 0);
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_LOW) <= musicVolumeAt(stored, MUSIC_VOLUME_REGULAR));
+    CHECK(musicVolumeAt(stored, MUSIC_VOLUME_REGULAR) <= stored);
+  }
+  CHECK(musicVolumeAt(210, MUSIC_VOLUME_REGULAR) == 140);
+  CHECK(musicVolumeAt(210, MUSIC_VOLUME_LOW) == 70);
+  // A stored value outside the range can't wrap round to something loud
+  CHECK(musicVolumeAt(300, MUSIC_VOLUME_LOUD) == 255);
+  CHECK(musicVolumeAt(-5, MUSIC_VOLUME_LOUD) == 0);
+  // Silent starts no tones at all: the buzzer clicks when a tone starts, even at volume 0
+  CHECK(!musicVolumeSounds(MUSIC_VOLUME_SILENT));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_LOW));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_REGULAR));
+  CHECK(musicVolumeSounds(MUSIC_VOLUME_LOUD));
+  // The level is also the number of sound waves on the speaker symbol
+  CHECK(MUSIC_VOLUME_SILENT == 0 && MUSIC_VOLUME_LOW == 1 && MUSIC_VOLUME_REGULAR == 2 && MUSIC_VOLUME_LOUD == 3);
+}
+
 static void testPromptRule() {
   for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
     if (!strstr(MUSIC_PROMPT_RULE, MUSIC_SONGS[i].id)) {
@@ -284,6 +314,9 @@ static void testPromptRule() {
   for (const char* c = MUSIC_PROMPT_RULE; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
   CHECK(strstr(MUSIC_PROMPT_RULE, "is_audio false") != nullptr);
   CHECK(strstr(MUSIC_PROMPT_RULE, "music:<id>") != nullptr);
+  // Only a song from the table makes a sound, so the AI may never promise anything else
+  CHECK(strstr(MUSIC_PROMPT_RULE, "ohne 'music:' nie 'Ich spiele'") != nullptr);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "ergeben 'music:ode-to-joy'") != nullptr);
   // Every example in the rule leads to a real song
   for (const char* p = MUSIC_PROMPT_RULE; (p = strstr(p, "ergibt 'music:")) != nullptr;) {
     p += strlen("ergibt 'music:");
@@ -470,6 +503,7 @@ int main(int argc, char** argv) {
   testPinnedMelodies();
   testEverySong();
   testFindSong();
+  testVolumeLevels();
   testPromptRule();
   testDrawing();
   printf("music tests: %d checks, %d failures\n", checks, failures);

@@ -3,6 +3,9 @@
 ## Requirements
 
 - `model` value `music:<song id>` opens the music band. The id must exactly match the table in `sketch/sketch_jan12a/music_songs.h` (case aside). Anything else makes `fetch` return false, so the normal Wikipedia picture shows.
+- Zitro has no recordings and can't sing. If someone asks for music outside the table, `model` stays empty and the answer must say plainly that Zitro can't play it, and name a song from the list as an example. It must never claim to play or sing. This is a prompt rule, so the wording comes from the AI and needs checking on the stick, several times per question with memory cleared (serial `forget`).
+- A request for Beethoven's Ninth, or for "Beethoven's symphony" without a number, should open `ode-to-joy`. The answer must say it is the Ode to Joy melody from the Ninth, not the whole symphony.
+- Measured on the stick on 2026-11-06, 12 questions 3 times each with memory cleared: no answer claimed to play something that wasn't playing. "Play Beethoven's symphony" opened the melody 2 of 3 times and "Play a Beethoven symphony" 0 of 3; the other times the answer honestly offered it. "Spiel Beethovens Sinfonie" opened it 3 of 3 times. One answer in 36 came in German to an English question. A prompt rule can't make these certain.
 - Notes never come from the AI. The AI only picks an id; the prompt rule lists the ids and forbids it from supplying notes. Pitch, length, tempo and song name all come from the table.
 - The table holds 26 melodies. Each is compared note by note with a published score (`tests/music/references.txt`, `tests/music/check_references.py`), and seven are also pinned by pitch and length in `tests/music/test_music.cpp`. Each song's bars must add up, with a lead-in made up by the last bar, so the loop stays in time. Every song must be public domain; see below.
 - Tempo is the table's choice, not a fact from a source: scores rarely give one.
@@ -13,7 +16,10 @@
 - Sound: `M5.Speaker.tone()` on channel 1, one note at a time, at the stored volume (`settings`, key `volume`). Tones are only started from `frame()` and each has its own length, which leaves a 12 percent gap before the next note, so nothing waits and sound can't hang when frames stop. Band and sound share one clock. A note starts on the first frame at or after its time, so up to 40 ms late.
 - After a stall the clock jumps to the note it should be on and sounds only that one. Tied notes sound once for their combined length.
 - `end()` stops the sound. `begin()` starts the song from its beginning, so going to the text and back starts over.
-- Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button C: back to the text. Button A: new question, as everywhere. No gyro turning.
+- Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button A: new question, as everywhere. No gyro turning.
+- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. A tab at Button C's edge, like the ones in the print menu, always shows the level: a speaker with no sound waves for silent, then one, two or three. Silent starts no tones at all, because the buzzer clicks when a tone starts, even at volume 0. The tab sits at the top left, or at the bottom right when the stick is held the other way round, where the song name stops short of it.
+- Hold Button C for 1 second: back to the text. From the text, a click on Button C opens the song again from the start, at the same level.
+- The level is for this song only and is never saved. A new song starts loud, and `end()` puts the speaker back to the stored volume, so speech and alarms never come out silent. An alarm during a silent song still rings at the stored volume. The user approved this change to Button C on 2026-11-06. It applies to music only: in other views a Button C click still does what it did.
 - `keepAwake` is true while playing. **Addition to the brief:** after 5 minutes of playing without a Button B press it pauses by itself, and then the normal sleep timers apply. An endless melody that kept the stick awake would otherwise break the 3D spec's anti-goal of a forgotten stick draining its battery.
 - A song result is not read aloud: the prompt rule sets `is_audio` false. A single click plays the music. The user approved this exception to "single click is text only".
 - A double click on Button A still reads the answer aloud. `speakText` closes the view, so the first note sounds for a moment before the speech, and the song starts from the beginning after it. Fixing the moment of sound needs a change in `sketch_jan12a.ino`.
@@ -24,7 +30,7 @@
 
 Ask for a song by name, for example "Spiel Alle meine Entchen", "Wie geht Bruder Jakob?" or "Play Silent Night". The notes move across the screen and the one on the line plays.
 
-Zitro knows these 26 songs. Others get a normal answer with a picture.
+Zitro knows these 26 songs. It has no recordings, so for other music it tells you it can't play that and suggests a song it knows, and you still get a picture. Ask for "Ode to Joy" to hear the famous tune from Beethoven's Ninth. If you just ask for "Beethoven's symphony", Zitro may play that tune or suggest it.
 
 German: Alle meine Entchen, Hänschen klein, Fuchs du hast die Gans gestohlen, Kommt ein Vogel geflogen, Ein Männlein steht im Walde, Alle Vögel sind schon da, Der Kuckuck und der Esel, Kuckuck Kuckuck ruft's aus dem Wald, Backe backe Kuchen, Schlaf Kindlein schlaf, Guten Abend gut' Nacht, Häschen in der Grube, Summ summ summ, O Tannenbaum, Stille Nacht, Schneeflöckchen Weißröckchen, Wer hat die schönsten Schäfchen, Hänsel und Gretel, Bruder Jakob, Zum Geburtstag viel Glück.
 
@@ -32,9 +38,10 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** show the text answer and stop the music. Press again to hear the song from the start.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
+- **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
-The music plays with one click on Button A, at your normal volume. It keeps going round until you stop it, and pauses by itself after 5 minutes.
+The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
 
 Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 

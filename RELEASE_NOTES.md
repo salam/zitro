@@ -6,6 +6,7 @@
 - **Honest answers**: if Zitro doesn't know a song, it says "I don't know that song. Try ...!" and suggests one. If it can't reach its song list, it tells you that instead.
 - **Know the source**: songs from the server show where they come from in the footer, and zitro.spot lists every source.
 - **Favourites work offline**: the songs Zitro already knew still play without WiFi.
+- **Fourteen new songs to sing along**: ask for "Hopp, hopp, hopp", "Three Blind Mice" or "Greensleeves" and watch the notes roll by!
 
 ## Fri 6 Nov, 2026
 

@@ -57,19 +57,26 @@ A song goes on the server only if **all** of these hold. **"Sicher global ungesc
 1. Everyone who wrote the melody died before 1926, or the melody is traditional with no known author. The longest term in common use is the author's life plus 100 years (Mexico).
 2. The melody was first published before 1931, or the same traditional melody is documented in print before then. That covers the US rule as of 2026.
 3. Lyrics don't count because we never store or show them. The name of a song is not protected.
-4. The notes come from a source we may use: public domain, CC0 or CC BY, the latter credited. CC BY-SA scores, such as Wikipedia's, may be used **only to compare**, as `tests/music/references.txt` does today. Their notes are never copied into our data.
+4. The notes come from a source we may use: a printed songbook from before 1931, or a public domain, CC0 or CC BY score, the latter credited. CC BY-SA scores, such as Wikipedia's, may be used **only to compare**, as `tests/music/references.txt` does today. Their notes are never copied into our data. All-rights-reserved sources aren't used at all, not even to compare, because comparison means storing their notes in this public repo.
 
 Every song records the evidence: who wrote it, their dates, where it was first printed, and the source of the notes. If the evidence is missing or disputed, the song stays out. For example, the authorship of "O sole mio" is disputed, so it stays out.
 
 This is a careful reading, not legal advice.
 
-**Run the same rule over the 26 built-in songs and report the result.** Don't remove any without asking. "Zum Geburtstag viel Glück" needs a look: the melody's author died in 1916, the lyricist in 1946.
+**Run rules 1 to 3 over the 26 built-in songs and report the result.** They keep their existing check against one published score and aren't subject to rule 4 or the two-score rule. Their melodies are public domain and were typed in, not copied. Where a second score turns up anyway, report any difference. Don't remove any song without asking. "Zum Geburtstag viel Glück" needs a look: the melody's author died in 1916, the lyricist in 1946.
 
 ## How notes get in
 
 The confidence rule decides by kind of source:
 
-**Children's songs and evergreens: two published scores must agree.** Notes are entered as they are for the 26 today, then compared note by note with two independent published scores. Agreement after allowing for transposition and repeat signs is a pass. Any other difference is a rejection, unless a person settles it with a note in the data saying why. A single AI-transcribed score is never enough. One of the two can be CC BY-SA because it is only compared.
+**Children's songs and evergreens: two independent scores must agree, note by note.**
+
+- Score A is the recorded source of the notes: a scan of a printed songbook from before 1931, or a public domain, CC0 or CC BY score.
+- Score B is only compared and can be any openly licensed score, including CC BY-SA ones such as Wikipedia's.
+- Agreement after allowing for transposition and repeat signs is a pass. Any other difference is a rejection, unless a person settles it with a note in the data saying why.
+- A scan may be read by software or an AI. That reading alone never counts. The check is that it matches an independent score, because a misread note is very unlikely to match by chance.
+- A CC BY credit is owed only when a CC BY score is score A.
+- Start with five songs end to end. If scans of old songbooks turn out too hard to use, come back to the user before going on; the 20 songs in phase 1 depend on this.
 
 **Mutopia single-line pieces (voice, flute, violin, recorder and similar): one score, machine-read.** Mutopia names the edition it set from. The piece must be strictly one note at a time.
 
@@ -110,8 +117,9 @@ Same pattern as proteins and timelines: static files in `webpage2/data/music/`, 
 This is the trap. The AI writes its answer before the stick knows whether the song exists. So it could say "Here is X" and find nothing.
 
 - The prompt rule tells the AI to write only the title as `answer` when it sets `music:`, with no promise.
-- If the lookup fails, the firmware **replaces the AI's answer** with a fixed sentence in the device language, for example "Dieses Lied kenne ich nicht." The screen and any spoken answer use that sentence.
-- If the server can't be reached and the song isn't built in, a different fixed sentence says so. "I don't know it" would be untrue there.
+- All requests to hear music use `music:<title>`, including "Play Mozart". The AI no longer decides whether Zitro knows a song.
+- If the lookup fails, the firmware **replaces the AI's answer** with a fixed sentence in the device language that also suggests a built-in song, as the honest answer does today. For example: "Dieses Lied kenne ich nicht. Probier mal Bruder Jakob!" The firmware picks the song, so the prompt needs no list. The screen and any spoken answer use that sentence.
+- If the server can't be reached and the song isn't built in, a different fixed sentence says so and suggests a built-in song too. "I don't know it" would be untrue there.
 - The picture from `image_query` still shows, as it does today.
 - Nothing is cached on the stick between songs. Waking from deep sleep looks the song up again, like proteins, and needs WiFi for server songs.
 
@@ -133,6 +141,7 @@ This is the trap. The AI writes its answer before the stick knows whether the so
 
 These need updating in `docs/features/music.md`, `REQUIREMENTS.md` and `USERGUIDE.md`:
 
+- "Name a song from the list as an example" stays, but the firmware now picks the song, not the AI.
 - "The id must exactly match the table": it becomes a title matched against table and index.
 - "The prompt rule lists the ids": it no longer does.
 - "Each is compared note by note with a published score": it stays for children's songs and evergreens, with two scores. **Mutopia pieces are read from one score by program instead.** That is a real loosening, accepted because Mutopia's source is a named edition.

@@ -123,7 +123,7 @@ three-blind-mice
   Score B (compared only): https://archive.org/details/ouroldnurseryrhy00lond/page/n20/mode/1up
   Traditional, printed in: Three Blind Mice (Round), in Twice 55 Community Songs (The Brown Book), C. C. Birchard, Boston 1919 (1919) | https://archive.org/details/twice-55-community-songs-no-1-1919/page/n43/
   Traditional, printed in: English round, earliest form (minor) in Thomas Ravenscroft, Deuteromelia, London 1609 (IMSLP: Piece Style Traditional (folk), Year of First Publication 1609) (1609) | https://imslp.org/wiki/Three_Blind_Mice_(English_Folk_Music)
-  Settled: Matthias 2026-11-07: form only, A (Twice 55 Community Songs 1919) sings "Three blind mice" (bars 1-2) and "See how they run" (bars 5-6) twice each, as in the round, B (Augener 1917) sings each once, so B has 12 bars to A's 16; every note of A's material agrees with B; Zitro plays the 1919 form with the repeats, and a blind second reading of another print (Augener 1917) confirmed A's notes.
+  Settled: Matthias 2026-11-07: A (Twice 55 Community Songs 1919) sings "Three blind mice" (bars 1-4) and "See how they run" (bars 5-8) twice each, as in the round, B (Augener 1917) sings each once, so B has 12 bars to A's 16; and the last note, A D4:6~ D4:4 R:2 (12 sixteenths in total), B D4:6~ D4:4 (10, the print's short last bar); every other note of A's material agrees with B; Zitro plays the 1919 form with the repeats, and a blind second reading of another print (Augener 1917) confirmed A's notes.
 
 weisst-du-wie-viel-sternlein
   Names: Weißt du, wie viel Sternlein stehen / Weißt du, wie viel Sternlein stehen

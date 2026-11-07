@@ -165,7 +165,7 @@ struct Pinned { int midi; int ticks; };
 
 template <size_t N>
 static void checkMelody(const char* id, const Pinned (&expected)[N]) {
-  const MusicSong* song = musicFindSong(id);
+  const MusicSong* song = musicFindBuiltIn(id);
   CHECK(song != nullptr);
   if (!song) return;
   int total = 0;
@@ -250,7 +250,7 @@ static void testEverySong() {
     CHECK(s.id && s.id[0] && strlen(s.id) < 40);
     CHECK(s.nameDe && s.nameDe[0] && s.nameEn && s.nameEn[0]);
     for (const char* c = s.id; *c; c++) CHECK((*c >= 'a' && *c <= 'z') || *c == '-');
-    CHECK(musicFindSong(s.id) == &s);
+    CHECK(musicFindBuiltIn(s.id) == &s);
     for (int j = 0; j < i; j++) CHECK(strcmp(MUSIC_SONGS[j].id, s.id) != 0);
     if (failures != checksBefore) fprintf(stderr, "  ... in song %s\n", s.id);
   }
@@ -468,56 +468,175 @@ static void testVolumeLevels() {
 }
 
 static void testPromptRule() {
-  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
-    if (!strstr(MUSIC_PROMPT_RULE, MUSIC_SONGS[i].id)) {
-      fprintf(stderr, "  rule doesn't name %s\n", MUSIC_SONGS[i].id);
-      CHECK(false);
-    }
-  }
   for (const char* c = MUSIC_PROMPT_RULE; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
   CHECK(strstr(MUSIC_PROMPT_RULE, "is_audio false") != nullptr);
-  CHECK(strstr(MUSIC_PROMPT_RULE, "music:<id>") != nullptr);
-  // Only a song from the table makes a sound, so the AI may never promise anything else
-  CHECK(strstr(MUSIC_PROMPT_RULE, "ohne 'music:' nie 'Ich spiele'") != nullptr);
-  CHECK(strstr(MUSIC_PROMPT_RULE, "ergeben 'music:ode-to-joy'") != nullptr);
-  // Every example in the rule leads to a real song
+  CHECK(strstr(MUSIC_PROMPT_RULE, "music:<Titel>") != nullptr);
+  // The answer is only the title: the stick decides whether a song plays, so the AI may never promise one
+  CHECK(strstr(MUSIC_PROMPT_RULE, "nie 'Ich spiele'") != nullptr);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "Sprache der Frage") != nullptr);
+  CHECK(strstr(MUSIC_PROMPT_RULE, "image_query") != nullptr);
+  // Every example leads to a built-in song, except the two that show what a miss looks like
+  int examples = 0, misses = 0;
   for (const char* p = MUSIC_PROMPT_RULE; (p = strstr(p, "ergibt 'music:")) != nullptr;) {
     p += strlen("ergibt 'music:");
     const char* end = strchr(p, '\'');
     CHECK(end != nullptr);
     if (!end) break;
-    const std::string id(p, end - p);
-    CHECK(musicFindSong(id.c_str()) != nullptr);
-  }
-  // The list in the rule has no id that the table lacks
-  const char* list = strstr(MUSIC_PROMPT_RULE, "dieser id: ");
-  CHECK(list != nullptr);
-  if (list) {
-    list += strlen("dieser id: ");
-    const char* stop = strstr(list, " (z.B.");
-    CHECK(stop != nullptr);
-    int named = 0;
-    while (stop && list < stop) {
-      const char* comma = strchr(list, ',');
-      const char* end = (comma && comma < stop) ? comma : stop;
-      const std::string id(list, end - list);
-      CHECK(musicFindSong(id.c_str()) != nullptr);
-      named++;
-      list = end;
-      if (*list == ',') list += 2;
+    const std::string title(p, end - p);
+    examples++;
+    if (title == "Mozart" || title == "ein Lied") {
+      CHECK(musicFindBuiltIn(title.c_str()) == nullptr);
+      misses++;
+    } else if (!musicFindBuiltIn(title.c_str())) {
+      fprintf(stderr, "  example '%s' finds no song\n", title.c_str());
+      CHECK(false);
     }
-    CHECK(named == MUSIC_SONG_COUNT);
+  }
+  CHECK(examples >= 5 && misses == 2);
+  const char* required[] = {"'Spiel Alle meine Entchen' ergibt 'music:Alle meine Entchen'",
+                            "'Play Silent Night' ergibt 'music:Silent Night'",
+                            "'Spiel Beethovens Sinfonie' ergibt 'music:Ode an die Freude'",
+                            "'Play Mozart' ergibt 'music:Mozart'", "'Sing mir ein Lied' ergibt 'music:ein Lied'",
+                            "'Wer schrieb Stille Nacht?'"};
+  for (const char* r : required) CHECK(strstr(MUSIC_PROMPT_RULE, r) != nullptr);
+  // The rule no longer lists ids: the AI gives a title and the stick looks it up
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
+    if (strstr(MUSIC_PROMPT_RULE, MUSIC_SONGS[i].id)) {
+      fprintf(stderr, "  rule names the id %s\n", MUSIC_SONGS[i].id);
+      CHECK(false);
+    }
+  }
+}
+
+static const MusicSong* songById(const char* id) {
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) if (!strcmp(MUSIC_SONGS[i].id, id)) return &MUSIC_SONGS[i];
+  return nullptr;
+}
+
+// Calls f(name) for each normalised name of a song: nameDe, nameEn and every alias
+template <typename F>
+static void forEachName(const MusicSong& s, F f) {
+  char out[128];
+  if (eduNormaliseName(s.nameDe, out, sizeof(out), true)) f(std::string(out));
+  if (eduNormaliseName(s.nameEn, out, sizeof(out), true)) f(std::string(out));
+  for (const char* a = s.aliases; a && *a;) {
+    const char* semi = strchr(a, ';');
+    const std::string alias = semi ? std::string(a, semi - a) : std::string(a);
+    f(alias);
+    a = semi ? semi + 1 : a + alias.size();
   }
 }
 
 static void testFindSong() {
-  CHECK(musicFindSong("twinkle-twinkle") != nullptr);
-  CHECK(musicFindSong("Twinkle-Twinkle") != nullptr);
-  CHECK(musicFindSong("twinkle-twinkle")->nameEn[0] == 'T');
-  const char* unknown[] = {"", " ", "twinkle", "twinkle-twinkle ", " twinkle-twinkle", "twinkle-twinkle-little-star",
-                           "wheels-on-the-bus", "Alle meine Entchen", "../../etc/passwd", "alle-meine-entchen\n"};
-  for (const char* s : unknown) CHECK(musicFindSong(s) == nullptr);
-  CHECK(musicFindSong(nullptr) == nullptr);
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
+    const MusicSong& s = MUSIC_SONGS[i];
+    CHECK(musicFindBuiltIn(s.id) == &s);
+    CHECK(musicFindBuiltIn(s.nameDe) == &s);
+    CHECK(musicFindBuiltIn(s.nameEn) == &s);
+    std::string upper(s.id);
+    for (char& c : upper) c = (c >= 'a' && c <= 'z') ? (char)(c - 32) : c;
+    CHECK(musicFindBuiltIn(upper.c_str()) == &s);  // Old music:<id> references, in any case
+    // Aliases are written normalised, so they match exactly as written
+    for (const char* a = s.aliases; a && *a;) {
+      const char* semi = strchr(a, ';');
+      const std::string alias = semi ? std::string(a, semi - a) : std::string(a);
+      char out[128];
+      if (alias.empty() || !eduNormaliseName(alias.c_str(), out, sizeof(out), true) || alias != out) {
+        fprintf(stderr, "  %s: alias '%s' is not normalised\n", s.id, alias.c_str());
+        CHECK(false);
+      }
+      CHECK(musicFindBuiltIn(alias.c_str()) == &s);
+      a = semi ? semi + 1 : a + alias.size();
+    }
+  }
+  // No name or alias belongs to two songs: such a title would find neither
+  for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
+    for (int j = i + 1; j < MUSIC_SONG_COUNT; j++) {
+      forEachName(MUSIC_SONGS[i], [&](const std::string& a) {
+        forEachName(MUSIC_SONGS[j], [&](const std::string& b) {
+          if (a == b) {
+            fprintf(stderr, "  '%s' is in %s and %s\n", a.c_str(), MUSIC_SONGS[i].id, MUSIC_SONGS[j].id);
+            CHECK(false);
+          }
+        });
+      });
+    }
+  }
+  // A child asks in the other language, or the AI writes the title its own way
+  CHECK(musicFindBuiltIn("Brother John") == songById("frere-jacques"));
+  CHECK(musicFindBuiltIn("Bruder Jakob") == songById("frere-jacques"));
+  CHECK(musicFindBuiltIn("Fr\xC3\xA8re Jacques") == songById("frere-jacques"));
+  CHECK(musicFindBuiltIn("frere jacques") == songById("frere-jacques"));
+  CHECK(musicFindBuiltIn("BEETHOVEN'S SYMPHONY") == songById("ode-to-joy"));
+  CHECK(musicFindBuiltIn("Beethovens Sinfonie") == songById("ode-to-joy"));
+  CHECK(musicFindBuiltIn("Freude, sch\xC3\xB6ner G\xC3\xB6tterfunken") == songById("ode-to-joy"));
+  CHECK(musicFindBuiltIn("Silent Night") == songById("stille-nacht"));
+  CHECK(musicFindBuiltIn("\xE2\x80\x9EStille Nacht\xE2\x80\x9C") == songById("stille-nacht"));
+  CHECK(musicFindBuiltIn("Zum Geburtstag viel Gl\xC3\xBC""ck") == songById("happy-birthday"));
+  CHECK(musicFindBuiltIn("Twinkle Twinkle Little Star") == songById("twinkle-twinkle"));
+  CHECK(musicFindBuiltIn("twinkle-twinkle-little-star") == songById("twinkle-twinkle"));
+  CHECK(musicFindBuiltIn("  H\xC3\xA4nschen klein ") == songById("haenschen-klein"));
+  // Only exact names: no part of a title, no near match
+  const char* unknown[] = {"", " ", "!!!", "Play", "alle meine", "Alle meine Entchen spielen", "twinkle", "Mozart",
+                           "ein Lied", "Beethovens F\xC3\xBCnfte", "wheels-on-the-bus", "../../etc/passwd",
+                           "\xE6\x97\xA5\xE6\x9C\xAC", "frere-jacque", "brother johns"};
+  for (const char* s : unknown) {
+    if (musicFindBuiltIn(s) != nullptr) {
+      fprintf(stderr, "  '%s' found a song\n", s);
+      CHECK(false);
+    }
+  }
+  CHECK(musicFindBuiltIn(nullptr) == nullptr);
+  std::string longTitle(300, 'a');
+  CHECK(musicFindBuiltIn(longTitle.c_str()) == nullptr);
+}
+
+static void testMissAnswer() {
+  char out[160];
+  const MusicSong* de = musicSuggestion(true, 0);
+  const MusicSong* en = musicSuggestion(false, 0);
+  CHECK(de == songById("alle-meine-entchen") && en == songById("twinkle-twinkle"));
+  musicMissAnswer(MUSIC_LOOKUP_UNKNOWN, true, 0, out, sizeof(out));
+  CHECK(!strcmp(out, "Dieses Lied kenne ich nicht. Probier mal Alle meine Entchen!"));
+  musicMissAnswer(MUSIC_LOOKUP_OFFLINE, true, 0, out, sizeof(out));
+  CHECK(!strcmp(out, "Ich erreiche gerade meine Liederliste nicht. Probier mal Alle meine Entchen!"));
+  musicMissAnswer(MUSIC_LOOKUP_UNKNOWN, false, 0, out, sizeof(out));
+  CHECK(!strcmp(out, "I don't know that song. Try Twinkle, Twinkle, Little Star!"));
+  musicMissAnswer(MUSIC_LOOKUP_OFFLINE, false, 0, out, sizeof(out));
+  CHECK(!strcmp(out, "I can't reach my song list right now. Try Twinkle, Twinkle, Little Star!"));
+  // The firmware picks by seed from four songs per language, each named in that language
+  const char* german[] = {"alle-meine-entchen", "frere-jacques", "summ-summ-summ", "backe-backe-kuchen"};
+  const char* english[] = {"twinkle-twinkle", "row-your-boat", "london-bridge", "mulberry-bush"};
+  for (unsigned seed = 0; seed < 8; seed++) {
+    const MusicSong* g = musicSuggestion(true, seed);
+    const MusicSong* e = musicSuggestion(false, seed);
+    CHECK(g && g == songById(german[seed % 4]));
+    CHECK(e && e == songById(english[seed % 4]));
+    if (!g || !e) continue;
+    for (const char* c = g->nameDe; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
+    for (const char* c = e->nameEn; *c; c++) CHECK((unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F);
+    musicMissAnswer(MUSIC_LOOKUP_UNKNOWN, true, seed, out, sizeof(out));
+    CHECK(strstr(out, g->nameDe) != nullptr);
+    musicMissAnswer(MUSIC_LOOKUP_OFFLINE, false, seed, out, sizeof(out));
+    CHECK(strstr(out, e->nameEn) != nullptr);
+  }
+  CHECK(musicSuggestion(true, 0xFFFFFFFFu) != nullptr);
+  // A song that was found needs no sentence
+  strcpy(out, "x");
+  musicMissAnswer(MUSIC_LOOKUP_FOUND, true, 0, out, sizeof(out));
+  CHECK(out[0] == 0);
+  // A short buffer is cut, never overrun
+  memset(out, 'x', sizeof(out));
+  musicMissAnswer(MUSIC_LOOKUP_UNKNOWN, true, 0, out, 10);
+  CHECK(strlen(out) == 9 && !strncmp(out, "Dieses Li", 9));
+  for (size_t i = 10; i < sizeof(out); i++) CHECK(out[i] == 'x');
+  memset(out, 'x', sizeof(out));
+  musicMissAnswer(MUSIC_LOOKUP_OFFLINE, false, 0, out, 1);
+  CHECK(out[0] == 0 && out[1] == 'x');
+  out[0] = 'x';
+  musicMissAnswer(MUSIC_LOOKUP_OFFLINE, false, 0, out, 0);
+  CHECK(out[0] == 'x');
+  musicMissAnswer(MUSIC_LOOKUP_OFFLINE, false, 0, nullptr, 10);  // No crash
 }
 
 // Runs the real drawing code and keeps what it asks for
@@ -702,6 +821,7 @@ int main(int argc, char** argv) {
   testSongFile();
   testServerData(argc > 1 ? argv[1] : nullptr);
   testFindSong();
+  testMissAnswer();
   testVolumeLevels();
   testPromptRule();
   testDrawing();

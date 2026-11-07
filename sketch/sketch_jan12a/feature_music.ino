@@ -29,7 +29,7 @@ static void musicUnload() {
 // Only a song in the table counts. Anything else is false, so a picture shows.
 static bool musicFetch(const char* query) {
   musicUnload();
-  const MusicSong* song = musicFindSong(query);
+  const MusicSong* song = musicFindBuiltIn(query);
   if (!song) {
     Serial.printf("Music: no song '%s'\n", query);
     return false;

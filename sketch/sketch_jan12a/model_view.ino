@@ -11,7 +11,12 @@ static const float MODEL_IDLE_RAD_PER_S = 0.35f;
 bool modelResetRotateToggle = false;
 const EduFeature* activeFeature = nullptr;
 float modelGyroDps[3] = {0, 0, 0};
+bool modelViewRedraw = false;
+bool modelIdleTurning = true;
 static unsigned long modelWindowStart = 0;
+static unsigned long modelHintsFrom = 0;  // When the button tabs last appeared
+static bool modelHintsWereShowing = false;
+static unsigned long modelHandTurnedAt = 0;
 static M5Canvas* modelCanvas = nullptr;
 static bool modelCanvasInPsram = false;
 
@@ -71,10 +76,28 @@ bool modelViewActive() {
   return modelCanvas != nullptr;
 }
 
+// Shows the button tabs again for a moment
+static void modelShowHints() {
+  modelHintsFrom = millis();
+}
+
+// A tab next to every button: A always asks something new; B and C as the feature says
+static void modelDrawHints(M5Canvas& c) {
+  int kindB = activeFeature->buttonB ? HINT_NONE : HINT_ZOOM;
+  int kindC = activeFeature->buttonC ? HINT_NONE : HINT_TEXT;
+  if (activeFeature->hints) activeFeature->hints(kindB, kindC);
+  drawButtonHints(c, M5.Display.getRotation(), HINT_MIC, kindB, kindC);
+}
+
 // Draws one frame and shows it
 void modelViewRender(float dt) {
   if (!modelCanvas || !activeFeature || !activeFeature->frame) return;
+  const bool hints = modelHintsShowing(millis(), modelHintsFrom);
+  modelViewRedraw = modelHintsWereShowing && !hints;
+  modelHintsWereShowing = hints;
   activeFeature->frame(*modelCanvas, dt);
+  modelViewRedraw = false;
+  if (hints) modelDrawHints(*modelCanvas);
   modelCanvas->pushSprite(0, 0);
   captureCanvas(*modelCanvas);
 }
@@ -98,6 +121,8 @@ bool modelViewShow() {
   currentDisplayMode = SHOW_MODEL;
   // Every way here is a button press or a wake-up, which restarts the 5 minutes of motion
   modelWindowStart = millis();
+  modelShowHints();
+  modelHandTurnedAt = millis() - MODEL_IDLE_AFTER_HAND_MS;  // Lying still, it turns by itself at once
   updateGyroPower();
   modelViewRender(0.0f);
   return true;
@@ -113,6 +138,7 @@ void leaveModelView() {
 // Button B in the view: the feature's own action, or zoom
 void modelButtonB() {
   modelWindowStart = millis();
+  modelShowHints();
   if (activeFeature && activeFeature->buttonB) {
     activeFeature->buttonB();
   } else {
@@ -120,9 +146,17 @@ void modelButtonB() {
   }
 }
 
+// Button B double click in the view: the feature's second action, if it has one
+void modelButtonBDouble() {
+  modelWindowStart = millis();
+  modelShowHints();
+  if (activeFeature && activeFeature->buttonBDouble) activeFeature->buttonBDouble();
+}
+
 // Button C in the view. True if the feature used the press; otherwise it means back to the text.
 bool modelButtonC() {
   modelWindowStart = millis();
+  modelShowHints();
   return activeFeature && activeFeature->buttonC && activeFeature->buttonC();
 }
 
@@ -157,9 +191,12 @@ void modelViewTick() {
     }
     if (magnitude >= MODEL_ACTIVE_DPS && now - modelWindowStart < MODEL_MOTION_CAP_MS) lastActivityTime = now;
   }
+  if (magnitude >= MODEL_STILL_DPS) modelHandTurnedAt = now;
+  modelIdleTurning = modelIdleTurnAllowed(now, modelHandTurnedAt);
   if (activeFeature->keepAwake && activeFeature->keepAwake()) lastActivityTime = now;
-  // The globe holds still so the pin stays in view
-  if (magnitude < MODEL_STILL_DPS && activeFeature->turnsWithGyro && activeFeature != &FEATURE_GLOBE) {
+  // The globe holds still so the pin stays in view. After the hand has turned the model, it waits a few seconds
+  // before it turns by itself, so what the hand turned to stays in view.
+  if (modelIdleTurning && activeFeature->turnsWithGyro && activeFeature != &FEATURE_GLOBE) {
     mat3Rotate(modelRotation, 0, MODEL_IDLE_RAD_PER_S * dt, 0);
   }
   modelViewRender(dt);

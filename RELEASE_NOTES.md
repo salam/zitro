@@ -8,6 +8,9 @@
 - **Favourites work offline**: the songs Zitro already knew still play without WiFi.
 - **Always honest about songs**: whenever Zitro can't play the song you asked for, even with a very long title or together with a drawing, it says so and suggests one it knows.
 - **Fourteen new songs to sing along**: ask for "Hopp, hopp, hopp", "Three Blind Mice" or "Greensleeves" and watch the notes roll by!
+- **Notes in colour**: double-click Button B while a song plays and every note head lights up in its own rainbow colour, C red to B violet, just like Boomwhackers. Zitro remembers it for the next song.
+- **See which button does what**: when a song, a 3D model or any other result opens, little tabs at the buttons show what they do: pause, zoom, next, back or the written answer. After 3 seconds they disappear, and pressing Button B or C brings them back for a moment.
+- **Your view stays put**: turn a 3D model with your hand and it stops right there, so you can take a good look. Put Zitro down and after 3 seconds it starts turning by itself again.
 
 ## Fri 6 Nov, 2026
 

@@ -328,18 +328,21 @@ void handleSerialCommands() {
       runScreenshotTour();
     } else if (line == "shot") {
       armCapture("current", 0);
-      redrawPreviousResult();
+      // An open result view is caught by its next frame as it is, button tabs or not: reopening it would bring the tabs back
+      if (!(currentDisplayMode == SHOW_MODEL && modelViewActive())) redrawPreviousResult();
     } else if (line.startsWith("modelhost ")) {
       modelPubChemHost = line.substring(10);
       Serial.println("modelhost " + modelPubChemHost);
     } else if (line.startsWith("model ")) {
       runModelCommand(line.substring(6));
-    } else if (line == "pressb" || line == "pressc" || line == "holdc") {
+    } else if (line == "pressb" || line == "pressbb" || line == "pressc" || line == "holdc") {
       // The view's button actions, for testing with no hand on the stick
       if (currentDisplayMode != SHOW_MODEL) {
         Serial.println("Not in the model view");
       } else if (line == "pressb") {
         modelButtonB();
+      } else if (line == "pressbb") {
+        modelButtonBDouble();  // Only the double click's own action, without its two single clicks
       } else if (line == "pressc") {
         Serial.printf("Button C used by the view: %d\n", modelButtonC());
       } else {

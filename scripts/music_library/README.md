@@ -1,6 +1,6 @@
 # Song library
 
-Each `<id>.song` file here is one song that Zitro can fetch from zitro.spot. The tool `scripts/make_music_data.py` checks every song and writes `webpage2/data/music/`. That is `index.txt`, one `<id>.txt` per song, and `SOURCES.txt` with each song's evidence.
+Each `<id>.song` file here is one song that Zitro can fetch from zitro.spot. The tool `scripts/make_music_data.py` checks every song and writes `webpage2/data/music/`. That is `index.txt`, one `<id>.txt` per song, `SOURCES.txt` with each song's evidence, and an `.htaccess` that makes the server send them as UTF-8, so the umlauts in `SOURCES.txt` show correctly in a browser.
 
 ```bash
 python3 -I scripts/make_music_data.py    # --out DIR to write elsewhere, --library DIR to read elsewhere

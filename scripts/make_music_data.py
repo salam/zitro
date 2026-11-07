@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Builds webpage2/data/music/ from the hand-kept song files in scripts/music_library/*.song.
 
-Writes index.txt, one <id>.txt per song and SOURCES.txt, in the formats music_core.h reads. A song goes on
+Writes index.txt, one <id>.txt per song and SOURCES.txt, in the formats music_core.h reads, and an .htaccess
+that serves them as UTF-8. A song goes on
 the server only with its legal evidence (who wrote the melody, when they died, where it was first printed,
 each confirmed by sources) and only if its notes, read from score A, agree note by note with an independent
 score B. The format is in scripts/music_library/README.md.
@@ -37,6 +38,9 @@ DIED_BEFORE = 1926
 PRINTED_BEFORE = 1931
 SCORE_LANGS = ("nederlands", "deutsch", "english")
 RESERVED_IDS = ("index", "sources")  # index.txt and SOURCES.txt, on a file system that ignores case
+# The server's default charset isn't UTF-8, so SOURCES.txt would show its umlauts and accents garbled in a browser
+HTACCESS = "AddDefaultCharset UTF-8\n"
+NOT_SONGS = ("index.txt", "SOURCES.txt", ".htaccess")
 
 REQUIRED = ("id", "de", "en", "tempo", "bar", "pickup", "notes", "source-a", "score-b", "footer")
 SINGLE = REQUIRED + ("aliases", "published", "settled")
@@ -773,9 +777,14 @@ def build(texts, built_ins):
         "before 1931. The notes are read from score A and compared note by note with score B, which is never\n"
         "copied. Composer dates are confirmed by two independent sources.\n\n"
         + "\n\n".join(sources_block(s) for s in songs) + "\n")
+    files[".htaccess"] = HTACCESS
     if problems:
         return {}, problems, remarks
     return files, problems, remarks
+
+
+def song_count(files):
+    return sum(1 for name in files if name not in NOT_SONGS)
 
 
 def check_folder(folder, files):
@@ -793,7 +802,7 @@ def check_folder(folder, files):
         print(f"{folder} is not what scripts/make_music_data.py builds; run it again:\n  "
               + "\n  ".join(differences), file=sys.stderr)
         return 1
-    print(f"{folder}: current, {len(files) - 2} songs")
+    print(f"{folder}: current, {song_count(files)} songs")
     return 0
 
 
@@ -831,7 +840,7 @@ def main(argv=None):
             f.write(text)
         os.replace(path + ".part", path)
     size = sum(len(t.encode("utf-8")) for t in files.values())
-    print(f"{len(files) - 2} songs written to {args.out}: {len(files)} files, {size} bytes")
+    print(f"{song_count(files)} songs written to {args.out}: {len(files)} files, {size} bytes")
     return 0
 
 

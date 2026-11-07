@@ -500,6 +500,14 @@ def run_tool(library, out):
                            "--library", library, "--out", out], capture_output=True, text=True)
 
 
+def test_htaccess():
+    """The server's default charset isn't UTF-8: the tool writes the .htaccess that fixes it, so the folder stays
+    fully generated and --check covers it."""
+    files, errors, _ = m.build({"test-song.song": song()}, BUILT_INS)
+    check(files.get(".htaccess") == "AddDefaultCharset UTF-8\n", f".htaccess: {files.get('.htaccess')!r}")
+    check(m.song_count(files) == 1, f"song count leaves out index, SOURCES and .htaccess: {m.song_count(files)}")
+
+
 def test_main(binary):
     with tempfile.TemporaryDirectory() as tmp:
         library = os.path.join(tmp, "library")
@@ -519,7 +527,7 @@ def test_main(binary):
             f.write(second())
         result = run_tool(library, out)
         check(result.returncode == 0, f"good library: exit {result.returncode} {result.stderr}")
-        check(sorted(os.listdir(out)) == ["SOURCES.txt", "index.txt", "other-song.txt", "test-song.txt"],
+        check(sorted(os.listdir(out)) == [".htaccess", "SOURCES.txt", "index.txt", "other-song.txt", "test-song.txt"],
               f"files written: {os.listdir(out) if os.path.exists(out) else None}")
         # A failing run later leaves what is there untouched
         with open(os.path.join(out, "index.txt"), "rb") as f:
@@ -545,7 +553,8 @@ def test_drift_check(library, out):
     """--check rebuilds in memory and compares with a folder, as run.sh does for webpage2/data/music."""
     listing = sorted(os.listdir(out))
     result = check_tool(library, out)
-    check(result.returncode == 0, f"fresh output is current: {result.stdout} {result.stderr}")
+    check(result.returncode == 0 and "current, 2 songs" in result.stdout,
+          f"fresh output is current: {result.stdout} {result.stderr}")
     check(sorted(os.listdir(out)) == listing, "--check writes nothing")
     with tempfile.TemporaryDirectory() as tmp:
         def copy():
@@ -571,6 +580,15 @@ def test_drift_check(library, out):
         os.remove(os.path.join(tmp, "SOURCES.txt"))
         result = check_tool(library, tmp)
         check(result.returncode == 1 and "SOURCES.txt" in result.stderr, f"missing file: {result.stderr}")
+        copy()
+        os.remove(os.path.join(tmp, ".htaccess"))
+        result = check_tool(library, tmp)
+        check(result.returncode == 1 and ".htaccess" in result.stderr, f"missing .htaccess: {result.stderr}")
+        copy()
+        with open(os.path.join(tmp, ".htaccess"), "w") as f:
+            f.write("AddDefaultCharset ISO-8859-1\n")
+        result = check_tool(library, tmp)
+        check(result.returncode == 1 and ".htaccess" in result.stderr, f"changed .htaccess: {result.stderr}")
         result = check_tool(library, os.path.join(tmp, "nowhere"))
         check(result.returncode == 1, "a folder that isn't there is not current")
 
@@ -629,6 +647,7 @@ def main():
     test_fix_round_1()
     test_english_lilypond()
     test_sizes()
+    test_htaccess()
     test_main(binary)
     print(f"music tool tests: {checks} checks, {failures} failures"
           + ("" if binary else " (firmware reading skipped: no test binary given)"))

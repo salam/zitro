@@ -437,6 +437,7 @@ bool fetchModel(const ModelRef& ref);
 void eduUnloadActive();
 bool modelViewShow();
 bool modelButtonCHold();
+String musicMissAnswerForDevice();
 void modelButtonB();
 bool modelButtonC();
 void drawModelHint(M5Canvas& c);
@@ -8667,11 +8668,6 @@ void handleVoiceQuery(bool playAudio) {
     return;
   }
 
-  // Remember this exchange for follow-up questions (only real answers, not errors)
-  if (gptResponse.valid && !gptResponse.isWolfram) {
-    memoryAdd(question, gptResponse.answer);
-  }
-
   response = wordWrap(gptResponse.answer, 25);
   Serial.println("Final display text:");
   Serial.println(response);
@@ -8684,6 +8680,16 @@ void handleVoiceQuery(bool playAudio) {
   if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
     drawScreen("Looking it up...");
     fetchModel(modelRef);
+    // A song that wasn't found: say so, instead of the AI's promise to play it
+    if (!hasModel && strcmp(modelRef.kind, "music") == 0) {
+      gptResponse.answer = musicMissAnswerForDevice();
+      response = wordWrap(gptResponse.answer, 25);
+    }
+  }
+
+  // Remember this exchange for follow-up questions (only real answers, not errors)
+  if (gptResponse.valid && !gptResponse.isWolfram) {
+    memoryAdd(question, gptResponse.answer);
   }
 
   // Handle image retrieval (DALL-E, Wikipedia, or Wolfram Alpha)

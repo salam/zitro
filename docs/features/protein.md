@@ -48,7 +48,7 @@ Ask how something is built, or ask for 3D:
 - "Wie ist Hämoglobin aufgebaut?", "Zeig mir DNA in 3D"
 - "Wie ist Kochsalz aufgebaut?", "Show me a diamond in 3D"
 
-Zitro then shows a real model that you turn with your hand. Lying still, it turns slowly by itself.
+Zitro then shows a real model that you turn with your hand. It stays where you turned it; after 3 seconds lying still, it turns slowly by itself.
 
 **Proteins and DNA** are a coloured ribbon that follows the molecule's chain. Each chain starts blue and ends red. Zitro knows about 50 famous ones, such as hemoglobin, insulin, lysozyme, GFP, antibodies, enzymes like pepsin and amylase, and DNA. Is yours not there? You get the usual picture. Models come from the Zitro server, so they need WiFi.
 

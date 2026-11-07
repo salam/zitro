@@ -1,5 +1,11 @@
 # Release Notes
 
+## Sat 7 Nov, 2026
+
+- **Notes in colour**: double-click Button B while a song plays and every note head lights up in its own rainbow colour, C red to B violet, just like Boomwhackers. Zitro remembers it for the next song.
+- **See which button does what**: when a song, a 3D model or any other result opens, little tabs at the buttons show what they do: pause, zoom, next, back or the written answer. After 3 seconds they disappear, and pressing Button B or C brings them back for a moment.
+- **Your view stays put**: turn a 3D model with your hand and it stops right there, so you can take a good look. Put Zitro down and after 3 seconds it starts turning by itself again.
+
 ## Fri 6 Nov, 2026
 
 - **Turn it down!** While a song plays, click Button C to go through silent, low, regular and loud, with a little speaker symbol right at the button. Hold it for a second to see the text answer. Button B still pauses.

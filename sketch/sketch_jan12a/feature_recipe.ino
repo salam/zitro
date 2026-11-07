@@ -155,6 +155,13 @@ static bool recipeButtonC() {
   return false;
 }
 
+// B: back, except on the first page. C: next, or the written answer after the last page.
+static void recipeHints(int& kindB, int& kindC) {
+  uint16_t page = recipePage;
+  kindB = recipePage > 0 ? HINT_BACK : HINT_NONE;
+  kindC = (recipeLayout && recipeNextPage(*recipeLayout, page)) ? HINT_NEXT : HINT_TEXT;
+}
+
 static bool recipeKeepAwake() {
   return millis() - recipeLastPress < RECIPE_READ_MS;
 }
@@ -207,4 +214,4 @@ static const char* const RECIPE_PROMPT_RULE =
     "ueber Essen. Schreibe in answer dann nur einen kurzen Satz, nie selbst Zutaten, Mengen oder Schritte.";
 
 const EduFeature FEATURE_RECIPE = {"recipe",    "Wikibooks", RECIPE_PROMPT_RULE, false,         recipeFetch,   recipeUnload,
-                                   recipeBegin, recipeFrame, recipeEnd,          recipeButtonB, recipeButtonC, recipeKeepAwake};
+                                   recipeBegin, recipeFrame, recipeEnd,          recipeButtonB, recipeButtonC, recipeKeepAwake, nullptr, recipeHints};

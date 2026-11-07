@@ -191,7 +191,7 @@ Ask how a substance is built, or ask for it in 3D:
 - "Visualisiere Koffein" or "Visualize caffeine"
 
 1. The model opens right away.
-2. Turn the stick to look around the molecule. Put it down and the model turns slowly by itself.
+2. Turn the stick to look around the molecule. It stays where you turned it. Put it down and after 3 seconds the model turns slowly by itself.
 3. Press Button B to zoom (3 steps). Press Button A to ask something new.
 4. Press Button C to read the answer. A small cube at the bottom right means the model is still there: press Button C again, or rotate the stick to the opposite orientation and back.
 
@@ -207,6 +207,8 @@ Good to know:
 
 Zitro can show much more than pictures. You don't choose a mode: just ask. Everything shown comes from a real source or exact math, and the bottom line names it. If there's nothing, you get the usual picture. Button A always asks something new.
 
+When a result opens, small tabs at the buttons show what each one does: a microphone at Button A for a new question, a magnifier for zoom, lines of text for the written answer, arrows for next and back. On a timeline the arrows point left and right, the way the years run. After 3 seconds they disappear so you can enjoy the whole picture. Press Button B or C and they show up again for a moment.
+
 Proteins, anatomy, recipes, timelines and the detailed globe load their data from zitro.spot, so they need WiFi.
 
 #### Music on an endless band
@@ -221,7 +223,8 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
+- **Double-click Button B:** colourful note heads on or off. Every note gets its own colour, as on Boomwhackers: C red, D orange, E yellow, F green, G teal, A indigo, B violet (H in German). A sharp or flat keeps the colour of its letter, so F♯ is green. The colours switch about a second after your double click, and the song only stops for a moment. Zitro remembers your choice for the next song. Pausing and carrying on within a second counts as a double click too, so if the colours appear by surprise, double-click again.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level for a moment: no sound waves means silent. Each new song starts loud.
 - **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
 The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
@@ -279,7 +282,7 @@ Ask how something is built, or ask for 3D:
 - "Wie ist Hämoglobin aufgebaut?", "Zeig mir DNA in 3D"
 - "Wie ist Kochsalz aufgebaut?", "Show me a diamond in 3D"
 
-Zitro then shows a real model that you turn with your hand. Lying still, it turns slowly by itself.
+Zitro then shows a real model that you turn with your hand. It stays where you turned it; after 3 seconds lying still, it turns slowly by itself.
 
 **Proteins and DNA** are a coloured ribbon that follows the molecule's chain. Each chain starts blue and ends red. Zitro knows about 50 famous ones, such as hemoglobin, insulin, lysozyme, GFP, antibodies, enzymes like pepsin and amylase, and DNA. Is yours not there? You get the usual picture. Models come from the Zitro server, so they need WiFi.
 

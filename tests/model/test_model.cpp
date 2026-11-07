@@ -165,6 +165,19 @@ static void testButtonRules() {
   CHECK(!buttonCCountsForSettings(true, false, false));   // Lists and alerts: next
   CHECK(!buttonCCountsForSettings(false, true, false));   // Picture: scroll or switch view
   CHECK(!buttonCCountsForSettings(false, false, true));   // 3D model: switch view
+
+  // Tabs: 3 seconds from the open or the last press, also across the millis() wrap
+  CHECK(modelHintsShowing(1000, 1000));
+  CHECK(modelHintsShowing(3999, 1000));
+  CHECK(!modelHintsShowing(4000, 1000));
+  CHECK(modelHintsShowing(500, 0xFFFFFF00UL));
+  CHECK(!modelHintsShowing((uint32_t)(0xFFFFFF00UL + MODEL_HINT_MS), 0xFFFFFF00UL));
+  // Turning by itself waits 3 seconds after the hand last turned; opening counts as long ago
+  CHECK(!modelIdleTurnAllowed(5000, 5000));
+  CHECK(!modelIdleTurnAllowed(7999, 5000));
+  CHECK(modelIdleTurnAllowed(8000, 5000));
+  CHECK(modelIdleTurnAllowed(100, 100 - MODEL_IDLE_AFTER_HAND_MS));
+  CHECK(!modelIdleTurnAllowed(200, 0xFFFFFF00UL));
 }
 
 int main(int argc, char** argv) {

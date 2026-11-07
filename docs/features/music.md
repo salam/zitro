@@ -17,7 +17,9 @@
 - After a stall the clock jumps to the note it should be on and sounds only that one. Tied notes sound once for their combined length.
 - `end()` stops the sound. `begin()` starts the song from its beginning, so going to the text and back starts over.
 - Button B: pause, shown as two bars at the top right, and resume, which sounds the rest of the current note. Button A: new question, as everywhere. No gyro turning.
-- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. A tab at Button C's edge, like the ones in the print menu, always shows the level: a speaker with no sound waves for silent, then one, two or three. Silent starts no tones at all, because the buzzer clicks when a tone starts, even at volume 0. The tab sits at the top left, or at the bottom right when the stick is held the other way round, where the song name stops short of it.
+- Button C click: next volume level, round silent, low, regular, loud. Loud is the stored volume setting (`settings`, key `volume`); regular is two thirds of it and low one third. The speaker's own curve makes the steps sound further apart than that. A tab at Button C's edge, like the ones in the print menu, shows the level: a speaker with no sound waves for silent, then one, two or three. Like every result view's tabs it shows for 3 s when the band opens and after each B or C press, then goes (changed 2026-11-07 at the user's request; it used to stay). Button B's tab shows pause, or play while paused. Silent starts no tones at all, because the buzzer clicks when a tone starts, even at volume 0. The tab sits at the top left, or at the bottom right when the stick is held the other way round; while it shows it covers the end of a long song name.
+- Button B double click: coloured note heads on or off, saved in `settings`, key `musicColors` (default off), so it carries over to the next song and survives sleep. The colours are the Boomwhackers rainbow exactly as Soundslice names it: C red, D orange, E yellow, F green, G teal, A indigo, B violet (see Sources). There is no international standard; other schemes, such as Figurenotes, differ. Indigo and violet are drawn brighter than their names suggest so they read on black. A sharp or flat takes its written letter's colour, since the head sits on that letter's place. Only the head is coloured: stems, flags, dots, ties, sharps, flats, rests and names stay as before. Played heads keep their colour at half brightness. Citrus is too close to the yellow E, so the sounding note gets a citrus ring around its head instead. Half and whole notes stay hollow.
+- The double click is M5Unified's: it is decided once Button B has been still for its hold time of 1 second, so the colours switch about a second after the second click. Each of the two clicks still pauses or resumes, so the song stops for a moment and then carries on as before. It follows that pausing and resuming within a second also switches the colours, and the change is saved. The new `EduFeature::buttonBDouble` is nullptr in every other view, where a double click does nothing extra.
 - Hold Button C for 1 second: back to the text. From the text, a click on Button C opens the song again from the start, at the same level.
 - The level is for this song only and is never saved. A new song starts loud, and `end()` puts the speaker back to the stored volume, so speech and alarms never come out silent. An alarm during a silent song still rings at the stored volume. The user approved this change to Button C on 2026-11-06. It applies to music only: in other views a Button C click still does what it did.
 - `keepAwake` is true while playing. **Addition to the brief:** after 5 minutes of playing without a Button B press it pauses by itself, and then the normal sleep timers apply. An endless melody that kept the stick awake would otherwise break the 3D spec's anti-goal of a forgotten stick draining its battery.
@@ -38,7 +40,8 @@ English and others: Twinkle Twinkle Little Star, Row Row Row Your Boat, London B
 
 - **Button A:** new question.
 - **Button B:** pause. Press again to carry on.
-- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level: no sound waves means silent. Each new song starts loud.
+- **Double-click Button B:** colourful note heads on or off. Every note gets its own colour, as on Boomwhackers: C red, D orange, E yellow, F green, G teal, A indigo, B violet (H in German). A sharp or flat keeps the colour of its letter, so F♯ is green. The colours switch about a second after your double click, and the song only stops for a moment. Zitro remembers your choice for the next song. Pausing and carrying on within a second counts as a double click too, so if the colours appear by surprise, double-click again.
+- **Button C:** change the volume: silent, low, regular, loud, and round again. The speaker symbol at the button shows the level for a moment: no sound waves means silent. Each new song starts loud.
 - **Hold Button C for a second:** show the text answer and stop the music. Press Button C once to hear the song from the start.
 
 The music plays with one click on Button A, and loud means your normal volume from the settings. It keeps going round until you stop it, and pauses by itself after 5 minutes.
@@ -48,6 +51,7 @@ Jingle Bells plays the chorus only. Stille Nacht is the version sung today.
 ## Release note
 
 - Ask Zitro for a song like "Alle meine Entchen": watch real notes scroll by on a never-ending band and hear each one play!
+- **Notes in colour**: double-click Button B while a song plays and every note head lights up in its own rainbow colour, C red to B violet, just like Boomwhackers.
 
 ## Sources and licences
 
@@ -86,5 +90,7 @@ Left out on purpose:
 
 - Wheels on the Bus (Verna Hills, 1939), If You're Happy and You Know It, Kookaburra and Itsy Bitsy Spider: could not be confirmed as public domain.
 - Mary Had a Little Lamb, Old MacDonald, Three Blind Mice, Yankee Doodle, Der Mond ist aufgegangen: found no score that could be read and compared by machine, so the notes couldn't be checked this way. They can be added when one turns up.
+
+Note head colours: Soundslice, "Using Boomwhackers colors", https://www.soundslice.com/help/en/player/advanced/336/boomwhackers-colors/, retrieved 2026-11-07. It lists C Red, D Orange, E Yellow, F Green, G Teal, A Indigo, B Violet, with no hex values and nothing on sharps or flats. Other sellers and teachers name G, A and B differently (dark green, purple, magenta); this table follows Soundslice alone rather than mixing them. The colour values are our own.
 
 Scores used for the check are from German and English Wikipedia and German Wikibooks, under CC BY-SA, retrieved 2026-11-06, with each page named per song in `tests/music/references.txt`. Only the notes are kept there. They are used for testing and don't ship in the firmware. A shared error in a single reference and the table would go unnoticed, and regional versions differ: these match the version in the named score.

@@ -181,6 +181,13 @@ static bool anatomyBegin(M5Canvas& c) {
   return true;
 }
 
+// C: the other view while there is one, else the written answer. B zooms.
+static void anatomyHints(int& kindB, int& kindC) {
+  (void)kindB;
+  const AnatomyViews& v = anatomyViews;
+  kindC = (v.hasOutside && v.hasCut && v.showingCut == v.cutFirst) ? HINT_CUT : HINT_TEXT;
+}
+
 // Button C: the other view if there is one, then back to the text
 static bool anatomyButtonC() {
   if (!anatomyViewsPressC(anatomyViews)) return false;
@@ -237,7 +244,7 @@ static void anatomyFrame(M5Canvas& c, float dt) {
     const float g = modelGyroDps[0] * modelGyroDps[0] + modelGyroDps[1] * modelGyroDps[1] + modelGyroDps[2] * modelGyroDps[2];
     anatomyHoldCut(modelRotation, anatomyHeldTurn, g >= ANATOMY_STILL_DPS * ANATOMY_STILL_DPS);
     turn = modelRotation;
-    anatomySwayPhase += dt * ANATOMY_SWAY_RAD_PER_S;
+    if (modelIdleTurning) anatomySwayPhase += dt * ANATOMY_SWAY_RAD_PER_S;  // Holds still while the hand turns
     if (anatomySwayPhase > 2.0f * (float)M_PI) anatomySwayPhase -= 2.0f * (float)M_PI;
     mat3Rotate(turn, 0.0f, sinf(anatomySwayPhase) * ANATOMY_CUT_SWAY_RAD, 0.0f);
     anatomyClampCut(turn);  // The rocking may not reach further than the file has faces for
@@ -274,4 +281,4 @@ const EduFeature FEATURE_ANATOMY = {
     "stomach, skeleton und hand: Fragen nach deren Innerem, nach Aufgabe oder Funktion wie 'Was macht das Herz?' und alle "
     "anderen Koerperteile: 'model' leer lassen, dann kommt ein Foto. Niemals Geschlechtsorgane oder nackte Koerper. Liefere "
     "nie selbst Daten.",
-    true, anatomyFetch, anatomyUnload, anatomyBegin, anatomyFrame, anatomyEnd, nullptr, anatomyButtonC, nullptr};
+    true, anatomyFetch, anatomyUnload, anatomyBegin, anatomyFrame, anatomyEnd, nullptr, anatomyButtonC, nullptr, nullptr, anatomyHints};

@@ -28,6 +28,11 @@ struct EduFeature {
   void (*buttonB)();                     // Button B click. nullptr: modelZoomStep cycles 0, 1, 2
   bool (*buttonC)();                     // Button C click. nullptr or false: back to the text
   bool (*keepAwake)();                   // True while something plays: the sleep timers wait. May be nullptr
+  void (*buttonBDouble)();               // Button B double click, after its two clicks. May be nullptr
+  // Button tabs, shown for a moment when the view opens and after each press: set the HINT_ kind for B and C.
+  // They come in as zoom (buttonB nullptr) or none, and the written answer (buttonC nullptr) or none.
+  // Button A always shows the microphone. nullptr: keep those.
+  void (*hints)(int& kindB, int& kindC);
 };
 
 // One per kind. All are registered in feature_registry.ino.
@@ -43,6 +48,8 @@ extern String modelSourceName;  // Source on the bottom line
 extern Mat3 modelRotation;      // Current turn, for features with turnsWithGyro
 extern uint8_t modelZoomStep;   // 0, 1 or 2
 extern float modelGyroDps[3];   // Hand motion in screen axes, degrees per second; 0 when the gyro is off
+extern bool modelViewRedraw;    // True for one frame when the button tabs went away: a view that keeps its picture redraws
+extern bool modelIdleTurning;   // True when nothing is turned by hand: a view may move by itself
 
 // Shared helpers
 String eduUrlEncode(const char* s);

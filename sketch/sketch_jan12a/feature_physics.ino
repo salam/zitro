@@ -67,6 +67,12 @@ static void physicsButtonB() {
   physicsSetLabel();
 }
 
+// B changes something in the scene, if it has more than one setting; C is the written answer, as by default
+static void physicsHints(int& kindB, int& kindC) {
+  (void)kindC;
+  kindB = (physicsState && PHYSICS_SCENES[physicsState->sceneIndex].paramCount > 1) ? HINT_NEXT : HINT_NONE;
+}
+
 // Button C goes back to the text in every scene: nobody gets stuck in one.
 const EduFeature FEATURE_PHYSICS = {"physics",    "",           PHYSICS_PROMPT_RULE, false,          physicsFetch, nullptr,
-                                    physicsBegin, physicsFrame, physicsEnd,          physicsButtonB, nullptr,      nullptr};
+                                    physicsBegin, physicsFrame, physicsEnd,          physicsButtonB, nullptr,      nullptr, nullptr, physicsHints};

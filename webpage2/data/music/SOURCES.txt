@@ -8,7 +8,7 @@ auld-lang-syne
   Score A (the notes): Auld Lang Syne, arr. Sir Herbert Oakeley, in The Scottish Students' Song Book, S. 318-319, Bayley & Ferguson, London 1897 | https://archive.org/details/scottishstudents00scot_0/page/n325/ | pre-1931 print
   Score B (compared only): https://en.wikipedia.org/wiki/Auld_Lang_Syne
   Traditional, printed in: Traditional Scots tune, first documented with Burns's words in George Thomson's Select Collection of Original Scottish Airs, Edinburgh 1799 (1799) | https://en.wikipedia.org/wiki/Auld_Lang_Syne
-  Traditional, printed in: The Scottish Students' Song Book, Bayley & Ferguson, London 1897, S. 318 (1897) | https://archive.org/details/scottishstudents00scot_0/page/n325/
+  Traditional, printed in: Scotch Melody, composer Anonymous, Public Domain (hymnary.org, tune AULD LANG SYNE), printed in Hymns We Love, for Sunday Schools and All Devotional Meetings, 1907, No. 97 (1907) | https://hymnary.org/tune/auld_lang_syne
   Settled: Matthias 2026-11-07: no open score of the 2/4 version exists, so B (en.wikipedia, moved +2) is 4/4 at doubled values and also differs in bar 9 (A D5:2 B4:2 B4:2 G4:2, B halved D5:3 B4:1 B4:2 G4:2) and bar 10 (A A4:3 G4:1 A4:2 B4:2, B halved A4:3 G4:1 A4:2 E5:2); Zitro plays the old print's version (1897), and a second reading of A's scan confirmed A.
 
 der-mond-ist-aufgegangen
@@ -19,13 +19,13 @@ der-mond-ist-aufgegangen
   First print: 1790 | https://de.wikipedia.org/wiki/Abendlied_(Matthias_Claudius)
 
 ihr-kinderlein-kommet
-  Names: Ihr Kinderlein, kommet / Ihr Kinderlein, kommet
+  Names: Ihr Kinderlein, kommet / O Come, Little Children
   Score A (the notes): Weihnachtslied (Ihr Kinderlein, kommet), in Unser Liederbuch: die beliebtesten Kinderlieder, Bd. 1, S. 24, B. Schott's Söhne, Mainz 1900 | https://archive.org/details/unserliederbuchd01merc/page/n27/ | pre-1931 print
   Score B (compared only): https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet
   Composer: Johann Abraham Peter Schulz (1747-1800) | https://de.wikipedia.org/wiki/Johann_Abraham_Peter_Schulz | https://imslp.org/wiki/Category:Schulz,_Johann_Abraham_Peter
   Composer: Friedrich Hermann Eickhoff (1807-1886) | https://de.wikipedia.org/wiki/Friedrich_Eickhoff | https://www.deutsche-biographie.de/pnd141108711.html
   First print: 1795 | https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet
-  Settled: Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6, the two known closing turns (Schulz vs Eickhoff); Zitro plays the old print's version, and a second reading of A's scan confirmed A.
+  Settled: Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6; the two prints end differently, and it is not verified which ending is Schulz's and which is Eickhoff's; Zitro plays the old print's version, and a second reading of A's scan confirmed A.
 
 oh-susanna
   Names: Oh! Susanna / Oh! Susanna

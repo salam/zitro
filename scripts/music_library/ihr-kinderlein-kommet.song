@@ -2,8 +2,8 @@
 # Schmid's text (1832) and changed the closing turn, so both are listed as writers of the melody.
 id ihr-kinderlein-kommet
 de Ihr Kinderlein, kommet
-en Ihr Kinderlein, kommet
-aliases ihr kinderlein kommt;o come little children
+en O Come, Little Children
+aliases ihr kinderlein kommt
 tempo 100
 bar 8
 pickup 2
@@ -14,4 +14,4 @@ composer Johann Abraham Peter Schulz | 1747 | 1800 | https://de.wikipedia.org/wi
 composer Friedrich Hermann Eickhoff | 1807 | 1886 | https://de.wikipedia.org/wiki/Friedrich_Eickhoff | https://www.deutsche-biographie.de/pnd141108711.html
 published 1795 | https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet
 footer Unser Liederbuch, Schott 1900
-settled Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6, the two known closing turns (Schulz vs Eickhoff); Zitro plays the old print's version, and a second reading of A's scan confirmed A.
+settled Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6; the two prints end differently, and it is not verified which ending is Schulz's and which is Eickhoff's; Zitro plays the old print's version, and a second reading of A's scan confirmed A.

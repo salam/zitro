@@ -59,7 +59,14 @@ A song goes on the server only if **all** of these hold. **"Sicher global ungesc
 3. Lyrics don't count because we never store or show them. The name of a song is not protected.
 4. The notes come from a source we may use: a printed songbook from before 1931, or a public domain, CC0 or CC BY score, the latter credited. CC BY-SA scores, such as Wikipedia's, may be used **only to compare**, as `tests/music/references.txt` does today. Their notes are never copied into our data. All-rights-reserved sources aren't used at all, not even to compare, because comparison means storing their notes in this public repo.
 
-Every song records the evidence: who wrote it, their dates, where it was first printed, and the source of the notes. If the evidence is missing or disputed, the song stays out. For example, the authorship of "O sole mio" is disputed, so it stays out.
+Every song records the evidence: who wrote it, their dates, where it was first printed, and the source of the notes. If the evidence is missing or disputed, the song stays out.
+
+How much evidence is enough **(user, 2026-11-07)**:
+
+- Author and dates come from two independent reputable sources, such as Wikipedia, IMSLP or the Liederlexikon. They must agree.
+- A traditional melody also needs a named print from before 1931.
+- For a well-known composer who died before 1926, the death alone is enough evidence of early publication. The remaining risk is a work first published long after its composer's death. Where a source mentions a late first edition, the song stays out.
+- A person doesn't have to check each song. The tool fails if a field is empty or the two sources disagree. For example, the authorship of "O sole mio" is disputed, so it stays out.
 
 This is a careful reading, not legal advice.
 

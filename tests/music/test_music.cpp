@@ -491,6 +491,19 @@ static void dumpSongs() {
   }
 }
 
+static void testNormaliseTitles() {
+  char out[128];
+  CHECK(eduNormaliseName("F\xC3\xBCr Elise", out, sizeof(out), true) && !strcmp(out, "fuer elise"));
+  CHECK(eduNormaliseName("Fr\xC3\xA8re Jacques", out, sizeof(out), true) && !strcmp(out, "frere jacques"));
+  CHECK(eduNormaliseName("Funicul\xC3\xAC, Funicul\xC3\xA0", out, sizeof(out), true) && !strcmp(out, "funiculi funicula"));
+  CHECK(eduNormaliseName("Oh! Susanna", out, sizeof(out), true) && !strcmp(out, "oh susanna"));
+  CHECK(eduNormaliseName("Beethoven's  Symphony", out, sizeof(out), true) && !strcmp(out, "beethovens symphony"));
+  CHECK(eduNormaliseName("Beethoven\xE2\x80\x99s Symphony", out, sizeof(out), true) && !strcmp(out, "beethovens symphony"));
+  CHECK(eduNormaliseName("  H\xC3\xA4nschen-klein ", out, sizeof(out), true) && !strcmp(out, "haenschen klein"));
+  CHECK(!eduNormaliseName("!!!", out, sizeof(out), true));          // Nothing left
+  CHECK(!eduNormaliseName("\xE6\x97\xA5\xE6\x9C\xAC", out, sizeof(out), true));  // Other scripts: no match
+}
+
 int main(int argc, char** argv) {
   if (argc > 1 && !strcmp(argv[1], "--dump")) {
     dumpSongs();
@@ -499,6 +512,7 @@ int main(int argc, char** argv) {
   testParser();
   testPitch();
   testNames();
+  testNormaliseTitles();
   testPlayback();
   testPinnedMelodies();
   testEverySong();

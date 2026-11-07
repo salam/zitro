@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "name_match.h"
+
 static const int MUSIC_MAX_NOTES = 200;
 static const int MUSIC_TICKS_PER_QUARTER = 4;
 static const float MUSIC_PLAY_CAP_SECONDS = 5 * 60;  // Then it pauses, so a forgotten stick can still sleep

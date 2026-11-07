@@ -374,7 +374,8 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - `DisplayMode` `SHOW_MODEL`. An answer with a model opens straight in the view. Button C goes to the text and back, rotate-to-toggle enters from the text, Button B click zooms (3 steps), Button B hold does nothing yet, 3 s still resets WiFi; three quick Button C presses do not open settings here
 - Shake, roll, rotate-to-toggle and landscape flip are off; rotation locks on entry
 - One non-blocking frame per `loop()`, at most 25 per second. Measured on the Plus2 at full speed: 50 atoms 58-62 fps, 100 atoms 51-55 fps, 200 atoms 42-46 fps
-- Gyro integrated, 2x gain; under 3 deg/s it turns by itself at 0.35 rad/s
+- Gyro integrated, 2x gain. It turns by itself at 0.35 rad/s only once the hand has stayed under 3 deg/s for 3 s (`modelIdleTurnAllowed`, `button_rules.h`), so what the hand turned to stays in view. The anatomy cutaway's rocking waits the same way (`modelIdleTurning`). Opening the view counts as long ago: lying still, it turns at once. Requested by the user on 2026-11-07
+- Button tabs in every result view, like the print menu's: for 3 s when the view opens (also after Button C back from the text and after a wake) and for 3 s after each Button B or C press, then gone so the content has the whole screen. Button A: microphone (new question), filled. B and C: the feature's `hints()`; without one, a magnifier for zoom (no `buttonB`) and text lines for the written answer (no `buttonC`). Paging views (recipe, timeline, Wolfram) show ▲ back, none on the first page, and ▼ next, or text lines on the last page. Anatomy shows a half-filled circle while Button C leads to the other view. Physics scenes show ▼ for Button B when the scene has more than one setting. Music: pause or play, and the volume speaker. Tabs cover the content for those 3 s, the bottom line included. Hold and double-click actions have no tab. A view that keeps its picture (Wolfram) redraws once when the tabs go (`modelViewRedraw`). Requested by the user on 2026-11-07
 - The sprite (internal RAM, PSRAM as fallback) lives only while the view is on screen: freed for questions, timer alerts and setup. No memory: a short note, then the text
 - Atoms in PubChem colours (`atom_table.h`, made by `scripts/make_atom_table.py`), dark rim for depth, no highlight on small atoms because it reads as a + sign. Footer: label, source, element letters in colour; a smaller ASCII font unless the label needs the full font
 
@@ -384,7 +385,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 
 ## Tests
 - `tests/model/run.sh`: reference parsing, SDF parsing with real PubChem files and broken input, rotation, depth order, colours
-- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `forget` (clear conversation memory), `pressb`, `pressc`, `holdc` (the view's button actions), `speaker` (volume and whether a tone is sounding), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
+- Serial commands: `model <kind:query>`, `ask <question>` (typed question instead of the mic), `forget` (clear conversation memory), `pressb`, `pressbb` (double click), `pressc`, `holdc` (the view's button actions), `speaker` (volume and whether a tone is sounding), `modelbench <atoms>`, `modelgyro`, `modelhost <host>`, `modelnomem 1`
 
 ---
 

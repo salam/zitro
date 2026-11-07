@@ -362,6 +362,7 @@ struct RecordingCanvas {
   struct Head { int x, y; uint16_t color; };
   std::vector<Head> heads;
   std::vector<int> hollow, ledgerY, barX, doubleBarX;
+  std::vector<Head> rings;
   int calls = 0;
   void drawFastHLine(int, int y, int w, uint16_t) {
     calls++;
@@ -379,6 +380,7 @@ struct RecordingCanvas {
     if (rx == 5) heads.push_back({x, y, color});
     if (rx == 3) hollow.push_back(x);
   }
+  void drawEllipse(int x, int y, int, int, uint16_t color) { calls++; rings.push_back({x, y, color}); }
 };
 
 static void testDrawing() {
@@ -391,7 +393,7 @@ static void testDrawing() {
   // The note at the playhead sits on it, in its own colour; the next is one quarter on
   int count = musicParseNotes("E4:4 G4:8 C4:4 R:4 A3:16 D4:4 E4:4 R:4 F4:4 G4:4 A4:4", notes, MUSIC_MAX_NOTES, total);
   CHECK(count == 11);
-  MusicBand band = {notes, count, 16, 0, 0, 0.0f};
+  MusicBand band = {notes, count, 16, 0, 0, 0.0f, false};
   RecordingCanvas c;
   musicDrawBand(c, band);
   bool found = false;
@@ -420,7 +422,7 @@ static void testDrawing() {
   // A song far shorter than the screen fills it in both directions, joined at a double bar: no end in sight
   count = musicParseNotes("C4:4 D4:4", notes, MUSIC_MAX_NOTES, total);
   CHECK(count == 2);
-  band = {notes, count, 8, 0, 0, 0.0f};
+  band = {notes, count, 8, 0, 0, 0.0f, false};
   std::vector<int> seen;
   musicForEachVisible(band, [&](int i, int x) {
     CHECK(i == 0 || i == 1);
@@ -442,7 +444,7 @@ static void testDrawing() {
   // Bars fall at the bar length, after the lead-in; the seam is the double bar. Bar before a sharp clears it.
   count = musicParseNotes("D4:4 E4:4 E4:4 E4:4 F#4:4 E4:4 E4:4 E4:4", notes, MUSIC_MAX_NOTES, total);
   CHECK(count == 8);
-  band = {notes, count, 12, 4, 1, 0.0f};
+  band = {notes, count, 12, 4, 1, 0.0f, false};
   RecordingCanvas bars;
   musicDrawBand(bars, band);
   // Note 1 starts a bar right at the playhead; note 4 starts the next, 3 quarters on, with its sharp
@@ -455,8 +457,8 @@ static void testDrawing() {
   CHECK(sharp);
 
   // Broken bands draw nothing, and don't read outside the notes
-  const MusicBand broken[] = {{nullptr, 8, 12, 0, 0, 0.0f}, {notes, 0, 12, 0, 0, 0.0f}, {notes, 8, 12, 0, 8, 0.0f},
-                              {notes, 8, 12, 0, -1, 0.0f}};
+  const MusicBand broken[] = {{nullptr, 8, 12, 0, 0, 0.0f, false}, {notes, 0, 12, 0, 0, 0.0f, false}, {notes, 8, 12, 0, 8, 0.0f, false},
+                              {notes, 8, 12, 0, -1, 0.0f, false}};
   for (const MusicBand& b : broken) {
     RecordingCanvas none;
     musicDrawBand(none, b);
@@ -467,7 +469,7 @@ static void testDrawing() {
   for (int i = 0; i < MUSIC_SONG_COUNT; i++) {
     count = musicParseNotes(MUSIC_SONGS[i].notes, notes, MUSIC_MAX_NOTES, total);
     for (int n = 0; n < count; n++) {
-      band = {notes, count, MUSIC_SONGS[i].barTicks, MUSIC_SONGS[i].pickupTicks, n, 0.5f};
+      band = {notes, count, MUSIC_SONGS[i].barTicks, MUSIC_SONGS[i].pickupTicks, n, 0.5f, false};
       RecordingCanvas all;
       musicDrawBand(all, band);
       CHECK(all.calls > 0 && all.calls < 2000);
@@ -478,6 +480,58 @@ static void testDrawing() {
       }
     }
   }
+}
+
+static void testColoredHeads() {
+  // Letter colours follow the written letter: Boomwhackers rainbow, C red to B violet
+  int total = 0;
+  const int count = musicParseNotes("C4:4 D4:4 E4:4 F4:4 G4:4 A4:4 B4:4 C5:4 F#4:4 Bb4:8 R:4", notes, MUSIC_MAX_NOTES, total);
+  CHECK(count == 11);
+  CHECK(musicLetterColor(notes[0]) == musicRgb565(255, 48, 48));
+  CHECK(musicLetterColor(notes[2]) == musicRgb565(255, 230, 0));
+  CHECK(musicLetterColor(notes[6]) == musicRgb565(180, 90, 255));
+  CHECK(musicLetterColor(notes[7]) == musicLetterColor(notes[0]));  // Every C is red
+  CHECK(musicLetterColor(notes[8]) == musicLetterColor(notes[3]));  // F# is drawn on F's place
+  CHECK(musicLetterColor(notes[9]) == musicLetterColor(notes[6]));  // Bb on B's place
+  for (int a = 0; a < 7; a++)
+    for (int b = a + 1; b < 7; b++) CHECK(MUSIC_LETTER_COLORS[a] != MUSIC_LETTER_COLORS[b]);
+  CHECK(musicDimColor(musicRgb565(255, 255, 255)) == musicRgb565(127, 127, 127));
+  CHECK(musicDimColor(0) == 0);
+
+  // E at the playhead: its head is yellow and a citrus ring marks it; D before it is dark orange,
+  // F after it bright green. Off: plain heads and no ring.
+  MusicBand band = {notes, count, 16, 0, 2, 0.0f, true};
+  RecordingCanvas c;
+  musicDrawBand(c, band);
+  bool now = false, before = false, after = false;
+  for (auto& h : c.heads) {
+    if (h.x == MUSIC_PLAYHEAD_X) now = h.color == musicLetterColor(notes[2]) && h.y == musicStaffY(notes[2].staffStep);
+    if (h.x == MUSIC_PLAYHEAD_X - 40) before = h.color == musicDimColor(musicLetterColor(notes[1]));
+    if (h.x == MUSIC_PLAYHEAD_X + 40) after = h.color == musicLetterColor(notes[3]);
+  }
+  CHECK(now && before && after);
+  CHECK(c.rings.size() == 1);
+  CHECK(!c.rings.empty() && c.rings[0].x == MUSIC_PLAYHEAD_X && c.rings[0].color == MUSIC_COLOR_NOW);
+  // The half note Bb stays hollow in colour
+  band.note = 9;
+  RecordingCanvas half;
+  musicDrawBand(half, band);
+  bool hollow = false;
+  for (int x : half.hollow) hollow = hollow || x == MUSIC_PLAYHEAD_X;
+  CHECK(hollow);
+  // A rest at the playhead has no head and no ring
+  band.note = 10;
+  RecordingCanvas rest;
+  musicDrawBand(rest, band);
+  CHECK(rest.rings.empty());
+
+  band.note = 2;
+  band.colored = false;
+  RecordingCanvas plain;
+  musicDrawBand(plain, band);
+  CHECK(plain.rings.empty());
+  for (auto& h : plain.heads)
+    CHECK(h.color == MUSIC_COLOR_NOW || h.color == MUSIC_COLOR_NOTE || h.color == MUSIC_COLOR_PLAYED);
 }
 
 // For check_references.py
@@ -498,6 +552,7 @@ int main(int argc, char** argv) {
   }
   testParser();
   testPitch();
+  testColoredHeads();
   testNames();
   testPlayback();
   testPinnedMelodies();

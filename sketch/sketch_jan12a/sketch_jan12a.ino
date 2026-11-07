@@ -438,6 +438,7 @@ void eduUnloadActive();
 bool modelViewShow();
 bool modelButtonCHold();
 void modelButtonB();
+void modelButtonBDouble();
 bool modelButtonC();
 void drawModelHint(M5Canvas& c);
 void modelViewTick();
@@ -3222,6 +3223,13 @@ void discoverPrinters() {
 #define HINT_OK      2  // check mark
 #define HINT_DELETE  3  // trash can
 #define HINT_SPEAKER 4  // speaker; plus 0 to 3 sound waves: use HINT_SPEAKER + waves
+#define HINT_MIC    10  // microphone: ask something new
+#define HINT_ZOOM   11  // magnifier
+#define HINT_TEXT   12  // lines of text: the written answer
+#define HINT_PAUSE  13  // two bars
+#define HINT_PLAY   14  // triangle to the right
+#define HINT_BACK   15  // triangle the other way from HINT_NEXT: previous item
+#define HINT_CUT    16  // half-filled circle: the other view, outside or cut open
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3301,6 +3309,39 @@ void drawSpeakerMark(M5Canvas &canvas, int cx, int cy, int waves, uint16_t color
   }
 }
 
+void drawMicMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
+  canvas.fillRoundRect(cx - 2, cy - 6, 5, 8, 2, color);  // capsule
+  canvas.drawFastVLine(cx - 4, cy - 2, 3, color);        // holder
+  canvas.drawFastVLine(cx + 4, cy - 2, 3, color);
+  canvas.drawLine(cx - 4, cy + 1, cx - 2, cy + 3, color);
+  canvas.drawLine(cx + 4, cy + 1, cx + 2, cy + 3, color);
+  canvas.drawFastHLine(cx - 2, cy + 3, 5, color);
+  canvas.drawFastVLine(cx, cy + 3, 3, color);  // stand
+  canvas.drawFastHLine(cx - 2, cy + 6, 5, color);
+}
+
+void drawZoomMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
+  canvas.drawCircle(cx - 1, cy - 1, 4, color);
+  canvas.drawFastHLine(cx - 3, cy - 1, 5, color);
+  canvas.drawFastVLine(cx - 1, cy - 3, 5, color);
+  canvas.drawWideLine(cx + 2, cy + 2, cx + 5, cy + 5, 1.5f, color);
+}
+
+void drawTextMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
+  canvas.fillRect(cx - 6, cy - 4, 12, 2, color);
+  canvas.fillRect(cx - 6, cy, 12, 2, color);
+  canvas.fillRect(cx - 6, cy + 4, 8, 2, color);
+}
+
+// A circle, its right half filled: the model cut open
+void drawCutMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
+  canvas.drawCircle(cx, cy, 5, color);
+  for (int dx = 0; dx <= 4; dx++) {
+    const int h = (int)sqrtf(25.0f - dx * dx);
+    canvas.drawFastVLine(cx + dx, cy - h, 2 * h + 1, color);
+  }
+}
+
 // A tab that sticks out of the screen edge, with a symbol in its visible part.
 // pos: center along that edge. filled: main action (Button A). invert: screen is white.
 // The "next" triangle points down on top/bottom tabs and right on side tabs.
@@ -3350,8 +3391,27 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     drawCrossMark(canvas, cx, cy, 8, symbolColor);
   } else if (kind == HINT_DELETE) {
     drawTrashMark(canvas, cx, cy, symbolColor);
-  } else if (kind >= HINT_SPEAKER) {
+  } else if (kind >= HINT_SPEAKER && kind <= HINT_SPEAKER + 3) {
     drawSpeakerMark(canvas, cx, cy, kind - HINT_SPEAKER, symbolColor);
+  } else if (kind == HINT_MIC) {
+    drawMicMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_ZOOM) {
+    drawZoomMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_TEXT) {
+    drawTextMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_PAUSE) {
+    canvas.fillRect(cx - 4, cy - 5, 3, 10, symbolColor);
+    canvas.fillRect(cx + 1, cy - 5, 3, 10, symbolColor);
+  } else if (kind == HINT_PLAY) {
+    canvas.fillTriangle(cx - 3, cy - 5, cx - 3, cy + 5, cx + 4, cy, symbolColor);
+  } else if (kind == HINT_BACK) {
+    if (sideEdge) {
+      canvas.fillTriangle(cx + 3, cy - 5, cx + 3, cy + 5, cx - 3, cy, symbolColor);
+    } else {
+      canvas.fillTriangle(cx - 5, cy + 3, cx + 5, cy + 3, cx, cy - 3, symbolColor);
+    }
+  } else if (kind == HINT_CUT) {
+    drawCutMark(canvas, cx, cy, symbolColor);
   } else {
     drawCheckMark(canvas, cx, cy, 9, symbolColor);
   }
@@ -9314,6 +9374,11 @@ void loop() {
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
     }
+  }
+  // Button B double click: comes a second after the two clicks, which each did their own job above
+  if (M5.BtnB.wasDoubleClicked() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
+    modelButtonBDouble();
+    resetToActiveState();
   }
 
   // Button C (PWR button) short press: scroll down when showing an image

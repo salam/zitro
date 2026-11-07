@@ -230,6 +230,7 @@ static void wolframDrawOps(M5Canvas& c, uint16_t first, uint16_t count) {
 // One page, drawn once: nothing here moves, so the sprite keeps it until a button changes the page
 static void wolframFrame(M5Canvas& c, float dt) {
   (void)dt;
+  if (modelViewRedraw) wolframRedraw = true;  // The button tabs went away
   if (!wolframRedraw || !wolframLayout || !wolframDoc || wolframPage >= wolframLayout->pageCount) return;
   wolframRedraw = false;
   const WolframPage& page = wolframLayout->pages[wolframPage];
@@ -275,6 +276,12 @@ static bool wolframButtonC() {
   wolframPage++;
   wolframRedraw = true;
   return true;
+}
+
+// B: one page back, except on the first. C: next page, or the written answer after the last.
+static void wolframHints(int& kindB, int& kindC) {
+  kindB = wolframPage > 0 ? HINT_BACK : HINT_NONE;
+  kindC = (wolframLayout && wolframPage + 1 < wolframLayout->pageCount) ? HINT_NEXT : HINT_TEXT;
 }
 
 // The question has been put into English already. False: no text result, the caller shows the picture.
@@ -333,4 +340,6 @@ const EduFeature FEATURE_WOLFRAM = {"wolfram",
                                     wolframEnd,
                                     wolframButtonB,
                                     wolframButtonC,
-                                    nullptr};
+                                    nullptr,
+                                    nullptr,
+                                    wolframHints};

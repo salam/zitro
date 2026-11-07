@@ -19,6 +19,33 @@ static const uint16_t MUSIC_COLOR_PLAYED = 0x8410;
 static const uint16_t MUSIC_COLOR_STAFF = 0x7BEF;
 static const uint16_t MUSIC_COLOR_NOW = 0xF5A0;  // Citrus, #f2b705
 
+inline constexpr uint16_t musicRgb565(int r, int g, int b) {
+  return (uint16_t)(((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3));
+}
+
+// Coloured note heads, C to B: the Boomwhackers rainbow as Soundslice names it (C red, D orange,
+// E yellow, F green, G teal, A indigo, B violet). There is no international standard; Boomwhackers
+// is one widely used scheme. Indigo and violet are brightened so they read on black.
+// A sharp or flat takes the colour of its written letter, as its head sits on that letter's place.
+static const uint16_t MUSIC_LETTER_COLORS[7] = {
+    musicRgb565(255, 48, 48),   // C red
+    musicRgb565(255, 140, 0),   // D orange
+    musicRgb565(255, 230, 0),   // E yellow
+    musicRgb565(60, 200, 60),   // F green
+    musicRgb565(0, 200, 180),   // G teal
+    musicRgb565(100, 110, 255), // A indigo
+    musicRgb565(180, 90, 255),  // B violet (H in German)
+};
+
+// Half of each channel: a played note keeps its colour, only darker
+inline uint16_t musicDimColor(uint16_t c) {
+  return (uint16_t)((c >> 1) & 0x7BEF);
+}
+
+inline uint16_t musicLetterColor(const MusicNote& n) {
+  return MUSIC_LETTER_COLORS[n.letter % 7];
+}
+
 struct MusicBand {
   const MusicNote* notes;
   int count;
@@ -26,6 +53,7 @@ struct MusicBand {
   int pickupTicks;
   int note;          // At the playhead
   float tickInNote;
+  bool colored;      // Note heads in their letter's colour
 };
 
 inline int musicStaffY(int staffStep) {
@@ -105,7 +133,7 @@ void musicDrawRest(C& c, int x, int ticks, uint16_t color) {
 }
 
 template <class C>
-void musicDrawNote(C& c, const MusicNote& n, int x, const MusicNote* next, uint16_t color) {
+void musicDrawNote(C& c, const MusicNote& n, int x, const MusicNote* next, uint16_t color, uint16_t headColor) {
   if (n.midi == 0) {
     musicDrawRest(c, x, n.ticks, color);
     return;
@@ -115,7 +143,7 @@ void musicDrawNote(C& c, const MusicNote& n, int x, const MusicNote* next, uint1
   for (int step = -2; step >= n.staffStep; step -= 2) c.drawFastHLine(x - 8, musicStaffY(step), 17, MUSIC_COLOR_NOTE);
   for (int step = 10; step <= n.staffStep; step += 2) c.drawFastHLine(x - 8, musicStaffY(step), 17, MUSIC_COLOR_NOTE);
 
-  c.fillEllipse(x, y, 5, 4, color);
+  c.fillEllipse(x, y, 5, 4, headColor);
   if (n.ticks >= 8) c.fillEllipse(x, y, 3, 2, MUSIC_COLOR_BLACK);  // Half and whole notes are hollow
   if (n.ticks < 16) {
     const bool stemUp = n.staffStep < 4;  // Above the middle line the stem goes down, as printed
@@ -181,8 +209,18 @@ void musicDrawBand(C& c, const MusicBand& b) {
   musicForEachVisible(b, [&](int i, int x) {
     const bool now = i == current || i == partner;
     const bool played = x < MUSIC_PLAYHEAD_X && !now;
+    const MusicNote& n = b.notes[i];
     const MusicNote* next = i + 1 < b.count ? &b.notes[i + 1] : nullptr;
-    musicDrawNote(c, b.notes[i], x, next, now ? MUSIC_COLOR_NOW : (played ? MUSIC_COLOR_PLAYED : MUSIC_COLOR_NOTE));
+    const uint16_t color = now ? MUSIC_COLOR_NOW : (played ? MUSIC_COLOR_PLAYED : MUSIC_COLOR_NOTE);
+    if (!b.colored || n.midi == 0) {
+      musicDrawNote(c, n, x, next, color, color);
+      return;
+    }
+    // Coloured heads keep their colour, darker once played. Citrus is close to the yellow E, so the
+    // note that sounds also gets a citrus ring.
+    const uint16_t head = played ? musicDimColor(musicLetterColor(n)) : musicLetterColor(n);
+    musicDrawNote(c, n, x, next, color, head);
+    if (now) c.drawEllipse(x, musicStaffY(n.staffStep), 7, 6, MUSIC_COLOR_NOW);
   });
   c.fillRect(0, 0, MUSIC_CLEF_WIDTH, MUSIC_NAME_Y - 12, MUSIC_COLOR_BLACK);
   for (int step = 0; step <= 8; step += 2) c.drawFastHLine(0, musicStaffY(step), MUSIC_CLEF_WIDTH, MUSIC_COLOR_STAFF);

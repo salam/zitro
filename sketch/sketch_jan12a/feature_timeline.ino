@@ -423,6 +423,12 @@ static bool timelineButtonC() {
   return false;
 }
 
+// B: previous event, except at the first. C: next, or the written answer after the last.
+static void timelineHints(int& kindB, int& kindC) {
+  kindB = timelineCurrent > 0 ? HINT_BACK : HINT_NONE;
+  kindC = (timelineData && timelineCurrent < timelineData->eventCount - 1) ? HINT_NEXT : HINT_TEXT;
+}
+
 static const char TIMELINE_PROMPT_RULE[] =
     "ZEITSTRAHL: Setze 'model' auf 'timeline:<id>' NUR wenn der Nutzer ausdruecklich einen Zeitstrahl, eine Zeitleiste "
     "oder die zeitliche Abfolge von Ereignissen sehen will (z.B. 'Zeig mir den Zeitstrahl der Weltkriege' ergibt "
@@ -435,4 +441,4 @@ static const char TIMELINE_PROMPT_RULE[] =
 const EduFeature FEATURE_TIMELINE = {
     "timeline", "Wikidata", TIMELINE_PROMPT_RULE,
     false, timelineFetch, timelineUnload, timelineBegin, timelineFrame, timelineEnd, timelineButtonB, timelineButtonC,
-    nullptr};
+    nullptr, nullptr, timelineHints};

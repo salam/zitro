@@ -18,7 +18,7 @@ static bool musicOpen = false;
 static MusicPlayback musicPlayback;
 static int musicStoredVolume = 210;
 static int musicVolumeLevel = MUSIC_VOLUME_START;
-static const int MUSIC_VOLUME_TAB_RESERVE = 46;
+static bool musicColored = false;  // Coloured note heads; saved, so it stays on for the next song
 
 static void musicUnload() {
   free(musicNotes);
@@ -61,6 +61,7 @@ static bool musicBegin(M5Canvas& c) {
   Preferences prefs;
   prefs.begin("settings", true);
   musicStoredVolume = prefs.getInt("volume", 210);
+  musicColored = prefs.getBool("musicColors", false);
   prefs.end();
   M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
   musicOpen = true;
@@ -77,6 +78,16 @@ static void musicEnd() {
 static void musicButtonB() {
   musicTogglePause(musicPlayback);
   if (musicPlayback.paused) M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
+}
+
+// Button B double click: coloured note heads on or off. Its two clicks already paused and resumed.
+static void musicButtonBDouble() {
+  musicColored = !musicColored;
+  Preferences prefs;
+  prefs.begin("settings", false);
+  prefs.putBool("musicColors", musicColored);
+  prefs.end();
+  Serial.printf("Music: coloured note heads %s\n", musicColored ? "on" : "off");
 }
 
 // Button C: the next volume level. Holding it goes back to the text (modelButtonCHold).
@@ -105,7 +116,7 @@ static void musicFrame(M5Canvas& c, float dt) {
 
   c.fillSprite(TFT_BLACK);
   const MusicBand band = {musicNotes,       musicNoteCount,      musicBarTicks,
-                          musicPickupTicks, musicPlayback.note, musicPlayback.tickInNote};
+                          musicPickupTicks, musicPlayback.note, musicPlayback.tickInNote, musicColored};
   musicDrawBand(c, band);
 
   // Note names under the notes. A sixteenth leaves no room for its name.
@@ -132,13 +143,16 @@ static void musicFrame(M5Canvas& c, float dt) {
     c.fillRect(WIDTH - 20, 3, 5, 15, TFT_WHITE);
     c.fillRect(WIDTH - 11, 3, 5, 15, TFT_WHITE);
   }
-  const int rotation = M5.Display.getRotation();
-  // Button C sits at the bottom right in rotation 1, so a long song name must stop before its tab
-  eduDrawFooter(c, rotation == 1 ? MUSIC_VOLUME_TAB_RESERVE : 0);
-  drawButtonHints(c, rotation, HINT_NONE, HINT_NONE, HINT_SPEAKER + musicVolumeLevel);
+  eduDrawFooter(c, 0);
+}
+
+// B: pause, or play when paused. C: the volume level, as a speaker with 0 to 3 sound waves.
+static void musicHints(int& kindB, int& kindC) {
+  kindB = musicPlayback.paused ? HINT_PLAY : HINT_PAUSE;
+  kindC = HINT_SPEAKER + musicVolumeLevel;
 }
 
 const EduFeature FEATURE_MUSIC = {
     "music", "",
     MUSIC_PROMPT_RULE,
-    false, musicFetch, musicUnload, musicBegin, musicFrame, musicEnd, musicButtonB, musicButtonC, musicKeepAwake};
+    false, musicFetch, musicUnload, musicBegin, musicFrame, musicEnd, musicButtonB, musicButtonC, musicKeepAwake, musicButtonBDouble, musicHints};

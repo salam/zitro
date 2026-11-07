@@ -774,8 +774,8 @@ def build(texts, built_ins):
     files["SOURCES.txt"] = (
         "Songs on zitro.spot: where each melody and its notes come from.\n"
         "Every melody is in the public domain: its composers died before 1926, or it is traditional and printed\n"
-        "before 1931. The notes are read from score A and compared note by note with score B, which is never\n"
-        "copied. Composer dates are confirmed by two independent sources.\n\n"
+        "before 1931. The notes are read from score A. Score B only checks them note by note: its notes are never\n"
+        "served. Composer dates are confirmed by two independent sources.\n\n"
         + "\n\n".join(sources_block(s) for s in songs) + "\n")
     files[".htaccess"] = HTACCESS
     if problems:

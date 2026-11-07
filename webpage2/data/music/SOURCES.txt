@@ -1,7 +1,7 @@
 Songs on zitro.spot: where each melody and its notes come from.
 Every melody is in the public domain: its composers died before 1926, or it is traditional and printed
-before 1931. The notes are read from score A and compared note by note with score B, which is never
-copied. Composer dates are confirmed by two independent sources.
+before 1931. The notes are read from score A. Score B only checks them note by note: its notes are never
+served. Composer dates are confirmed by two independent sources.
 
 auld-lang-syne
   Names: Auld Lang Syne / Auld Lang Syne

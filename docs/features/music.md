@@ -60,7 +60,7 @@ Numbers point to the list under the table. "Scan checked" means the page of the 
 | alle-meine-entchen | Traditional; the tune is in dance manuscripts from about 1750. Printed with notes in Böhme, *Deutsches Kinderlied und Kinderspiel*, 1897, p. 502, no. 254 (scan checked) | 8, 2; print 1 | passes |
 | haenschen-klein | Traditional, the hunting song "Fahret hin"; tune printed 1807 in Büsching and von der Hagen, *Sammlung deutscher Volkslieder*, Melodienheft, p. 11 | 9, 10; print 11 | passes |
 | fuchs-du-hast-die-gans | Traditional, "Wer die Gans gestohlen hat"; printed 1824 in Anschütz, *Musikalisches Schulgesangbuch* 1, p. 38 (in numbers), and with notes in Böhme 1897, p. 577 (scan checked) | 12, 2; print 13, 1 | passes |
-| kommt-ein-vogel | Traditional Austrian; Wenzel Müller (died 1835) is named as its alleged composer. Printed with notes in *Das Taschen-Liederbuch*, Passau 1828, no. 76, and as "Volksweise" in *Deutsche Weisen*, Stuttgart [1900], no. 49 | 14, 2, 4; print 5 | passes |
+| kommt-ein-vogel | Traditional Austrian; Wenzel Müller (died 1835) is named as its alleged composer. The old prints seen carry an older form that differs from ours in "auf mein Fuß": Erk and Böhme, *Deutscher Liederhort* 2, Leipzig 1893, p. 790, no. 1051 (scan checked), and *Allgemeines Deutsches Kommersbuch*, Lahr 1914, p. 524, no. 572 (scan checked). No print of our form was found | 14, 2, 4; print 63, 64 | **unclear** |
 | ein-maennlein | Traditional, known since about 1800; printed as "Volksweise" in *Deutsche Weisen*, Stuttgart [1900], no. 261 | 15, 5; print 5 | passes |
 | alle-voegel | Traditional, after the late-18th-century tune "Nun so reis ich fort"; printed with this text in Hamburg in 1844, and as "Volksmelodie" in Hoffmann von Fallersleben, *Vierzig Kinderlieder*, Leipzig 1847, no. 33 | 16, 2, 17; print 4 | passes |
 | kuckuck-und-esel | Carl Friedrich Zelter (1758-1832), adapted from his 1810 setting of "Es ist ein Schuss gefallen" | 18, 19, 2, 4 | passes |
@@ -78,7 +78,7 @@ Numbers point to the list under the table. "Scan checked" means the page of the 
 | twinkle-twinkle | Traditional French, "Ah! vous dirai-je, maman", first published 1761; the theme of Mozart's variations K. 265, published 1785 | 43, 44, 45 | passes |
 | frere-jacques | Traditional French, in a manuscript from about 1780 and first printed 1811 (*La Clé du Caveau*, Paris); some credit Jean-Philippe Rameau (died 1764). Printed as "French Air" in *The Golden Book of Favorite Songs*, Chicago 1923, p. 121 (scan checked) | 46, 6 | passes |
 | row-your-boat | Eliphalet Oram Lyte (1842-1913), credited in *Franklin Square Song Collection*, Harper, New York 1881, p. 69 (scan checked) | 47, 48, 49; print 50 | passes |
-| london-bridge | Traditional; today's tune first printed 1879 in A. H. Rosewig, *Illustrated National Songs and Games*, Philadelphia. Gomme, *Traditional Games* 1, London 1894, p. 333 prints a variant with the same opening (scan checked) | 51, 7 | passes |
+| london-bridge | Traditional; today's tune first printed 1879 in A. H. Rosewig, *Illustrated National Songs and Games*, Philadelphia (not seen). Printed note for note as ours in Bancroft, *Games for the Playground, Home, School and Gymnasium*, Macmillan, New York 1909, p. 278 (scan checked). Gomme 1894, p. 333 and Hofer 1914, p. 13 print it with a different last bar | 51, 7; print 65, 66 | passes |
 | jingle-bells | James Lord Pierpont (1822-1893), Oliver Ditson, Boston 1857. We play the later chorus, whose origin is unknown; it was recorded by 1898 and is printed, credited to Pierpont, in *The Golden Book of Favorite Songs*, Chicago 1923, p. 120 (scan checked) | 52, 53, 54; print 6 | passes |
 | ode-to-joy | Ludwig van Beethoven (1770-1827), Ninth Symphony, finished 1824, printed by Schott 1826 | 55, 56, 57 | passes |
 | happy-birthday | Mildred J. Hill (1859-1916), the tune of "Good Morning to All" in *Song Stories for the Kindergarten*, Chicago 1893. Her sister Patty Hill (died 1946) wrote the words, which Zitro doesn't store | 58, 59, 60, 61 | passes |
@@ -88,11 +88,11 @@ Fails or unclear (kept for now; nothing is removed without asking):
 
 - **schneefloeckchen:** The composer is unknown, so only an early print can show the tune is old. German Wikipedia finds today's tune in songbooks from 1915. Holzapfel finds it in songbooks only from 1927, with one record from 1917. The Liederprojekt says today's version has been sung since about 1945. If the 1945 date is right, the tune may be under copyright.
 - **haensel-und-gretel:** Nobody is known to have written the tune. It was first printed in 1901 in Paul Hoffmann's school songbook, and the Liederprojekt says Hoffmann may have written it. His dates are not known, so we can't tell whether he died before 1926.
+- **kommt-ein-vogel:** The song is old and traditional, but the two prints from before 1931 that were checked go stepwise up to the third on "auf mein Fuß", where we leap up to the fifth and come down. Two notes differ. No print of the form we play from before 1931 was found, and German Wikipedia names none. The composer path doesn't settle it either: Holzapfel calls Wenzel Müller only the alleged composer, and Müller's credit doesn't show which form he wrote.
 
 Where the sources differ but the verdict holds:
 
 - **haeschen-in-der-grube:** a folk tune, or Karl Enslin (1819-1875); either way it passes.
-- **kommt-ein-vogel:** a folk tune, or Wenzel Müller (died 1835); either way it passes.
 - **o-tannenbaum:** a folk tune; Holzapfel names Ernst Anschütz (1780-1861) as "Komp."; either way it passes.
 - **alle-voegel:** a folk tune; a 1919 songbook credits Mozart, which Holzapfel calls wrong; Mozart died in 1791, so it passes either way.
 - **wer-hat-die-schoensten-schaefchen:** today's tune is Reichardt's; Karl von Winterfeld (1831) and Carl Reinecke (1824-1910) wrote other tunes to the same words.
@@ -165,6 +165,10 @@ Sources, retrieved 2026-11-07:
 60. https://imslp.org/wiki/Song_Stories_for_the_Kindergarten_(Hill,_Mildred)
 61. https://imslp.org/wiki/Category:Hill,_Mildred
 62. https://en.wikipedia.org/wiki/Here_We_Go_Round_the_Mulberry_Bush
+63. Erk and Böhme, *Deutscher Liederhort*, vol. 2, Breitkopf & Härtel, Leipzig 1893, p. 790, no. 1051: https://archive.org/details/bub_gb_dePoAAAAIAAJ/page/n799
+64. *Allgemeines Deutsches Kommersbuch*, Schauenburg, Lahr 1914, p. 524, no. 572: https://archive.org/details/allgemeinesdeuts00silc/page/n541
+65. Jessie H. Bancroft, *Games for the Playground, Home, School and Gymnasium*, Macmillan, New York, copyright 1909, p. 278: https://archive.org/details/GamesForThePlayground/page/n319
+66. Mari Ruef Hofer, *Children's Singing Games, Old and New*, Chicago 1914, p. 13: https://archive.org/details/ChildrensSingingGames/page/n15
 
 Left out on purpose:
 

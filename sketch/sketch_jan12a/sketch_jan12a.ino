@@ -3230,6 +3230,8 @@ void discoverPrinters() {
 #define HINT_PLAY   14  // triangle to the right
 #define HINT_BACK   15  // triangle the other way from HINT_NEXT: previous item
 #define HINT_CUT    16  // half-filled circle: the other view, outside or cut open
+#define HINT_EARLIER 17  // triangle to the left on any edge: earlier on a timeline
+#define HINT_LATER   18  // triangle to the right on any edge: later on a timeline
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3412,6 +3414,10 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     }
   } else if (kind == HINT_CUT) {
     drawCutMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_LATER) {
+    canvas.fillTriangle(cx - 3, cy - 5, cx - 3, cy + 5, cx + 3, cy, symbolColor);
+  } else if (kind == HINT_EARLIER) {
+    canvas.fillTriangle(cx + 3, cy - 5, cx + 3, cy + 5, cx - 3, cy, symbolColor);
   } else {
     drawCheckMark(canvas, cx, cy, 9, symbolColor);
   }

@@ -207,7 +207,7 @@ Good to know:
 
 Zitro can show much more than pictures. You don't choose a mode: just ask. Everything shown comes from a real source or exact math, and the bottom line names it. If there's nothing, you get the usual picture. Button A always asks something new.
 
-When a result opens, small tabs at the buttons show what each one does: a microphone at Button A for a new question, a magnifier for zoom, lines of text for the written answer, arrows for next and back. After 3 seconds they disappear so you can enjoy the whole picture. Press Button B or C and they show up again for a moment.
+When a result opens, small tabs at the buttons show what each one does: a microphone at Button A for a new question, a magnifier for zoom, lines of text for the written answer, arrows for next and back. On a timeline the arrows point left and right, the way the years run. After 3 seconds they disappear so you can enjoy the whole picture. Press Button B or C and they show up again for a moment.
 
 Proteins, anatomy, recipes, timelines and the detailed globe load their data from zitro.spot, so they need WiFi.
 

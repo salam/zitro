@@ -425,8 +425,8 @@ static bool timelineButtonC() {
 
 // B: previous event, except at the first. C: next, or the written answer after the last.
 static void timelineHints(int& kindB, int& kindC) {
-  kindB = timelineCurrent > 0 ? HINT_BACK : HINT_NONE;
-  kindC = (timelineData && timelineCurrent < timelineData->eventCount - 1) ? HINT_NEXT : HINT_TEXT;
+  kindB = timelineCurrent > 0 ? HINT_EARLIER : HINT_NONE;
+  kindC = (timelineData && timelineCurrent < timelineData->eventCount - 1) ? HINT_LATER : HINT_TEXT;
 }
 
 static const char TIMELINE_PROMPT_RULE[] =

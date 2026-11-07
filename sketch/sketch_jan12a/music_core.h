@@ -257,24 +257,30 @@ inline bool musicLabelMatches(const char* label, const char* wanted) {
 
 // Finds a title in the index: an exact match on the normalised form only, never a close one. The whole
 // index must be sound, because a cut-off or damaged one can't be trusted for what it does contain.
-// A title that matches two entries matches none.
-inline bool musicResolve(const char* index, size_t indexLen, const char* title, MusicIndexEntry& out) {
+// A title that matches two entries matches none. BAD means the index itself is unusable (an HTML page,
+// cut off, damaged); NO_MATCH means a sound index with no single match.
+enum MusicIndexResult { MUSIC_INDEX_BAD, MUSIC_INDEX_NO_MATCH, MUSIC_INDEX_MATCH };
+
+inline MusicIndexResult musicResolve(const char* index, size_t indexLen, const char* title, MusicIndexEntry& out) {
   memset(&out, 0, sizeof(out));
   char wanted[96];
-  if (!index || !title || indexLen == 0 || !eduNormaliseName(title, wanted, sizeof(wanted), true)) return false;
+  if (!index || !title || indexLen == 0) return MUSIC_INDEX_BAD;
+  // A title that can't be normalised matches nothing, but the index is still checked first
+  const bool wantedOk = eduNormaliseName(title, wanted, sizeof(wanted), true);
+  if (!wantedOk) wanted[0] = 0;
   const char* p = index;
   const char* end = index + indexLen;
   const char* line = nullptr;
   int len = sdfNextLine(p, end, line);
   static const char HEAD[] = "ZITRO-MUSIC-INDEX 1 ";
   const int headLen = (int)sizeof(HEAD) - 1;
-  if (len <= headLen || memcmp(line, HEAD, headLen) != 0) return false;
+  if (len <= headLen || memcmp(line, HEAD, headLen) != 0) return MUSIC_INDEX_BAD;
   long expected = 0;
   for (int i = headLen; i < len; i++) {
-    if (line[i] < '0' || line[i] > '9' || i - headLen > 4) return false;
+    if (line[i] < '0' || line[i] > '9' || i - headLen > 4) return MUSIC_INDEX_BAD;
     expected = expected * 10 + (line[i] - '0');
   }
-  if (expected < 1 || expected > 2000) return false;
+  if (expected < 1 || expected > 2000) return MUSIC_INDEX_BAD;
   long seen = 0;
   int matches = 0;
   MusicIndexEntry match;
@@ -285,20 +291,20 @@ inline bool musicResolve(const char* index, size_t indexLen, const char* title, 
     const char* from = line;
     for (int i = 0; i < 4; i++) {
       bar[i] = (const char*)memchr(from, '|', lineEnd - from);
-      if (!bar[i]) return false;
+      if (!bar[i]) return MUSIC_INDEX_BAD;
       from = bar[i] + 1;
     }
-    if (memchr(from, '|', lineEnd - from)) return false;
+    if (memchr(from, '|', lineEnd - from)) return MUSIC_INDEX_BAD;
     MusicIndexEntry current;
     memset(&current, 0, sizeof(current));
-    if (!musicCopyField(line, (int)(bar[0] - line), current.id, sizeof(current.id))) return false;
+    if (!musicCopyField(line, (int)(bar[0] - line), current.id, sizeof(current.id))) return MUSIC_INDEX_BAD;
     for (const char* c = current.id; *c; c++) {
-      if (!musicIsIdChar(*c)) return false;
+      if (!musicIsIdChar(*c)) return MUSIC_INDEX_BAD;
     }
     if (!musicCopyField(bar[0] + 1, (int)(bar[1] - bar[0] - 1), current.de, sizeof(current.de)) ||
         !musicCopyField(bar[1] + 1, (int)(bar[2] - bar[1] - 1), current.en, sizeof(current.en)) ||
         !musicCopyField(bar[3] + 1, (int)(lineEnd - bar[3] - 1), current.source, sizeof(current.source))) {
-      return false;
+      return MUSIC_INDEX_BAD;
     }
     bool isMatch = musicLabelMatches(current.de, wanted) || musicLabelMatches(current.en, wanted);
     const char* alias = bar[2] + 1;
@@ -307,7 +313,7 @@ inline bool musicResolve(const char* index, size_t indexLen, const char* title, 
       while (true) {
         const char* semi = (const char*)memchr(alias, ';', aliasEnd - alias);
         const char* stop = semi ? semi : aliasEnd;
-        if (stop == alias) return false;
+        if (stop == alias) return MUSIC_INDEX_BAD;
         if ((size_t)(stop - alias) == strlen(wanted) && memcmp(alias, wanted, stop - alias) == 0) isMatch = true;
         if (!semi) break;
         alias = semi + 1;
@@ -318,11 +324,12 @@ inline bool musicResolve(const char* index, size_t indexLen, const char* title, 
       match = current;
     }
     seen++;
-    if (seen > expected) return false;
+    if (seen > expected) return MUSIC_INDEX_BAD;
   }
-  if (seen != expected || matches != 1) return false;
+  if (seen != expected) return MUSIC_INDEX_BAD;
+  if (!wantedOk || matches != 1) return MUSIC_INDEX_NO_MATCH;
   out = match;
-  return true;
+  return MUSIC_INDEX_MATCH;
 }
 
 // Reads a whole decimal number from text[0..len), 1 to 4 digits.

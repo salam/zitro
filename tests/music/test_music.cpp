@@ -289,50 +289,50 @@ static const char* GOOD_INDEX =
     "twinkle-twinkle|Funkle, funkle, kleiner Stern|Twinkle, Twinkle, Little Star|little star;stern|ex-source\n"
     "ode-to-joy|Freude schoener Goetterfunken|Ode to Joy|joy;stern|ex-source\n";
 
-static bool resolveText(const char* text, const char* title, MusicIndexEntry& e) {
+static MusicIndexResult resolveText(const char* text, const char* title, MusicIndexEntry& e) {
   return musicResolve(text, strlen(text), title, e);
 }
 
 static void testResolve() {
   MusicIndexEntry e;
-  CHECK(resolveText(GOOD_INDEX, "Twinkle, Twinkle, Little Star", e) && !strcmp(e.id, "twinkle-twinkle"));
+  CHECK(resolveText(GOOD_INDEX, "Twinkle, Twinkle, Little Star", e) == MUSIC_INDEX_MATCH && !strcmp(e.id, "twinkle-twinkle"));
   CHECK(!strcmp(e.en, "Twinkle, Twinkle, Little Star") && !strcmp(e.source, "ex-source"));
-  CHECK(resolveText(GOOD_INDEX, "FUNKLE funkle kleiner stern", e) && !strcmp(e.id, "twinkle-twinkle"));
-  CHECK(resolveText(GOOD_INDEX, "Little Star", e) && !strcmp(e.id, "twinkle-twinkle"));
-  CHECK(resolveText(GOOD_INDEX, "Joy", e) && !strcmp(e.id, "ode-to-joy"));
-  CHECK(!resolveText(GOOD_INDEX, "Moon", e));
-  CHECK(!resolveText(GOOD_INDEX, "", e));
-  CHECK(!resolveText(GOOD_INDEX, "twinkle-twinkle", e));
+  CHECK(resolveText(GOOD_INDEX, "FUNKLE funkle kleiner stern", e) == MUSIC_INDEX_MATCH && !strcmp(e.id, "twinkle-twinkle"));
+  CHECK(resolveText(GOOD_INDEX, "Little Star", e) == MUSIC_INDEX_MATCH && !strcmp(e.id, "twinkle-twinkle"));
+  CHECK(resolveText(GOOD_INDEX, "Joy", e) == MUSIC_INDEX_MATCH && !strcmp(e.id, "ode-to-joy"));
+  CHECK(resolveText(GOOD_INDEX, "Moon", e) == MUSIC_INDEX_NO_MATCH);
+  CHECK(resolveText(GOOD_INDEX, "", e) == MUSIC_INDEX_NO_MATCH);
+  CHECK(resolveText(GOOD_INDEX, "twinkle-twinkle", e) == MUSIC_INDEX_NO_MATCH);
   // Two entries share the alias "stern": it finds nothing, the others still work
-  CHECK(!resolveText(GOOD_INDEX, "Stern", e));
+  CHECK(resolveText(GOOD_INDEX, "Stern", e) == MUSIC_INDEX_NO_MATCH);
   // Count off by one, in both directions
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 3\n"
-                     "twinkle-twinkle|Funkle|Twinkle|little star|s\node-to-joy|Freude|Joy|joy|s\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\n"
-                     "twinkle-twinkle|Funkle|Twinkle|little star|s\node-to-joy|Freude|Joy|joy|s\n", "Joy", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 3\n"
+                     "twinkle-twinkle|Funkle|Twinkle|little star|s\node-to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\n"
+                     "twinkle-twinkle|Funkle|Twinkle|little star|s\node-to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
   // A web page, cut-off index, wrong header, nothing at all
-  CHECK(!resolveText("<!DOCTYPE html><html><body>Not found</body></html>", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 2\ntwinkle-twinkle|Funkle|Twinkle|little st", "Twinkle", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 2 1\node-to-joy|Freude|Joy|joy|s\n", "Joy", e));
-  CHECK(!resolveText("", "Joy", e));
-  CHECK(!musicResolve(nullptr, 0, "Joy", e));
-  CHECK(!musicResolve(GOOD_INDEX, strlen(GOOD_INDEX), nullptr, e));
+  CHECK(resolveText("<!DOCTYPE html><html><body>Not found</body></html>", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 2\ntwinkle-twinkle|Funkle|Twinkle|little st", "Twinkle", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 2 1\node-to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(musicResolve(nullptr, 0, "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(musicResolve(GOOD_INDEX, strlen(GOOD_INDEX), nullptr, e) == MUSIC_INDEX_BAD);
   // Bad ids
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node/to-joy|Freude|Joy|joy|s\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\nOde-to-joy|Freude|Joy|joy|s\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\n|Freude|Joy|joy|s\n", "Joy", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node/to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\nOde-to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\n|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
   // Bad shape: missing or extra field, empty alias, empty source
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|s|x\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy;;x|s\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|\n", "Joy", e));
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|s\n\n", "Joy", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|s|x\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy;;x|s\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|\n", "Joy", e) == MUSIC_INDEX_BAD);
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy|s\n\n", "Joy", e) == MUSIC_INDEX_BAD);
   // No trailing newline and CRLF are fine
-  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\r\node-to-joy|Freude|Joy|joy|s", "Joy", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\r\node-to-joy|Freude|Joy|joy|s", "Joy", e) == MUSIC_INDEX_MATCH);
   // One entry matching by several names is not a clash
-  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy;freude|s\n", "Freude", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 1\node-to-joy|Freude|Joy|joy;freude|s\n", "Freude", e) == MUSIC_INDEX_MATCH);
   // Too many entries claimed: refused before reading on
-  CHECK(!resolveText("ZITRO-MUSIC-INDEX 1 99999\node-to-joy|Freude|Joy|joy|s\n", "Joy", e));
+  CHECK(resolveText("ZITRO-MUSIC-INDEX 1 99999\node-to-joy|Freude|Joy|joy|s\n", "Joy", e) == MUSIC_INDEX_BAD);
 }
 
 static void testSongFile() {
@@ -402,6 +402,13 @@ static void testServerData(const char* folder) {
     return;
   }
   CHECK(index.size() <= MUSIC_INDEX_LIMIT);
+  {
+    // The whole index must be sound, so a title no entry claims is NO_MATCH, never BAD
+    MusicIndexEntry probe;
+    const MusicIndexResult r = musicResolve(index.c_str(), index.size(), "No Such Song Anywhere", probe);
+    if (r != MUSIC_INDEX_NO_MATCH) fprintf(stderr, "  server index is not sound\n");
+    CHECK(r == MUSIC_INDEX_NO_MATCH);
+  }
   const char* p = index.c_str();
   const char* end = p + index.size();
   const char* line = nullptr;

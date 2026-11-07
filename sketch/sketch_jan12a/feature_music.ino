@@ -79,7 +79,9 @@ static bool musicFetch(const char* query) {
     MusicIndexEntry entry;
     if (!body || !eduHttpGet(EDU_DATA_BASE_URL "music/index.txt", deadline, body, MUSIC_INDEX_LIMIT, length)) {
       result = MUSIC_LOOKUP_OFFLINE;
-    } else if (musicResolve(body, length, query, entry)) {
+    } else if (const MusicIndexResult found = musicResolve(body, length, query, entry); found == MUSIC_INDEX_BAD) {
+      result = MUSIC_LOOKUP_OFFLINE;  // An error page or a damaged list is as good as no list
+    } else if (found == MUSIC_INDEX_MATCH) {
       // musicResolve only passes ids made of safe characters, so this can't leave the folder
       int bpm = 0, barTicks = 0, pickupTicks = 0;
       const char* notes = nullptr;

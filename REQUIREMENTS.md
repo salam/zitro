@@ -341,7 +341,7 @@ When modifying JavaScript files, browsers may serve cached versions to users, pr
 
 Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are described here; every other kind of result is a plug-in with its requirements in its own file:
 
-- **Music on an endless band**: [docs/features/music.md](docs/features/music.md)
+- **Music on an endless band**: [docs/features/music.md](docs/features/music.md). Songs are looked up by title: built-in table first, then the server index. The rules for server songs, the fixed "don't know" sentences and the memory limit are in that file
 - **Function graphs**: [docs/features/graph.md](docs/features/graph.md)
 - **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
 - **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
@@ -355,7 +355,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 ## Plug-ins (`edu_feature.h`)
 - Each kind fills in one `EduFeature` in `feature_<kind>.ino` with pure logic in `<kind>_core.h`, tested by `tests/<kind>/run.sh`; all are registered in `feature_registry.ino`. The AI prompt collects each feature's `promptRule`
 - `model_view.ino` owns the sprite, the gyro, the sleep rules and the bottom line; `fetchModel()` in `model_source.ino` dispatches by kind
-- Prepared data lives in `webpage2/data/<kind>/` and is read from `https://zitro.spot/data/<kind>/`. It's static hosting, uploaded separately from the firmware. Without it those kinds fall back to the picture
+- Prepared data lives in `webpage2/data/<kind>/` and is read from `https://zitro.spot/data/<kind>/`. It's static hosting, uploaded separately from the firmware. Without it those kinds fall back to the picture. Songs are the exception for built-in titles: `webpage2/data/music/` holds the server songs and its `SOURCES.txt`, and the 26 built-in songs need no data
 - `gyroToScreen()` maps the sensor's axes to the screen's: in landscape the sensor's x runs along the short side
 
 ## Honest content

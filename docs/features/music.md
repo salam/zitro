@@ -16,7 +16,7 @@
   - The two scores must agree note by note after one transposition. User decision 2026-11-07: a note followed by a rest counts as equal to a longer note of the same pitch when the next note starts at the same time.
   - Any other difference needs a `settled` line, which only the user may give. Three songs carry one: the Kinderlein ending, the Oh! Susanna edition rhythms, and Auld Lang Syne, which plays the old print's version.
   - Composer evidence comes from two different sites. German and English Wikipedia count as one.
-  - Mutopia pieces are the exception: they are read from one score by program, accepted because Mutopia's source is a named edition (spec, "Rules this changes").
+  - Planned, not yet supported: the spec lets Mutopia pieces be read from one score by program. `make_music_data.py` has no such path, so today every server song needs two scores.
 - Tempo is the table's choice, not a fact from a source: scores rarely give one.
 - View: a treble clef and five staff lines; real notes at their true staff positions, with stems, flags, dots, ties, sharps, flats, rests and bar lines. Notes move right to left past a fixed line 64 pixels from the left, at 10 pixels per sixteenth. Each sharp or flat is written on its note; there is no key signature.
 - The note at the line lights up in citrus and sounds. Notes already played turn grey. A double bar marks where the song starts over. The band loops without end, and a song shorter than the screen fills it in both directions.
@@ -183,6 +183,6 @@ Sources, retrieved 2026-11-07:
 Left out on purpose:
 
 - Wheels on the Bus (Verna Hills, 1939), If You're Happy and You Know It, Kookaburra and Itsy Bitsy Spider: could not be confirmed as public domain.
-- Mary Had a Little Lamb, Old MacDonald, Three Blind Mice, Yankee Doodle, Der Mond ist aufgegangen: found no score that could be read and compared by machine, so the notes couldn't be checked this way. They can be added when one turns up.
+- Mary Had a Little Lamb, Old MacDonald, Three Blind Mice, Yankee Doodle: found no score that could be read and compared by machine, so the notes couldn't be checked this way. They can be added when one turns up.
 
 Scores used for the check are from German and English Wikipedia and German Wikibooks, under CC BY-SA, retrieved 2026-11-06, with each page named per song in `tests/music/references.txt`. Only the notes are kept there. They are used for testing and don't ship in the firmware. A shared error in a single reference and the table would go unnoticed, and regional versions differ: these match the version in the named score.

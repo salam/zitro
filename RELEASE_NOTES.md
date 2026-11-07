@@ -2,7 +2,7 @@
 
 ## Sat 7 Nov, 2026
 
-- **More songs**: Zitro now finds songs on its own server, from Oh! Susanna to Der Mond ist aufgegangen. Each one is checked against two old songbooks or scores.
+- **More songs**: Zitro now finds songs on its own server, from Oh! Susanna to Der Mond ist aufgegangen. Each one comes from an old printed songbook and is checked note by note against a second score.
 - **Honest answers**: if Zitro doesn't know a song, it says "I don't know that song. Try ...!" and suggests one. If it can't reach its song list, it tells you that instead.
 - **Know the source**: songs from the server show where they come from in the footer, and zitro.spot lists every source.
 - **Favourites work offline**: the songs Zitro already knew still play without WiFi.

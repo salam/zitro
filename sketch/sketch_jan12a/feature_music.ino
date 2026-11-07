@@ -36,10 +36,12 @@ static bool musicDeviceGerman() {
   return german;
 }
 
-// What Zitro says when no song was found: the reason is the one musicFetch last stored
-String musicMissAnswerForDevice() {
+// What Zitro says when no song was found: the reason musicFetch stored, if it ran for this question. Without a
+// lookup, an older question's reason would be wrong, so it says it doesn't know the song.
+String musicMissAnswerForDevice(bool lookupRan) {
   char text[200];
-  musicMissAnswer(musicLastLookup, musicDeviceGerman(), (unsigned)millis(), text, sizeof(text));
+  musicMissAnswer(lookupRan ? musicLastLookup : MUSIC_LOOKUP_UNKNOWN, musicDeviceGerman(), (unsigned)millis(), text,
+                  sizeof(text));
   return String(text);
 }
 

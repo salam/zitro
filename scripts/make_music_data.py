@@ -11,9 +11,11 @@ Every check names the song it fails for. One failed check stops the whole run, a
 Usage: python3 -I scripts/make_music_data.py [--library DIR] [--out DIR]
 """
 import argparse
+import difflib
 import os
 import re
 import sys
+from fractions import Fraction
 from urllib.parse import urlsplit
 
 sys.dont_write_bytecode = True
@@ -485,8 +487,21 @@ def number(values, key, problems):
     return int(text)
 
 
-def describe(events, start):
-    return " ".join(("R" if midi == 0 else str(midi)) + f"/{ticks}" for midi, ticks in events[start:start + 4])
+SHARP_NAMES = ("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+REGION_NOTES = 16  # A region longer than this is cut short in the message, with "..."
+
+
+def event_text(midi, ticks):
+    """One folded event as the settled lines write it, such as G#4:2 or R:4."""
+    name = SHARP_NAMES[midi % 12] + str(midi // 12 - 1) if midi else "R"
+    return f"{name}:{ticks}"
+
+
+def events_text(events):
+    if not events:
+        return "nothing"
+    text = " ".join(event_text(m, t) for m, t in events[:REGION_NOTES])
+    return text + (" ..." if len(events) > REGION_NOTES else "")
 
 
 def fold_rests(events):
@@ -500,22 +515,74 @@ def fold_rests(events):
     return out
 
 
+def align(a, b, shift, scale=1):
+    """a and b as (midi, ticks) tuples, b moved by shift and its lengths times scale, and how they line up."""
+    a = [tuple(e) for e in a]
+    b = [(m + shift if m else 0, Fraction(t) * scale) for m, t in b]
+    b = [(m, int(t) if t.denominator == 1 else t) for m, t in b]
+    matcher = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    return matcher, a, b
+
+
+def best_alignment(a, b, scale=1):
+    """The transposition under which the most events of B agree with A once the scores are lined up, so a
+    difference early in the song, or a repeat only one score has, doesn't throw the rest off. Every offset
+    between a pitch of A and a pitch of B is tried; a tie goes to the smaller move."""
+    shifts = {ea[0] - eb[0] for ea in a for eb in b if ea[0] and eb[0]} or {0}
+    best = None
+    for shift in sorted(shifts, key=lambda s: (abs(s), s)):
+        matcher, aa, bb = align(a, b, shift, scale)
+        agree = sum(block.size for block in matcher.get_matching_blocks())
+        if best is None or agree > best[0]:
+            best = (agree, shift, matcher, aa, bb)
+    return best
+
+
+def score_differences(a, b):
+    """None if folded score B equals folded score A up to one constant transposition. Else (shift, scale,
+    regions): every place where they differ, as text naming A's event numbers and both scores' notes.
+
+    Only scale 1 decides whether the scores agree. If B's lengths are all twice or half A's (B written at
+    doubled or halved values), the regions are listed at that scale, so they show the real differences
+    and not every note; such a song still needs a settled line."""
+    agree, shift, matcher, aa, bb = best_alignment(a, b)
+    if aa == bb:
+        return None
+    scale = 1
+    for other in (Fraction(1, 2), Fraction(2)):
+        found = best_alignment(a, b, other)
+        if found[0] > agree:
+            agree, shift, matcher, aa, bb = found
+            scale = other
+    regions = []
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag == "equal":
+            continue
+        if i2 > i1:
+            where = f"event {i1 + 1}" if i2 == i1 + 1 else f"events {i1 + 1}-{i2}"
+        else:
+            where = f"after event {i1}" if i1 else "before event 1"
+        regions.append(f"{where}: A {events_text(aa[i1:i2])}, B {events_text(bb[j1:j2])}")
+    return shift, scale, regions
+
+
+def describe_differences(shift, scale, regions):
+    moved = f"B moved by {shift:+d} semitones"
+    if scale != 1:
+        moved += f", B's lengths {'halved' if scale < 1 else 'doubled'}, as B is written at {1 / scale} times A's values"
+    return (f"score B differs from score A in {len(regions)} place{'s' if len(regions) != 1 else ''} "
+            f"(events counted in A, lengths in sixteenths, {moved}), after joining ties and folding rests: "
+            + "; ".join(regions))
+
+
 def compare_scores(a, b):
-    """None if score B equals score A up to one constant transposition, else where they first differ.
+    """None if score B equals score A up to one constant transposition, else every place where they differ.
 
     A note followed by a rest counts as one longer note (user decision, 2026-11-07), so both scores are folded first.
     At the end of a score the song's end is the next note: the last note and the rests after it count as one length,
     so both scores must have the same total length (the scores come from join(keep_end_rests=True))."""
-    a, b = fold_rests(a), fold_rests(b)
-    shift = next((ea[0] - eb[0] for ea, eb in zip(a, b) if ea[0] and eb[0]), 0)
-    for i, (ea, eb) in enumerate(zip(a, b)):
-        same_pitch = (ea[0] == 0 and eb[0] == 0) or (ea[0] and eb[0] and ea[0] - eb[0] == shift)
-        if not same_pitch or ea[1] != eb[1]:
-            return (f"score B differs from score A at event {i + 1} (MIDI/sixteenths, B moved by {shift:+d}), after joining ties and folding rests: "
-                    f"A {describe(a, i)}, B {describe([[m + shift if m else 0, t] for m, t in b], i)}")
-    if len(a) != len(b):
-        return f"score B has {len(b)} events after joining ties and folding rests, score A {len(a)}"
-    return None
+    found = score_differences(fold_rests(a), fold_rests(b))
+    return describe_differences(*found) if found else None
 
 
 def check_song(name, text):
@@ -566,6 +633,7 @@ def check_song(name, text):
     check_legal(values, problems)
 
     notes = None
+    differences = None  # (shift, scale, regions) a settled line accepts, for SOURCES.txt
     if values.get("notes"):
         try:
             notes, total = parse_notes(values["notes"])
@@ -597,9 +665,11 @@ def check_song(name, text):
                 problems.append(f"score B can't be read: {e}")
             else:
                 score_a = join([[n.midi, n.ticks, n.tied] for n in notes], keep_end_rests=True)
-                difference = compare_scores(score_a, score_b)
+                found = score_differences(fold_rests(score_a), fold_rests(score_b))
+                difference = describe_differences(*found) if found else None
                 if difference and "settled" in values:
                     remarks.append(f"{difference} (settled: {values['settled']})")
+                    differences = found
                 elif difference:
                     problems.append(difference + "; fix the notes, or add a settled line saying why a person "
                                     "accepts the difference")
@@ -610,7 +680,7 @@ def check_song(name, text):
     problems = [f"{label}: {p}" for p in problems]
     remarks = [f"{label}: {r}" for r in remarks]
     song = dict(values, id=song_id, label=label, file=name, names=names, alias_list=aliases,
-                tempo=tempo, bar=bar, pickup=pickup)
+                tempo=tempo, bar=bar, pickup=pickup, differences=differences)
     return song, problems, remarks
 
 
@@ -634,6 +704,12 @@ def sources_block(song):
         lines.append(f"  First print: {printed} | {url}")
     if "settled" in song:
         lines.append(f"  Settled: {song['settled']}")
+        shift, scale, regions = song["differences"]
+        moved = f"B moved by {shift:+d} semitones" + (
+            f", B's lengths {'halved' if scale < 1 else 'doubled'}" if scale != 1 else "")
+        lines.append(f"  Every difference from score B, after joining ties and folding rests ({moved}, "
+                     "events counted in A, lengths in sixteenths):")
+        lines += [f"    {region}" for region in regions]
     return "\n".join(lines)
 
 

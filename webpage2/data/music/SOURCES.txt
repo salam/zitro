@@ -10,6 +10,9 @@ auld-lang-syne
   Traditional, printed in: Traditional Scots tune, first documented with Burns's words in George Thomson's Select Collection of Original Scottish Airs, Edinburgh 1799 (1799) | https://en.wikipedia.org/wiki/Auld_Lang_Syne
   Traditional, printed in: Scotch Melody, composer Anonymous, Public Domain (hymnary.org, tune AULD LANG SYNE), printed in Hymns We Love, for Sunday Schools and All Devotional Meetings, 1907, No. 97 (1907) | https://hymnary.org/tune/auld_lang_syne
   Settled: Matthias 2026-11-07: no open score of the 2/4 version exists, so B (en.wikipedia, moved +2) is 4/4 at doubled values and also differs in bar 9 (A D5:2 B4:2 B4:2 G4:2, B halved D5:3 B4:1 B4:2 G4:2) and bar 10 (A A4:3 G4:1 A4:2 B4:2, B halved A4:3 G4:1 A4:2 E5:2); Zitro plays the old print's version (1897), and a second reading of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +2 semitones, B's lengths halved, events counted in A, lengths in sixteenths):
+    events 30-31: A D5:2 B4:2, B D5:3 B4:1
+    event 37: A B4:2, B E5:2
 
 bunt-sind-schon-die-waelder
   Names: Bunt sind schon die Wälder / Bunt sind schon die Wälder
@@ -25,6 +28,9 @@ camptown-races
   Composer: Stephen Foster (1826-1864) | https://en.wikipedia.org/wiki/Stephen_Foster | https://imslp.org/wiki/Category:Foster,_Stephen
   First print: 1850 | https://en.wikipedia.org/wiki/Camptown_Races
   Settled: Matthias 2026-11-07: bar 23 ("Somebody bet on de"), A (Heart Songs 1909) has F#4:2 G#4:1 A4:1 G#4:2 F#4:1 F#4:1, B (Benteen 1850, moved +2) has F#4:2 G#4:1 A4:1 G#4:1 F#4:2 F#4:1; and the last note, A E4:6 closing against the pickup, B E4:8, a full last bar because Benteen's voice enters after a piano introduction; Zitro plays the old print's version (Heart Songs 1909), and a crop of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +2 semitones, events counted in A, lengths in sixteenths):
+    event 77: A G#4:2, B G#4:1 F#4:2
+    events 79-80: A F#4:1 E4:6, B E4:8
 
 der-mond-ist-aufgegangen
   Names: Der Mond ist aufgegangen / Der Mond ist aufgegangen
@@ -40,6 +46,10 @@ die-vogelhochzeit
   Traditional, printed in: Vogelhochzeit (Es wollt' ein Vogel Hochzeit machen), aus der Gegend von Bunzlau und Hainau, in Hoffmann von Fallersleben and Richter, Schlesische Volkslieder mit Melodien, Nr. 43, S. 72, Breitkopf und Härtel, Leipzig 1842 (1842) | https://archive.org/details/bub_gb_nUgJAAAAQAAJ/page/n117/
   Traditional, printed in: Today's melody, recorded in Silesia (Bunzlau, Haynau); cited print Erk and Böhme, Deutscher Liederhort Bd. 1, S. 510-517, Breitkopf und Härtel, Leipzig 1893 (1893) | https://de.wikipedia.org/wiki/Die_Vogelhochzeit
   Settled: Matthias 2026-11-07: bars 4-6, the "Fi-di" sixteenth pairs, A (Erk/Peters) has D4:1 D4:1 / B4:1 B4:1 / C5:1 C5:1, B (de.wikipedia) has D5:1 B4:1 / D5:1 B4:1 / D5:1 C5:1; Zitro plays the old print's version, and a crop of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +0 semitones, events counted in A, lengths in sixteenths):
+    events 17-18: A D4:1 D4:1, B D5:1 B4:1
+    event 22: A B4:1, B D5:1
+    event 27: A C5:1, B D5:1
 
 funiculi-funicula
   Names: Funiculì, Funiculà / Funiculì, Funiculà
@@ -77,6 +87,9 @@ ihr-kinderlein-kommet
   Composer: Friedrich Hermann Eickhoff (1807-1886) | https://de.wikipedia.org/wiki/Friedrich_Eickhoff | https://www.deutsche-biographie.de/pnd141108711.html
   First print: 1795 | https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet
   Settled: Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6; the two prints end differently, and it is not verified which ending is Schulz's and which is Eickhoff's; Zitro plays the old print's version, and a second reading of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +2 semitones, events counted in A, lengths in sixteenths):
+    event 42: A G#4:2, B nothing
+    after event 43: A nothing, B D#4:2
 
 londonderry-air
   Names: Londonderry Air / Danny Boy
@@ -92,6 +105,9 @@ mary-had-a-little-lamb
   Traditional, printed in: Mary Had a Little Lamb, in The Most Popular Mother Goose Songs, Hinds, Noble & Eldredge, New York 1915 (1915) | https://archive.org/details/mostpopularmothe00hill/page/n15/
   Traditional, printed in: same tune as the chorus "Merrily we roll along" of Goodnight, Ladies, first published 16 May 1867 (Wikipedia; IMSLP gives 1847/1867) (1867) | https://en.wikipedia.org/wiki/Goodnight,_Ladies
   Settled: Matthias 2026-11-07: bar 4, A (Hill 1915) has A4:2 C5:2 C5:4 and leaves out the A4 sixteenth that carries verse 2's "And", B (Wier 1918) keeps it inside the bar, A4:2 C5:2 C5:3 A4:1; bar 7, A has G4:2 G4:2 A4:3 G4:1 (dotted), B G4:2 G4:2 A4:2 G4:2 (even); Zitro plays the old print's version (Hill 1915), and a crop of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +0 semitones, events counted in A, lengths in sixteenths):
+    event 13: A C5:4, B C5:3 A4:1
+    events 24-25: A A4:3 G4:1, B A4:2 G4:2
 
 muss-i-denn
   Names: Muss i denn zum Städtele hinaus / Muss i denn zum Städtele hinaus
@@ -108,6 +124,13 @@ my-bonnie
   Traditional, printed in: My Bonnie, in Songs the Whole World Sings, D. Appleton, New York 1915 (1915) | https://archive.org/details/songswholeworlds00wier/page/n184/
   Traditional, printed in: Bring Back My Bonnie to Me (as H. J. Fulmer), T. B. Harms & Co., New York 1882 (1882) | https://imslp.org/wiki/Bring_Back_My_Bonnie_to_Me_(Fulmer,_H._J.)
   Settled: Matthias 2026-11-07: bars 1, 5 and 9 ("Bonnie lies"), A (Wier 1915) has E5:6 D5:2 C5:4 (dotted), B (en.wikipedia, moved +5) E5:4 D5:4 C5:4 (even); bar 20 ("back"), A C5:12, B D5:12; bar 28 ("back, Oh,"), A D5:8 C5:4, B D5:12; and the end, A's last note C5:12~ C5:4 R:4 (20, closing against the pickup), B C5:24, so B is 4 sixteenths longer; Zitro plays the old print's version (Wier 1915), and crops of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +5 semitones, events counted in A, lengths in sixteenths):
+    events 2-3: A E5:6 D5:2, B E5:4 D5:4
+    events 11-12: A E5:6 D5:2, B E5:4 D5:4
+    events 19-20: A E5:6 D5:2, B E5:4 D5:4
+    event 38: A C5:12, B D5:12
+    events 51-52: A D5:8 C5:4, B D5:12
+    event 59: A C5:20, B C5:24
 
 oh-susanna
   Names: Oh! Susanna / Oh! Susanna
@@ -116,6 +139,10 @@ oh-susanna
   Composer: Stephen Foster (1826-1864) | https://en.wikipedia.org/wiki/Stephen_Foster | https://imslp.org/wiki/Category:Foster,_Stephen
   First print: 1848 | https://en.wikipedia.org/wiki/Oh!_Susanna
   Settled: Matthias 2026-11-07: the Holt and Benteen 1848 editions differ in rhythm in bar 13 (A B4:2 D5:2 D5:2 E5:2, B B4:2 D5:2 D5:3 E5:1), bar 15 (A B4:2 B4:2 A4:2 A4:2, B B4:1 B4:3 A4:3 A4:1) and bar 22 (A D5:2 B4:2 G4:3 A4:1, B D5:2 B4:2 G4:2 A4:2); Zitro plays the old print's version (Holt), and a second reading of A's scan confirmed A.
+  Every difference from score B, after joining ties and folding rests (B moved by +0 semitones, events counted in A, lengths in sixteenths):
+    events 50-51: A D5:2 E5:2, B D5:3 E5:1
+    events 56-59: A B4:2 B4:2 A4:2 A4:2, B B4:1 B4:3 A4:3 A4:1
+    events 79-80: A G4:3 A4:1, B G4:2 A4:2
 
 three-blind-mice
   Names: Three Blind Mice / Three Blind Mice
@@ -124,6 +151,9 @@ three-blind-mice
   Traditional, printed in: Three Blind Mice (Round), in Twice 55 Community Songs (The Brown Book), C. C. Birchard, Boston 1919 (1919) | https://archive.org/details/twice-55-community-songs-no-1-1919/page/n43/
   Traditional, printed in: English round, earliest form (minor) in Thomas Ravenscroft, Deuteromelia, London 1609 (IMSLP: Piece Style Traditional (folk), Year of First Publication 1609) (1609) | https://imslp.org/wiki/Three_Blind_Mice_(English_Folk_Music)
   Settled: Matthias 2026-11-07: A (Twice 55 Community Songs 1919) sings "Three blind mice" (bars 1-4) and "See how they run" (bars 5-8) twice each, as in the round, B (Augener 1917) sings each once, so B has 12 bars to A's 16; and the last note, A D4:6~ D4:4 R:2 (12 sixteenths in total), B D4:6~ D4:4 (10, the print's short last bar); every other note of A's material agrees with B; Zitro plays the 1919 form with the repeats, and a blind second reading of another print (Augener 1917) confirmed A's notes.
+  Every difference from score B, after joining ties and folding rests (B moved by +0 semitones, events counted in A, lengths in sixteenths):
+    events 4-10: A F#4:6 E4:6 D4:12 A4:6 G4:4 G4:2 F#4:12, B nothing
+    event 48: A D4:12, B D4:10
 
 weisst-du-wie-viel-sternlein
   Names: Weißt du, wie viel Sternlein stehen / Weißt du, wie viel Sternlein stehen

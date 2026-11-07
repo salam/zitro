@@ -269,6 +269,58 @@ def test_settled():
     check("The scan reads E" in files.get("SOURCES.txt", ""), "settled note in SOURCES.txt")
     check(has_error({t: song(extra=["settled nothing to settle"])}, "test-song:", "settled", "agree"),
           "settled with nothing to settle")
+    # Every difference is named, not just the first: one in bar 3, one in the second-last bar
+    two_wrong = {"score-b": "https://x.org/a | nederlands | relative c' | "
+                 + NOTES_B_ONE_WRONG.replace("a4 b | g4.", "a4 c | g4.")}
+    files, errors, notes = m.build({t: song(two_wrong, ["settled Two places, both read again on A's scan"])},
+                                   BUILT_INS)
+    check(errors == [], f"two settled differences pass: {errors}")
+    remark = " ".join(notes)
+    check("2 places" in remark and "event 11: A E4:2, B D4:2" in remark and "event 21: A B4:4, B C5:4" in remark,
+          f"both differences in the remark: {notes}")
+    sources = files.get("SOURCES.txt", "")
+    check("    event 11: A E4:2, B D4:2\n" in sources and "    event 21: A B4:4, B C5:4\n" in sources,
+          f"both differences in SOURCES.txt: {sources[-600:]}")
+    # Without a settled line, the error names both too
+    check(has_error({t: song(two_wrong)}, "test-song:", "score B differs", "2 places", "event 11", "event 21"),
+          "unsettled error names both differences")
+
+
+def test_all_differences():
+    """The transposition comes from the alignment, so an early difference or a repeat doesn't throw it off."""
+    cmp = m.compare_scores
+    a = [[62, 2], [67, 2], [67, 2], [71, 2], [71, 2], [74, 4], [71, 4], [69, 8]]
+    up = [[p + 5 if p else 0, t] for p, t in a]
+    check(cmp(a, up) is None, "a fourth up still agrees")
+    first_wrong = [[64 + 5, 2]] + up[1:]
+    result = cmp(a, first_wrong) or ""
+    check("B moved by -5 semitones" in result, f"a first-note difference keeps the true move: {result}")
+    check("in 1 place " in result and "event 1: A D4:2, B E4:2" in result, f"only the first note differs: {result}")
+    # A sings a phrase twice, B once: one region, and the rest still agrees
+    repeated = a[:4] + a[:4] + a[4:]
+    result = cmp(repeated, up) or ""
+    check("B moved by -5 semitones" in result and "in 1 place " in result and "B nothing" in result,
+          f"a repeat only A has is one region: {result}")
+    # Two separate places, each named
+    two = [list(e) for e in up]
+    two[1][0] += 1
+    two[6][1] = 2
+    two.insert(7, [0, 2])  # A rest after a shorter note folds back: B4:2 R:2 equals B4:4
+    two[6][0] -= 2
+    result = cmp(a, two) or ""
+    check("in 2 places" in result and "event 2: A G4:2, B G#4:2" in result and "event 7: A B4:4, B A4:4" in result,
+          f"two places: {result}")
+    # B at doubled values: still a difference, which is listed at B's halved lengths
+    doubled = [[p, t * 2] for p, t in a]
+    doubled[3][1] = 2
+    result = cmp(a, doubled) or ""
+    check("halved" in result and "in 1 place " in result and "event 4: A B4:2, B B4:1" in result,
+          f"doubled values: {result}")
+    check(cmp(a, [[p, t * 2] for p, t in a]) is not None, "doubled values alone are still a difference")
+    check(has_error({"test-song.song": song({"score-b": "https://x.org/a | nederlands | relative c' | "
+                                                        + NOTES_B.replace("8", "4x").replace("4.", "2.")
+                                                        .replace("4 ", "2 ").replace("4x", "4")})},
+                    "test-song:", "score B differs", "halved"), "a song with B at doubled values is refused")
 
 
 def test_rests_fold():
@@ -570,6 +622,7 @@ def main():
     test_good_song()
     test_brief_cases()
     test_settled()
+    test_all_differences()
     test_rests_fold()
     test_rests_fold_at_the_end()
     test_more_checks()

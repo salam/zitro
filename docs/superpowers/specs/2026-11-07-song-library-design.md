@@ -80,7 +80,7 @@ The confidence rule decides by kind of source:
 
 - Score A is the recorded source of the notes: a scan of a printed songbook from before 1931, or a public domain, CC0 or CC BY score.
 - Score B is only compared and can be any openly licensed score, including CC BY-SA ones such as Wikipedia's.
-- Agreement after allowing for transposition and repeat signs is a pass. Any other difference is a rejection, unless a person settles it with a note in the data saying why.
+- Agreement after allowing for transposition and repeat signs is a pass. A note followed by a rest counts as equal to a longer note of the same pitch when the next note starts at the same time (user decision, 2026-11-07). Any other difference is a rejection, unless a person settles it with a note in the data saying why.
 - A scan may be read by software or an AI. That reading alone never counts. The check is that it matches an independent score, because a misread note is very unlikely to match by chance.
 - A CC BY credit is owed only when a CC BY score is score A.
 - Start with five songs end to end. If scans of old songbooks turn out too hard to use, come back to the user before going on; the 20 songs in phase 1 depend on this.

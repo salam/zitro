@@ -271,6 +271,19 @@ def test_settled():
           "settled with nothing to settle")
 
 
+def test_rests_fold():
+    """A note followed by a rest equals one longer note when the next note starts at the same time (2026-11-07)."""
+    cmp = m.compare_scores
+    check(cmp([[67, 8], [0, 4], [69, 4]], [[67, 12], [69, 4]]) is None, "held note equals note plus rest")
+    check(cmp([[69, 6], [0, 2]], [[69, 8]]) is None, "A4:6 R:2 equals A4:8")
+    check(cmp([[67, 12], [69, 4]], [[67, 8], [0, 4], [69, 4]]) is None, "fold works the other way round")
+    check(cmp([[67, 8], [0, 2], [0, 2], [69, 4]], [[67, 12], [69, 4]]) is None, "two rests in a row both fold")
+    check(cmp([[67, 8], [0, 4], [69, 4]], [[67, 8], [69, 8]]) is not None, "shifted next onset still fails")
+    check(cmp([[67, 8], [0, 4], [69, 4]], [[67, 12], [70, 4]]) is not None, "different pitch still fails")
+    check(cmp([[69, 4]], [[0, 2], [69, 4]]) is not None, "leading rest in B only still fails")
+    check(cmp([[0, 2], [69, 4]], [[0, 2], [69, 4]]) is None, "same leading rest passes")
+
+
 def test_more_checks():
     t = "test-song.song"
     cases = [
@@ -541,6 +554,7 @@ def main():
     test_good_song()
     test_brief_cases()
     test_settled()
+    test_rests_fold()
     test_more_checks()
     test_fix_round_1()
     test_english_lilypond()

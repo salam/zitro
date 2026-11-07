@@ -489,8 +489,22 @@ def describe(events, start):
     return " ".join(("R" if midi == 0 else str(midi)) + f"/{ticks}" for midi, ticks in events[start:start + 4])
 
 
+def fold_rests(events):
+    """Every rest after a sounding note is added to that note; a rest at the very start stays. Comparison only."""
+    out = []
+    for midi, ticks in events:
+        if midi == 0 and out and out[-1][0] != 0:
+            out[-1] = [out[-1][0], out[-1][1] + ticks]
+        else:
+            out.append([midi, ticks])
+    return out
+
+
 def compare_scores(a, b):
-    """None if score B equals score A up to one constant transposition, else where they first differ."""
+    """None if score B equals score A up to one constant transposition, else where they first differ.
+
+    A note followed by a rest counts as one longer note (user decision, 2026-11-07), so both scores are folded first."""
+    a, b = fold_rests(a), fold_rests(b)
     shift = next((ea[0] - eb[0] for ea, eb in zip(a, b) if ea[0] and eb[0]), 0)
     for i, (ea, eb) in enumerate(zip(a, b)):
         same_pitch = (ea[0] == 0 and eb[0] == 0) or (ea[0] and eb[0] and ea[0] - eb[0] == shift)

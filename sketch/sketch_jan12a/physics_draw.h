@@ -12,6 +12,43 @@ static const uint16_t PHYSICS_BLACK = 0x0000, PHYSICS_WHITE = 0xFFFF, PHYSICS_GR
 static const int PHYSICS_W = 240;
 static const int PHYSICS_H = 117;  // Above the bottom line
 
+// Working memory of the newer scenes; only one scene runs at a time
+struct PhysicsChaosData {
+  PhysicsDoublePendulum pendulum[2];
+  int16_t trailX[2][PHYSICS_CHAOS_TRAIL], trailY[2][PHYSICS_CHAOS_TRAIL];
+  uint8_t trailAt, trailCount;
+};
+struct PhysicsDopplerData {
+  int nextCrest;    // The next crest to reach the listener
+  float heardHz;    // Pitch of the last one that did, 0 before
+};
+struct PhysicsSlitData {
+  int8_t amplitude[PHYSICS_SLIT_ROWS][PHYSICS_SLIT_COLUMNS];  // Both waves together, -64..64
+  uint8_t phase[PHYSICS_SLIT_ROWS][PHYSICS_SLIT_COLUMNS];     // Their mean phase, 256 to a turn
+  uint8_t band[PHYSICS_H];                                    // Brightness on the screen at the right, 0..255
+  int8_t cosine[256];                                         // 64 cos, 256 to a turn
+};
+struct PhysicsDecayData {
+  uint8_t alive[PHYSICS_DECAY_ROWS * PHYSICS_DECAY_COLUMNS];
+  uint16_t curve[PHYSICS_DECAY_CURVE];  // Atoms left, sampled along the graph
+  int count;
+};
+struct PhysicsOrbitData {
+  int16_t x[ASTRO_PLANET_COUNT][PHYSICS_ORBIT_POINTS], y[ASTRO_PLANET_COUNT][PHYSICS_ORBIT_POINTS];
+};
+struct PhysicsLoopData {
+  double startDay;  // First day of the run; the opposition is in the middle
+  float centreLongitude, perDegree;  // Degrees; pixels per degree on the sky strip
+  int16_t x[PHYSICS_LOOP_POINTS], y[PHYSICS_LOOP_POINTS];
+  int16_t starX[PHYSICS_LOOP_STARS], starY[PHYSICS_LOOP_STARS];
+  uint8_t starSize[PHYSICS_LOOP_STARS], starCount;
+  int16_t orbitX[2][48], orbitY[2][48];  // The Earth's and the planet's orbit, top view
+};
+struct PhysicsSunPathData {
+  bool nowKnown;
+  float nowHeight, nowAzimuth;  // Radians
+};
+
 struct PhysicsState {
   uint8_t sceneIndex, param;
   PhysicsSceneId scene;
@@ -22,6 +59,19 @@ struct PhysicsState {
   float a, b, c;  // The moving quantities of the scene
   bool clockKnown;   // Sky scenes: the device knows today's date...
   double startDay;   // ...which is this Julian day
+  float homeLatitude, homeLongitude;  // Radians, north and east positive: for seasons and the Sun's path
+  // A sound the scene asks for in this frame; the device plays it after drawing. toneMs 0: none
+  uint16_t toneHz, toneMs;
+  uint32_t random;
+  union {
+    PhysicsChaosData chaos;
+    PhysicsDopplerData doppler;
+    PhysicsSlitData slit;
+    PhysicsDecayData decay;
+    PhysicsOrbitData orbits;
+    PhysicsLoopData loop;
+    PhysicsSunPathData sun;
+  } data;
   PhysicsMatter matter;
   // Magnets: field lines, worked out once for each setting
   PhysicsPole poles[4];
@@ -59,6 +109,15 @@ inline void physicsValue(char* out, size_t size, float value, int decimals, cons
 }
 
 inline const char* physicsPick(const PhysicsState& s, const char* de, const char* en) { return s.german ? de : en; }
+
+// "47° N" or "33,9° S": whole degrees when it is a whole number
+inline void physicsLatitudeText(char* out, size_t size, float latitude, bool german) {
+  const float degrees = fabsf(latitude) / PHYSICS_DEG;
+  char number[12];
+  const bool whole = fabsf(degrees - roundf(degrees)) < 0.05f;
+  physicsFormatNumber(number, sizeof(number), degrees, whole ? 0 : 1, german);
+  snprintf(out, size, "%s\xC2\xB0 %s", number, latitude < 0 ? "S" : "N");
+}
 
 // ---- Falling ----
 template <class C>
@@ -801,7 +860,7 @@ void physicsDrawSeasons(C& c, PhysicsState& s, float dt) {
   if (s.t >= 1.0f) s.t -= 1.0f;
 
   const float declination = physicsSunDeclination(s.a);
-  const float hours = physicsDayHours(PHYSICS_HOME_LATITUDE, declination);
+  const float hours = physicsDayHours(s.homeLatitude, declination);
   const int cx = 124, cy = 52, r = 38;
   c.fillCircle(-6, cy, 28, PHYSICS_CITRUS);
   for (int y = cy - 24; y <= cy + 24; y += 12) c.drawFastHLine(26, y, cx - r - 30, PHYSICS_CITRUS);
@@ -823,7 +882,7 @@ void physicsDrawSeasons(C& c, PhysicsState& s, float dt) {
   bool lastSeen = false;
   for (int i = 0; i <= segments; i++) {
     float p[3];
-    physicsLatitudePoint(axis, PHYSICS_HOME_LATITUDE, 2.0f * PHYSICS_PI * i / segments, p);
+    physicsLatitudePoint(axis, s.homeLatitude, 2.0f * PHYSICS_PI * i / segments, p);
     const int x = cx + (int)(p[0] * r), y = cy - (int)(p[1] * r);
     const bool seen = p[2] > 0;
     if (seen && lastSeen) c.drawLine(lastX, lastY, x, y, p[0] < 0 ? PHYSICS_CITRUS : PHYSICS_GREY);
@@ -833,13 +892,16 @@ void physicsDrawSeasons(C& c, PhysicsState& s, float dt) {
   }
   // Home goes around once a day
   float home[3];
-  physicsLatitudePoint(axis, PHYSICS_HOME_LATITUDE, 2.0f * PHYSICS_PI * s.t, home);
+  physicsLatitudePoint(axis, s.homeLatitude, 2.0f * PHYSICS_PI * s.t, home);
   if (home[2] > 0) c.fillCircle(cx + (int)(home[0] * r), cy - (int)(home[1] * r), 4, PHYSICS_RED);
 
   const int dayRounded = (int)(hours + 0.5f);
-  char text[12];
-  physicsText(c, s.big, s.german ? de[physicsSeasonIndex(s.a)] : en[physicsSeasonIndex(s.a)], 2, 20, PHYSICS_WHITE, textdatum_t::baseline_left);
-  physicsText(c, s.normal, "47\xC2\xB0 N", 2, 94, PHYSICS_RED, textdatum_t::baseline_left);
+  char text[16];
+  // South of the equator the seasons are the other way round
+  const int season = (physicsSeasonIndex(s.a) + (s.homeLatitude < 0 ? 2 : 0)) % 4;
+  physicsText(c, s.big, s.german ? de[season] : en[season], 2, 20, PHYSICS_WHITE, textdatum_t::baseline_left);
+  physicsLatitudeText(text, sizeof(text), s.homeLatitude, s.german);
+  physicsText(c, s.normal, text, 2, 94, PHYSICS_RED, textdatum_t::baseline_left);
   const int textX = 170;
   physicsText(c, s.normal, physicsPick(s, "Tag", "Day"), textX, 18, PHYSICS_CITRUS, textdatum_t::baseline_left);
   snprintf(text, sizeof(text), "%d h", dayRounded);
@@ -948,6 +1010,9 @@ void physicsDrawAtom(C& c, PhysicsState& s, float dt) {
   physicsText(c, s.normal, shells, 4, 112, PHYSICS_CITRUS, textdatum_t::baseline_left);
 }
 
+#include "physics_draw_waves.h"
+#include "physics_draw_astro.h"
+
 // ---- The list ----
 
 // Starts the current scene over with the current setting
@@ -974,6 +1039,25 @@ inline void physicsSceneReset(PhysicsState& s) {
       s.a = s.clockKnown ? physicsSunLongitude(s.startDay) : PHYSICS_PI / 2.0f;
       s.b = s.a;
       break;
+    case PHYSICS_DOUBLE_PENDULUM:
+      physicsChaosStart(s);
+      break;
+    case PHYSICS_DOPPLER:
+      s.data.doppler.nextCrest = 0;
+      s.data.doppler.heardHz = 0;
+      break;
+    case PHYSICS_DOUBLE_SLIT:
+      physicsSlitBuild(s);
+      break;
+    case PHYSICS_HALF_LIFE:
+      physicsDecayStart(s);
+      break;
+    case PHYSICS_PLANETS:
+      physicsPlanetsBuild(s);
+      break;
+    case PHYSICS_RETROGRADE:
+      physicsLoopBuild(s);
+      break;
     default:
       break;
   }
@@ -983,7 +1067,8 @@ inline void physicsSceneNextParam(PhysicsState& s) {
   const uint8_t count = PHYSICS_SCENES[s.sceneIndex].paramCount;
   s.param = (uint8_t)((s.param + 1) % count);
   // These carry on from where they are, so you see the change happen
-  if (s.scene == PHYSICS_LEVER || s.scene == PHYSICS_MATTER) return;
+  // The Sun's path keeps its clock, so the Sun now stays where it really is
+  if (s.scene == PHYSICS_LEVER || s.scene == PHYSICS_MATTER || s.scene == PHYSICS_SUNPATH) return;
   if (s.scene == PHYSICS_SEASONS) {
     s.b = physicsNextSeasonLongitude(s.b);
     return;
@@ -1012,5 +1097,15 @@ void physicsDrawFrame(C& c, PhysicsState& s, float dt) {
     case PHYSICS_SEASONS: physicsDrawSeasons(c, s, dt); break;
     case PHYSICS_MOON: physicsDrawMoon(c, s, dt); break;
     case PHYSICS_ATOM: physicsDrawAtom(c, s, dt); break;
+    case PHYSICS_DOUBLE_PENDULUM: physicsDrawChaos(c, s, dt); break;
+    case PHYSICS_DOPPLER: physicsDrawDoppler(c, s, dt); break;
+    case PHYSICS_DOUBLE_SLIT: physicsDrawDoubleSlit(c, s, dt); break;
+    case PHYSICS_PRISM: physicsDrawPrism(c, s, dt); break;
+    case PHYSICS_HALF_LIFE: physicsDrawHalfLife(c, s, dt); break;
+    case PHYSICS_PLANETS: physicsDrawPlanets(c, s, dt); break;
+    case PHYSICS_RETROGRADE: physicsDrawRetrograde(c, s, dt); break;
+    case PHYSICS_SUNPATH: physicsDrawSunPath(c, s, dt); break;
+    case PHYSICS_SATELLITES: physicsDrawSatellites(c, s, dt); break;
+    case PHYSICS_SIZES: physicsDrawSizes(c, s, dt); break;
   }
 }

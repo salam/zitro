@@ -625,6 +625,331 @@ static void testAtomQueries() {
   CHECK(!physicsParseQuery(huge.c_str(), scene, element));
 }
 
+// ---- New scenes ----
+static void testDoublePendulum() {
+  const float m = 1, l = PHYSICS_CHAOS_LENGTH, g = 9.81f;
+  // Hanging still stays still
+  PhysicsDoublePendulum rest = {0, 0, 0, 0};
+  float a1, a2;
+  physicsDoublePendulumAccel(rest, m, m, l, l, g, a1, a2);
+  NEAR(a1, 0, 1e-6);
+  NEAR(a2, 0, 1e-6);
+  // Released level with the pivot, rods in line: the first weight starts with g / l * ... check by hand.
+  // At angle1 = angle2 = 90 degrees and at rest: den = 2 m1 + m2 - m2 cos 0 = 2; a1 = -g (3) / (l 2) + m2 g sin(90-180)...
+  PhysicsDoublePendulum level = {PHYSICS_PI / 2, 0, PHYSICS_PI / 2, 0};
+  physicsDoublePendulumAccel(level, m, m, l, l, g, a1, a2);
+  // -g(2m1+m2) sin(a1) - m2 g sin(a1 - 2 a2) = -3g - g sin(-90 deg) = -2g; over l (2m1 + m2 - m2) = 2 l
+  NEAR(a1, -g / l, 1e-4);
+  NEAR(a2, 0, 1e-4);
+  // Small swings: the slow normal mode has omega^2 = (2 - sqrt 2) g / l for equal masses and rods
+  PhysicsDoublePendulum mode = {0.01f, 0, 0.01f * sqrtf(2.0f), 0};
+  physicsDoublePendulumAccel(mode, m, m, l, l, g, a1, a2);
+  NEAR(a1 / mode.angle1, -(2 - sqrtf(2)) * g / l, 0.01 * g / l);
+  NEAR(a2 / mode.angle2, -(2 - sqrtf(2)) * g / l, 0.01 * g / l);
+  // Energy stays, for every start the scene uses, over 30 s at the scene's step
+  for (float start : PHYSICS_CHAOS_STARTS) {
+    PhysicsDoublePendulum p = {start * PHYSICS_DEG, 0, start * PHYSICS_DEG, 0};
+    const float e0 = physicsDoublePendulumEnergy(p, m, m, l, l, g);
+    float worst = 0;
+    for (int i = 0; i < 15000; i++) {
+      physicsDoublePendulumStep(p, m, m, l, l, g, 0.002f);
+      worst = fmaxf(worst, fabsf(physicsDoublePendulumEnergy(p, m, m, l, l, g) - e0));
+    }
+    // Against the energy scale m g l: a tenth of a percent
+    NEAR(worst / (m * g * l), 0, 1e-3);
+  }
+  // Chaos: from 135 degrees a thousandth of a radian grows to a different motion within 30 s;
+  // from 30 degrees it stays small
+  for (float start : {30.0f, 135.0f}) {
+    PhysicsDoublePendulum p = {start * PHYSICS_DEG, 0, start * PHYSICS_DEG, 0};
+    PhysicsDoublePendulum q = {start * PHYSICS_DEG + PHYSICS_CHAOS_NUDGE, 0, start * PHYSICS_DEG, 0};
+    float gap = 0;
+    for (int i = 0; i < 15000; i++) {
+      physicsDoublePendulumStep(p, m, m, l, l, g, 0.002f);
+      physicsDoublePendulumStep(q, m, m, l, l, g, 0.002f);
+      const float px = l * (sinf(p.angle1) + sinf(p.angle2)), py = -l * (cosf(p.angle1) + cosf(p.angle2));
+      const float qx = l * (sinf(q.angle1) + sinf(q.angle2)), qy = -l * (cosf(q.angle1) + cosf(q.angle2));
+      gap = fmaxf(gap, hypotf(px - qx, py - qy));
+    }
+    printf("double pendulum from %.0f deg: largest gap %.3f m\n", start, gap);
+    if (start < 45) CHECK(gap < 0.01f);
+    else CHECK(gap > 0.1f);
+  }
+}
+
+static void testDoppler() {
+  const float c = 343.0f;
+  NEAR(physicsDopplerHeard(440, c, 0, 1), 440, 1e-3);
+  NEAR(physicsDopplerHeard(440, c, 27.78f, 1), 440 / (1 - 27.78 / 343.0), 0.01);   // Coming straight on
+  NEAR(physicsDopplerHeard(440, c, 27.78f, -1), 440 / (1 + 27.78 / 343.0), 0.01);  // Going away
+  NEAR(physicsDopplerHeard(440, c, 27.78f, 0), 440, 1e-3);                         // Passing right by
+  // The pitch is the rate at which crests arrive: crests sent every 1 / 440 s, timed at the listener
+  for (float kmh : PHYSICS_DOPPLER_KMH) {
+    const float v = kmh / 3.6f;
+    for (float sent : {0.0f, 2.0f, 4.0f, 6.0f}) {
+      float cos0, cos1;
+      const double t0 = physicsDopplerArrival(sent, -100, v, c, 0, 30, cos0);
+      const double t1 = physicsDopplerArrival(sent + 1.0f / 440, -100, v, c, 0, 30, cos1);
+      NEAR(1.0 / (t1 - t0), physicsDopplerHeard(440, c, v, cos0), 0.5);
+    }
+  }
+  // The screen keeps the true ratio: the same formula in pixels gives the same pitch
+  float cosScreen;
+  physicsDopplerArrival(1.0f, -50, 300 / 3.6f / c * PHYSICS_DOPPLER_SCREEN_C, PHYSICS_DOPPLER_SCREEN_C, 120, 56, cosScreen);
+  NEAR(physicsDopplerHeard(440, PHYSICS_DOPPLER_SCREEN_C, 300 / 3.6f / c * PHYSICS_DOPPLER_SCREEN_C, cosScreen),
+       physicsDopplerHeard(440, c, 300 / 3.6f, cosScreen), 0.01);
+}
+
+static void testDoubleSlit() {
+  NEAR(physicsTwoWaveBrightness(100, 100, 8), 4, 1e-5);   // In the middle: both crests together
+  NEAR(physicsTwoWaveBrightness(104, 100, 8), 0, 1e-5);   // Half a wave apart: dark
+  NEAR(physicsTwoWaveBrightness(108, 100, 8), 4, 1e-4);   // A whole wave: bright again
+  NEAR(physicsTwoWaveBrightness(102, 100, 8), 2, 1e-4);
+  // Far away the bright bands lie lambda L / d apart
+  const float d = 40, L = 4000, lambda = 8;
+  float firstDark = 0, darkest = 5;
+  for (float y = 300; y < 500; y += 0.05f) {
+    const float r1 = hypotf(L, y - d / 2), r2 = hypotf(L, y + d / 2);
+    const float b = physicsTwoWaveBrightness(r1, r2, lambda);
+    if (b < darkest) { darkest = b; firstDark = y; }
+  }
+  // Path difference d sin(a) = lambda / 2, at y = L tan(a)
+  NEAR(firstDark, L * tanf(asinf(lambda / (2 * d))), 0.5);
+  NEAR(firstDark, lambda * L / d / 2, 3.0);  // The small-angle rule
+  CHECK(PHYSICS_LASERS[0].nanometres > PHYSICS_LASERS[1].nanometres);
+  CHECK(PHYSICS_LASERS[1].nanometres > PHYSICS_LASERS[2].nanometres);
+}
+
+static void testPrism() {
+  const PhysicsGlass& water = PHYSICS_GLASSES[0];
+  const PhysicsGlass& crown = PHYSICS_GLASSES[1];
+  const PhysicsGlass& flint = PHYSICS_GLASSES[2];
+  // SCHOTT's catalogue: nd at 587.56 nm, nF at 486.13 nm, nC at 656.27 nm
+  NEAR(physicsSellmeier(crown, 0.58756f), 1.51680, 2e-5);
+  NEAR(physicsSellmeier(crown, 0.48613f), 1.52238, 2e-5);
+  NEAR(physicsSellmeier(crown, 0.65627f), 1.51432, 2e-5);
+  NEAR(physicsSellmeier(flint, 0.58756f), 1.78472, 2e-5);
+  // Abbe numbers in the catalogue: N-BK7 64.17, N-SF11 25.68
+  const float vCrown = (physicsSellmeier(crown, 0.58756f) - 1) / (physicsSellmeier(crown, 0.48613f) - physicsSellmeier(crown, 0.65627f));
+  const float vFlint = (physicsSellmeier(flint, 0.58756f) - 1) / (physicsSellmeier(flint, 0.48613f) - physicsSellmeier(flint, 0.65627f));
+  NEAR(vCrown, 64.17, 0.05);
+  NEAR(vFlint, 25.68, 0.05);
+  // Water at 20 C, 589.3 nm: handbooks give 1.3330; Daimon and Masumura's fit lies 0.0004 above
+  NEAR(physicsSellmeier(water, 0.5893f), 1.3330, 5e-4);
+  // Violet bends more than red
+  for (const PhysicsGlass& g : PHYSICS_GLASSES) CHECK(physicsSellmeier(g, 0.41f) > physicsSellmeier(g, 0.66f));
+  // Snell in vector form agrees with the angle form
+  for (float a : {0.0f, 20.0f, 45.0f, 70.0f}) {
+    const float in = a * PHYSICS_DEG;
+    float ox, oy, out;
+    CHECK(physicsRefract(sinf(in), cosf(in), 0, -1, 1.0f, 1.5f, ox, oy));
+    CHECK(physicsSnell(1.0f, 1.5f, in, out));
+    NEAR(atan2f(ox, oy), out, 1e-5);
+    NEAR(hypotf(ox, oy), 1, 1e-5);
+  }
+  float ox, oy;
+  CHECK(!physicsRefract(sinf(60 * PHYSICS_DEG), cosf(60 * PHYSICS_DEG), 0, -1, 1.5f, 1.0f, ox, oy));  // Total reflection
+  // A 60-degree prism: minimum deviation 2 asin(n / 2) - 60 degrees when the ray goes through evenly
+  const float n = 1.5168f;
+  const float even = asinf(n * sinf(30 * PHYSICS_DEG));
+  NEAR(physicsPrismDeviation(60 * PHYSICS_DEG, even, n) / PHYSICS_DEG, 2 * even / PHYSICS_DEG - 60, 1e-3);
+  NEAR(physicsPrismDeviation(60 * PHYSICS_DEG, even, n) / PHYSICS_DEG, 38.647, 0.01);  // By hand: 2 x 49.3233 - 60
+  // The traced ray through the drawn prism turns by exactly the textbook deviation
+  const float h = 60 * sqrtf(3) / 2;
+  const float x[3] = {100, 70, 130}, y[3] = {20, 20 + h, 20 + h};  // Apex up, screen y down
+  for (const PhysicsGlass& g : PHYSICS_GLASSES) {
+    for (float nm : PHYSICS_PRISM_NM) {
+      const float index = physicsSellmeier(g, nm / 1000.0f);
+      // In at 60 degrees from the left face's normal, rising 30 degrees, at the face's middle
+      const float dx = cosf(30 * PHYSICS_DEG), dy = -sinf(30 * PHYSICS_DEG);
+      const float mx = 85, my = 20 + h / 2;
+      float inX, inY, outX, outY, outDx, outDy;
+      const bool through = physicsPrismRay(x, y, index, mx - 50 * dx, my - 50 * dy, dx, dy, inX, inY, outX, outY, outDx, outDy);
+      const float expected = physicsPrismDeviation(60 * PHYSICS_DEG, 60 * PHYSICS_DEG, index);
+      CHECK(through == (expected >= 0));
+      if (!through) continue;
+      NEAR(inX, mx, 1e-2);
+      NEAR(inY, my, 1e-2);
+      const float turned = atan2f(-dy, dx) - atan2f(-outDy, outDx);
+      NEAR(turned, expected, 1e-4);
+    }
+  }
+  // Flint spreads the colours several times wider than crown glass
+  const float spreadCrown = physicsPrismDeviation(60 * PHYSICS_DEG, 60 * PHYSICS_DEG, physicsSellmeier(crown, 0.41f)) -
+                            physicsPrismDeviation(60 * PHYSICS_DEG, 60 * PHYSICS_DEG, physicsSellmeier(crown, 0.66f));
+  const float spreadFlint = physicsPrismDeviation(60 * PHYSICS_DEG, 60 * PHYSICS_DEG, physicsSellmeier(flint, 0.41f)) -
+                            physicsPrismDeviation(60 * PHYSICS_DEG, 60 * PHYSICS_DEG, physicsSellmeier(flint, 0.66f));
+  printf("prism spread at 60 deg in: crown %.2f deg, flint %.2f deg\n", spreadCrown / PHYSICS_DEG, spreadFlint / PHYSICS_DEG);
+  CHECK(spreadFlint > 4 * spreadCrown);
+}
+
+static void testHalfLife() {
+  NEAR(physicsDecayChance(1, 1), 0.5, 1e-6);
+  NEAR(physicsDecayChance(2, 1), 0.75, 1e-6);
+  NEAR(physicsDecayChance(0, 5), 0, 1e-7);
+  // Many small steps make the same as one big one
+  NEAR(powf(1 - physicsDecayChance(0.04f, 6), 150), 0.5, 1e-4);
+  NEAR(physicsRemaining(256, 12, 6), 64, 1e-3);
+  // Values as fetched from the IAEA (ENSDF): seconds in the database
+  NEAR(PHYSICS_ISOTOPES[0].halfLife * 60, 153.12, 1e-2);
+  NEAR(PHYSICS_ISOTOPES[1].halfLife * 86400, 330238.08, 1);
+  NEAR(PHYSICS_ISOTOPES[2].halfLife * 86400, 693377.28, 1);
+  NEAR(PHYSICS_ISOTOPES[3].halfLife, 5700, 1e-3);
+  // The chance at work: of 100,000 atoms about half are left after one half-life, in frames of 0.04 s
+  uint32_t seed = 12345;
+  int alive = 100000;
+  const float p = physicsDecayChance(0.04f, 6);
+  for (int frame = 0; frame < 150; frame++) {
+    int decayed = 0;
+    for (int i = 0; i < alive; i++) decayed += physicsRandom(seed) < p;
+    alive -= decayed;
+  }
+  NEAR(alive, 50000, 600);  // Three standard deviations of a coin toss
+  // The random numbers stay in 0..1 and look even
+  double sum = 0;
+  for (int i = 0; i < 100000; i++) {
+    const float r = physicsRandom(seed);
+    CHECK(r >= 0 && r < 1);
+    sum += r;
+  }
+  NEAR(sum / 100000, 0.5, 0.005);
+  uint32_t zero = 0;
+  physicsRandom(zero);
+  CHECK(zero != 0);  // Never stuck at zero
+}
+
+// Heliocentric positions from JPL Horizons (ecliptic J2000, au), fetched 2026-11-08; tests only
+static void testPlanets() {
+  struct { int planet; double jd, x, y, z, arcsec, km; } known[] = {
+      {ASTRO_MERCURY, 2461352.5, 1.426679889821202E-01, 2.742329219529482E-01, 9.326496131142224E-03, 15, 1000},
+      {ASTRO_VENUS, 2461352.5, 4.228501738023033E-01, 5.852965432546771E-01, -1.635474321913021E-02, 20, 4000},
+      {ASTRO_EARTH, 2461352.5, 6.980065523764718E-01, 7.033680315656204E-01, -4.761108307144484E-05, 20, 6000},
+      {ASTRO_MARS, 2461352.5, -3.803548960049689E-01, 1.555361863138156E+00, 4.192095066905015E-02, 40, 25000},
+      {ASTRO_JUPITER, 2461352.5, -3.704869589854907E+00, 3.816084275360042E+00, 6.703955657933161E-02, 400, 600000},
+      {ASTRO_SATURN, 2461352.5, 9.205312882435891E+00, 1.973932130985622E+00, -4.008050245906088E-01, 600, 1500000},
+      {ASTRO_URANUS, 2461352.5, 8.796393679089622E+00, 1.732963178364433E+01, -4.969413484915876E-02, 50, 1000000},
+      {ASTRO_NEPTUNE, 2461352.5, 2.983082737434598E+01, 1.499908409751931E+00, -7.183325823754320E-01, 10, 200000},
+      {ASTRO_MARS, 2451545.0, 1.390715921746351E+00, -1.341631815101244E-02, -3.446766277581799E-02, 40, 25000},
+      {ASTRO_EARTH, 2451545.0, -1.771587841839055E-01, 9.672193524609504E-01, -1.139275508446145E-06, 20, 6000},
+      {ASTRO_MARS, 2433282.5, -1.395553774894103E+00, 9.043964307251104E-01, 5.337868315157205E-02, 40, 25000},
+      {ASTRO_EARTH, 2433282.5, -1.827019777847186E-01, 9.661458551954407E-01, 1.101819495711953E-04, 20, 6000},
+  };
+  for (auto& k : known) {
+    double p[3];
+    astroPlanetPosition(k.planet, k.jd, p);
+    const double r = sqrt(p[0] * p[0] + p[1] * p[1] + p[2] * p[2]);
+    const double rk = sqrt(k.x * k.x + k.y * k.y + k.z * k.z);
+    // Within four times JPL's nominal errors for 1800-2050 (they are typical errors, not limits:
+    // Neptune in 2026 is off by 32 arcseconds against a nominal 10). Far below a pixel on screen.
+    const double lon = astroWrap180(atan2(p[1], p[0]) / ASTRO_RAD - atan2(k.y, k.x) / ASTRO_RAD) * 3600;
+    NEAR(lon, 0, 4 * k.arcsec);
+    NEAR((r - rk) * ASTRO_AU_KM, 0, 4 * k.km);
+    const double lat = (asin(p[2] / r) - asin(k.z / rk)) / ASTRO_RAD * 3600;
+    NEAR(lat, 0, 60);
+  }
+  // Kepler's equation is solved
+  for (double e : {0.0, 0.0167, 0.2056, 0.9}) {
+    for (double M = -3.1; M < 3.15; M += 0.3) {
+      const double E = astroEccentricAnomaly(M, e);
+      NEAR(E - e * sin(E), M, 1e-10);
+    }
+  }
+  // Mars oppositions, from Horizons' geocentric longitudes: 2020-10-13 23 UT and 2027-02-19 to 20
+  const double opposition2020 = astroNextOpposition(ASTRO_MARS, physicsJulianDay(2020, 6, 1, 0));
+  NEAR(opposition2020, physicsJulianDay(2020, 10, 13, 23), 1.0);
+  const double opposition2027 = astroNextOpposition(ASTRO_MARS, physicsJulianDay(2026, 11, 8, 0));
+  NEAR(opposition2027, physicsJulianDay(2027, 2, 19, 12), 1.5);
+  // Jupiter's opposition of 2026: 2026-01-10
+  NEAR(astroNextOpposition(ASTRO_JUPITER, physicsJulianDay(2025, 6, 1, 0)), physicsJulianDay(2026, 1, 10, 0), 1.5);
+  // Mars ran backwards from about 2020-09-09 to 2020-11-14 (Horizons); with precession taken out,
+  // its longitude on 2020-10-13 is Horizons' 21.390 degrees of date minus 0.290 degrees
+  double l1, b1, l2, b2;
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 10, 13, 0), l1, b1);
+  NEAR(l1, 21.390 - 0.290, 0.05);
+  NEAR(b1, -3.058, 0.05);
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 10, 14, 0), l2, b2);
+  CHECK(l2 < l1);  // Backwards
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 8, 20, 0), l1, b1);
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 8, 21, 0), l2, b2);
+  CHECK(l2 > l1);  // Forwards again before
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 12, 1, 0), l1, b1);
+  astroGeocentric(ASTRO_MARS, physicsJulianDay(2020, 12, 2, 0), l2, b2);
+  CHECK(l2 > l1);  // And after
+  // Calendar from a Julian day, Meeus's examples
+  int y, m, d;
+  astroCalendarDate(2436116.31, y, m, d);
+  CHECK(y == 1957 && m == 10 && d == 4);
+  astroCalendarDate(2451545.0, y, m, d);
+  CHECK(y == 2000 && m == 1 && d == 1);
+  astroCalendarDate(physicsJulianDay(2026, 3, 1, 0), y, m, d);
+  CHECK(y == 2026 && m == 3 && d == 1);
+  astroCalendarDate(physicsJulianDay(2024, 2, 29, 23.9), y, m, d);
+  CHECK(y == 2024 && m == 2 && d == 29);
+  CHECK(ASTRO_ELEMENTS_FROM == physicsJulianDay(1800, 1, 1, 0));
+  CHECK(ASTRO_ELEMENTS_TO == physicsJulianDay(2050, 1, 1, 0));
+}
+
+static void testSunInTheSky() {
+  // Sun's direction and height from JPL Horizons, no air (refraction), 8.5 E 47 N and 151.2 E 33.9 S
+  struct { double jd; float lat, lon, azimuth, height; } known[] = {
+      {2461120.75, 47, 8.5, 94.736794f, 4.743184f},
+      {2461212.916666667, 47, 8.5, 135.672926f, 60.605391f},
+      {2461352.375, 47, 8.5, 307.785469f, -49.414083f},
+      {2461395.083333333, 47, 8.5, 216.152427f, 11.231911f},
+      {2461212.916666667, -33.9f, 151.2f, 274.964843f, -37.679309f},
+      {2461395.083333333, -33.9f, 151.2f, 178.041867f, -32.645631f},
+  };
+  for (auto& k : known) {
+    float height, azimuth;
+    physicsSunNow(k.jd, k.lat * PHYSICS_DEG, k.lon * PHYSICS_DEG, height, azimuth);
+    NEAR(height / PHYSICS_DEG, k.height, 0.1);
+    NEAR(azimuth / PHYSICS_DEG, k.azimuth, 0.15);
+  }
+  // At noon the Sun is due south, at the height the seasons scene gives
+  float height, azimuth;
+  physicsSkyPosition(PHYSICS_HOME_LATITUDE, PHYSICS_EARTH_TILT, 0, height, azimuth);
+  NEAR(azimuth / PHYSICS_DEG, 180, 1e-3);
+  NEAR(height, physicsNoonHeight(PHYSICS_HOME_LATITUDE, PHYSICS_EARTH_TILT), 1e-4);
+  // South of the equator it is due north at noon
+  physicsSkyPosition(-33.9f * PHYSICS_DEG, 0, 0, height, azimuth);
+  CHECK(azimuth / PHYSICS_DEG < 1e-3 || azimuth / PHYSICS_DEG > 360 - 1e-3);
+  // At the equinox it rises due east and sets due west, after 12 hours
+  const float set = acosf(-tanf(PHYSICS_HOME_LATITUDE) * tanf(0));
+  physicsSkyPosition(PHYSICS_HOME_LATITUDE, 0, -set, height, azimuth);
+  NEAR(height, 0, 1e-5);
+  NEAR(azimuth / PHYSICS_DEG, 90, 1e-3);
+  physicsSkyPosition(PHYSICS_HOME_LATITUDE, 0, set, height, azimuth);
+  NEAR(azimuth / PHYSICS_DEG, 270, 1e-3);
+  // Sidereal time, Meeus's example 12.a: 1987-04-10 0 UT, 13h 10m 46.3668s
+  NEAR(physicsSiderealDegrees(2446895.5), (13 + 10 / 60.0 + 46.3668 / 3600.0) * 15, 1e-3);
+}
+
+static void testSatellites() {
+  // Kepler's third law: the ISS goes round in about an hour and a half
+  NEAR(astroOrbitPeriodOf(ASTRO_ORBITS[0]) / 60, 92.9, 0.1);
+  // GPS: half a sidereal day (11 h 58 min), give or take its rounded height
+  NEAR(astroOrbitPeriodOf(ASTRO_ORBITS[1]) / 3600, PHYSICS_SIDEREAL_DAY / 2 / 3600, 0.02);
+  // Geostationary: one sidereal day, 23 h 56 min 4 s, within a few seconds
+  NEAR(astroOrbitPeriodOf(ASTRO_ORBITS[2]), PHYSICS_SIDEREAL_DAY, 5);
+  // The Moon: NASA's 27.3217 days; Kepler with both masses gives it to a fraction of a percent
+  NEAR(astroOrbitPeriodOf(ASTRO_ORBITS[3]) / 86400, 27.3217, 0.1);
+  // By hand: a = 7000 km, T = 2 pi sqrt(7000^3 / 398600.4418) = 5828.5 s
+  NEAR(astroOrbitPeriod(7000, ASTRO_GM_EARTH), 5828.52, 0.05);
+}
+
+static void testSizes() {
+  // NASA's fact sheets give these ratios to Earth: Mercury 0.383, Moon 0.2727, Jupiter 10.973, Sun 109.2
+  NEAR(ASTRO_BODIES[ASTRO_BODY_MERCURY].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 0.383, 5e-4);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_MOON].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 0.2727, 5e-4);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_JUPITER].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 10.973, 5e-3);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_SUN].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 109.2, 0.05);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_SATURN].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 9.140, 5e-3);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_URANUS].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 3.981, 5e-3);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_NEPTUNE].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 3.865, 5e-3);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_MARS].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 0.532, 5e-4);
+  NEAR(ASTRO_BODIES[ASTRO_BODY_VENUS].radiusKm / ASTRO_BODIES[ASTRO_BODY_EARTH].radiusKm, 0.950, 5e-4);
+}
+
 int main() {
   testScenes();
   testPromptRule();
@@ -652,5 +977,14 @@ int main() {
   testSeasons();
   testMoon();
   testAtoms();
+  testDoublePendulum();
+  testDoppler();
+  testDoubleSlit();
+  testPrism();
+  testHalfLife();
+  testPlanets();
+  testSunInTheSky();
+  testSatellites();
+  testSizes();
   return finish("physics");
 }

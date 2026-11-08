@@ -5,8 +5,13 @@ static int physicsSceneIndex = -1;
 static uint8_t physicsParam = 0;  // Kept while the view closes and opens again: Button C and back
 static bool physicsGerman = true;
 static PhysicsState* physicsState = nullptr;
+static const int PHYSICS_SPEAKER_CHANNEL = 1;  // As music; reading aloud and the alert use channel 0
+static bool physicsSounded = false;
 
 static void physicsEnd() {
+  // Each tone ends by itself within two frames; this stops the last one at once
+  if (physicsSounded) M5.Speaker.stop(PHYSICS_SPEAKER_CHANNEL);
+  physicsSounded = false;
   free(physicsState);
   physicsState = nullptr;
 }
@@ -50,6 +55,11 @@ static bool physicsBegin(M5Canvas& c) {
   physicsState->big = FontManager::getFont16pt();
   physicsState->normal = FontManager::getFont12pt();
   physicsState->clockKnown = physicsDayFromClock((double)time(nullptr), physicsState->startDay);
+  // The home city from the settings (world clock table), so seasons and the Sun's path are for home
+  const ClockCity& home = CLOCK_CITIES[clockHomeCity()];
+  physicsState->homeLatitude = home.lat100 / 100.0f * PHYSICS_DEG;
+  physicsState->homeLongitude = home.lon100 / 100.0f * PHYSICS_DEG;
+  physicsState->random = (uint32_t)esp_random();
   physicsSceneReset(*physicsState);
   return true;
 }
@@ -58,6 +68,13 @@ static void physicsFrame(M5Canvas& c, float dt) {
   if (!physicsState) return;
   physicsDrawFrame(c, *physicsState, dt);
   eduDrawFooter(c, 0);
+  // A sound the scene asked for: a short tone at the device's volume, never waited for
+  if (physicsState->toneMs) {
+    M5.Speaker.begin();  // Sleep switches it off; returns at once if it's running
+    M5.Speaker.tone(physicsState->toneHz, physicsState->toneMs, PHYSICS_SPEAKER_CHANNEL, true);
+    physicsState->toneMs = 0;
+    physicsSounded = true;
+  }
 }
 
 static void physicsButtonB() {

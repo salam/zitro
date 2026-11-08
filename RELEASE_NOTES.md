@@ -7,6 +7,7 @@
 - **Your home, your time**: pick your home city on the setup page or say "Stelle meinen Wohnort auf Berlin". Zitro follows its time zone and switches to summer time on the right day.
 - **Shake for a surprise**: shaking now brings a fact, or a scene, a shape, a star map or the time in a big city. All built in, so it works without WiFi.
 - **Shake off means off**: switching off shaking in the settings now really stops it.
+- **Ten new scenes to explore**: see where the planets are today, watch Mars run backwards, follow the Sun's path over your home, fly the ISS and a geostationary satellite round the Earth, and compare Jupiter with the Earth. Try light through a prism, waves through a double slit, a chaotic double pendulum, a siren that changes pitch as it passes and atoms that decay with Geiger clicks.
 
 ## Sat 7 Nov, 2026
 

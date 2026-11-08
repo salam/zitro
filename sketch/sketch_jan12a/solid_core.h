@@ -75,7 +75,8 @@ static const char SOLID_PROMPT_RULE[] =
     "'Wie sieht ein Ikosaeder aus?'). id genau eine von: tetrahedron cube octahedron dodecahedron icosahedron "
     "cuboid triangular-prism pentagonal-prism hexagonal-prism triangular-pyramid square-pyramid "
     "pentagonal-pyramid hexagonal-pyramid cylinder cone sphere torus. Ohne genauere Angabe ergibt Pyramide "
-    "square-pyramid und Prisma triangular-prism. Berechnungen ('Volumen eines Torus mit "
+    "square-pyramid und Prisma als Koerper triangular-prism (Licht durch ein Prisma, Regenbogenfarben: siehe "
+    "PHYSIK prism). Berechnungen ('Volumen eines Torus mit "
     "Radius 5 cm') bleiben is_wolfram mit leerem model. Nenne nur die id, die Zahlen berechnet das Geraet.";
 
 struct SolidFace {

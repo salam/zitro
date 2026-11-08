@@ -26,7 +26,7 @@ static void globePreparePalette(M5Canvas& c) {
   uint16_t* buffer = (uint16_t*)c.getBuffer();
   c.drawPixel(0, 0, c.color565(0xA8, 0xE0, 0xA0));
   globeCoastRaw = buffer[0];
-  const int day[3] = {0x0B, 0x2E, 0x5C}, night[3] = {0x02, 0x08, 0x14};
+  const int day[3] = {0x14, 0x4A, 0x8C}, night[3] = {0x01, 0x04, 0x0C};
   for (int i = 0; i <= GLOBE_LIGHT_STEPS; i++) {
     int rgb[3];
     for (int k = 0; k < 3; k++) rgb[k] = night[k] + (day[k] - night[k]) * i / GLOBE_LIGHT_STEPS;

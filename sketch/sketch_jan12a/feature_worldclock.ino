@@ -13,7 +13,7 @@ static GlobeSpin clockSpin;
 static float clockPin[3];
 static int16_t clockCapitalXyz[CLOCK_CITY_COUNT][3];  // Unit vectors x 2^14, filled once per lookup
 static const int CLOCK_GLOBE_CX = 168;                 // The globe sits right, the times left
-static const uint16_t CLOCK_PANEL_W = 104;
+static const uint16_t CLOCK_PANEL_W = 112;
 
 static void clockUnload() {
   globeUnload();
@@ -75,7 +75,7 @@ static void clockPanelText(M5Canvas& c, const char* text, int y, uint16_t color)
     s += "...";
   }
   const int w = c.textWidth(s), h = c.fontHeight();
-  c.fillRect(0, y - 1, w + 6, h + 2, TFT_BLACK);
+  c.fillRect(0, y, w + 6, h, TFT_BLACK);
   c.setTextColor(color);
   c.drawString(s, 3, y);
 }
@@ -132,7 +132,7 @@ static void clockFrame(M5Canvas& c, float dt) {
 
   // Where the Sun is overhead, if that side faces us
   float sun[3];
-  if (globeSunNow(m, sun) && sun[2] > 0) {
+  if (globeSunNow(m, sun) && sun[2] > 0.4f) {  // Not right at the rim, where it looks like it sits beside the globe
     const int sx = cx + (int)lroundf(sun[0] * radius), sy = cy - (int)lroundf(sun[1] * radius);
     if (sx >= 0 && sx < WIDTH && sy >= 0 && sy < bodyHeight) {
       c.fillCircle(sx, sy, 3, c.color565(0xFF, 0xE0, 0x60));
@@ -158,25 +158,35 @@ static void clockFrame(M5Canvas& c, float dt) {
   c.setTextSize(1);
   if (clockCityTime(clockCity, now, d, offset)) {
     char line[48], zone[16];
+    // Bottom line first: each line's black box may reach into the descenders of the one above
+    c.setFreeFont(FontManager::getFont12pt());
+    const bool away = clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset);
+    if (away) {
+      snprintf(line, sizeof(line), "%02d:%02d", h.hour, h.minute);
+      clockPanelText(c, line, 96, TFT_LIGHTGREY);
+      clockPanelText(c, clockCityName(clockHome, clockGerman), 75, TFT_WHITE);
+    }
+    clockFormatOffset(zone, sizeof(zone), offset);
+    clockPanelText(c, zone, 52, TFT_LIGHTGREY);
+    clockPanelText(c, clockGerman ? CLOCK_WEEKDAY_DE[d.weekday] : CLOCK_WEEKDAY_EN[d.weekday], 31, TFT_WHITE);
+    char gapText[16] = "";
+    if (away) {
+      // How far the city is ahead (+) or behind (-) of home, next to its time
+      const int32_t gap = offset - homeOffset;
+      const int32_t a = gap < 0 ? -gap : gap;
+      if (gap == 0) snprintf(gapText, sizeof(gapText), "=");
+      else if (a % 3600) snprintf(gapText, sizeof(gapText), "%c%d:%02d h", gap < 0 ? '-' : '+', (int)(a / 3600), (int)(a % 3600 / 60));
+      else snprintf(gapText, sizeof(gapText), "%c%d h", gap < 0 ? '-' : '+', (int)(a / 3600));
+    }
     c.setFreeFont(FontManager::getFont16pt());
     snprintf(line, sizeof(line), "%02d:%02d", d.hour, d.minute);
     clockPanelText(c, line, 2, citrus);
-    c.setFreeFont(FontManager::getFont12pt());
-    clockFormatOffset(zone, sizeof(zone), offset);
-    snprintf(line, sizeof(line), "%s, %s", clockGerman ? CLOCK_WEEKDAY_DE[d.weekday] : CLOCK_WEEKDAY_EN[d.weekday], zone);
-    clockPanelText(c, line, 30, TFT_WHITE);
-    if (clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset)) {
-      snprintf(line, sizeof(line), "%s %02d:%02d", clockCityName(clockHome, clockGerman), h.hour, h.minute);
-      clockPanelText(c, line, 56, TFT_LIGHTGREY);
-      const int32_t gap = offset - homeOffset;
-      if (gap == 0) {
-        snprintf(line, sizeof(line), "%s", clockGerman ? "gleiche Zeit" : "same time");
-      } else {
-        const int32_t a = gap < 0 ? -gap : gap;
-        if (a % 3600) snprintf(line, sizeof(line), "%c%d:%02d h", gap < 0 ? '-' : '+', (int)(a / 3600), (int)(a % 3600 / 60));
-        else snprintf(line, sizeof(line), "%c%d h", gap < 0 ? '-' : '+', (int)(a / 3600));
-      }
-      clockPanelText(c, line, 76, TFT_LIGHTGREY);
+    if (gapText[0]) {
+      const int x = 3 + c.textWidth(line) + 6;
+      c.setFreeFont(FontManager::getFont12pt());
+      c.fillRect(x - 2, 8, c.textWidth(gapText) + 4, c.fontHeight() - 2, TFT_BLACK);
+      c.setTextColor(TFT_LIGHTGREY);
+      c.drawString(gapText, x, 9);
     }
   }
   eduDrawFooter(c, 0);

@@ -81,11 +81,14 @@
   - Can be toggled via voice command regardless of setting
 
 ### Gesture/Interaction Toggles
-- **Shake for Random Fact**: Enable/disable shake gesture for surprise facts (default: on)
+- **Shake for a Surprise** (`shakeRandom`): Enable/disable the shake gesture (default: on). Read when a shake happens; off means shakes are ignored. A shake shows a built-in fact or, half the time, a built-in result from `SHAKE_MEDIA` in `shake_core.h` (physics and sky scenes, solids, star maps, the world clock for one of the 80 biggest cities). These need no network and open at once; if one can't open, the fact comes. Each entry is checked against its feature's closed list by `tests/shake/run.sh`. Changed from facts only on the user's request (2026-11-08)
 - **Double-Click for Audio**: Enable/disable double-click for audio output (default: on)
   - If disabled, double-click behaves like single-click (text only)
 - **Movement for Zoom**: Enable/disable roll gesture to toggle image zoom modes (default: on)
 - **Movement for Toggle**: Enable/disable rotation gesture to toggle image/text view (default: on)
+
+### Home City and Time Zone
+- **Home city** (`homeCity`, default Zurich): a city from the world clock's table. Sets the device time zone with its real daylight saving rule (`configTzTime`, at boot, NTP start and on change) and is "here" for `clock:here`. Web page field with suggestions from `/cities`; voice-configurable. Details: [docs/features/clock.md](docs/features/clock.md)
 
 ### Audio Settings
 - **Speaker Volume**: 0-255 (default: 210)
@@ -96,7 +99,7 @@
 - Boot jingle: two short organic pops, the second one higher (about 0.6 s, at most 1.9 s, 16-bit PCM mono 16kHz, `splash_jingle_data.h`), start with the boot splash and end before it does, so boot takes no longer. Plays on power-on and restart, not on a wake from deep sleep. Follows the Speaker Volume setting. Made with ElevenLabs by `scripts/make_splash_jingle.py` (key: `ELEVENLABS_API_KEY`, from the environment or the gitignored `.env`; only needed to make a new jingle, the stick never contacts ElevenLabs)
 - Setup hotspot (open WiFi) is named "zitro"; mDNS makes the setup page reachable at `zitro.local`. The WiFi QR code (`WIFI:T:nopass;S:zitro;P:;;`, QR version 3, 93x93 px) is made by `generate_wifi_qr.py` and `convert_wifi_qr.sh`
 - Setup page follows zitro.spot (webpage2/styles.css): paper palette, Sniglet headings, lemon-shaped citrus buttons. Sniglet is served from flash (`setup_fonts.h`, `/f/sniglet-400.woff2`, `/f/sniglet-800.woff2`, made by `scripts/make_setup_fonts.py`) because setup mode has no internet
-- Home screen (`drawHomeScreen()`, drawn whenever `MAIN_QUESTION` is shown): "[lemon] Press [M5] button" on one line: small citrus lemon (#f2b705, with leaf), then "Press", a keycap labeled "M5" like the stick's front button (rounded dark grey face with white outline, smaller DejaVu 12 text, 2 px mid-grey key side showing bottom and right), then "button"; "to ask a question"; half-line gap; shake icon (`shakeIcon`, phone slightly tilted) + "Shake for random fact."
+- Home screen (`drawHomeScreen()`, drawn whenever `MAIN_QUESTION` is shown): "[lemon] Press [M5] button" on one line: small citrus lemon (#f2b705, with leaf), then "Press", a keycap labeled "M5" like the stick's front button (rounded dark grey face with white outline, smaller DejaVu 12 text, 2 px mid-grey key side showing bottom and right), then "button"; "to ask a question"; half-line gap; shake icon (`shakeIcon`, phone slightly tilted) + "Shake for a surprise."
 - Setup screen: "SETUP: Connect to:" / zitro / "and open:" / underlined "zitro.local" / "Then press BUTTON" "to retry." (retry lines only with stored networks), WiFi QR code on the right
 - "Opening settings" (Button C triple-press or voice request) uses the same QR screen with "Opening settings..." / "Connect to:" as its first lines, before the hotspot starts
 - Recording progress: one slightly rounded box (3 px radius) per second, filled when recorded
@@ -345,6 +348,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **Function graphs**: [docs/features/graph.md](docs/features/graph.md)
 - **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
 - **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
+- **World clock and day and night**: [docs/features/clock.md](docs/features/clock.md). The written answer to a time question is always computed by Zitro, never the AI's
 - **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
 - **Night sky**: [docs/features/sky.md](docs/features/sky.md)
 - **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)

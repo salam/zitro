@@ -4,6 +4,7 @@
 #include "globe_coast_data.h"
 #include "globe_core.h"
 #include "globe_wiki.h"
+#include "clock_core.h"  // Where the Sun is overhead, for day and night
 
 static const size_t GLOBE_REPLY_LIMIT = 8 * 1024;
 static const unsigned long GLOBE_DETAIL_MS = 4000;  // The better coast isn't worth a long wait
@@ -17,6 +18,49 @@ static int16_t* globeXyz = nullptr;
 static float globePin[3];
 static GlobeSpin globeSpin;
 static uint16_t globeCoastRaw = 0;  // The coast's colour as the sprite stores it
+static uint16_t globeOceanRaw[GLOBE_LIGHT_STEPS + 1];  // Ocean from night to day, as the sprite stores it
+static const unsigned long GLOBE_CLOCK_VALID = 1704067200UL;  // 2024-01-01: before that the clock was never set
+
+// Colours as the sprite stores them (byte order differs from color565), so frames can write the buffer
+static void globePreparePalette(M5Canvas& c) {
+  uint16_t* buffer = (uint16_t*)c.getBuffer();
+  c.drawPixel(0, 0, c.color565(0xA8, 0xE0, 0xA0));
+  globeCoastRaw = buffer[0];
+  const int day[3] = {0x0B, 0x2E, 0x5C}, night[3] = {0x02, 0x08, 0x14};
+  for (int i = 0; i <= GLOBE_LIGHT_STEPS; i++) {
+    int rgb[3];
+    for (int k = 0; k < 3; k++) rgb[k] = night[k] + (day[k] - night[k]) * i / GLOBE_LIGHT_STEPS;
+    c.drawPixel(0, 0, c.color565(rgb[0], rgb[1], rgb[2]));
+    globeOceanRaw[i] = buffer[0];
+  }
+}
+
+// The Sun's direction in screen axes now. False without a clock: then it's all day.
+static bool globeSunNow(const float m[9], float sun[3]) {
+  const time_t now = time(nullptr);
+  if (now < (time_t)GLOBE_CLOCK_VALID) return false;
+  float lat, lon, earth[3];
+  clockSubsolarPoint((double)now, lat, lon);
+  globeUnitVector(lat, lon, earth);
+  globeToScreen(m, earth, sun);
+  return true;
+}
+
+// Ocean with day and night, then the coast. Shared with the world clock. Returns coast pieces drawn.
+static uint32_t globeDrawEarth(M5Canvas& c, int cx, int cy, int radius, int bodyHeight) {
+  uint16_t* buffer = (uint16_t*)c.getBuffer();
+  float sun[3];
+  const bool lit = globeSunNow(modelRotation.m, sun);
+  globeShadeDisc(buffer, WIDTH, bodyHeight, cx, cy, radius, lit ? sun : nullptr, globeOceanRaw);
+  c.drawCircle(cx, cy, radius, c.color565(0x3A, 0x6E, 0xA8));
+  int32_t q[9];
+  globeRotationToQ14(modelRotation.m, q);
+  const uint16_t raw = globeCoastRaw;
+  return globeForEachSegment(globeLengths, globeLineCount, globeXyz, q, cx, cy, radius,
+                             [=](int x0, int y0, int x1, int y1) {
+                               globeRasterLine(buffer, WIDTH, bodyHeight, x0, y0, x1, y1, raw);
+                             });
+}
 
 // Serial log: what a frame costs. modelViewTick caps the view at 25 per second, so the frame rate alone
 // can't show how much room is left.
@@ -98,8 +142,7 @@ static bool globeFetch(const char* title) {
 static bool globeBegin(M5Canvas& c) {
   // frame() writes straight into the sprite, so it has to be the plain 16-bit one
   if (!globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
-  c.drawPixel(0, 0, c.color565(0xA8, 0xE0, 0xA0));
-  globeCoastRaw = *(uint16_t*)c.getBuffer();
+  globePreparePalette(c);
   globeSpinReset(globeSpin);
   globeLogStart = globeLogLastFrame = 0;
   globeLogFrames = globeLogDrawUs = globeLogDrawMaxUs = globeLogGapMaxUs = globeLogSegments = 0;
@@ -125,17 +168,7 @@ static void globeFrame(M5Canvas& c, float dt) {
   const int cx = WIDTH / 2, cy = bodyHeight / 2;
   const int radius = (int)(bodyHeight * 0.47f * GLOBE_ZOOMS[modelZoomStep]);
   c.fillSprite(TFT_BLACK);
-  c.fillCircle(cx, cy, radius, c.color565(0x0B, 0x2E, 0x5C));
-  c.drawCircle(cx, cy, radius, c.color565(0x3A, 0x6E, 0xA8));
-
-  int32_t q[9];
-  globeRotationToQ14(modelRotation.m, q);
-  uint16_t* buffer = (uint16_t*)c.getBuffer();
-  const uint16_t raw = globeCoastRaw;
-  const uint32_t segments = globeForEachSegment(globeLengths, globeLineCount, globeXyz, q, cx, cy, radius,
-                                                [=](int x0, int y0, int x1, int y1) {
-                                                  globeRasterLine(buffer, WIDTH, bodyHeight, x0, y0, x1, y1, raw);
-                                                });
+  const uint32_t segments = globeDrawEarth(c, cx, cy, radius, bodyHeight);
 
   GlobePinView pin;
   globeLocatePin(modelRotation.m, globePin, cx, cy, radius, WIDTH, bodyHeight, pin);

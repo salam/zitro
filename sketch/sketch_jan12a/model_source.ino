@@ -66,8 +66,11 @@ bool eduHttpGet(const String& url, unsigned long deadline, char* buffer, size_t 
 }
 
 // Looks up a result of any kind. On failure there is none, and the caller shows the picture.
+String modelAnswerText;
+
 bool fetchModel(const ModelRef& ref) {
   hasModel = false;
+  modelAnswerText = "";
   modelViewEnd();  // TLS needs the memory, and the buffers fit the old result
   eduUnloadActive();
   modelRefText = "";
@@ -119,4 +122,29 @@ void runModelCommand(const String& text) {
   response = modelLabel;
   currentDisplayMode = SHOW_MODEL;
   modelViewShow();
+}
+
+// A shake's surprise: a built-in result, opened like an answer, so it's also what deep sleep keeps.
+// False if it didn't open; the caller shows a fact instead.
+bool openShakeMedia() {
+  char text[80];
+  if (!shakePickMedia((uint32_t)random(0, 1 << 30), (uint32_t)random(0, 1 << 30), text, sizeof(text))) return false;
+  ModelRef ref;
+  if (!parseModelRef(text, ref)) return false;
+  hasImage = false;
+  currentImageUrl = "";
+  isWolframImage = false;
+  if (!fetchModel(ref)) {
+    Serial.printf("Shake: %s didn't open\n", text);
+    return false;
+  }
+  Serial.printf("Shake: %s, label '%s'\n", text, modelLabel.c_str());
+  // Button C shows this text: the computed time for the clock, otherwise the name of what's shown
+  response = wordWrap(modelAnswerText.length() > 0 ? modelAnswerText : modelLabel, 25);
+  M5.Display.setRotation(getLandscapeRotation());
+  imageZoomMode = CONTAIN;
+  currentDisplayMode = SHOW_MODEL;
+  modelViewShow();
+  resetToActiveState();
+  return true;
 }

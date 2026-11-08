@@ -522,6 +522,63 @@ static void reportCost(const char* name, const Map& map) {
   }
 }
 
+// Day and night: levels, and the disc filled where it should be and nowhere else
+static void testShade() {
+  CHECK(globeLightLevel(-1.0f) == 0);
+  CHECK(globeLightLevel(-0.11f) == 0);
+  CHECK(globeLightLevel(0.06f) == GLOBE_LIGHT_STEPS);
+  CHECK(globeLightLevel(1.0f) == GLOBE_LIGHT_STEPS);
+  CHECK(globeLightLevel(NAN) == 0);
+  int last = 0;
+  for (float d = -0.2f; d <= 0.2f; d += 0.001f) {
+    const int l = globeLightLevel(d);
+    CHECK(l >= last && l <= GLOBE_LIGHT_STEPS);
+    last = l;
+  }
+  uint16_t palette[GLOBE_LIGHT_STEPS + 1];
+  for (int i = 0; i <= GLOBE_LIGHT_STEPS; i++) palette[i] = (uint16_t)(100 + i);
+  static uint16_t buf[117][240];
+  auto clear = [&]() { for (auto& row : buf) for (auto& p : row) p = 1; };
+  auto count = [&](uint16_t v) { int n = 0; for (auto& row : buf) for (auto p : row) n += p == v; return n; };
+  // Sun behind the viewer: all day. No sun: all day too.
+  const float front[3] = {0, 0, 1};
+  clear();
+  const uint32_t n = globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 50, front, palette);
+  CHECK(count(100 + GLOBE_LIGHT_STEPS) > (int)n * 9 / 10);  // The rim sees the Sun on its horizon: twilight
+  CHECK(count(100) == 0);
+  CHECK(count(1) == 240 * 117 - (int)n);
+  NEAR((double)n, M_PI * 50 * 50, 300);
+  clear();
+  CHECK(globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 50, nullptr, palette) == n);
+  // Sun to the right: the left half is night, the right half day
+  const float right[3] = {1, 0, 0};
+  clear();
+  globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 50, right, palette);
+  CHECK(buf[58][75] == 100);
+  CHECK(buf[58][165] == 100 + GLOBE_LIGHT_STEPS);
+  CHECK(buf[58][119] != 100 && buf[58][119] != 100 + GLOBE_LIGHT_STEPS);  // Twilight on the line
+  CHECK(buf[58][60] == 1);                                                // Outside the disc untouched
+  // Zoomed far past the screen: only the screen is written
+  clear();
+  const uint32_t big = globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 400, front, palette);
+  CHECK(big == 240u * 117u);
+  CHECK(count(1) == 0);
+  // Off the screen entirely
+  clear();
+  CHECK(globeShadeDisc(&buf[0][0], 240, 117, -500, -500, 50, front, palette) == 0);
+  CHECK(globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 0, front, palette) == 0);
+  // The Sun's direction on screen follows the turn
+  float m[9], s[3];
+  globeFacing(0, 0, m);
+  float earth[3];
+  globeUnitVector(0, 0, earth);
+  globeToScreen(m, earth, s);
+  NEAR(s[2], 1.0, 1e-5);
+  globeUnitVector(0, 90, earth);  // 90 degrees east is to the right
+  globeToScreen(m, earth, s);
+  NEAR(s[0], 1.0, 1e-5);
+}
+
 int main(int argc, char** argv) {
   if (argc != 3) { fprintf(stderr, "usage: test_globe fixtures detail.bin\n"); return 2; }
   fixtureDir = argv[1];
@@ -536,6 +593,7 @@ int main(int argc, char** argv) {
   testSegmentsStayOnTheNearSide();
   testPin();
   testSpin();
+  testShade();
   reportCost("built-in", builtin);
   reportCost("server  ", detail);
   printf("%d checks, %d failures\n", checks, failures);

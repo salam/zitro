@@ -136,7 +136,7 @@ static void guideDrawTile(M5Canvas& c, const GuideTile& t, int x, int y, bool ge
 
 // Draws whichever pages are on screen at this slide position, then the page dots and the counter
 void guideDrawGrid(M5Canvas& c, float pos, int rotation) {
-  const bool german = deviceLanguageIsGerman();
+  const bool german = guideGerman;
   for (int page = 0; page < GUIDE_PAGES; page++) {
     const int offset = (int)roundf((page - pos) * WIDTH);
     if (offset <= -WIDTH || offset >= WIDTH) continue;

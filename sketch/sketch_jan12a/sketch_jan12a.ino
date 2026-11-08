@@ -2410,6 +2410,9 @@ bool restoreImageFromFlash() {
 }
 
 void saveStateToPreferences() {
+  // Deep sleep ends the tour; none of its content may come back as a result after the wake
+  if (guideActive()) guideStop(false);
+
   Serial.println("\n========== SAVING STATE ==========");
 
   prefs.begin(PREFS_NAMESPACE, false);

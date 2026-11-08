@@ -346,12 +346,13 @@ void guideStop(bool markDone) {
   guideAnswerRef = "";
   hasImage = false;
   currentImageUrl = "";
-  response = "";
+  response = MAIN_QUESTION;
   currentDisplayMode = SHOW_TEXT;
   updateGyroPower();
   if (!apMode) drawScreen(MAIN_QUESTION);
-  // M5Unified reports wasSingleClicked() after the click the tour already used: it must not start a recording
-  discardButtonA(0);
+  // M5Unified reports wasSingleClicked() after the click the tour already used, and a double tap on
+  // "End tour" would leave a second one: neither may start a recording
+  discardButtonA(800);
   Serial.printf("Guide: tour stopped, done=%d\n", markDone);
 }
 
@@ -463,7 +464,11 @@ void guideTick() {
   const uint32_t now = millis();
   const bool awake = !displaySleeping && currentPowerState == POWER_ACTIVE && !wakeFromLightSleep;
   // The wake-up code draws the last answer by itself
-  if (awake && guideWasAsleep) guideRenderStep();
+  if (awake && guideWasAsleep) {
+    if (guideState.step == GUIDE_GRID) setGyroEnabled(true);  // Waking up leaves it off
+    guideRenderStep();
+  }
+  if (!awake && !guideWasAsleep) updateGyroPower();  // Off while the screen is dark
   guideWasAsleep = !awake;
 
   const bool clickedA = M5.BtnA.wasClicked();
@@ -471,6 +476,8 @@ void guideTick() {
   const bool clickedC = M5.BtnPWR.wasClicked();
   if (!guideAcceptsPress(awake, inWakeCooldown())) {
     if (clickedA || clickedB || clickedC) {
+      guideLastPress = now;
+      timeWokeFromSleep = now;  // The cooldown, so a second tap doesn't act on a screen that has just come back
       resetToActiveState();
       guideRenderStep();
     }
@@ -497,12 +504,12 @@ void guideTick() {
     return;
   }
 
-  bool portrait = false;
+  static bool photoUpright = false;  // Kept between checks: an upright stick mustn't flip the picture
   static uint32_t lastOrientationCheck = 0;
   if (s.step == GUIDE_PHOTO && now - lastOrientationCheck >= 100) {
     lastOrientationCheck = now;
     const bool landscape = detectOrientation() == LANDSCAPE;
-    portrait = !landscape;
+    photoUpright = !landscape;
     if (guideRotateStep(guideRotate, landscape)) {
       guideShowPhotoText = !guideShowPhotoText;
       guideRenderStep();
@@ -516,8 +523,12 @@ void guideTick() {
   if (s.step == GUIDE_GRID) guideGridTick(now);
 
   static uint32_t lastRotationCheck = 0;
-  if (!portrait && now - lastRotationCheck >= 200) {
+  if (!(s.step == GUIDE_PHOTO && photoUpright) && now - lastRotationCheck >= 200) {
     lastRotationCheck = now;
-    if (getLandscapeRotation() != guideDrawnRotation) guideRenderStep();
+    const int rotation = getLandscapeRotation();
+    if (rotation != guideDrawnRotation) {
+      guideDrawnRotation = rotation;  // drawScreen doesn't report it
+      guideRenderStep();
+    }
   }
 }

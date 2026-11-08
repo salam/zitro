@@ -2,6 +2,7 @@
 
 ## Sun 8 Nov, 2026
 
+- **More room for your result**: the microphone tab at the M5 button is gone from result views. The M5 button still always asks something new.
 - **What time is it in Tokyo?** Ask, and Zitro turns the globe to the city and shows the time there, your own time and how far apart they are. Zitro works the time out itself, so it's always right.
 - **Day and night, live**: the globe now shows where the Sun is shining right now and where it's night.
 - **Your home, your time**: pick your home city on the setup page or say "Stelle meinen Wohnort auf Berlin". Zitro follows its time zone and switches to summer time on the right day.

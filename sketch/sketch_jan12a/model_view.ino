@@ -81,12 +81,12 @@ static void modelShowHints() {
   modelHintsFrom = millis();
 }
 
-// A tab next to every button: A always asks something new; B and C as the feature says
+// Tabs for B and C as the feature says. A gets none: it always asks something new
 static void modelDrawHints(M5Canvas& c) {
   int kindB = activeFeature->buttonB ? HINT_NONE : HINT_ZOOM;
   int kindC = activeFeature->buttonC ? HINT_NONE : HINT_TEXT;
   if (activeFeature->hints) activeFeature->hints(kindB, kindC);
-  drawButtonHints(c, M5.Display.getRotation(), HINT_MIC, kindB, kindC);
+  drawButtonHints(c, M5.Display.getRotation(), HINT_NONE, kindB, kindC);
 }
 
 // Draws one frame and shows it

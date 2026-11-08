@@ -31,7 +31,7 @@ struct EduFeature {
   void (*buttonBDouble)();               // Button B double click, after its two clicks. May be nullptr
   // Button tabs, shown for a moment when the view opens and after each press: set the HINT_ kind for B and C.
   // They come in as zoom (buttonB nullptr) or none, and the written answer (buttonC nullptr) or none.
-  // Button A always shows the microphone. nullptr: keep those.
+  // Button A has no tab: it always asks something new. nullptr: keep those.
   void (*hints)(int& kindB, int& kindC);
 };
 

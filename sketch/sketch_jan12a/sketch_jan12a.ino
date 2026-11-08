@@ -3327,7 +3327,6 @@ void discoverPrinters() {
 #define HINT_OK      2  // check mark
 #define HINT_DELETE  3  // trash can
 #define HINT_SPEAKER 4  // speaker; plus 0 to 3 sound waves: use HINT_SPEAKER + waves
-#define HINT_MIC    10  // microphone: ask something new
 #define HINT_ZOOM   11  // magnifier
 #define HINT_TEXT   12  // lines of text: the written answer
 #define HINT_PAUSE  13  // two bars
@@ -3415,17 +3414,6 @@ void drawSpeakerMark(M5Canvas &canvas, int cx, int cy, int waves, uint16_t color
   }
 }
 
-void drawMicMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
-  canvas.fillRoundRect(cx - 2, cy - 6, 5, 8, 2, color);  // capsule
-  canvas.drawFastVLine(cx - 4, cy - 2, 3, color);        // holder
-  canvas.drawFastVLine(cx + 4, cy - 2, 3, color);
-  canvas.drawLine(cx - 4, cy + 1, cx - 2, cy + 3, color);
-  canvas.drawLine(cx + 4, cy + 1, cx + 2, cy + 3, color);
-  canvas.drawFastHLine(cx - 2, cy + 3, 5, color);
-  canvas.drawFastVLine(cx, cy + 3, 3, color);  // stand
-  canvas.drawFastHLine(cx - 2, cy + 6, 5, color);
-}
-
 void drawZoomMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
   canvas.drawCircle(cx - 1, cy - 1, 4, color);
   canvas.drawFastHLine(cx - 3, cy - 1, 5, color);
@@ -3499,8 +3487,6 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     drawTrashMark(canvas, cx, cy, symbolColor);
   } else if (kind >= HINT_SPEAKER && kind <= HINT_SPEAKER + 3) {
     drawSpeakerMark(canvas, cx, cy, kind - HINT_SPEAKER, symbolColor);
-  } else if (kind == HINT_MIC) {
-    drawMicMark(canvas, cx, cy, symbolColor);
   } else if (kind == HINT_ZOOM) {
     drawZoomMark(canvas, cx, cy, symbolColor);
   } else if (kind == HINT_TEXT) {

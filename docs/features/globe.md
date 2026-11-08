@@ -27,8 +27,8 @@ Kind `globe`. Code: `feature_globe.ino`, `globe_core.h`, `globe_wiki.h`, `globe_
   | Server | 88 | 15000 | 4868 | 8419 |
   | Server | 132 | 15000 | 6402 | 8259 |
 
-- Test on the stick: serial `model globe:Matterhorn`. Every 5 s the view logs `globe fps=... drawUs avg=... max=... gapUs max=... points=... pieces=... zoom=... sprite=...`. `fps` is capped at 25 by the shared view, so `drawUs` is the number to read: time spent in `frame()`, without pushing the sprite. `points=5127` means built in, `points=15000` the server file. Target: 25 fps with the built-in coast. Once the server file is uploaded there is no switch back to the built-in coast, so measure before uploading, then again after. If the server file is too slow, lower `DETAIL_POINTS` in the script and generate it again.
-- Not measured: anything on the stick. Frame rate, flick feel and the 4 s limit for the server file have only been reasoned about.
+- Test on the stick: serial `model globe:Matterhorn`. Every 5 s the view logs `globe fps=... drawUs avg=... max=... shadeUs=... gapUs max=... points=... pieces=... zoom=... sprite=...`. `fps` is capped at 25 by the shared view, so `drawUs` is the number to read: time spent in `frame()`, without pushing the sprite. `points=5127` means built in, `points=15000` the server file. Target: 25 fps with the built-in coast. Once the server file is uploaded there is no switch back to the built-in coast, so measure before uploading, then again after. If the server file is too slow, lower `DETAIL_POINTS` in the script and generate it again.
+- Measured 2026-11-08 (Tokyo, server coast, zoom 0, with day and night): 18.8-19.1 fps, drawUs 19 ms of which shading 4.8 ms, a frame every 53 ms. Not measured: flick feel and the 4 s limit for the server file.
 
 - Merge note, shared file `model_view.ino`, in `modelViewTick`: `if (magnitude < MODEL_STILL_DPS && activeFeature->turnsWithGyro && activeFeature != &FEATURE_GLOBE)`. Not made here. Until it is, the arrow does the finding.
 

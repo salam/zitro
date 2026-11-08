@@ -47,11 +47,15 @@ static bool globeSunNow(const float m[9], float sun[3]) {
 }
 
 // Ocean with day and night, then the coast. Shared with the world clock. Returns coast pieces drawn.
+static uint32_t globeShadeUs = 0;  // Last frame's shading time, for the serial log
+
 static uint32_t globeDrawEarth(M5Canvas& c, int cx, int cy, int radius, int bodyHeight) {
   uint16_t* buffer = (uint16_t*)c.getBuffer();
   float sun[3];
+  const uint32_t shadeStart = micros();
   const bool lit = globeSunNow(modelRotation.m, sun);
   globeShadeDisc(buffer, WIDTH, bodyHeight, cx, cy, radius, lit ? sun : nullptr, globeOceanRaw);
+  globeShadeUs = micros() - shadeStart;
   c.drawCircle(cx, cy, radius, c.color565(0x3A, 0x6E, 0xA8));
   int32_t q[9];
   globeRotationToQ14(modelRotation.m, q);
@@ -192,9 +196,9 @@ static void globeFrame(M5Canvas& c, float dt) {
   const unsigned long now = millis();
   if (!globeLogStart) globeLogStart = now;
   if (now - globeLogStart >= GLOBE_LOG_EVERY_MS) {
-    Serial.printf("globe fps=%.1f drawUs avg=%u max=%u gapUs max=%u points=%u pieces=%u zoom=%u sprite=%s\n",
+    Serial.printf("globe fps=%.1f drawUs avg=%u max=%u shadeUs=%u gapUs max=%u points=%u pieces=%u zoom=%u sprite=%s\n",
                   globeLogFrames * 1000.0f / (now - globeLogStart), (unsigned)(globeLogDrawUs / globeLogFrames),
-                  (unsigned)globeLogDrawMaxUs, (unsigned)globeLogGapMaxUs, globePointCount,
+                  (unsigned)globeLogDrawMaxUs, (unsigned)globeShadeUs, (unsigned)globeLogGapMaxUs, globePointCount,
                   (unsigned)(globeLogSegments / globeLogFrames), modelZoomStep, modelViewSpriteInPsram() ? "psram" : "internal");
     globeLogStart = now;
     globeLogFrames = globeLogDrawUs = globeLogDrawMaxUs = globeLogGapMaxUs = globeLogSegments = 0;

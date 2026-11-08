@@ -59,14 +59,15 @@ inline void physicsPlanetsBuild(PhysicsState& s) {
   }
 }
 
-// "228 Mio. km", "4,48 Mrd. km"
+// "228 Mio. km", "4,48 Mrd. km"; English "228M km", "4.48 bn km"
 inline void physicsMillionKm(char* out, size_t size, double km, bool german) {
   char number[16];
   if (km >= 1e9) {
     physicsFormatNumber(number, sizeof(number), (float)(km / 1e9), 2, german);
     snprintf(out, size, "%s %s", number, german ? "Mrd. km" : "bn km");
   } else {
-    snprintf(out, size, "%d %s", (int)lround(km / 1e6), german ? "Mio. km" : "m km");
+    if (german) snprintf(out, size, "%d Mio. km", (int)lround(km / 1e6));
+    else snprintf(out, size, "%dM km", (int)lround(km / 1e6));  // "m" would read as metres
   }
 }
 

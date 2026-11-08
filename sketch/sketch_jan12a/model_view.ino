@@ -197,7 +197,7 @@ void modelViewTick() {
   // The globe holds still so the pin stays in view. After the hand has turned the model, it waits a few seconds
   // before it turns by itself, so what the hand turned to stays in view.
   if (modelIdleTurning && activeFeature->turnsWithGyro && activeFeature != &FEATURE_GLOBE &&
-      activeFeature != &FEATURE_CLOCK) {
+      activeFeature != &FEATURE_CLOCK && activeFeature != &FEATURE_ISS) {
     mat3Rotate(modelRotation, 0, MODEL_IDLE_RAD_PER_S * dt, 0);
   }
   modelViewRender(dt);

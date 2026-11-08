@@ -349,6 +349,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
 - **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
 - **World clock and day and night**: [docs/features/clock.md](docs/features/clock.md). The written answer to a time question is always computed by Zitro, never the AI's
+- **ISS live**: [docs/features/iss.md](docs/features/iss.md). The zitro.spot server (`webpage2/api/iss.php`) turns NASA's ephemeris into a track; the written answer is computed, never the AI's
 - **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
 - **Night sky**: [docs/features/sky.md](docs/features/sky.md)
 - **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)

@@ -8873,11 +8873,11 @@ void handleVoiceQuery(bool playAudio) {
     gptResponse.answer = musicMissAnswerForDevice(musicLookupRan);
     response = wordWrap(gptResponse.answer, 25);
   }
-  // The AI doesn't know the time: a clock answer is always Zitro's own, computed or an honest "don't know"
-  if (gptResponse.model.startsWith("clock:")) {
+  // The AI doesn't know the time or where the ISS is: those answers are always Zitro's own, computed or an
+  // honest "don't know"
+  if (gptResponse.model.startsWith("clock:") || gptResponse.model.startsWith("iss:")) {
     if (modelAnswerText.length() == 0) {
-      gptResponse.answer = deviceLanguageIsGerman() ? "Die Uhrzeit kann ich gerade nicht zeigen."
-                                                    : "I can't show the time right now.";
+      gptResponse.answer = deviceLanguageIsGerman() ? "Das kann ich gerade nicht zeigen." : "I can't show that right now.";
     } else {
       gptResponse.answer = modelAnswerText;
     }

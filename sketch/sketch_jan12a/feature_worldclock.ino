@@ -13,7 +13,6 @@ static GlobeSpin clockSpin;
 static float clockPin[3];
 static int16_t clockCapitalXyz[CLOCK_CITY_COUNT][3];  // Unit vectors x 2^14, filled once per lookup
 static const int CLOCK_GLOBE_CX = 168;                 // The globe sits right, the times left
-static const uint16_t CLOCK_PANEL_W = 112;
 
 static void clockUnload() {
   globeUnload();
@@ -61,23 +60,6 @@ static bool clockBegin(M5Canvas& c) {
   globePreparePalette(c);
   globeSpinReset(clockSpin);
   return true;
-}
-
-// Text on the left, on black so it stays readable when the zoomed globe runs under it
-static void clockPanelText(M5Canvas& c, const char* text, int y, uint16_t color) {
-  String s = text;
-  if (c.textWidth(s) > CLOCK_PANEL_W) {
-    while (s.length() > 1 && c.textWidth(s + "...") > CLOCK_PANEL_W) {
-      int cut = s.length() - 1;
-      while (cut > 0 && ((uint8_t)s[cut] & 0xC0) == 0x80) cut--;
-      s.remove(cut);
-    }
-    s += "...";
-  }
-  const int w = c.textWidth(s), h = c.fontHeight();
-  c.fillRect(0, y, w + 6, h, TFT_BLACK);
-  c.setTextColor(color);
-  c.drawString(s, 3, y);
 }
 
 // Nominal time zones: the 24 meridians at 7.5 + 15 n degrees. Real borders bend round countries; the
@@ -163,15 +145,15 @@ static void clockFrame(M5Canvas& c, float dt) {
     const bool away = clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset);
     if (away) {
       snprintf(line, sizeof(line), "%02d:%02d", h.hour, h.minute);
-      clockPanelText(c, line, 96, TFT_LIGHTGREY);
-      clockPanelText(c, clockCityName(clockHome, clockGerman), 75, TFT_WHITE);
+      globePanelText(c, line, 96, TFT_LIGHTGREY);
+      globePanelText(c, clockCityName(clockHome, clockGerman), 75, TFT_WHITE);
     }
     // Short weekday and UTC offset share a line: "So, UTC+9"
     static const char* const shortDe[7] = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
     static const char* const shortEn[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     clockFormatOffset(zone, sizeof(zone), offset);
     snprintf(line, sizeof(line), "%s, %s", clockGerman ? shortDe[d.weekday] : shortEn[d.weekday], zone);
-    clockPanelText(c, line, 52, TFT_LIGHTGREY);
+    globePanelText(c, line, 52, TFT_LIGHTGREY);
     char gapText[16] = "";
     if (away) {
       // How far the city is ahead (+) or behind (-) of home, next to its time
@@ -183,7 +165,7 @@ static void clockFrame(M5Canvas& c, float dt) {
     }
     c.setFreeFont(FontManager::getFont16pt());
     snprintf(line, sizeof(line), "%02d:%02d", d.hour, d.minute);
-    clockPanelText(c, line, 21, citrus);
+    globePanelText(c, line, 21, citrus);
     if (gapText[0]) {
       const int x = 3 + c.textWidth(line) + 6;
       c.setFreeFont(FontManager::getFont12pt());
@@ -193,7 +175,7 @@ static void clockFrame(M5Canvas& c, float dt) {
     }
     // The city's name on top, so it's clear whose time this is
     c.setFreeFont(FontManager::getFont12pt());
-    clockPanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
+    globePanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
   }
   eduDrawFooter(c, 0);
 }

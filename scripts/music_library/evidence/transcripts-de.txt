@@ -1,0 +1,37 @@
+# Transcription log (score A readings, logged before any other score of the song was consulted)
+
+## muss-i-denn — logged 2026-11-07, before any other score
+Source: Erk's Deutscher Liederschatz Bd. I Nr. 79 "Abschied", p. 82, C. F. Peters (plate 8759), https://archive.org/details/deutscherlieders00erkl_0/page/n91/
+Read: 2/4, E major (4 sharps), pickup 2 sixteenths. Form from the stanza text: A (verse line 1), A again (line 2, same notes, other underlay), B once.
+pickup: E4:1 F#4:1
+A : G#4:2 G#4:1 B4:1 A4:2 A4:1 C#5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2 E4:1 F#4:1
+A': (same 5 bars, last bar ends G#4:4 R:2 E4:1 G#4:1 = pickup "Kann i" of B)
+B : F#4:3 G#4:1 A4:2 F#4:2 | G#4:3 A4:1 B4:2 B4:1 B4:1 | C#5:2 C#5:2 E5:2 D#5:1 C#5:1 | B4:4 R:2 E4:1 G#4:1 | B4:2 B4:1 C#5:1 B4:2 B4:1 E5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2
+Measured with the pixel helper and checked at zoom: every pitch. Durations by eye.
+
+## bunt-sind-schon-die-waelder — logged 2026-11-07, before any other score
+Source: Erk's Deutscher Liederschatz Bd. II Nr. 18 (218) "Herbstlied", p. 19, C. F. Peters (plate 7287), https://archive.org/details/deutscherlieders00erkl_1/page/n26/
+Heading: von Salis (1782), "Etwas lebhaft", J. Fr. Reichardt (1799). Read: 6/8, A major (3 sharps), no pickup, 12 bars, verse 1.
+A4:4 A4:2 A4:2 G#4:2 A4:2 | B4:6 A4:6 | C#5:4 C#5:2 C#5:2 B4:2 C#5:2 | D5:6 C#5:6 | B4:4 B4:2 A4:2 C#5:2 D#4:2 | E4:6 R:6 | C#5:4 B4:2 A4:4 G#4:2 | F#4:6 F#4:6 | D5:4 C#5:2 B4:2 C#5:2 A4:2 | G#4:6 G#4:6 | A4:2 C#5:2 E5:2 E4:2 F#4:2 G#4:2 | A4:6 R:6
+Slurred 8th pairs (one syllable on two notes): bar 1 "schon" A4-G#4, bar 3 "Stop" C#5-B4, bar 5 "Herbst" A4-C#5, bar 9 "Ne" B4-C#5, bar 11 "küh" A4-C#5 and "weht" E4-F#4. Bar 6 and 12 end with a quarter rest + eighth rest.
+Measured with the pixel helper; bars 3, 5, 11 also checked at 200% zoom.
+
+## die-vogelhochzeit — logged 2026-11-07, before any other score
+Source: Erk, Deutscher Liederschatz, "neu bearbeitet und durch hundert Lieder vermehrt", Nr. 46 "Vogelhochzeit" (Neueres Volkslied, Volksweise), p. 62, C. F. Peters (Edition Peters Nr. 395, plate 10613), catalogue date [192-?], https://archive.org/details/deutscherlieders00erkl/page/n79/
+Read: 2/4, G major, pickup one eighth, 8 bars, verse 1 with the "Fidiralala" refrain.
+pickup: B4:2
+D5:2 B4:2 D5:2 B4:2 | C5:2 A4:2 C5:2 A4:2 | B4:2 G4:2 D5:2 B4:2 | A4:2 D5:2 D5:2 D4:1 D4:1 | G4:2 G4:2 G4:2 B4:1 B4:1 | A4:2 A4:2 A4:2 C5:1 C5:1 | B4:2 G4:2 A4:2 F#4:2 | G4:4 R:2
+Bar 4: "Wal-" is a beamed pair A4-D5, "de" D5 eighth with a fermata (fermata ignored), then D4 D4 sixteenths "Fi-di".
+Measured with the pixel helper: every pitch.
+
+## winter-ade — logged 2026-11-07, before any other score
+Source: Unser Liederbuch: die beliebtesten Kinderlieder, Bd. 1, p. 47 "Winters Abschied", B. Schott's Söhne, Mainz (Copyright 1900), https://archive.org/details/unserliederbuchd01merc/page/n50/
+Read: 3/4, G major, no pickup, 12 bars, "Ruhig", verse 1.
+B4:4 B4:4 A4:4 | G4:8 R:4 | B4:4 B4:4 A4:4 | G4:8 R:4 | B4:4 C5:4 D5:4 | D5:4 C5:2 B4:2 C5:4 | A4:4 B4:4 C5:4 | C5:4 B4:2 A4:2 B4:4 | B4:4 B4:4 C5:4 | D5:8 R:4 | B4:4 B4:4 A4:4 | G4:8 R:4
+Filled heads measured with the pixel helper; the open half-note heads (bars 2, 4, 10, 12: G4, G4, D5, G4) and bar 8 read at 130-180% zoom against the staff lines.
+
+## hopp-hopp-hopp — logged 2026-11-07, before any other score
+Source: Unser Liederbuch: die beliebtesten Kinderlieder, Bd. 1, p. 18 "Das Steckenpferd", B. Schott's Söhne, Mainz (Copyright 1900), https://archive.org/details/unserliederbuchd01merc/page/n21/
+Read: 2/4, G major, no pickup, 12 bars, "Keck", verse 1 ("Hopp, hopp, hopp! Pferdchen lauf Galopp!").
+G4:4 B4:4 | D5:4 R:4 | D5:2 C5:2 B4:2 A4:2 | G4:4 R:4 | A4:2 A4:2 F#4:2 D4:2 | D5:2 D5:2 B4:2 G4:2 | A4:2 A4:2 F#4:2 D4:2 | D5:2 D5:2 B4:2 G4:2 | G4:2 A4:2 B4:2 C5:2 | D5:4 R:4 | D5:2 C5:2 B4:2 A4:2 | G4:4 R:4
+Measured with the pixel helper: every pitch (noise from text and the "f" mark discarded by matching x positions to the noteheads seen at zoom).

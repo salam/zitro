@@ -1,0 +1,16 @@
+# Score B: notes copied from the German Wikipedia page at its URL, under CC BY-SA 4.0; the page is the attribution. Retrieved 2026-11-07, used only to compare, never served.
+# Verse 1 with the "Fidiralala" refrain. The fermata in bar 4 is ignored.
+id die-vogelhochzeit
+de Die Vogelhochzeit
+en Die Vogelhochzeit
+aliases vogelhochzeit;ein vogel wollte hochzeit machen
+tempo 120
+bar 8
+pickup 2
+notes B4:2 | D5:2 B4:2 D5:2 B4:2 | C5:2 A4:2 C5:2 A4:2 | B4:2 G4:2 D5:2 B4:2 | A4:2 D5:2 D5:2 D4:1 D4:1 | G4:2 G4:2 G4:2 B4:1 B4:1 | A4:2 A4:2 A4:2 C5:1 C5:1 | B4:2 G4:2 A4:2 F#4:2 | G4:4 R:2
+source-a Vogelhochzeit, Neueres Volkslied, Volksweise, in Erk, Deutscher Liederschatz, neu bearbeitet und durch hundert Lieder vermehrt, Nr. 46, S. 62, C. F. Peters (Edition Peters 395) [192-?] | https://archive.org/details/deutscherlieders00erkl/page/n79/ | pre-1931 print
+score-b https://de.wikipedia.org/wiki/Die_Vogelhochzeit | nederlands | relative c'' | b8 | d b d b | c a c a | b g d' b | a d d d16 b | g8 g g d'16 b | a8 a a8 d16 c | b8 g a fis | g4 r8
+traditional Vogelhochzeit (Es wollt' ein Vogel Hochzeit machen), aus der Gegend von Bunzlau und Hainau, in Hoffmann von Fallersleben and Richter, Schlesische Volkslieder mit Melodien, Nr. 43, S. 72, Breitkopf und Härtel, Leipzig 1842 | 1842 | https://archive.org/details/bub_gb_nUgJAAAAQAAJ/page/n117/
+traditional Today's melody, recorded in Silesia (Bunzlau, Haynau); cited print Erk and Böhme, Deutscher Liederhort Bd. 1, S. 510-517, Breitkopf und Härtel, Leipzig 1893 | 1893 | https://de.wikipedia.org/wiki/Die_Vogelhochzeit
+footer Erk Liederschatz, Peters c. 1920
+settled Matthias 2026-11-07: bars 4-6, the "Fi-di" sixteenth pairs, A (Erk/Peters) has D4:1 D4:1 / B4:1 B4:1 / C5:1 C5:1, B (de.wikipedia) has D5:1 B4:1 / D5:1 B4:1 / D5:1 C5:1; Zitro plays the old print's version, and a crop of A's scan confirmed A.

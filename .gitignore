@@ -17,6 +17,9 @@ installer/*.dmg
 installer/*.app/
 tmp/
 
+# Python bytecode
+__pycache__/
+
 # Local tools
 .worktrees/
 .claude/settings.local.json

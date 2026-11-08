@@ -1,0 +1,18 @@
+# Score B: notes copied from the German Wikipedia page at its URL, under CC BY-SA 4.0; the page is the attribution. Retrieved 2026-11-07, used only to compare, never served.
+# Schulz wrote the tune (1794); Eickhoff fitted it to
+# Schmid's text (1832) and changed the closing turn, so both are listed as writers of the melody.
+id ihr-kinderlein-kommet
+de Ihr Kinderlein, kommet
+en O Come, Little Children
+aliases ihr kinderlein kommt
+tempo 100
+bar 8
+pickup 2
+notes B4:2 | B4:4 G#4:2 B4:2 | B4:4 G#4:2 B4:2 | A4:4 F#4:2 A4:2 | G#4:4 R:2 B4:2 | B4:4 G#4:2 B4:2 | B4:4 G#4:2 B4:2 | A4:4 F#4:2 A4:2 | G#4:4 R:2 G#4:2 | F#4:4 F#4:2 F#4:2 | A4:4 A4:2 A4:2 | G#4:4 G#4:2 G#4:2 | C#5:4 R:2 C#5:2 | B4:4 B4:2 B4:2 | E5:4 B4:2 G#4:2 | A4:4 G#4:2 F#4:2 | E4:4 R:2
+source-a Weihnachtslied (Ihr Kinderlein, kommet), in Unser Liederbuch: die beliebtesten Kinderlieder, Bd. 1, S. 24, B. Schott's Söhne, Mainz 1900 | https://archive.org/details/unserliederbuchd01merc/page/n27/ | pre-1931 print
+score-b https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet | nederlands | relative a' | a8 a4 fis8 a a4 fis8 a g4 e8 g fis4 r8 a8 a4 fis8 a a4 fis8 a g4 e8 g fis4 r8 fis e4 e8 e g4 g8 g fis4 fis8 fis b4 r8 b a4 a8 a8 d4 a8 fis g4 e8 cis d4.
+composer Johann Abraham Peter Schulz | 1747 | 1800 | https://de.wikipedia.org/wiki/Johann_Abraham_Peter_Schulz | https://imslp.org/wiki/Category:Schulz,_Johann_Abraham_Peter
+composer Friedrich Hermann Eickhoff | 1807 | 1886 | https://de.wikipedia.org/wiki/Friedrich_Eickhoff | https://www.deutsche-biographie.de/pnd141108711.html
+published 1795 | https://de.wikipedia.org/wiki/Ihr_Kinderlein,_kommet
+footer Unser Liederbuch, Schott 1900
+settled Matthias 2026-11-07: bars 15-16 ("Freude uns macht"), A (Schott 1900) has A4:4 G#4:2 F#4:2 / E4:4 R:2, B (de.wikipedia, moved +2) has A4:4 F#4:2 D#4:2 / E4:6; the two prints end differently, and it is not verified which ending is Schulz's and which is Eickhoff's; Zitro plays the old print's version, and a second reading of A's scan confirmed A.

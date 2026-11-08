@@ -1,0 +1,16 @@
+# Score B: notes copied from the English Wikisource page at its URL, under CC BY-SA 4.0; the page is the attribution. Retrieved 2026-11-07, used only to compare, never served.
+# Verse 1 only. The tune is the one now sung ("Merrily We Roll Along"), traditional; it is not Lowell Mason's 1830s setting.
+# Wikipedia attributes the same tune (chorus of "Goodnight, Ladies", 1867) to E. P. Christy (1815-1862); filed as traditional.
+id mary-had-a-little-lamb
+de Mary Had a Little Lamb
+en Mary Had a Little Lamb
+tempo 100
+bar 8
+pickup 0
+notes A4:3 G4:1 F4:2 G4:2 | A4:2 A4:2 A4:4 | G4:2 G4:2 G4:4 | A4:2 C5:2 C5:4 | A4:3 G4:1 F4:2 G4:2 | A4:2 A4:2 A4:2 A4:2 | G4:2 G4:2 A4:3 G4:1 | F4:6 R:2
+source-a Mary Had a Little Lamb, in The Most Popular Mother Goose Songs, ill. Mabel Betsy Hill, Hinds, Noble & Eldredge, New York 1915, p. 12 | https://archive.org/details/mostpopularmothe00hill/page/n15/ | pre-1931 print
+score-b https://en.wikisource.org/wiki/Page:Childs_own_music_book.djvu/57 | nederlands | absolute | a'8. g'16 f'8 g' | a'8 a' a'4 | g'8 g' g'4 | a'8 c'' c''8. a'16 | a'8. g'16 f'8 g' | a'8 a' a' a' | g'8 g' a' g' | f'4. r16 r16
+traditional Mary Had a Little Lamb, in The Most Popular Mother Goose Songs, Hinds, Noble & Eldredge, New York 1915 | 1915 | https://archive.org/details/mostpopularmothe00hill/page/n15/
+traditional same tune as the chorus "Merrily we roll along" of Goodnight, Ladies, first published 16 May 1867 (Wikipedia; IMSLP gives 1847/1867) | 1867 | https://en.wikipedia.org/wiki/Goodnight,_Ladies
+footer Most Popular Mother Goose 1915
+settled Matthias 2026-11-07: bar 4, A (Hill 1915) has A4:2 C5:2 C5:4 and leaves out the A4 sixteenth that carries verse 2's "And", B (Wier 1918) keeps it inside the bar, A4:2 C5:2 C5:3 A4:1; bar 7, A has G4:2 G4:2 A4:3 G4:1 (dotted), B G4:2 G4:2 A4:2 G4:2 (even); Zitro plays the old print's version (Hill 1915), and a crop of A's scan confirmed A.

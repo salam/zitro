@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "model_core.h"
+#include "name_match.h"
 
 #define PROTEIN_MAX_POINTS 1500
 #define PROTEIN_MAX_CHAINS 64
@@ -35,35 +36,7 @@ struct ProteinEntry {
 // Lower case, umlauts spelled out, hyphens and repeated spaces as one space, no space at the ends.
 // False for empty text, for any other non-ASCII character, and for the index's own separators.
 inline bool proteinNormalise(const char* in, char* out, size_t capacity) {
-  if (!in || !out || capacity == 0) return false;
-  size_t n = 0;
-  const auto put = [&](char c) {
-    if (n + 1 >= capacity) return false;
-    out[n++] = c;
-    return true;
-  };
-  for (const unsigned char* p = (const unsigned char*)in; *p; p++) {
-    const unsigned char c = *p;
-    const char* spelled = nullptr;
-    if (c == 0xC3) {
-      p++;
-      if (*p == 0xA4 || *p == 0x84) spelled = "ae";
-      else if (*p == 0xB6 || *p == 0x96) spelled = "oe";
-      else if (*p == 0xBC || *p == 0x9C) spelled = "ue";
-      else if (*p == 0x9F) spelled = "ss";
-      else return false;
-      if (!put(spelled[0]) || !put(spelled[1])) return false;
-    } else if (c == ' ' || c == '-' || c == '_' || c == '\t') {
-      if (n > 0 && out[n - 1] != ' ' && !put(' ')) return false;
-    } else if (c < 0x20 || c >= 0x7F || c == '|' || c == ';') {
-      return false;
-    } else {
-      if (!put((c >= 'A' && c <= 'Z') ? (char)(c + 32) : (char)c)) return false;
-    }
-  }
-  while (n > 0 && out[n - 1] == ' ') n--;
-  out[n] = 0;
-  return n > 0;
+  return eduNormaliseName(in, out, capacity, false);
 }
 
 inline bool proteinValidId(const char* s, size_t len) {

@@ -1,0 +1,18 @@
+# Score B: notes copied from the English Wikipedia page at its URL, under CC BY-SA 4.0; the page is the attribution. Retrieved 2026-11-07, used only to compare, never served.
+# The print repeats both parts: ":||:" before "Kann i" and ":||" at the very end (scan n91, crops at about
+# x 930-1620 y 1150-1460 and x 2240-2740 y 2700-3020 of the 2800 px page). So both are written out twice, A A B B,
+# and the second part is led in again by "Kann i" (E4 G#4). The first part is the same both times; only the words differ.
+id muss-i-denn
+de Muss i denn zum Städtele hinaus
+en Muss i denn zum Städtele hinaus
+aliases muss i denn;muss i denn muss i denn zum staedtele hinaus;muss i denn zum staedtele naus
+tempo 92
+bar 8
+pickup 2
+notes E4:1 F#4:1 | G#4:2 G#4:1 B4:1 A4:2 A4:1 C#5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2 E4:1 F#4:1 | G#4:2 G#4:1 B4:1 A4:2 A4:1 C#5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2 E4:1 G#4:1 | F#4:3 G#4:1 A4:2 F#4:2 | G#4:3 A4:1 B4:2 B4:1 B4:1 | C#5:2 C#5:2 E5:2 D#5:1 C#5:1 | B4:4 R:2 E4:1 G#4:1 | B4:2 B4:1 C#5:1 B4:2 B4:1 E5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2 E4:1 G#4:1 | F#4:3 G#4:1 A4:2 F#4:2 | G#4:3 A4:1 B4:2 B4:1 B4:1 | C#5:2 C#5:2 E5:2 D#5:1 C#5:1 | B4:4 R:2 E4:1 G#4:1 | B4:2 B4:1 C#5:1 B4:2 B4:1 E5:1 | B4:2 B4:1 A4:1 G#4:4 | B4:2 B4:1 A4:1 G#4:2 G#4:1 B4:1 | A4:2 A4:2 F#4:2 B4:2 | G#4:4 R:2
+source-a Abschied (Muss i denn), Volksweise 1825, in Erk's Deutscher Liederschatz Bd. I Nr. 79, S. 82, C. F. Peters, Leipzig [c. 1890] | https://archive.org/details/deutscherlieders00erkl_0/page/n91/ | pre-1931 print
+score-b https://en.wikipedia.org/wiki/Muss_i_denn | deutsch | relative c' | a'16 h | cis8 cis16 e d8 d16 fis | e8 e16 d cis4 | e8 e16 d cis8 cis16 e | d8 d h e | cis4 r8 a16 h | cis8 cis16 e d8 d16 fis | e8 e16 d cis4 | e8 e16 d cis8 cis16 e | d8 d h e | cis4 r8 \repeat unfold 2 { a16 cis | h8. cis16 d8 h | cis8. d16 e8 e16 e | fis8 fis a gis16 fis | e4 r8 a,16 cis | e8 e16 fis e8 e16 a | e8 e16 d cis4 | e8 e16 d cis8 cis16 e | d8 d h e | cis4 r8 }
+traditional Altwürttembergische Volksweise, adapted by Friedrich Silcher (1789-1860), first printed in his Volkslieder für vier Männerstimmen, Heft 2, op. 8 Nr. 12, 1827 | 1827 | https://de.wikipedia.org/wiki/Muss_i_denn,_muss_i_denn_zum_St%C3%A4dtele_hinaus
+traditional German folk song, in Bantock, 100 Folksongs of All Nations No. 29, Oliver Ditson, Boston 1911 (IMSLP, Folk Songs, German) | 1911 | https://imslp.org/wiki/Muss_i_denn_(Folk_Songs,_German)
+traditional Erk's Deutscher Liederschatz Bd. I Nr. 79, C. F. Peters, Leipzig [c. 1890], S. 82 | 1890 | https://archive.org/details/deutscherlieders00erkl_0/page/n91/
+footer Erk Liederschatz I, Peters c. 1890

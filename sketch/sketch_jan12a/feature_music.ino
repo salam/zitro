@@ -26,31 +26,88 @@ static void musicUnload() {
   musicNoteCount = 0;
 }
 
-// Only a song in the table counts. Anything else is false, so a picture shows.
+static MusicLookup musicLastLookup = MUSIC_LOOKUP_UNKNOWN;
+
+static bool musicDeviceGerman() {
+  Preferences prefs;
+  prefs.begin("settings", true);
+  const bool german = prefs.getString("language", "DE") != "EN";
+  prefs.end();
+  return german;
+}
+
+// What Zitro says when no song was found: the reason musicFetch stored, if it ran for this question. Without a
+// lookup, an older question's reason would be wrong, so it says it doesn't know the song.
+String musicMissAnswerForDevice(bool lookupRan) {
+  char text[200];
+  musicMissAnswer(lookupRan ? musicLastLookup : MUSIC_LOOKUP_UNKNOWN, musicDeviceGerman(), (unsigned)millis(), text,
+                  sizeof(text));
+  return String(text);
+}
+
+static void musicLog(const char* query, MusicLookup result) {
+  musicLastLookup = result;
+  const char* names[] = {"found", "unknown", "offline"};
+  Serial.printf("Music: lookup %s '%s'\n", names[result], query);
+}
+
+// A built-in song first, then the server's list. Anything else is false, so a picture shows.
 static bool musicFetch(const char* query) {
   musicUnload();
-  const MusicSong* song = musicFindSong(query);
-  if (!song) {
-    Serial.printf("Music: no song '%s'\n", query);
+  musicNotes = (MusicNote*)ps_malloc(sizeof(MusicNote) * MUSIC_MAX_NOTES);
+  if (!musicNotes) {
+    musicLog(query, MUSIC_LOOKUP_UNKNOWN);
     return false;
   }
-  musicNotes = (MusicNote*)ps_malloc(sizeof(MusicNote) * MUSIC_MAX_NOTES);
-  if (!musicNotes) return false;
-  musicNoteCount = musicParseNotes(song->notes, musicNotes, MUSIC_MAX_NOTES, musicTotalTicks);
-  if (musicNoteCount <= 0 || song->beatsPerMinute == 0) {
+  musicGerman = musicDeviceGerman();
+  MusicLookup result = MUSIC_LOOKUP_UNKNOWN;
+  const MusicSong* song = musicFindBuiltIn(query);
+  if (song) {
+    musicNoteCount = musicParseNotes(song->notes, musicNotes, MUSIC_MAX_NOTES, musicTotalTicks);
+    if (musicNoteCount > 0 && song->beatsPerMinute != 0) {
+      musicBarTicks = song->barTicks;
+      musicPickupTicks = song->pickupTicks;
+      musicTickMs = musicMsPerTick(song->beatsPerMinute);
+      modelLabel = musicGerman ? song->nameDe : song->nameEn;
+      modelSourceName = "";
+      result = MUSIC_LOOKUP_FOUND;
+    }
+  } else if (WiFi.status() != WL_CONNECTED) {
+    result = MUSIC_LOOKUP_OFFLINE;
+  } else {
+    const unsigned long deadline = millis() + EDU_LOOKUP_DEADLINE_MS;
+    char* body = (char*)ps_malloc(MUSIC_INDEX_LIMIT + 1);  // +1: musicParseSongFile ends the text in place
+    size_t length = 0;
+    MusicIndexEntry entry;
+    if (!body || !eduHttpGet(EDU_DATA_BASE_URL "music/index.txt", deadline, body, MUSIC_INDEX_LIMIT, length)) {
+      result = MUSIC_LOOKUP_OFFLINE;
+    } else if (const MusicIndexResult found = musicResolve(body, length, query, entry); found == MUSIC_INDEX_BAD) {
+      result = MUSIC_LOOKUP_OFFLINE;  // An error page or a damaged list is as good as no list
+    } else if (found == MUSIC_INDEX_MATCH) {
+      // musicResolve only passes ids made of safe characters, so this can't leave the folder
+      int bpm = 0, barTicks = 0, pickupTicks = 0;
+      const char* notes = nullptr;
+      if (eduHttpGet(String(EDU_DATA_BASE_URL "music/") + entry.id + ".txt", deadline, body, MUSIC_FILE_LIMIT, length) &&
+          musicParseSongFile(body, length, entry.id, bpm, barTicks, pickupTicks, notes)) {
+        musicNoteCount = musicParseNotes(notes, musicNotes, MUSIC_MAX_NOTES, musicTotalTicks);
+        if (musicNoteCount > 0 && musicSongIsSound(musicNotes, musicNoteCount, musicTotalTicks, barTicks, pickupTicks, bpm)) {
+          musicBarTicks = barTicks;
+          musicPickupTicks = pickupTicks;
+          musicTickMs = musicMsPerTick(bpm);
+          modelLabel = musicGerman ? entry.de : entry.en;
+          modelSourceName = entry.source;
+          result = MUSIC_LOOKUP_FOUND;
+        }
+      }
+    }
+    free(body);
+  }
+  musicLog(query, result);
+  if (result != MUSIC_LOOKUP_FOUND) {
     musicUnload();
     return false;
   }
-  musicBarTicks = song->barTicks;
-  musicPickupTicks = song->pickupTicks;
-  musicTickMs = musicMsPerTick(song->beatsPerMinute);
-  Preferences prefs;
-  prefs.begin("settings", true);
-  musicGerman = prefs.getString("language", "DE") != "EN";
-  prefs.end();
   musicVolumeLevel = MUSIC_VOLUME_START;  // Going to the text and back keeps the level; a new song doesn't
-  modelLabel = musicGerman ? song->nameDe : song->nameEn;
-  modelSourceName = "";
   return true;
 }
 

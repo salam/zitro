@@ -1,0 +1,42 @@
+# Transcription log (score A only, written before any other score was consulted)
+
+Each entry was appended right after it was read from the scan, before any score B or other score was looked at.
+
+## 1. Camptown Races - logged 2026-11-07
+Scan: Heart Songs Dear to the American People, Chapple, Boston 1909, pp. 352-354.
+https://archive.org/details/heartsongsdearto00chap/page/n373/ (p.352), /page/n374/ (p.353), /page/n375/ (p.354)
+Printed: 2/4, E major, Allegro vivace, pickup one eighth. Melody = top note of the vocal staff (chorus in chords).
+Verse 1 syllables decide whether a slurred pair of equal 16ths is one note (one syllable) or two (two syllables).
+B4:2 | B4:2 B4:2 G#4:2 B4:2 | C#5:2 B4:2 G#4:4 | G#4:2 F#4:6 | G#4:2 F#4:4 B4:2 | B4:2 B4:2 G#4:2 B4:2 | C#5:2 B4:2 G#4:4 | F#4:4 G#4:2 F#4:2 | E4:6 B4:2 | B4:2 B4:2 G#4:2 B4:1 B4:1 | C#5:2 B4:2 G#4:4 | G#4:2 F#4:6 | G#4:2 F#4:4 B4:2 | B4:2 B4:2 G#4:2 B4:1 B4:1 | C#5:1 C#5:1 B4:1 B4:1 G#4:4 | F#4:4 G#4:2 F#4:2 | E4:6 R:2 | E4:3 E4:1 G#4:2 B4:2 | E5:6 R:2 | C#5:3 C#5:1 E5:2 C#5:2 | B4:6 G#4:1 A4:1 | B4:2 B4:2 G#4:1 G#4:1 B4:1 B4:1 | C#5:2 B4:2 G#4:4 | F#4:2 G#4:1 A4:1 G#4:2 F#4:1 F#4:1 | E4:6
+Flags: see NOTES.md (bars 1, 2, 5, 6, 8, 9, 13, 14, 16, 20, 21, 23).
+
+## 2. Greensleeves - logged 2026-11-07
+Scan: W. Chappell, Popular Music of the Olden Time, vol. 1, Cramer, Beale & Chappell, London [1855-1859], p. 230, "Tune of Green Sleeves. Oldest copy."
+https://archive.org/details/popularmusicov1185559chap/page/n277/
+Printed: 6/8, one sharp (E minor), pickup one eighth. Melody = top note of the right hand. The 8th rest that opens the second part completes bar 8 (E4 dotted quarter + E4 quarter + 8th rest = 12).
+E4:2 | G4:4 A4:2 B4:3 C5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:4 E4:2 E4:3 D#4:1 E4:2 | F#4:4 D#4:2 B3:4 E4:2 | G4:4 A4:2 B4:3 C5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:3 F#4:1 E4:2 D#4:3 C#4:1 D#4:2 | E4:6 E4:4 R:2 | D5:6 D5:3 C#5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:4 E4:2 E4:3 D#4:1 E4:2 | F#4:4 D#4:2 B3:6 | D5:6 D5:3 C#5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:3 F#4:1 E4:2 D#4:3 C#4:1 D#4:2 | E4:6 E4:4
+Flags: see NOTES.md (bars 4, 8, 12, 16).
+
+## 3. Londonderry Air - logged 2026-11-07
+Scan: G. Petrie, The Petrie Collection of the Ancient Music of Ireland, vol. 1, Dublin: M. H. Gill for the Society for the Preservation and Publication of the Melodies of Ireland, 1855, p. 57, "Name unknown" (from Miss J. Ross, Limavady).
+https://archive.org/details/petriecollection01petr/page/n84/
+Printed: C (4/4), three flats, Andante, crotchet = pendulum 24 inches (about 77 a minute), pickup three eighths. Melody = stems-up top voice of the right hand. Fermatas and staccato dots ignored.
+D4:2 Eb4:2 F4:2 | G4:6 F4:2 G4:2 C5:2 Bb4:2 G4:2 | F4:2 Eb4:2 C4:4 R:2 Eb4:2 G4:2 Ab4:2 | Bb4:6 C5:2 Bb4:2 G4:2 Eb4:2 G4:2 | F4:8 R:2 D4:2 Eb4:2 F4:2 | G4:6 F4:2 G4:2 C5:2 Bb4:2 G4:2 | F4:2 Eb4:2 C4:2 B3:2 C4:2 D4:2 Eb4:2 F4:2 | G4:6 Ab4:2 G4:2 F4:2 Eb4:2 F4:2 | Eb4:8 R:2 Bb4:2 C5:2 D5:2 | Eb5:6 D5:2 D5:2 C5:2 Bb4:2 G4:2 | Bb4:2 G4:2 Eb4:4 R:2 Bb4:2 C5:2 D5:2 | Eb5:6 D5:2 D5:2 C5:2 Bb4:2 G4:2 | F4:8 R:2 Bb4:2 Bb4:2 Bb4:2 | G5:6 F5:2 F5:2 Eb5:2 C5:2 Eb5:2 | Bb4:2 G4:2 Eb4:4 R:2 D4:2 Eb4:2 F4:2 | G4:2 C5:2 Bb4:2 G4:2 F4:2 Eb4:2 C4:2 D4:2 | Eb4:8~ Eb4:2
+Flags: see NOTES.md (bars 1, 2, 6, 12, 15).
+
+## 4. Funiculi, Funicula - logged 2026-11-07
+Scan: The Scottish Students' Song Book, Bayley & Ferguson, London/Glasgow 1897, pp. 236-239, "Funiculi, Funicula. Words by Edward Oxenford. Music by L. Denza." Footnote: "Included by arrangement with Messrs. G. Ricordi & Co., Milan."
+https://archive.org/details/scottishstudents00scot_0/page/n241/ (p.236), /page/n242/ (p.237), /page/n243/ (p.238), /page/n244/ (p.239)
+Printed: 6/8, E flat major, Allegretto brillante, pickup one eighth. Verse 1 (solo with the chorus echoes written in the same vocal staff) and the solo refrain up to "la!" (p.239, system 2, bar 1). The chorus repeat of the refrain in two-part harmony that follows is left out.
+Bb4:2 | Eb5:12~ | Eb5:4 Eb5:2 D5:4 D5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | G4:6 G4:6~ | G4:4 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 R:2 R:4 Bb4:2 | Eb5:12~ | Eb5:4 Eb5:2 D5:4 D5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | G4:6 G4:6~ | G4:4 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 G4:2 F4:4 Eb4:2 | Eb4:12~ | Eb4:2 R:2 R:2 R:4 G4:2 | G4:12~ | G4:4 G4:2 A4:4 A4:2 | G4:4 G4:2 A4:4 A4:2 | G4:6 G4:6~ | G4:4 D4:2 D4:4 D4:2 | D4:12~ | D4:2 R:2 D4:2 D4:4 D4:2 | D4:12~ | D4:2 R:2 R:2 R:4 Bb4:2 | Bb4:12~ | Bb4:4 Bb4:2 C5:4 C5:2 | Bb4:4 Bb4:2 C5:4 C5:2 | Bb4:6 Bb4:6~ | Bb4:4 F4:2 F4:4 F4:2 | F4:12~ | F4:2 R:2 F4:2 F4:4 F4:2 | F4:12~ | F4:2 R:2 R:2 R:4 R:2 | D5:6 C5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | Eb5:4 D5:2 C5:4 Eb5:2 | D5:6~ D5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | D5:6 C5:2 R:2 R:2 | Eb5:4 D5:2 C5:4 Eb5:2 | Bb4:2 R:2 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | G4:4 G4:2 G4:4 G4:2 | C5:12 | F5:4 Eb5:2 C5:4 Eb5:2 | Bb4:2 R:2 G4:2 G4:4 Ab4:2 | Bb4:4 Ab4:2 G4:4 F4:2 | Eb4:2 R:2 R:2 R:4
+Flags: see NOTES.md.
+
+## 5. Long, Long Ago (substitute for Santa Lucia) - logged 2026-11-07
+Scan: Heart Songs Dear to the American People, Chapple, Boston 1909, p. 435, "Long, Long Ago", T. H. Bayly.
+https://archive.org/details/heartsongsdearto00chap/page/n452/
+Printed: 4/4, F major, no pickup. Melody = top note of the treble staff (four-part setting). Fermatas ignored.
+F4:4 F4:2 G4:2 A4:4 A4:2 Bb4:2 | C5:4 D5:2 C5:2 A4:4 R:4 | C5:4 Bb4:2 A4:2 G4:4 R:4 | Bb4:4 A4:2 G4:2 F4:4 R:4 | F4:4 F4:2 G4:2 A4:4 A4:2 Bb4:2 | C5:4 D5:2 C5:2 A4:4 R:4 | C5:4 Bb4:2 A4:2 G4:4 A4:3 G4:1 | F4:8 R:8 | C5:4 Bb4:2 A4:2 G4:4 C4:2 C4:2 | Bb4:4 A4:2 G4:2 F4:4 R:4 | C5:4 Bb4:2 A4:2 G4:4 C4:2 C4:2 | Bb4:4 A4:2 G4:2 F4:4 R:4 | F4:4 F4:2 G4:2 A4:4 A4:2 Bb4:2 | C5:4 D5:2 C5:2 A4:4 R:4 | C5:4 Bb4:2 A4:2 G4:4 A4:3 G4:1 | F4:8 R:8
+Flags: see NOTES.md (bar 5 first note faint).
+
+### Amendment to 4 (Funiculi), re-read from the same scan before any other score was consulted
+p.239 system 1 bar 2 ("la!", ten.): the hollow dotted half sits in the top space, so it is Eb5:12, not C5:12 as first logged. Measured with a darkness profile: ring centred at y=188 between the F5 line (178.5) and the D5 line (197.5).

@@ -1,0 +1,17 @@
+# Score B: notes copied from the English Wikisource page at its URL, under CC BY-SA 4.0; the page is the attribution. Retrieved 2026-11-07, used only to compare, never served.
+# Chappell's "oldest copy" (p. 230), the one with the familiar second part. Melody = top note of the right hand.
+# Score B is an independent modern transcription (en.wikisource LilyPond) of the same print, Chappell p. 230;
+# it counts as score B (controller ruling, 2026-11-07).
+id greensleeves
+de Greensleeves
+en Greensleeves
+aliases green sleeves
+tempo 96
+bar 12
+pickup 2
+notes E4:2 | G4:4 A4:2 B4:3 C5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:4 E4:2 E4:3 D#4:1 E4:2 | F#4:4 D#4:2 B3:4 E4:2 | G4:4 A4:2 B4:3 C5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:3 F#4:1 E4:2 D#4:3 C#4:1 D#4:2 | E4:6 E4:4 R:2 | D5:6 D5:3 C#5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:4 E4:2 E4:3 D#4:1 E4:2 | F#4:4 D#4:2 B3:6 | D5:6 D5:3 C#5:1 B4:2 | A4:4 F#4:2 D4:3 E4:1 F#4:2 | G4:3 F#4:1 E4:2 D#4:3 C#4:1 D#4:2 | E4:6 E4:4
+source-a Tune of Green Sleeves, oldest copy, in W. Chappell, Popular Music of the Olden Time, vol. 1, p. 230, Cramer, Beale & Chappell, London [1855-1859] | https://archive.org/details/popularmusicov1185559chap/page/n277/ | pre-1931 print
+score-b https://en.wikisource.org/wiki/Page:Popular_Music_of_the_Olden_Time,_Volume_1.pdf/264 | english | relative c' | e8 | g4 a8 b8. c16 b8 | a4 fs8 d8. e16 fs8 | g4 e8 e8. ds16 e8 | fs4 ds8 b4 e8 | g4 a8 b8. c16 b8 | a4 fs8 d8. e16 fs8 | g8. fs16 e8 ds8. cs16 ds8 | e4. e4 r8 | d'4. d8. cs16 b8 | a4 fs8 d8. e16 fs8 | g4 e8 e8. ds16 e8 | fs4 ds8 b4. | d'4. d8. cs16 b8 | a4 fs8 d8. e16 fs8 | g8. fs16 e8 ds8. cs16 ds8 | e4. e4
+traditional Tune of Green Sleeves, in W. Chappell, Popular Music of the Olden Time, vol. 1, p. 230, Cramer, Beale & Chappell, London [1855-1859] | 1859 | https://archive.org/details/popularmusicov1185559chap/page/n277/
+traditional Greensleeves, traditional English tune, set to the carol "What Child Is This?" in 1871 | 1871 | https://en.wikipedia.org/wiki/What_Child_Is_This%3F
+footer Chappell, Olden Time 1859

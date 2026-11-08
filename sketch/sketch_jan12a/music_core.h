@@ -5,10 +5,16 @@
 #pragma once
 
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <string.h>
 
-static const int MUSIC_MAX_NOTES = 200;
+#include "model_core.h"
+#include "name_match.h"
+
+static const int MUSIC_MAX_NOTES = 1000;
+#define MUSIC_INDEX_LIMIT (64 * 1024)  // Most the stick reads of the server's song index
+#define MUSIC_FILE_LIMIT (16 * 1024)   // Most it reads of one song file
 static const int MUSIC_TICKS_PER_QUARTER = 4;
 static const float MUSIC_PLAY_CAP_SECONDS = 5 * 60;  // Then it pauses, so a forgotten stick can still sleep
 static const float MUSIC_GAP_SHARE = 0.12f;          // Silence before the next note, so repeated notes stay apart
@@ -193,5 +199,192 @@ inline bool musicAdvance(MusicPlayback& p, const MusicNote* notes, int count, fl
   toneMidi = notes[p.note].midi;
   float ms = ticksLeft * msPerTick * (1.0f - MUSIC_GAP_SHARE);
   toneMs = ms < 1.0f ? 1 : (uint32_t)ms;
+  return true;
+}
+
+// What every song must satisfy, built in or from the server: it fits the buffer and the staff, and its
+// bars add up, so a dropped or mistyped note is caught. Bars adding up is also what makes the loop seamless.
+inline bool musicSongIsSound(const MusicNote* notes, int count, int totalTicks, int barTicks, int pickupTicks,
+                             int beatsPerMinute) {
+  if (!notes || count <= 8 || count > MUSIC_MAX_NOTES) return false;
+  if (beatsPerMinute < 60 || beatsPerMinute > 160) return false;
+  if (barTicks != 8 && barTicks != 12 && barTicks != 16) return false;
+  if (pickupTicks < 0 || pickupTicks >= barTicks) return false;
+  if (totalTicks % barTicks != 0) return false;
+  int sounding = 0;
+  for (int n = 0; n < count; n++) {
+    const MusicNote& note = notes[n];
+    if (note.midi) {
+      sounding++;
+      if (note.staffStep < -4 || note.staffStep > 10) return false;  // A3 to A5: what the band can draw
+      if (note.midi < 57 || note.midi > 81) return false;
+    }
+    // No note runs over a bar line; a tie has to say so
+    const int after = (note.startTick + note.ticks - pickupTicks) % barTicks;
+    const int into = (note.startTick - pickupTicks + barTicks * 4) % barTicks;
+    if (!(after == 0 || into + note.ticks <= barTicks)) return false;
+  }
+  return sounding > 8;
+}
+
+// The server's song index: "ZITRO-MUSIC-INDEX 1 <count>", then exactly <count> lines
+// "id|de|en|aliases|source". Aliases are ';'-separated and already normalised.
+struct MusicIndexEntry {
+  char id[40];
+  char de[48];
+  char en[48];
+  char source[40];
+};
+
+inline bool musicIsIdChar(char c) { return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '-'; }
+
+// Copies text[0..len) into out (capacity cap) if it is non-empty, fits and has no '|' or control character.
+inline bool musicCopyField(const char* text, int len, char* out, size_t cap) {
+  if (len <= 0 || (size_t)len >= cap) return false;
+  for (int i = 0; i < len; i++) {
+    if ((unsigned char)text[i] < 0x20 || text[i] == '|') return false;
+  }
+  memcpy(out, text, len);
+  out[len] = 0;
+  return true;
+}
+
+// True if the title (already normalised) equals the normalised form of label.
+inline bool musicLabelMatches(const char* label, const char* wanted) {
+  char folded[96];
+  return eduNormaliseName(label, folded, sizeof(folded), true) && strcmp(folded, wanted) == 0;
+}
+
+// Finds a title in the index: an exact match on the normalised form only, never a close one. The whole
+// index must be sound, because a cut-off or damaged one can't be trusted for what it does contain.
+// A title that matches two entries matches none. BAD means the index itself is unusable (an HTML page,
+// cut off, damaged); NO_MATCH means a sound index with no single match.
+enum MusicIndexResult { MUSIC_INDEX_BAD, MUSIC_INDEX_NO_MATCH, MUSIC_INDEX_MATCH };
+
+inline MusicIndexResult musicResolve(const char* index, size_t indexLen, const char* title, MusicIndexEntry& out) {
+  memset(&out, 0, sizeof(out));
+  char wanted[96];
+  if (!index || !title || indexLen == 0) return MUSIC_INDEX_BAD;
+  // A title that can't be normalised matches nothing, but the index is still checked first
+  const bool wantedOk = eduNormaliseName(title, wanted, sizeof(wanted), true);
+  if (!wantedOk) wanted[0] = 0;
+  const char* p = index;
+  const char* end = index + indexLen;
+  const char* line = nullptr;
+  int len = sdfNextLine(p, end, line);
+  static const char HEAD[] = "ZITRO-MUSIC-INDEX 1 ";
+  const int headLen = (int)sizeof(HEAD) - 1;
+  if (len <= headLen || memcmp(line, HEAD, headLen) != 0) return MUSIC_INDEX_BAD;
+  long expected = 0;
+  for (int i = headLen; i < len; i++) {
+    if (line[i] < '0' || line[i] > '9' || i - headLen > 4) return MUSIC_INDEX_BAD;
+    expected = expected * 10 + (line[i] - '0');
+  }
+  if (expected < 1 || expected > 2000) return MUSIC_INDEX_BAD;
+  long seen = 0;
+  int matches = 0;
+  MusicIndexEntry match;
+  memset(&match, 0, sizeof(match));
+  while ((len = sdfNextLine(p, end, line)) >= 0) {
+    const char* lineEnd = line + len;
+    const char* bar[4];
+    const char* from = line;
+    for (int i = 0; i < 4; i++) {
+      bar[i] = (const char*)memchr(from, '|', lineEnd - from);
+      if (!bar[i]) return MUSIC_INDEX_BAD;
+      from = bar[i] + 1;
+    }
+    if (memchr(from, '|', lineEnd - from)) return MUSIC_INDEX_BAD;
+    MusicIndexEntry current;
+    memset(&current, 0, sizeof(current));
+    if (!musicCopyField(line, (int)(bar[0] - line), current.id, sizeof(current.id))) return MUSIC_INDEX_BAD;
+    for (const char* c = current.id; *c; c++) {
+      if (!musicIsIdChar(*c)) return MUSIC_INDEX_BAD;
+    }
+    if (!musicCopyField(bar[0] + 1, (int)(bar[1] - bar[0] - 1), current.de, sizeof(current.de)) ||
+        !musicCopyField(bar[1] + 1, (int)(bar[2] - bar[1] - 1), current.en, sizeof(current.en)) ||
+        !musicCopyField(bar[3] + 1, (int)(lineEnd - bar[3] - 1), current.source, sizeof(current.source))) {
+      return MUSIC_INDEX_BAD;
+    }
+    bool isMatch = musicLabelMatches(current.de, wanted) || musicLabelMatches(current.en, wanted);
+    const char* alias = bar[2] + 1;
+    const char* aliasEnd = bar[3];
+    if (alias < aliasEnd) {
+      while (true) {
+        const char* semi = (const char*)memchr(alias, ';', aliasEnd - alias);
+        const char* stop = semi ? semi : aliasEnd;
+        if (stop == alias) return MUSIC_INDEX_BAD;
+        if ((size_t)(stop - alias) == strlen(wanted) && memcmp(alias, wanted, stop - alias) == 0) isMatch = true;
+        if (!semi) break;
+        alias = semi + 1;
+      }
+    }
+    if (isMatch) {
+      matches++;
+      match = current;
+    }
+    seen++;
+    if (seen > expected) return MUSIC_INDEX_BAD;
+  }
+  if (seen != expected) return MUSIC_INDEX_BAD;
+  if (!wantedOk || matches != 1) return MUSIC_INDEX_NO_MATCH;
+  out = match;
+  return MUSIC_INDEX_MATCH;
+}
+
+// Reads a whole decimal number from text[0..len), 1 to 4 digits.
+inline bool musicParseSmall(const char* text, int len, int& value) {
+  if (len < 1 || len > 4) return false;
+  value = 0;
+  for (int i = 0; i < len; i++) {
+    if (text[i] < '0' || text[i] > '9') return false;
+    value = value * 10 + (text[i] - '0');
+  }
+  return true;
+}
+
+// A song file: exactly three lines, "ZITRO-MUSIC-SONG 1 <id>", "<bpm> <barTicks> <pickupTicks>", the notes.
+// body must have room for length + 1 bytes: a terminator is written after the notes, and notes points
+// into body. False for another id or any missing or extra line. The values are only checked for shape;
+// musicSongIsSound judges them.
+inline bool musicParseSongFile(char* body, size_t length, const char* id, int& beatsPerMinute, int& barTicks,
+                               int& pickupTicks, const char*& notes) {
+  notes = nullptr;
+  if (!body || !id || !id[0] || length == 0 || memchr(body, 0, length)) return false;
+  const char* p = body;
+  const char* end = body + length;
+  const char* line = nullptr;
+  int len = sdfNextLine(p, end, line);
+  static const char HEAD[] = "ZITRO-MUSIC-SONG 1 ";
+  const int headLen = (int)sizeof(HEAD) - 1;
+  if (len < 0 || len != headLen + (int)strlen(id) || memcmp(line, HEAD, headLen) != 0 ||
+      memcmp(line + headLen, id, len - headLen) != 0) {
+    return false;
+  }
+  len = sdfNextLine(p, end, line);
+  if (len < 0) return false;
+  int values[3];
+  const char* q = line;
+  const char* lineEnd = line + len;
+  for (int i = 0; i < 3; i++) {
+    const char* word = q;
+    while (q < lineEnd && *q != ' ') q++;
+    if (!musicParseSmall(word, (int)(q - word), values[i])) return false;
+    if (i < 2) {
+      if (q >= lineEnd) return false;
+      q++;
+    }
+  }
+  if (q != lineEnd) return false;
+  const char* notesLine = nullptr;
+  const int notesLen = sdfNextLine(p, end, notesLine);
+  if (notesLen <= 0) return false;
+  if (sdfNextLine(p, end, line) >= 0) return false;  // Nothing may follow the notes
+  char* notesStart = body + (notesLine - body);
+  notesStart[notesLen] = 0;
+  notes = notesStart;
+  beatsPerMinute = values[0];
+  barTicks = values[1];
+  pickupTicks = values[2];
   return true;
 }

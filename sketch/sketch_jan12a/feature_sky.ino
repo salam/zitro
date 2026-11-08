@@ -287,6 +287,6 @@ const EduFeature FEATURE_SKY = {
     "Sternkarte will, setze 'model' auf 'sky:<Name des Sternbilds auf Englisch oder Latein>' (z.B. 'Wo ist Orion?' "
     "ergibt 'sky:Orion', 'Wie sieht der Grosse Baer aus?' ergibt 'sky:Ursa Major'). Fuer den ganzen Himmel oder "
     "mehrere Sternbilder: 'sky:all'. Nicht fuer einzelne Sterne, Planeten, Mond, Sonne oder Galaxien: "
-    "dort bleibt model leer. Die Karte zeigt nicht den Himmel am Standort des Nutzers. Gib nie selbst Sterndaten an.",
+    "keine Sternkarte (Planeten, Sonnenbahn, Mondphasen und Groessen siehe PHYSIK, sonst bleibt model leer). Die Karte zeigt nicht den Himmel am Standort des Nutzers. Gib nie selbst Sterndaten an.",
     false,  // Turns with the hand, in skyTurnWithHand: the shared turning would also spin by itself
     skyFetch, nullptr, skyBegin, skyFrame, nullptr, nullptr, nullptr, nullptr};

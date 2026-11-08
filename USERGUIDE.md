@@ -334,7 +334,11 @@ This is a map of all the stars, not a window. The stick has no compass and doesn
 Ask how something works, and Zitro shows it moving.
 
 - "Wie funktioniert ein Hebel?", "Warum schwimmt Holz?", "Warum gibt es Jahreszeiten?", "Warum knickt ein Stab im Wasser?", "Wie ist ein Kohlenstoffatom aufgebaut?"
-- For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism.
+- Light, waves and atoms: "Was passiert beim Doppelspalt?", "Warum macht ein Prisma Regenbogenfarben?", "Was ist eine Halbwertszeit?", "Was ist Chaos?" (double pendulum), "Warum klingt ein Krankenwagen anders, wenn er vorbeifährt?"
+- Space: "Wo stehen die Planeten gerade?", "Warum läuft der Mars manchmal rückwärts?", "Warum steht die Sonne im Winter so tief?", "Was ist ein geostationärer Satellit?", "Wie gross ist Jupiter im Vergleich zur Erde?"
+- For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism; light through a prism is the prism scene.
+
+The Doppler and half-life scenes make sound: a siren that changes pitch, and the clicks of a Geiger counter. The planets, the seasons and the Sun's path use today's date and your home city from the settings. Scenes that are sped up, slowed down or not to scale say so on screen.
 
 Questions like "Was ist ein Magnet?" still bring a photo.
 

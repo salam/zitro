@@ -20,7 +20,7 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 - Button B restarts the run, except the lever, states of matter and seasons, which continue from their current state so the change is visible, and the Sun's path, which keeps its clock. The setting survives Button C and back, but not a new lookup.
 - No goals, scores or games: Button B only changes what is shown.
 - Two scenes make sound, short tones the scene asks for and the device plays on the speaker's channel 1 at the device volume (never changed): the Doppler scene beeps at the pitch the listener hears, the half-life scene clicks like a Geiger counter. No tone lasts longer than 60 ms, and `end()` stops the speaker channel, so nothing sounds after the view closes.
-- Home place: `PhysicsState.homeLatitude` and `homeLongitude` (radians, north and east positive) feed the seasons and the Sun's path. `physicsBegin()` sets them from `PHYSICS_HOME_LATITUDE` (47 degrees north) and `PHYSICS_HOME_LONGITUDE` (8.5 degrees east), at the line marked `HOME_PLACE_HOOK`, until the home city setting sets them. Both scenes show the latitude they use. South of the equator the seasons scene names the seasons the other way round, and the Sun's path faces north, east on the right.
+- Home place: `PhysicsState.homeLatitude` and `homeLongitude` (radians, north and east positive) feed the seasons and the Sun's path. `physicsBegin()` sets them from the home city setting (`clockHomeCity()`, the world clock's table, default Zurich 47.4 degrees north). `PHYSICS_HOME_LATITUDE` and `PHYSICS_HOME_LONGITUDE` remain for the host tests. Both scenes show the latitude they use. South of the equator the seasons scene names the seasons the other way round, and the Sun's path faces north, east on the right.
 
 | Id | Curriculum topic | What it computes | Button B |
 | --- | --- | --- | --- |
@@ -38,7 +38,7 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 | `sound` | Sound waves | Longitudinal wave, air particles and the pressure curve; slowed on screen | Low or high, quiet or loud |
 | `circuit` | Simple circuit | Ohm's law, I = U / R, bulb power | Off, on, two batteries, two bulbs in a row |
 | `matter` | States of matter | Lennard-Jones particles with velocity Verlet and a thermostat; states emerge from the temperature | Solid, liquid, gas |
-| `seasons` | Seasons | Sun's longitude from the date, declination, day length at 47 degrees north | Next season |
+| `seasons` | Seasons | Sun's longitude from the date, declination, day length at the home city's latitude | Next season |
 | `moon` | Moon phases | Phase from the date, Meeus ch. 48; side view and top view | Today, or the month running |
 | `double-pendulum` | Chaos | Full equations of motion for two 25 cm rods with equal weights, Runge-Kutta, real time. A second pendulum starts 0.001 rad further out; the gap between the lower weights is shown | Start at 30, 90, 135, 170 degrees |
 | `doppler` | Doppler effect | A 440 Hz siren passing a listener. Wave crests as circles from where they set off; heard pitch f c / (c - v cos a), a taken when the crest set off, and played on the speaker as each crest arrives. Slowed on screen, with the true ratio v / c | Standing, 100 km/h, 300 km/h |
@@ -68,7 +68,7 @@ Known simplifications, none of them on-screen claims:
 - `sound`: particle displacement is hugely exaggerated, and time is slowed. Equal loudness gives equal pressure, so high tones push the air less far, as in reality.
 - `circuit`: bulb resistance is taken as constant. The dots are electrons, going from minus to plus: the opposite of the conventional current direction many school books draw. Their pace follows the current, and isn't their true speed.
 - `matter`: a model substance in its usual units, not water, with gravity far stronger than real so that a liquid lies on the floor. A sample cooled from gas may freeze with defects, as real ones do. The whole sample's sideways drift is removed each step, standard practice in such simulations.
-- `seasons`: day length is geometric (Sun's centre on the horizon, no refraction). A day passes in 8 seconds. Latitude is the home place's, shown on screen; 47 degrees north until the home city setting exists.
+- `seasons`: day length is geometric (Sun's centre on the horizon, no refraction). A day passes in 8 seconds. Latitude is the home city's, shown on screen.
 - `moon`: lit side as seen from the northern hemisphere. No clock yet: the month runs from a known new moon, with no "today".
 - `double-pendulum`: point weights on rods without mass, no friction. Chaos means the two runs part after a few seconds from 90 degrees on; after that, the exact path also depends on the rounding of the calculation, as any computed chaotic motion does. What stays true is how fast they part and that energy is kept (tested to a tenth of a percent). Starts over after a minute.
 - `doppler`: slowed on screen ("Zeitlupe"): sound runs at 160 pixels a second, and the siren at the same true fraction of the speed of sound (343 m/s). The drawn circles are crests a quarter of a second apart on screen, not every wave. The beep marks each crest's arrival, at the pitch the formula gives for it; between them the device is quiet, so it never sounds like a steady siren. The listener stands still and there is no wind.

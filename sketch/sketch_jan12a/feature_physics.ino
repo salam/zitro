@@ -55,9 +55,10 @@ static bool physicsBegin(M5Canvas& c) {
   physicsState->big = FontManager::getFont16pt();
   physicsState->normal = FontManager::getFont12pt();
   physicsState->clockKnown = physicsDayFromClock((double)time(nullptr), physicsState->startDay);
-  // HOME_PLACE_HOOK: set from the home city setting
-  physicsState->homeLatitude = PHYSICS_HOME_LATITUDE;
-  physicsState->homeLongitude = PHYSICS_HOME_LONGITUDE;
+  // The home city from the settings (world clock table), so seasons and the Sun's path are for home
+  const ClockCity& home = CLOCK_CITIES[clockHomeCity()];
+  physicsState->homeLatitude = home.lat100 / 100.0f * PHYSICS_DEG;
+  physicsState->homeLongitude = home.lon100 / 100.0f * PHYSICS_DEG;
   physicsState->random = (uint32_t)esp_random();
   physicsSceneReset(*physicsState);
   return true;

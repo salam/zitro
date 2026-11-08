@@ -81,7 +81,7 @@
   - Can be toggled via voice command regardless of setting
 
 ### Gesture/Interaction Toggles
-- **Shake for a Surprise** (`shakeRandom`): Enable/disable the shake gesture (default: on). Read when a shake happens; off means shakes are ignored. A shake shows a built-in fact or, half the time, a built-in result from `SHAKE_MEDIA` in `shake_core.h` (physics and sky scenes, solids, star maps, the world clock for one of the 80 biggest cities). These need no network and open at once; if one can't open, the fact comes. Each entry is checked against its feature's closed list by `tests/shake/run.sh`. Changed from facts only on the user's request (2026-11-08)
+- **Shake for a Surprise** (`shakeRandom`): Enable/disable the shake gesture (default: on). Read when a shake happens; off means shakes are ignored. A shake shows a built-in fact or, half the time, a built-in result from `SHAKE_MEDIA` in `shake_core.h` (physics and astronomy scenes except the two that make sound, solids, star maps, the world clock for one of the 80 biggest cities). These need no network and open at once; if one can't open, the fact comes. Each entry is checked against its feature's closed list by `tests/shake/run.sh`. Changed from facts only on the user's request (2026-11-08)
 - **Double-Click for Audio**: Enable/disable double-click for audio output (default: on)
   - If disabled, double-click behaves like single-click (text only)
 - **Movement for Zoom**: Enable/disable roll gesture to toggle image zoom modes (default: on)

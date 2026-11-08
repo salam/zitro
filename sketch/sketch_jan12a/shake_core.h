@@ -13,6 +13,9 @@ static const char* const SHAKE_MEDIA[] = {
     "physics:falling", "physics:pendulum", "physics:buoyancy", "physics:lever", "physics:ramp", "physics:magnet",
     "physics:mirror", "physics:refraction", "physics:sound", "physics:matter", "physics:seasons", "physics:moon",
     "physics:atom-C", "physics:atom-O", "physics:atom-Fe",
+    "physics:double-pendulum", "physics:double-slit", "physics:prism",
+    // Astronomy, computed on the device. Doppler and half-life are left out: they beep, and a shake stays quiet
+    "physics:planets", "physics:retrograde", "physics:sunpath", "physics:satellites", "physics:sizes",
     // Shapes to turn
     "solid:icosahedron", "solid:dodecahedron", "solid:torus", "solid:octahedron", "solid:hexagonal-prism",
     // Star maps

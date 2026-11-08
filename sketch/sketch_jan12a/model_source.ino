@@ -66,8 +66,11 @@ bool eduHttpGet(const String& url, unsigned long deadline, char* buffer, size_t 
 }
 
 // Looks up a result of any kind. On failure there is none, and the caller shows the picture.
+String modelAnswerText;
+
 bool fetchModel(const ModelRef& ref) {
   hasModel = false;
+  modelAnswerText = "";
   modelViewEnd();  // TLS needs the memory, and the buffers fit the old result
   eduUnloadActive();
   modelRefText = "";

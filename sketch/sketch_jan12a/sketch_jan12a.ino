@@ -35,6 +35,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "model_core.h"
 #include "edu_feature.h"
 #include "button_rules.h"
+#include "clock_core.h"  // World clock: cities, time zones, the Sun (feature_worldclock.ino)
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -351,8 +352,56 @@ static const SettingDef settingsRegistry[] = {
   {"moveZoom",    "bool",   "Roll-Zoom",          "Roll zoom",        "Roll gesture for zoom",     -1, -1,      NULL,         false, 1},
   {"moveToggle",  "bool",   "Dreh-Umschalten",    "Rotate toggle",    "Rotation to toggle view",   -1, -1,      NULL,         false, 1},
   {"memory",      "bool",   "Gespraechsgedaechtnis", "Conversation memory", "Remember last 10 minutes", -1, -1, NULL,       false, 1},
+  // A city from clock_data.h, stored by its English name: sets the time zone and "here" for the world clock
+  {"homeCity",    "string", "Wohnort",            "Home city",        "Home city and time zone",   -1, -1,      NULL,         false, 0},
 };
 static const int SETTINGS_REGISTRY_COUNT = sizeof(settingsRegistry) / sizeof(settingsRegistry[0]);
+
+// String settings default to their first allowed value; the home city to Zurich
+static const char* settingStringDefault(const SettingDef& def) {
+  if (strcmp(def.key, "homeCity") == 0) return "Zurich";
+  return "DE";
+}
+
+bool deviceLanguageIsGerman() {
+  Preferences prefs;
+  prefs.begin("settings", true);
+  const bool german = prefs.getString("language", "DE") != "EN";
+  prefs.end();
+  return german;
+}
+
+// The home city from the settings, or Zurich if it's missing or no longer in the table
+int clockHomeCity() {
+  Preferences prefs;
+  prefs.begin("settings", true);
+  const String name = prefs.getString("homeCity", "Zurich");
+  prefs.end();
+  const int city = clockFindCity(name.c_str());
+  return city >= 0 ? city : CLOCK_HOME_DEFAULT;
+}
+
+// The device clock follows the home city's time zone, daylight saving included. Timers count in UTC and
+// aren't affected; the parental lock's hours and the clock face are local.
+static bool homeTimeZoneRule(char* rule, size_t size) {
+  const int city = clockHomeCity();
+  return clockLibraryRule(CLOCK_ZONES[CLOCK_CITIES[city].zone].posix, rule, size);
+}
+
+void applyHomeTimeZone() {
+  char rule[64];
+  if (!homeTimeZoneRule(rule, sizeof(rule))) return;
+  setenv("TZ", rule, 1);
+  tzset();
+  Serial.printf("Time zone: %s (%s)\n", CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana, rule);
+}
+
+void startNtpWithHomeTimeZone() {
+  char rule[64];
+  if (!homeTimeZoneRule(rule, sizeof(rule))) strcpy(rule, "CET-1CEST,M3.5.0,M10.5.0/3");
+  configTzTime(rule, "pool.ntp.org", "time.nist.gov");
+  Serial.printf("Time zone: %s (%s)\n", CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana, rule);
+}
 
 // Icon bitmaps are now in icons.ino (auto-generated from PNG files)
 // Forward declarations for icons (defined in icons.ino)
@@ -646,6 +695,10 @@ const char* setupPage = R"rawliteral(
           <option value="EN">English (EN)</option>
         </select>
 
+        <label for="homeCity" id="labelHomeCity">Home city (time zone)</label>
+        <input type="text" id="homeCity" list="cityList" autocomplete="off" required>
+        <datalist id="cityList"></datalist>
+
         <label for="recordSec" id="labelRecordSec">Recording duration (seconds)</label>
         <input type="number" id="recordSec" min="1" max="30" value="5" required>
 
@@ -718,7 +771,7 @@ const char* setupPage = R"rawliteral(
         aiReady: 'Ready: answers and voice are set up.', aiNoSpeech: 'Answers are set up, but voice needs an OpenAI key.',
         deviceSettingsTitle: 'Device settings',
         labelMemory: 'Remember the last 10 minutes (follow-up questions)',
-        labelLanguage: 'Language', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
+        labelLanguage: 'Language', labelHomeCity: 'Home city (time zone)', cityUnknown: 'Please pick a city from the list.', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
         optSampleRate8k: 'Standard (8 kHz), faster', optSampleRate16k: 'High (16 kHz), best quality',
         labelVolume: 'Volume (0-255)', labelDispSleep: 'Display sleep (seconds)',
         labelLightSleep: 'Light sleep (seconds)', labelDeepSleep: 'Deep sleep (seconds)',
@@ -754,7 +807,7 @@ const char* setupPage = R"rawliteral(
         aiReady: 'Bereit: Antworten und Sprache sind eingerichtet.', aiNoSpeech: 'Antworten sind eingerichtet, Sprache braucht einen OpenAI-Schlüssel.',
         deviceSettingsTitle: 'Geräteeinstellungen',
         labelMemory: 'Die letzten 10 Minuten merken (Folgefragen)',
-        labelLanguage: 'Sprache', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
+        labelLanguage: 'Sprache', labelHomeCity: 'Wohnort (Zeitzone)', cityUnknown: 'Bitte eine Stadt aus der Liste wählen.', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
         optSampleRate8k: 'Standard (8 kHz), schneller', optSampleRate16k: 'Hoch (16 kHz), beste Qualität',
         labelVolume: 'Lautstärke (0-255)', labelDispSleep: 'Display-Ruhemodus (Sek.)',
         labelLightSleep: 'Leichter Ruhemodus (Sek.)', labelDeepSleep: 'Tiefer Ruhemodus (Sek.)',
@@ -839,6 +892,7 @@ const char* setupPage = R"rawliteral(
           $('recordSec').value = data.recordSec || 5;
           $('sampleRate').value = data.sampleRate || 8000;
           $('language').value = data.language || 'DE';
+          $('homeCity').value = data.homeCity || 'Zurich';
           $('volume').value = data.volume != null ? data.volume : 210;
           $('dispSleep').value = (data.dispSleep || 30000) / 1000;
           $('lightSleep').value = (data.lightSleep || 90000) / 1000;
@@ -886,10 +940,26 @@ const char* setupPage = R"rawliteral(
       }).catch(function() { alert(t[currentLang].saveFailed); });
     });
 
+    var cityNames = [];
+    var loadCities = function() {
+      fetch('/cities')
+        .then(function(r) { return r.json(); })
+        .then(function(names) {
+          cityNames = names;
+          var list = $('cityList');
+          list.textContent = '';
+          names.forEach(function(n) { var o = document.createElement('option'); o.value = n; list.appendChild(o); });
+        })
+        .catch(function() {});
+    };
+
     $('settingsForm').addEventListener('submit', function(e) {
       e.preventDefault();
+      var city = $('homeCity').value.trim();
+      var known = cityNames.length === 0 || cityNames.some(function(n) { return n.toLowerCase() === city.toLowerCase(); });
+      if (!known) { alert(t[currentLang].cityUnknown); return; }
       var params = new URLSearchParams();
-      ['recordSec','sampleRate','language','volume'].forEach(function(k) { params.append(k, $(k).value); });
+      ['recordSec','sampleRate','language','volume','homeCity'].forEach(function(k) { params.append(k, $(k).value.trim()); });
       ['dispSleep','lightSleep','deepSleep'].forEach(function(k) { params.append(k, $(k).value * 1000); });
       BOOL_KEYS.forEach(function(k) { params.append(k, $(k).checked ? '1' : '0'); });
       post(params)
@@ -975,6 +1045,7 @@ const char* setupPage = R"rawliteral(
     currentLang = detectLanguage();
     applyTranslations();
     loadSettings();
+    loadCities();
     loadNetworks();
   </script>
 </body>
@@ -1770,7 +1841,7 @@ void handleGetSettings() {
     if (strcmp(def.type, "bool") == 0)      doc[def.key] = settingsPrefs.getBool(def.key, def.defVal != 0);
     else if (strcmp(def.type, "int") == 0)  doc[def.key] = settingsPrefs.getInt(def.key, (int)def.defVal);
     else if (strcmp(def.type, "long") == 0) doc[def.key] = settingsPrefs.getLong(def.key, def.defVal);
-    else                                    doc[def.key] = settingsPrefs.getString(def.key, "DE");
+    else                                    doc[def.key] = settingsPrefs.getString(def.key, settingStringDefault(def));
   }
 
   doc["provider"] = aiProvider();
@@ -1792,10 +1863,24 @@ void handleGetSettings() {
   server.send(200, "application/json", json);
 }
 
+// Every city the home setting accepts, in both languages, for the settings page's suggestions
+void handleGetCities() {
+  JsonDocument doc;
+  JsonArray names = doc.to<JsonArray>();
+  for (int i = 0; i < CLOCK_CITY_COUNT; i++) {
+    names.add(CLOCK_CITIES[i].en);
+    if (strcmp(CLOCK_CITIES[i].en, CLOCK_CITIES[i].de) != 0) names.add(CLOCK_CITIES[i].de);
+  }
+  String json;
+  serializeJson(doc, json);
+  server.send(200, "application/json; charset=utf-8", json);
+}
+
 void handleSaveSettings() {
   Serial.println("Saving settings");
   Preferences settingsPrefs;
   settingsPrefs.begin("settings", false);
+  bool homeTimeZoneChanged = false;
 
   // Registry settings, validated against their ranges
   for (int i = 0; i < SETTINGS_REGISTRY_COUNT; i++) {
@@ -1819,6 +1904,11 @@ void handleSaveSettings() {
       // Setup page sends milliseconds; ranges are defined in seconds
       long v = constrain(value.toInt(), (long)def.minVal * 1000, (long)def.maxVal * 1000);
       settingsPrefs.putLong(def.key, v);
+    } else if (strcmp(def.key, "homeCity") == 0) {
+      const int city = clockFindCity(value.c_str());
+      if (city < 0) continue;  // Only cities in the table: a typo keeps the old one
+      settingsPrefs.putString(def.key, CLOCK_CITIES[city].en);
+      homeTimeZoneChanged = true;
     } else {
       value.toUpperCase();
       if (def.allowedVals && ("," + String(def.allowedVals) + ",").indexOf("," + value + ",") < 0) continue;
@@ -1855,6 +1945,7 @@ void handleSaveSettings() {
   }
 
   settingsPrefs.end();
+  if (homeTimeZoneChanged) applyHomeTimeZone();
   loadSleepTimeouts();
   server.send(200, "text/plain", "OK");
 }
@@ -1924,6 +2015,7 @@ void startAPMode() {
   server.on("/reorder", HTTP_POST, handleReorder);
   server.on("/delete", HTTP_POST, handleDelete);
   server.on("/settings", HTTP_GET, handleGetSettings);
+  server.on("/cities", HTTP_GET, handleGetCities);
   server.on("/savesettings", HTTP_POST, handleSaveSettings);
   server.on("/restart", HTTP_POST, handleRestart);
   server.on("/f/sniglet-400.woff2", HTTP_GET, []() { sendSetupFont(sniglet_400_woff2, sniglet_400_woff2_len); });
@@ -2069,8 +2161,8 @@ bool connectToWiFi() {
       savedSSID = ssid;
       savedPass = pass;
 
-      // Configure NTP time for Switzerland (CET/CEST, UTC+1/UTC+2)
-      configTime(3600, 3600, "pool.ntp.org", "time.nist.gov");
+      // NTP, in the home city's time zone with its real daylight saving rules
+      startNtpWithHomeTimeZone();
       Serial.println("Syncing time with NTP...");
 
       Serial.println("======================================\n");
@@ -4637,8 +4729,9 @@ String buildSettingsPrompt() {
       // Display sleep timeouts in seconds for user-friendliness
       prompt += "(" + String(s.minVal) + "-" + String(s.maxVal) + " Sek, jetzt:" + String(val / 1000) + ")";
     } else if (strcmp(s.type, "string") == 0) {
-      String val = sp.getString(s.key, "DE");
-      prompt += "(" + String(s.allowedVals) + ", jetzt:" + val + ")";
+      String val = sp.getString(s.key, settingStringDefault(s));
+      if (s.allowedVals) prompt += "(" + String(s.allowedVals) + ", jetzt:" + val + ")";
+      else prompt += "(englischer Name einer Stadt, setzt die Zeitzone, jetzt:" + val + ")";
     }
   }
   sp.end();
@@ -4747,6 +4840,18 @@ String applySettingChange(const String& key, const String& value) {
 
     return String(setting->nameDE) + " auf " + String(longVal / 1000) + " Sekunden gesetzt.";
 
+  } else if (strcmp(setting->type, "string") == 0 && key == "homeCity") {
+    const int city = clockFindCity(value.c_str());
+    if (city < 0) {
+      sp.end();
+      return deviceLanguageIsGerman() ? "Diese Stadt kenne ich nicht. Nimm eine Hauptstadt oder grosse Stadt."
+                                      : "I don't know that city. Pick a capital or a big city.";
+    }
+    sp.putString(setting->key, CLOCK_CITIES[city].en);
+    sp.end();
+    applyHomeTimeZone();
+    const bool german = deviceLanguageIsGerman();
+    return String(german ? "Wohnort auf " : "Home city set to ") + clockCityName(city, german) + ".";
   } else if (strcmp(setting->type, "string") == 0) {
     // Validate against allowed values
     if (setting->allowedVals) {
@@ -7937,6 +8042,7 @@ void setup() {
 
   // Initialize custom fonts with European language support
   FontManager::init();
+  applyHomeTimeZone();  // The clock kept through deep sleep reads right before NTP answers
 
   // Initialize speaker for the jingle and TTS playback
   M5.Speaker.begin();
@@ -8741,6 +8847,7 @@ void handleVoiceQuery(bool playAudio) {
   // A real 3D model replaces the picture; without one, the picture is the answer as before
   hasModel = false;
   modelRefText = "";
+  modelAnswerText = "";  // Only a lookup in this answer may set it
   eduUnloadActive();
   ModelRef modelRef;
   bool musicLookupRan = false;
@@ -8753,6 +8860,16 @@ void handleVoiceQuery(bool playAudio) {
   // or a picture request that skipped the lookup): say so, instead of the AI's own words about the song
   if (!hasModel && gptResponse.model.startsWith("music:")) {
     gptResponse.answer = musicMissAnswerForDevice(musicLookupRan);
+    response = wordWrap(gptResponse.answer, 25);
+  }
+  // The AI doesn't know the time: a clock answer is always Zitro's own, computed or an honest "don't know"
+  if (gptResponse.model.startsWith("clock:")) {
+    if (modelAnswerText.length() == 0) {
+      gptResponse.answer = deviceLanguageIsGerman() ? "Die Uhrzeit kann ich gerade nicht zeigen."
+                                                    : "I can't show the time right now.";
+    } else {
+      gptResponse.answer = modelAnswerText;
+    }
     response = wordWrap(gptResponse.answer, 25);
   }
 

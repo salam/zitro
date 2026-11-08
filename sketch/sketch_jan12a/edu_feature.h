@@ -37,7 +37,8 @@ struct EduFeature {
 
 // One per kind. All are registered in feature_registry.ino.
 extern const EduFeature FEATURE_MOLECULE, FEATURE_MUSIC, FEATURE_GRAPH, FEATURE_RECIPE, FEATURE_GLOBE, FEATURE_PROTEIN,
-    FEATURE_CRYSTAL, FEATURE_SKY, FEATURE_PHYSICS, FEATURE_SOLID, FEATURE_TIMELINE, FEATURE_ANATOMY, FEATURE_WOLFRAM;
+    FEATURE_CRYSTAL, FEATURE_SKY, FEATURE_PHYSICS, FEATURE_SOLID, FEATURE_TIMELINE, FEATURE_ANATOMY, FEATURE_WOLFRAM,
+    FEATURE_CLOCK;
 extern const EduFeature* const EDU_FEATURES[];
 extern const int EDU_FEATURE_COUNT;
 extern const EduFeature* activeFeature;
@@ -45,6 +46,7 @@ extern const EduFeature* activeFeature;
 // Shared state
 extern String modelLabel;       // Name on the bottom line; set by fetch(), from the source record
 extern String modelSourceName;  // Source on the bottom line
+extern String modelAnswerText;  // Set by fetch() when the written answer must be computed, not the AI's (clock)
 extern Mat3 modelRotation;      // Current turn, for features with turnsWithGyro
 extern uint8_t modelZoomStep;   // 0, 1 or 2
 extern float modelGyroDps[3];   // Hand motion in screen axes, degrees per second; 0 when the gyro is off

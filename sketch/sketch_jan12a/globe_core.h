@@ -160,6 +160,56 @@ inline uint32_t globeRasterLine(uint16_t* buffer, int width, int height, int x0,
   return pixels;
 }
 
+// Day and night on the disc. sunDot is the sine of the Sun's height at a point: 0 on the line between day
+// and night. Night below 6 degrees under the horizon (end of civil twilight), full day from 3 degrees up,
+// shades in between, so the line looks as soft as it is.
+static const int GLOBE_LIGHT_STEPS = 16;
+inline int globeLightLevel(float sunDot) {
+  const float low = -0.1045f, high = 0.0523f;  // sin(-6 deg), sin(3 deg)
+  if (!(sunDot > low)) return 0;
+  if (sunDot >= high) return GLOBE_LIGHT_STEPS;
+  return (int)((sunDot - low) / (high - low) * GLOBE_LIGHT_STEPS + 0.5f);
+}
+
+// The Sun's direction in screen axes, from its direction on Earth
+inline void globeToScreen(const float m[9], const float v[3], float out[3]) {
+  for (int i = 0; i < 3; i++) out[i] = m[3 * i] * v[0] + m[3 * i + 1] * v[1] + m[3 * i + 2] * v[2];
+}
+
+// Fills the disc with ocean, palette[0] night to palette[GLOBE_LIGHT_STEPS] day. sun in screen axes, or
+// nullptr: all day. Only rows and columns inside width x height are written. Returns pixels written.
+inline uint32_t globeShadeDisc(uint16_t* buffer, int width, int height, int cx, int cy, int radius, const float* sun,
+                               const uint16_t* palette) {
+  if (radius <= 0) return 0;
+  uint32_t written = 0;
+  const float inv = 1.0f / radius;
+  for (int y = cy - radius; y <= cy + radius; y++) {
+    if (y < 0 || y >= height) continue;
+    const int dy = cy - y;
+    const int half = (int)sqrtf((float)(radius * radius - dy * dy));
+    int x0 = cx - half, x1 = cx + half;
+    if (x0 < 0) x0 = 0;
+    if (x1 >= width) x1 = width - 1;
+    uint16_t* row = buffer + (size_t)y * width;
+    if (!sun) {
+      for (int x = x0; x <= x1; x++) row[x] = palette[GLOBE_LIGHT_STEPS];
+      written += x1 >= x0 ? x1 - x0 + 1 : 0;
+      continue;
+    }
+    const float ny = dy * inv;
+    const float rest = 1.0f - ny * ny;
+    const float rowPart = sun[1] * ny;
+    for (int x = x0; x <= x1; x++) {
+      const float nx = (x - cx) * inv;
+      const float zz = rest - nx * nx;
+      const float nz = zz > 0 ? sqrtf(zz) : 0.0f;
+      row[x] = palette[globeLightLevel(sun[0] * nx + rowPart + sun[2] * nz)];
+      written++;
+    }
+  }
+  return written;
+}
+
 static const int GLOBE_PIN_HEIGHT = 17;   // Tip to top of the pin's head
 static const int GLOBE_ARROW_INSET = 12;  // Arrow centre, from the disc's edge and from the screen's edge
 

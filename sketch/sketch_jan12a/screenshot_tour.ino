@@ -355,6 +355,8 @@ void handleSerialCommands() {
       // So repeated "ask" runs can't copy each other's answers
       memoryClear();
       Serial.println("Memory cleared");
+    } else if (line == "guide") {
+      guideStartNow();
     } else if (line.startsWith("ask ")) {
       serialTestQuestion = line.substring(4);
       handleVoiceQuery(false);

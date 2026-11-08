@@ -59,6 +59,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 // Custom fonts with European language support (German umlauts, Greek, Cyrillic, Hebrew)
 #include "fonts/PrimaryFont10pt.h"
 #include "fonts/PrimaryFont14pt.h"
+#include "guide_core.h"
 
 // FontManager class for smart UTF-8 font rendering
 class FontManager {
@@ -479,6 +480,20 @@ bool restoreImageFromFlash();
 void handleDeepSleepWake();
 bool modelViewBegin();
 void modelViewEnd();
+extern GuideState guideState;
+extern GuideVoice lastVoiceOutcome;
+bool guideActive();
+bool guideAutoStart();
+void guideStartNow();
+void guideTick();
+void guideStop(bool markDone);
+void guideRenderStep();
+void guideOnHeard(const String& question);
+void guideDecorateScreen(M5Canvas& c);
+void guideDecorateProgress(M5Canvas& c);
+void guideDrawViewHints(M5Canvas& c);
+void guideDrawIcon(M5Canvas& c, const char* id, int x, int y);
+void guideDrawGrid(M5Canvas& c, float pos, int rotation);
 bool modelViewActive();
 void modelViewRender(float dt);
 bool modelViewSpriteInPsram();
@@ -1362,6 +1377,8 @@ void drawScreen(const String &text) {
     drawModelHint(canvas);
   }
 
+  if (guideActive() && guideState.step == GUIDE_ANSWER) guideDecorateScreen(canvas);
+
   captureCanvas(canvas);
 
   canvas.pushSprite(0, 0);
@@ -1552,6 +1569,8 @@ void drawProgress(int secondsRemaining) {
   int micX = 8;
   int micY = HEIGHT / 2 - (MICICON_HEIGHT * micScale) / 2;
   drawIconScaled(canvas, micIcon, MICICON_WIDTH, MICICON_HEIGHT, micX, micY, micScale, TFT_WHITE);
+
+  if (guideActive()) guideDecorateProgress(canvas);
 
   // Draw progress rectangles
   int rectWidth = 25;
@@ -2927,6 +2946,10 @@ bool inWakeCooldown() {
 
 // Show the last answer (text or image) again, or the home screen if there is none
 void redrawPreviousResult() {
+  if (guideActive()) {
+    guideRenderStep();
+    return;
+  }
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
     if (currentDisplayMode == SHOW_IMAGE && hasImage && imageBuffer) {
       displayImage(currentImageUrl.length() == 0);
@@ -3336,6 +3359,7 @@ void discoverPrinters() {
 #define HINT_CUT    16  // half-filled circle: the other view, outside or cut open
 #define HINT_EARLIER 17  // triangle to the left on any edge: earlier on a timeline
 #define HINT_LATER   18  // triangle to the right on any edge: later on a timeline
+#define HINT_MENU    19  // three dots: the tour's menu
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3518,6 +3542,11 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     }
   } else if (kind == HINT_CUT) {
     drawCutMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_MENU) {
+    for (int i = -1; i <= 1; i++) {
+      if (sideEdge) canvas.fillCircle(cx, cy + i * 6, 2, symbolColor);
+      else canvas.fillCircle(cx + i * 6, cy, 2, symbolColor);
+    }
   } else if (kind == HINT_LATER) {
     canvas.fillTriangle(cx - 3, cy - 5, cx - 3, cy + 5, cx + 3, cy, symbolColor);
   } else if (kind == HINT_EARLIER) {
@@ -8145,7 +8174,7 @@ void setup() {
     discardButtonA(0);  // The wake-up press must not start a recording
     timeWokeFromSleep = millis();
   } else {
-    drawScreen(MAIN_QUESTION);
+    if (!guideAutoStart()) drawScreen(MAIN_QUESTION);
   }
 
   lastActivityTime = millis(); // Initialize activity timer
@@ -8688,6 +8717,7 @@ void handleVoiceQuery(bool playAudio) {
     currentDisplayMode = SHOW_TEXT;
     modelResetRotateToggle = true;
   }
+  lastVoiceOutcome = GUIDE_VOICE_ANSWERED;
   Serial.println("\n*** BUTTON PRESSED ***\n");
   if (playAudio) {
     Serial.println("Mode: DOUBLE-CLICK (with audio)");
@@ -8698,6 +8728,7 @@ void handleVoiceQuery(bool playAudio) {
   resetToActiveState(); // Reset to active state
 
   if (!aiChatConfigured() || !audioEndpoint().available) {
+    lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     Serial.println("AI not fully configured (chat or speech key missing)");
     drawScreen(!aiChatConfigured()
       ? "No AI key set.\nTriple-press the\nside button for\nsettings."
@@ -8711,11 +8742,13 @@ void handleVoiceQuery(bool playAudio) {
   const bool typedQuestion = serialTestQuestion.length() > 0;  // Serial "ask": no mic needed
   if (!typedQuestion && !recordAudio(recordingCancelled)) {
     if (recordingCancelled) {
+      lastVoiceOutcome = GUIDE_VOICE_CANCELLED;
       if (cameFromModel) currentDisplayMode = SHOW_MODEL;
       redrawPreviousResult();
       resetToActiveState();
       return;
     }
+    lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
     drawScreenWithIcon("Mic error", micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
     delay(2000);
     drawScreen(MAIN_QUESTION);
@@ -8729,6 +8762,7 @@ void handleVoiceQuery(bool playAudio) {
   serialTestQuestion = "";
 
   if (question.length() < 2 || question.startsWith("No ") || question.startsWith("Parse") || question.startsWith("Connection") || question.startsWith("Timeout")) {
+    lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
     Serial.println("Transcription failed or empty");
     drawScreen("Couldn't hear.\nTry again.");
     delay(2000);
@@ -8745,6 +8779,7 @@ void handleVoiceQuery(bool playAudio) {
     if (normalizedQuestion.indexOf("kindersicherung") < 0 &&
         normalizedQuestion.indexOf("einstellung") < 0 &&
         normalizedQuestion.indexOf("setting") < 0) {
+      lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
       Serial.println("Parental lock is ON and current time is restricted (8pm-6am)");
       drawScreenWithIcon("Ich schlafe z z z", nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
       M5.Display.sleep();
@@ -8752,6 +8787,8 @@ void handleVoiceQuery(bool playAudio) {
       return;
     }
   }
+
+  if (guideActive()) guideOnHeard(question);
 
   drawScreenWithIcon("Thinking...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
   GPTResponse gptResponse = askGPT(question);
@@ -8780,6 +8817,7 @@ void handleVoiceQuery(bool playAudio) {
 
   // Handle onboarding/AP mode request
   if (gptResponse.isOnboarding) {
+    lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     Serial.println("Onboarding mode requested via voice");
     response = wordWrap(gptResponse.answer, 25);
     M5.Display.setRotation(getLandscapeRotation());
@@ -8989,7 +9027,7 @@ void loop() {
   // Detect button press edge (not pressed -> pressed).
   // Not counted in the timer and printer lists (Button C is "next" there, so three quick
   // presses must not open the settings) or while a timer alert is up.
-  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode;
+  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive();
   if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
     unsigned long now = millis();
 
@@ -9099,6 +9137,7 @@ void loop() {
       } else {
         drawScreen(MAIN_QUESTION);
       }
+      if (guideActive()) guideRenderStep();
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
@@ -9162,6 +9201,13 @@ void loop() {
       }
     }
     return;  // Don't process other buttons in timer list mode
+  }
+
+  // The guided tour takes every button until it ends
+  if (guideActive()) {
+    guideTick();
+    delay(20);
+    return;
   }
 
   // 3D view: one frame per pass, so timers, buttons and sleep keep working

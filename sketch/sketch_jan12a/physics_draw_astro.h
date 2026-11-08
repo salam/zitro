@@ -112,12 +112,10 @@ void physicsDrawPlanets(C& c, PhysicsState& s, float dt) {
   const int textX = 122;
   const AstroPlanet& planet = ASTRO_PLANETS[named];
   physicsText(c, s.big, s.german ? planet.de : planet.en, textX, 24, planet.color, textdatum_t::baseline_left);
-  if (s.clockKnown) {
-    physicsMillionKm(text, sizeof(text), namedKm, s.german);
-    physicsText(c, s.normal, text, textX, 46, PHYSICS_WHITE, textdatum_t::baseline_left);
-  } else {
-    physicsText(c, s.normal, physicsPick(s, "ohne Uhr", "no clock"), textX, 46, PHYSICS_RED, textdatum_t::baseline_left);
-  }
+  // The distance on the date shown. Without a clock the scene runs as a time-lapse with the month on
+  // screen, so it needs no "no clock" note: nothing claims to be today.
+  physicsMillionKm(text, sizeof(text), namedKm, s.german);
+  physicsText(c, s.normal, text, textX, 46, PHYSICS_WHITE, textdatum_t::baseline_left);
   if (physicsPlanetsRunning(s)) {
     physicsMonthText(text, sizeof(text), day, s.german);
     physicsText(c, s.normal, text, textX, 70, PHYSICS_CITRUS, textdatum_t::baseline_left);

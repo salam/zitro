@@ -35,6 +35,26 @@ static void globePreparePalette(M5Canvas& c) {
   }
 }
 
+// The text column left of the globe in the world clock and the ISS view
+static const uint16_t GLOBE_PANEL_W = 112;
+
+// Text on the left, on black so it stays readable when the zoomed globe runs under it
+static void globePanelText(M5Canvas& c, const char* text, int y, uint16_t color, int width = GLOBE_PANEL_W) {
+  String s = text;
+  if (c.textWidth(s) > width) {
+    while (s.length() > 1 && c.textWidth(s + "...") > width) {
+      int cut = s.length() - 1;
+      while (cut > 0 && ((uint8_t)s[cut] & 0xC0) == 0x80) cut--;
+      s.remove(cut);
+    }
+    s += "...";
+  }
+  const int w = c.textWidth(s), h = c.fontHeight();
+  c.fillRect(0, y, w + 6, h, TFT_BLACK);
+  c.setTextColor(color);
+  c.drawString(s, 3, y);
+}
+
 // The Sun's direction in screen axes now. False without a clock: then it's all day.
 static bool globeSunNow(const float m[9], float sun[3]) {
   const time_t now = time(nullptr);

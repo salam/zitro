@@ -2,6 +2,8 @@
 
 ## Sun 8 Nov, 2026
 
+- **Where is the ISS?** Ask, and watch the space station fly over the sunlit Earth live, with NASA's own data: height, speed and where it will fly next.
+- **See whose time it is**: the world clock now shows the city's name right above its time.
 - **What time is it in Tokyo?** Ask, and Zitro turns the globe to the city and shows the time there, your own time and how far apart they are. Zitro works the time out itself, so it's always right.
 - **Day and night, live**: the globe now shows where the Sun is shining right now and where it's night.
 - **Your home, your time**: pick your home city on the setup page or say "Stelle meinen Wohnort auf Berlin". Zitro follows its time zone and switches to summer time on the right day.

@@ -292,6 +292,14 @@ Zitro knows 320 cities: every capital and the biggest cities of the world. It wo
 
 Set your own city on the setup page under **Home city**, or say "Stelle meinen Wohnort auf Berlin". It also sets your Zitro's time zone.
 
+#### ISS live
+
+Ask "Wo ist die ISS gerade?" or "Where is the ISS?". Zitro shows the Earth with the space station where it is right now, lit by the Sun as it is this moment. The grey line is where it has just been, the yellow one where it will fly in the next 90 minutes. On the left: how high and how fast it flies, and where it is. Watch closely: it moves, once round the Earth in about an hour and a half.
+
+- **Turn the stick** to turn the globe; **Button B** zooms; **Button C** shows the answer as text.
+
+Zitro gets the path from NASA through the Zitro server, so it needs WiFi. After three hours the path runs out: ask again.
+
 #### Proteins, DNA and crystals
 
 Ask how something is built, or ask for 3D:

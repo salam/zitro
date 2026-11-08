@@ -1,5 +1,13 @@
 # Release Notes
 
+## Sun 8 Nov, 2026
+
+- **What time is it in Tokyo?** Ask, and Zitro turns the globe to the city and shows the time there, your own time and how far apart they are. Zitro works the time out itself, so it's always right.
+- **Day and night, live**: the globe now shows where the Sun is shining right now and where it's night.
+- **Your home, your time**: pick your home city on the setup page or say "Stelle meinen Wohnort auf Berlin". Zitro follows its time zone and switches to summer time on the right day.
+- **Shake for a surprise**: shaking now brings a fact, or a scene, a shape, a star map or the time in a big city. All built in, so it works without WiFi.
+- **Shake off means off**: switching off shaking in the settings now really stops it.
+
 ## Sat 7 Nov, 2026
 
 - **More songs**: Zitro now finds songs on its own server, from Oh! Susanna to Der Mond ist aufgegangen. Each one comes from an old printed songbook and is checked note by note against a second score.

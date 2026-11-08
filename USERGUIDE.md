@@ -137,7 +137,7 @@ The project includes deployment scripts for building and uploading firmware to y
   - Timer list: show the next timer.
 
 ### Gestures
-- Shake: triggers a surprise fact query (no voice playback).
+- Shake: a surprise, no voice playback. Half the time a fact, otherwise a scene, a shape, a star map or the time in a big city, all built in, so it works without WiFi. Switch it off in the settings ("Schuetteln aus").
 - Rotate: rotate to the opposite orientation and back to toggle text vs image.
 - Roll: toggles image zoom mode (contain vs cover) while image is shown.
 - To save battery, the gyroscope (needed for roll and for turning 3D models) only runs while an image or 3D model is on screen. Shake and turning the stick still work everywhere.
@@ -160,6 +160,7 @@ The project includes deployment scripts for building and uploading firmware to y
   - "Audioqualitaet hoch" (16000 Hz) or "Sample rate 8000"
   - "Schuetteln aus" or "Disable shake"
   - "Gespraechsgedaechtnis aus" or "Turn off conversation memory"
+  - "Stelle meinen Wohnort auf Berlin" or "Set my home city to Tokyo" (also sets the time zone)
 - Settings take effect immediately where possible (volume, recording, parental lock).
 - When parental lock is enabled, responses are blocked between 20:00 and 06:00, but settings changes (like disabling the lock) still work.
 - Say "Start onboarding mode", "WLAN Einrichtung starten", "Open settings page", or similar to enter AP/setup mode by voice.
@@ -274,6 +275,22 @@ Ask where a place is: "Where is the Matterhorn?" or "Wo liegt Paris?". Zitro sho
 - **Button A** asks a new question.
 
 Zitro only shows a globe for places Wikipedia has a position for, on Earth. For anything else, such as Mars, you get the picture. "What does the Matterhorn look like?" also gets a picture.
+
+The dark side of the globe is where it's night right now.
+
+#### World clock
+
+Ask for the time: "Wie spät ist es in Tokio?", "What time is it in New York?", or just "Wie spät ist es?".
+
+Zitro shows the Earth turned to that city, with a yellow pin. The time there is big at the top left, your own time below it, and how many hours apart they are. The dark side of the Earth is where it's night right now, and a little sun marks where the Sun stands straight overhead. Faint lines show the time zones, 15 degrees each.
+
+- **Turn the stick** to turn the globe; **flick** it to spin.
+- **Button B** zooms in.
+- **Button C** shows the answer as text.
+
+Zitro knows 320 cities: every capital and the biggest cities of the world. It works out the time itself, summer time included, so it needs to have been online once to set its clock. For a city it doesn't know, it says so.
+
+Set your own city on the setup page under **Home city**, or say "Stelle meinen Wohnort auf Berlin". It also sets your Zitro's time zone.
 
 #### Proteins, DNA and crystals
 
@@ -395,7 +412,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
   - WiFi connect attempts
   - AP setup mode (screen with SSID + IP, web setup page)
 - Home / idle
-  - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for random fact."
+  - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for a surprise."
   - Battery indicator appears when low
   - Rotate icon appears when an image is available
 - Question flow
@@ -437,8 +454,8 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 - Device will identify objects, plants, and share interesting facts.
 - If no camera is attached, shows: "Kamera anschliessen, um Kamerafunktion zu nutzen".
 
-### Surprise fact
-- Shake the device to get a random fact (text only).
+### Surprise
+- Shake the device for a surprise: a random fact, or a scene, shape, star map or world time to look at. No voice.
 
 ### Reading answers
 - Empty lines between paragraphs take only half a line, so more text fits on screen.
@@ -503,7 +520,8 @@ Good to know:
    - Choose audio quality: Standard (8 kHz, faster uploads) or High (16 kHz, best quality)
    - Configure sleep timeouts (display, light, deep sleep)
    - Enable/disable features: image search, Wolfram Alpha, local quotes, parental lock
-   - Enable/disable gestures: shake for random fact, double-click for audio, roll for zoom, rotation for toggle
+   - Enable/disable gestures: shake for a surprise, double-click for audio, roll for zoom, rotation for toggle
+   - Home city: sets the time zone (summer time included) and "here" for the world clock (default Zurich)
    - Set speaker volume (0-255, default 210)
 6. Add WiFi networks, reorder, or delete old ones.
 7. Save settings. They apply from the next question on; adding a WiFi network restarts the device.

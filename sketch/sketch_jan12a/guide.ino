@@ -107,7 +107,7 @@ static void guideDrawRetry() {
   const int n = wrapToLines(c, gt("Das habe ich nicht verstanden.", "I didn't catch that."), 204, lines, 2);
   guideCenteredLines(c, lines, n, 42, 23);
   guidePressRow(c, gt("Drück", "Press"), gt("nochmal", "again"), 92);
-  guideTabs(c, HINT_MIC, HINT_MENU, HINT_NEXT);
+  guideTabs(c, HINT_MIC, HINT_MENU, HINT_LATER);
   guidePush(c);
 }
 
@@ -155,7 +155,7 @@ static void guideDrawQuote() {
   c.drawString(gt("Du fragst:", "You ask:"), WIDTH / 2, 40);
   c.setTextColor(TFT_WHITE);
   guideDrawBigText(c, guideQuoteText(), 82);
-  guideTabs(c, HINT_NONE, HINT_MENU, HINT_NEXT);
+  guideTabs(c, HINT_NONE, HINT_MENU, HINT_LATER);
   guidePush(c);
 }
 
@@ -183,7 +183,7 @@ static void guideDrawPhoto() {
     c.setTextDatum(textdatum_t::baseline_left);
     c.drawString(gt("Mond - NASA", "Moon - NASA"), 2, HEIGHT - 4);
   }
-  guideTabs(c, HINT_NONE, HINT_MENU, HINT_NEXT);
+  guideTabs(c, HINT_NONE, HINT_MENU, HINT_LATER);
   guidePush(c);
 }
 
@@ -223,7 +223,7 @@ static void guideDrawGridNow() {
   M5Canvas c(&M5.Display);
   if (!guideOpenCanvas(c)) return;
   guideDrawGrid(c, guideGridPos, M5.Display.getRotation());
-  guideTabs(c, HINT_NONE, HINT_MENU, HINT_NEXT);
+  guideTabs(c, HINT_NONE, HINT_MENU, HINT_LATER);
   guidePush(c);
 }
 
@@ -368,7 +368,7 @@ void guideOnHeard(const String& question) {
 }
 
 void guideDecorateScreen(M5Canvas& c) {
-  drawButtonHints(c, M5.Display.getRotation(), HINT_NONE, HINT_MENU, HINT_NEXT);
+  drawButtonHints(c, M5.Display.getRotation(), HINT_NONE, HINT_MENU, HINT_LATER);
 }
 
 void guideDecorateProgress(M5Canvas& c) {
@@ -420,6 +420,21 @@ static void guideHandleEvent(GuideEvent event, bool menuWasOpen) {
       break;
     default: break;
   }
+}
+
+// Serial "guidekey a|b|c": presses a button, so the tour can be walked through and captured without hands
+void guideSerialKey(char key) {
+  if (!guideActive()) {
+    Serial.println("guidekey: the tour isn't running");
+    return;
+  }
+  guideLastPress = millis();
+  resetToActiveState();
+  const bool menuWasOpen = guideState.menuOpen;
+  const GuideButton button = key == 'a' ? GUIDE_BTN_A : key == 'b' ? GUIDE_BTN_B : GUIDE_BTN_C;
+  guideHandleEvent(guidePress(guideState, button), menuWasOpen);
+  Serial.printf("guide step=%d page=%d quote=%d menu=%d sel=%d\n", guideState.step, guideState.page, guideState.quote,
+                guideState.menuOpen, guideState.menuSel);
 }
 
 static void guideGridTick(uint32_t now) {

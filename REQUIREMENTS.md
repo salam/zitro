@@ -451,3 +451,39 @@ Voice-controlled timer and reminder system. Users set timers via natural languag
 - Light sleep uses `esp_sleep_enable_timer_wakeup()` to wake for next timer
 - Timer fires trigger display wake and alert even from sleep states
 - NTP time required: timers won't fire if time is not synced (epoch < 2024)
+
+---
+
+# Requirements for the Guided Tour
+
+Design: `docs/superpowers/specs/2026-11-08-guided-tour-design.md`. Logic in `guide_core.h` (tests: `tests/guide/run.sh`), drawing in `guide.ino` and `guide_tiles.ino`.
+
+## Start and end
+
+- Starts at the end of `setup()` when Preferences `settings/tourDone` is false, it isn't a wake from deep sleep, AI and voice keys are configured and AP mode isn't running. Updates keep the flag unset, so existing sticks see the tour once
+- The AI sets `is_tour` for "Was kannst du?", "Zeig mir die Tour", "What can you do?", "Show me the tour": the tour starts whatever `tourDone` says
+- Finishing or "End tour" sets `tourDone` and clears all tour content. A blocked first question (parental lock, missing key, a request for setup mode) stops the tour without setting it
+
+## Flow and buttons
+
+- Ask (one real recording and AI answer) > Answer > Photo > Sky (`sky:Orion`) > Music (`music:twinkle-twinkle`) > Grid (4 pages, 2x2) > Done. Only the first question calls the AI
+- Not heard or mic error: Retry screen. Cancelled: back to Ask
+- During the tour, `loop()` hands over to `guideTick()` right after the timer blocks: no other button handler runs. Button C doesn't count towards opening the settings, holding Button B doesn't reset WiFi, and tabs stay on the screen
+- C is next. Button A opens the menu, except on Ask, Retry and Done, where it records or starts the first normal question. Button B opens the menu everywhere
+- Menu: Continue (preselected), One step back (not on Ask), End tour. A confirms, C moves and wraps, B closes
+- One step back: grid page n to n-1, grid page 1 to Music, Music to Sky, Sky to Photo, Photo to Answer (to Retry without an answer), Answer and Retry to Ask, Done to the last grid page. It brings back the child's own result
+- A quote screen comes before Photo, Sky and Music (1.9 s, C skips it, not when going back). Music stops while the menu is open
+- Grid slides with C or tilting (timeline gesture), and the pages have no back button
+
+## Sleep
+
+- A press keeps the stick awake for 5 minutes (`GUIDE_KEEP_AWAKE_MS`), then the normal timers apply
+- A press on a dark screen or during the wake cooldown only wakes and redraws the step. After deep sleep the tour is gone until the next power-on
+
+## Content
+
+- Moon picture: `guide_moon.h`, made by `scripts/make_guide_moon.sh` from `File:Moon nearside LRO.jpg` (Wikimedia Commons, public domain, NASA/GSFC/Arizona State University)
+- Tile sentences use `DejaVu9` (ASCII only); the test checks titles and sentences against the real fonts
+- No world wars in the tour's examples
+- Serial for tests: `guide` starts the tour, `guidekey a|b|c` presses a button, `guidetype <text>` stands in for the next recording
+

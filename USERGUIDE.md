@@ -164,6 +164,23 @@ The project includes deployment scripts for building and uploading firmware to y
 - Settings take effect immediately where possible (volume, recording, parental lock).
 - When parental lock is enabled, responses are blocked between 20:00 and 06:00, but settings changes (like disabling the lock) still work.
 - Say "Start onboarding mode", "WLAN Einrichtung starten", "Open settings page", or similar to enter AP/setup mode by voice.
+- Say "Was kannst du?" or "Show me the tour" to start the guided tour.
+
+### Guided tour
+
+After setup, Zitro shows you around once by itself, also after an update. It takes about two minutes. There's the same guide for your phone or laptop at [zitro.spot/onboarding](https://zitro.spot/onboarding).
+
+1. **Your own question.** Press M5 and speak. Zitro shows what it heard, then answers.
+2. **A photo.** Stand the stick upright and back again to switch between the picture and its text.
+3. **The stars.** Turn the stick to look around.
+4. **A song.** Notes move across the screen and the one on the line plays.
+5. **Everything else.** Four pages with four tiles each, printing on paper first. Press ▶ or tip the stick to slide. Tiles only show what's possible, they don't open.
+
+The ▶ tab at the upper side button goes on. Nothing ends the tour by accident: M5 or the lower button (⋯) first asks what you want: **Continue**, **One step back** or **End tour**. On the first screen and on "Your turn!" M5 is the thing to do, so there only the lower button opens this menu.
+
+Want to see it again? Ask "Was kannst du?" or "Show me the tour". "Start onboarding mode" still opens the WiFi setup.
+
+During the tour, the tabs stay on the screen, three presses on the upper side button don't open the settings, and holding the lower button doesn't reset WiFi. It keeps the stick awake for 5 minutes after your last press. If the stick goes into deep sleep in the middle, the tour comes back the next time you switch it on.
 
 ### Timers and reminders
 

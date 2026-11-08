@@ -118,7 +118,7 @@ static bool musicBegin(M5Canvas& c) {
   Preferences prefs;
   prefs.begin("settings", true);
   musicStoredVolume = prefs.getInt("volume", 210);
-  musicColored = prefs.getBool("musicColors", false);
+  musicColored = prefs.getBool("musicColors", false) || guideActive();  // The tour shows them off, without saving it
   prefs.end();
   M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
   musicOpen = true;

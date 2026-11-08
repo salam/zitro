@@ -567,6 +567,12 @@ static void testShade() {
   clear();
   CHECK(globeShadeDisc(&buf[0][0], 240, 117, -500, -500, 50, front, palette) == 0);
   CHECK(globeShadeDisc(&buf[0][0], 240, 117, 120, 58, 0, front, palette) == 0);
+  // The quick square root, close everywhere but the very rim
+  for (float v = 0; v <= 1.0f; v += 0.0005f) {
+    if (v > 0.02f) NEAR(globeFastSqrt(v), sqrtf(v), 0.004);
+    CHECK(globeFastSqrt(v) >= 0 && globeFastSqrt(v) <= 1);
+  }
+  CHECK(globeFastSqrt(-1) == 0 && globeFastSqrt(2) == 1 && globeFastSqrt(NAN) == 0);
   // The Sun's direction on screen follows the turn
   float m[9], s[3];
   globeFacing(0, 0, m);

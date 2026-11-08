@@ -14,8 +14,8 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - City lookup: only names in the built-in table count (`clockFindCity`). Case, accents and punctuation are ignored ("Zürich", "zurich", "Zuerich"); German and English names and a few hand-written aliases (Peking, Bombay, NYC...) work. A name two cities share goes to the national capital, otherwise to the bigger city.
 - Clock: needs a clock set by NTP (after 2024-01-01). No network in the lookup or the view, so it works offline once the clock is set, also for a shake.
 - View: globe on the right (centre x 168), times on the left, all live:
-  - city time big in citrus, then weekday and UTC offset ("Sonntag, UTC+9");
-  - when the city isn't home: home name and time, and the difference ("+8 h", "-4:30 h", "gleiche Zeit");
+  - city time big in citrus, with the difference to home next to it ("+8 h", "-4:30 h", "="), then the weekday and the UTC offset on their own lines;
+  - when the city isn't home: home name, and below it the home time;
   - the globe starts with the city in the middle, north up, pin in citrus; arrow when it's out of sight;
   - day and night on the ocean as they are now (see below), and a small sun where the Sun stands overhead, if that side faces the viewer;
   - national capitals as white dots;
@@ -29,7 +29,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - The Sun's overhead point from the date: Astronomical Almanac low-precision formulas (declination, right ascension, Greenwich mean sidereal time), about 0.01 degrees from 1950 to 2050. Tested against the 2026 equinox and solstices (USNO) and the equation of time on 3 November and 11 February.
 - Each pixel of the disc gets the sine of the Sun's height there. Night below 6 degrees under the horizon (end of civil twilight), day from 3 degrees above, 16 shades between. The rim always shows a little twilight when the Sun is behind the viewer, as it should.
 - The globe for where-is questions shows day and night too. Without a clock both show all day.
-- Drawing cost: one square root per disc pixel, at most the whole 240 x 117 body when zoomed. **Not measured on the stick.**
+- Drawing cost: one square root per disc pixel (from a 256-step table, `globeFastSqrt`: the ESP32 has no square root instruction), at most the whole 240 x 117 body when zoomed. Measured on the stick 2026-11-08, globe for Tokyo with the 15000-point server coast, zoom 0: 18.7 fps, `drawUs` 20.4 ms with the sprite in internal RAM; 16.6 fps, 25.7 ms when the sprite landed in PSRAM. Both below the 25 fps target; the coast was not measured alone.
 
 ### Home city and time zone
 
@@ -49,7 +49,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 
 - `tests/clock/run.sh`: every zone against the host's own tz database every 3 hours from November 2026 to November 2030 (2.28 million comparisons, none differ); rule parsing including southern hemisphere, all-year daylight time, half and quarter hours and broken rules; calendar round trips; every city found by its names; sorted keys; font range; Sun positions; the answer sentences.
 - `tests/globe/run.sh`: shading levels, the disc filled only where it should be, the Sun's direction on screen.
-- Not on the stick: frame rate, the look of the night side and the zone lines, label fit with long names (they are cut with "...").
+- On the stick (2026-11-08, screenshots with `shot`): Tokyo, New Delhi (+4:30 h) and Sydney (summer time, UTC+11) show the right times, the night side and the Sun's overhead point where they belong, and the panel fits. Not checked: long home names (cut with "..."), how turning feels.
 
 ## User guide
 

@@ -176,6 +176,23 @@ inline void globeToScreen(const float m[9], const float v[3], float out[3]) {
   for (int i = 0; i < 3; i++) out[i] = m[3 * i] * v[0] + m[3 * i + 1] * v[1] + m[3 * i + 2] * v[2];
 }
 
+// sqrt(v) for 0 <= v <= 1 from a table with linear steps: the ESP32 has no square root instruction, and
+// shading needs one per pixel. Off by less than 0.004 except right at the rim, where it doesn't show.
+static const int GLOBE_SQRT_STEPS = 256;
+inline float globeFastSqrt(float v) {
+  static float table[GLOBE_SQRT_STEPS + 2];
+  static bool ready = false;
+  if (!ready) {
+    for (int i = 0; i <= GLOBE_SQRT_STEPS + 1; i++) table[i] = sqrtf((float)i / GLOBE_SQRT_STEPS);
+    ready = true;
+  }
+  if (!(v > 0)) return 0;
+  if (v >= 1) return 1;
+  const float f = v * GLOBE_SQRT_STEPS;
+  const int i = (int)f;
+  return table[i] + (table[i + 1] - table[i]) * (f - i);
+}
+
 // Fills the disc with ocean, palette[0] night to palette[GLOBE_LIGHT_STEPS] day. sun in screen axes, or
 // nullptr: all day. Only rows and columns inside width x height are written. Returns pixels written.
 inline uint32_t globeShadeDisc(uint16_t* buffer, int width, int height, int cx, int cy, int radius, const float* sun,
@@ -202,7 +219,7 @@ inline uint32_t globeShadeDisc(uint16_t* buffer, int width, int height, int cx, 
     for (int x = x0; x <= x1; x++) {
       const float nx = (x - cx) * inv;
       const float zz = rest - nx * nx;
-      const float nz = zz > 0 ? sqrtf(zz) : 0.0f;
+      const float nz = globeFastSqrt(zz);
       row[x] = palette[globeLightLevel(sun[0] * nx + rowPart + sun[2] * nz)];
       written++;
     }

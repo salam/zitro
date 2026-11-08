@@ -63,6 +63,7 @@ struct GPTResponse {
   bool listTimers;    // User wants to list pending timers
   bool clearTimer;    // User wants to clear all timers
   bool isOnboarding;  // User wants to enter AP/setup mode
+  bool isTour;  // User wants to see what Zitro can do: the guided tour
   String model;       // What to look up as a 3D model: "<kind>:<query>", or empty. Last: filled by position elsewhere
 };
 

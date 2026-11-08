@@ -2,6 +2,11 @@
 
 ## Sun 8 Nov, 2026
 
+- **Zitro shows you around**: after setup, ask your first question, see a photo, turn the stars and hear a song, then slide through everything else your stick can do, printing included.
+- **No accidental exits**: in the tour, the main button first asks if you want to go on, one step back, or end it.
+- **Want the tour again?** Just ask "Was kannst du?" or "Show me the tour".
+- **Follow along on your phone**: zitro.spot/onboarding walks you through it step by step, or all on one page.
+
 - **Where is the ISS?** Ask, and watch the space station fly over the sunlit Earth live, with NASA's own data: height, speed and where it will fly next.
 - **See whose time it is**: the world clock now shows the city's name right above its time.
 - **What time is it in Tokyo?** Ask, and Zitro turns the globe to the city and shows the time there, your own time and how far apart they are. Zitro works the time out itself, so it's always right.

@@ -1,0 +1,625 @@
+<title>Zitro-Tour Mock</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700&display=swap">
+<style>
+/* Layout: the stick is the page's one object; notes sit beside it, the whole flow as a strip below, decisions last. */
+:root {
+  --paper: #f4efe6; --ink: #2b2721; --muted: #6b6357; --line: #d9d0c0; --panel: #ebe4d6;
+  --citrus: #f2b705; --citrus-ink: #7d5c00; --new-bg: #fbe9ae; --new-fg: #5c4400; --old-bg: #dfe6dc; --old-fg: #33493a;
+  --stick: #e0642a; --stick-edge: #b44a1c; --stick-key: #3a342c; --stick-key-fg: #f4efe6;
+  --display: "Sniglet", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Nunito Sans", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #1e1b17; --ink: #f1eadd; --muted: #aca291; --line: #3b352c; --panel: #2a261f;
+  --citrus: #f2b705; --citrus-ink: #f2c53c; --new-bg: #4a3a0a; --new-fg: #fbe29a; --old-bg: #2c3a30; --old-fg: #c5dacb;
+  --stick: #d65c25; --stick-edge: #9c3f17; --stick-key: #15120e; --stick-key-fg: #f4efe6; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #1e1b17; --ink: #f1eadd; --muted: #aca291; --line: #3b352c; --panel: #2a261f;
+  --citrus: #f2b705; --citrus-ink: #f2c53c; --new-bg: #4a3a0a; --new-fg: #fbe29a; --old-bg: #2c3a30; --old-fg: #c5dacb;
+  --stick: #d65c25; --stick-edge: #9c3f17; --stick-key: #15120e; --stick-key-fg: #f4efe6; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 40px; }
+h1, h2 { font-family: var(--display); font-weight: 800; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-family: var(--display); font-weight: 400; font-size: 1.2rem; margin: 0; }
+p { margin: 0; }
+.lede { max-width: 62ch; margin-top: 6px; color: var(--muted); }
+.lab { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+@media (max-width: 800px) { .lab { grid-template-columns: minmax(0, 1fr); } }
+.stickzone { display: grid; gap: 14px; min-width: 0; }
+.stick { position: relative; background: var(--stick); border: 2px solid var(--stick-edge); border-radius: 22px; padding: 22px 16px 22px 62px; max-width: 560px; margin-block: 8px; }
+.screen { display: block; width: 100%; aspect-ratio: 240 / 135; background: #000; border-radius: 3px; image-rendering: pixelated; touch-action: none; }
+.key { position: absolute; font: 700 12px/1 var(--body); color: var(--stick-key-fg); background: var(--stick-key); border: 0; cursor: pointer; display: grid; place-items: center; }
+.key:active { transform: translateY(1px); filter: brightness(1.5); }
+.key:focus-visible, .ges:focus-visible, .thumb:focus-visible, .linkbtn:focus-visible { outline: 3px solid var(--citrus); outline-offset: 2px; }
+#keyA { left: 12px; top: 50%; width: 40px; height: 58px; margin-top: -29px; border-radius: 10px; font-size: 14px; }
+#keyC { left: calc(62px + 3%); top: -10px; width: 58px; height: 16px; border-radius: 6px 6px 2px 2px; font-size: 10px; }
+#keyB { left: calc(62px + 39%); bottom: -10px; width: 58px; height: 16px; border-radius: 2px 2px 6px 6px; font-size: 10px; }
+.key.nudge { box-shadow: 0 0 0 3px var(--citrus); }
+.stick.real { width: fit-content; padding: 14px 10px 14px 40px; }
+.stick.real .screen { width: 25mm; image-rendering: auto; }
+.stick.real #keyA { left: 5px; width: 28px; height: 36px; margin-top: -18px; font-size: 10px; }
+.stick.real #keyC { left: 44px; width: 34px; }
+.stick.real #keyB { left: calc(40px + 34%); width: 34px; }
+.thumb.ref { cursor: default; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ges { font: 700 13px/1 var(--body); padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); cursor: pointer; }
+.ges[disabled] { opacity: .4; cursor: default; }
+.ges.nudge { background: var(--citrus); color: #2b2721; border-color: var(--citrus); }
+.status { min-height: 1.5em; font-size: .9rem; color: var(--muted); }
+.notes { display: grid; gap: 10px; min-width: 0; }
+.notes .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tag { font: 700 12px/1 var(--body); padding: 5px 8px; border-radius: 6px; }
+.tag.new { background: var(--new-bg); color: var(--new-fg); }
+.tag.old { background: var(--old-bg); color: var(--old-fg); }
+.notes ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--citrus-ink); font: 700 1rem var(--body); text-decoration: underline; cursor: pointer; justify-self: start; }
+.strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 16px 12px; margin-top: 14px; }
+.thumb { display: grid; gap: 6px; padding: 0; background: none; border: 0; text-align: left; color: var(--ink); cursor: pointer; font: 400 .85rem/1.3 var(--body); min-width: 0; }
+.thumb canvas { display: block; width: 100%; aspect-ratio: 240 / 135; background: #000; border-radius: 4px; outline: 3px solid transparent; outline-offset: 1px; image-rendering: pixelated; }
+.thumb.on canvas { outline-color: var(--citrus); }
+.thumb b { font-variant-numeric: tabular-nums; }
+.talk { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+@media (max-width: 800px) { .talk { grid-template-columns: minmax(0, 1fr); } }
+.talk section { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.items b { display: block; }
+.items span { color: var(--muted); }
+.reco { color: var(--ink) !important; font-weight: 700; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Zitro-Tour</h1>
+    <p class="lede">Klickbarer Mock fürs erste Einschalten. Der Bildschirm hat die echten 240 × 135 Pixel, auf dem Monitor aber stark vergrössert. Mit «Originalgrösse» siehst du ihn ungefähr so klein wie auf dem Stick. Die Knöpfe am Stick funktionieren.</p>
+  </header>
+
+  <div class="lab">
+    <div class="stickzone">
+      <div class="stick">
+        <button class="key" id="keyC" type="button" aria-label="Knopf C">C</button>
+        <button class="key" id="keyA" type="button" aria-label="Knopf A, M5">M5</button>
+        <canvas class="screen" id="screen" width="240" height="135" aria-label="Bildschirm des Sticks"></canvas>
+        <button class="key" id="keyB" type="button" aria-label="Knopf B">B</button>
+      </div>
+      <div class="controls">
+        <button class="ges" id="tiltL" type="button">Kippen links</button>
+        <button class="ges" id="tiltR" type="button">Kippen rechts</button>
+        <button class="ges" id="flip" type="button">Hochkant und zurück</button>
+        <button class="ges" id="truesize" type="button" aria-pressed="false">Originalgrösse</button>
+        <button class="ges" id="snd" type="button" aria-pressed="true">Ton an</button>
+        <button class="ges" id="restart" type="button">Von vorn</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+    </div>
+    <div class="notes" id="notes"></div>
+  </div>
+
+  <section>
+    <h2>Der ganze Ablauf</h2>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <div class="talk">
+    <section>
+      <h2>Widersprüche zum heutigen Verhalten</h2>
+      <ul class="items">
+        <li><b>«Onboarding» ist schon belegt</b><span>«Start onboarding mode» öffnet heute das WLAN-Setup. Die Tour braucht einen eigenen Satz, zum Beispiel «Was kannst du?».</span></li>
+        <li><b>Foto kann zweierlei heissen</b><span>Die Kamera ist Zubehör, die meisten Sticks können sie nicht zeigen. Der Mock nimmt deshalb die Foto-Antwort, die Kamera ist eine Kachel.</span></li>
+        <li><b>«Interaktiv» ohne Quiz</b><span>Das Quiz auf dem Display hast du verworfen. Interaktiv heisst hier: Stick drehen. Das Raster ist nur ein Schaufenster, die Kacheln lassen sich nicht öffnen.</span></li>
+        <li><b>M5 fragt in der Tour nicht sofort</b><span>Sonst startet M5 in jeder Ansicht eine neue Frage. In der Tour öffnet es das Menü. Ausnahme sind die erste Frage und «Jetzt du», weil M5 dort die Aufgabe ist. Dort öffnet B das Menü.</span></li>
+        <li><b>B und C bedeuten in der Tour etwas anderes</b><span>Sonst pausiert B die Musik und zoomt die Sternkarte, C wechselt zum Text oder ändert die Lautstärke. In der Tour ist C immer ▶ und B das Menü. Nach der Tour verhalten sich die Knöpfe also anders, als sie gerade gelernt wurden. Das ist die grösste offene Designfrage.</span></li>
+        <li><b>Kein ◀ im Raster</b><span>Auf der Timeline ist B «zurück», im Raster gibt es das nicht mehr. Zurück geht per Kippen oder übers Menü.</span></li>
+        <li><b>Tabs bleiben stehen</b><span>Sonst verschwinden sie nach 3 Sekunden. In der Tour ist ▶ der einzige Weg weiter, also bleibt es sichtbar.</span></li>
+        <li><b>Drucken lehrt einen heiklen Griff</b><span>B 1 Sekunde halten druckt, 3 Sekunden löschen das WLAN. Die Kachel nennt deshalb ausdrücklich «1 Sek.».</span></li>
+        <li><b>Schlafmodus</b><span>Nach 30 Sekunden geht heute das Display aus. Die Tour muss als Aktivität zählen, sonst schläft der Stick mitten im Lesen ein.</span></li>
+      </ul>
+    </section>
+    <section>
+      <h2>Zu entscheiden</h2>
+      <ul class="items">
+        <li><b>Wer sieht die Tour?</b><span>Updates behalten die Einstellungen, also würde sie auch bei bestehenden Sticks einmal starten.</span><br><span class="reco">Vorschlag: alle einmal, jederzeit überspringbar.</span></li>
+        <li><b>Spezial-Antworten fest oder live?</b><span>Fest ist verlässlich, schnell und kostet nichts. Live zeigt echtes Verhalten, kann aber scheitern.</span><br><span class="reco">Vorschlag: nur die erste Frage live, die drei Beispiele mit festem Inhalt in den echten Ansichten.</span></li>
+        <li><b>Raster: 2 × 2 pro Seite</b><span>Ich habe «4er-Raster» als zwei mal zwei gelesen, vier Seiten mit je vier Kacheln. Vier nebeneinander wären nur 56 Pixel breit.</span></li>
+        <li><b>Sätze auf den Kacheln</b><span>Sie sind 9 Pixel hoch, so gross wie die Quellenzeile. Auf dem Stick ist das etwa 1 mm, für Leseanfänger knapp.</span><br><span class="reco">Vorschlag: mit «Originalgrösse» prüfen, sonst nur Bild und ein Wort.</span></li>
+        <li><b>Raumfahrt als roter Faden</b><span>Mond, Orion und «Twinkle Twinkle» laufen ohne eigenen Server-Abruf, Weltkriege kommen nicht vor. Der Zeitstrahl ist vorerst eine Kachel, das Vorbild steht im Ablauf neben dem Raster.</span></li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script>
+"use strict";
+const W = 240, H = 135;
+const FONT = '"DejaVu Sans",Verdana,"Segoe UI",system-ui,sans-serif';
+const CIT = "#f2b705", GREY = "#8f8f8f", WHITE = "#ffffff", TILE = "#1b1b1b";
+const QUOTE_MS = 1900;
+
+/* ---------- drawing helpers ---------- */
+function setFont(c, s, b) { c.font = (b ? "700 " : "") + s + "px " + FONT; }
+function txt(c, str, x, y, o) {
+  o = o || {};
+  setFont(c, o.s || 12, o.b);
+  c.fillStyle = o.c || WHITE; c.textAlign = o.a || "left"; c.textBaseline = "middle";
+  c.fillText(str, x, y);
+}
+function wrap(c, str, maxW, s, b) {
+  setFont(c, s, b);
+  const out = []; let line = "";
+  str.split(" ").forEach(function (w) {
+    const t = line ? line + " " + w : w;
+    if (c.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t;
+  });
+  if (line) out.push(line);
+  return out;
+}
+function rr(c, x, y, w, h, r, fill, stroke) {
+  c.beginPath(); c.roundRect(x, y, w, h, r);
+  if (fill) { c.fillStyle = fill; c.fill(); }
+  if (stroke) { c.strokeStyle = stroke; c.lineWidth = 1; c.stroke(); }
+}
+function circle(c, x, y, r, fill) { c.beginPath(); c.arc(x, y, r, 0, 7); c.fillStyle = fill; c.fill(); }
+function line(c, x1, y1, x2, y2, col, lw) { c.beginPath(); c.moveTo(x1, y1); c.lineTo(x2, y2); c.strokeStyle = col; c.lineWidth = lw || 1; c.stroke(); }
+function poly(c, pts, fill) { c.beginPath(); c.moveTo(pts[0], pts[1]); for (let i = 2; i < pts.length; i += 2) c.lineTo(pts[i], pts[i + 1]); c.closePath(); c.fillStyle = fill; c.fill(); }
+function blank(c) { c.fillStyle = "#000"; c.fillRect(0, 0, W, H); }
+function lemon(c, x, y) {
+  c.beginPath(); c.ellipse(x, y, 11, 6.5, 0, 0, 7); c.fillStyle = CIT; c.fill();
+  poly(c, [x + 9, y - 3, x + 14, y, x + 9, y + 3], CIT);
+  poly(c, [x + 1, y - 6, x + 8, y - 11, x + 7, y - 5], "#4f9a3c");
+}
+function keycap(c, x, y) {
+  rr(c, x + 1, y + 1, 26, 16, 4, "#777");
+  rr(c, x, y, 26, 16, 4, "#333", WHITE);
+  txt(c, "M5", x + 13, y + 8.5, { s: 9, a: "center" });
+  return 28;
+}
+function mic(c, x, y, col, k) {
+  k = k || 1;
+  rr(c, x - 3 * k, y - 8 * k, 6 * k, 11 * k, 3 * k, col);
+  c.beginPath(); c.arc(x, y - 1 * k, 5.5 * k, 0, Math.PI); c.strokeStyle = col; c.lineWidth = 1.3 * k; c.stroke();
+  line(c, x, y + 4.5 * k, x, y + 8 * k, col, 1.3 * k);
+}
+function pulse(now) { return Math.sin(now / 240) > 0; }
+
+/* Button tabs sit at the screen edge beside the physical button (landscape, buttons left) */
+function tabA(c, on) { rr(c, -5, 50, 20, 34, 6, on ? CIT : WHITE); mic(c, 7, 67, "#000"); }
+function tabBase(c, x, y, w, h, radii, on) { c.beginPath(); c.roundRect(x, y, w, h, radii); c.fillStyle = on ? CIT : "#222"; c.fill(); c.strokeStyle = on ? CIT : "#777"; c.lineWidth = 1; c.stroke(); return on ? "#000" : WHITE; }
+function tabC(c, glyph, on) { const f = tabBase(c, 7, -3, 34, 17, 5, on); glyphAt(c, glyph, 24, 7, f); }
+function tabB(c, glyph, on) { const f = tabBase(c, 103, 121, 34, 17, 5, on); glyphAt(c, glyph, 120, 128, f); }
+function glyphAt(c, g, x, y, col) {
+  if (g === "next") poly(c, [x - 4, y - 5, x + 5, y, x - 4, y + 5], col);
+  if (g === "prev") poly(c, [x + 4, y - 5, x - 5, y, x + 4, y + 5], col);
+  if (g === "x") { line(c, x - 4, y - 4, x + 4, y + 4, col, 2); line(c, x + 4, y - 4, x - 4, y + 4, col, 2); }
+  if (g === "down") poly(c, [x - 5, y - 3, x + 5, y - 3, x, y + 5], col);
+  if (g === "dots") { circle(c, x - 6, y, 1.7, col); circle(c, x, y, 1.7, col); circle(c, x + 6, y, 1.7, col); }
+  if (g === "check") { c.beginPath(); c.moveTo(x - 5, y); c.lineTo(x - 1, y + 4); c.lineTo(x + 5, y - 4); c.strokeStyle = col; c.lineWidth = 2.2; c.stroke(); }
+}
+function hintPill(c, label) {
+  setFont(c, 10, true);
+  const w = c.measureText(label).width + 12, x = 236 - w;
+  rr(c, x, 4, w, 15, 7, CIT);
+  txt(c, label, x + 6, 12, { s: 10, b: true, c: "#000" });
+}
+function footer(c, str) { txt(c, str, 4, 128, { s: 9, c: "#c9c9c9" }); }
+
+/* A row like: "Drück [M5] und sprich:" centred on cx */
+function pressRow(c, before, after, cx, y, s) {
+  setFont(c, s, false);
+  const a = c.measureText(before).width, b = c.measureText(after).width, total = a + 5 + 28 + 3 + b;
+  let x = cx - total / 2;
+  txt(c, before, x, y, { s: s }); x += a + 5;
+  x += keycap(c, x, y - 8) + 3;
+  txt(c, after, x, y, { s: s });
+}
+
+/* ---------- content: moon (placeholder) ---------- */
+let moonCv = null;
+function moon() {
+  if (moonCv) return moonCv;
+  moonCv = document.createElement("canvas"); moonCv.width = W; moonCv.height = H;
+  const c = moonCv.getContext("2d"), im = c.createImageData(W, H), cx = 120, cy = 62, r = 56;
+  const maria = [[-16,-18,20,.42],[12,-22,15,.38],[20,-2,17,.34],[-24,8,21,.4],[-6,18,11,.3],[-34,-12,10,.3]];
+  const craters = [[10,38,7],[-8,36,4],[28,26,5],[-28,30,5],[36,-30,5],[-14,-40,4],[42,10,4],[2,-34,3],[-44,20,3]];
+  for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+    const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy), i = (x + y * W) * 4;
+    let v = 0;
+    if (d <= r) {
+      v = 196 * Math.pow(1 - (d / r) * (d / r), .22);
+      maria.forEach(function (m) { const q = Math.hypot(dx - m[0], dy - m[1]) / m[2]; v *= 1 - m[3] * Math.exp(-q * q * q); });
+      craters.forEach(function (m) { const q = Math.hypot(dx - m[0], dy - m[1]) / m[2]; if (q < 1) v *= q > .72 ? 1.2 : .82; });
+      v += 12 * Math.sin(x * 2.1 + y * 1.3) * Math.sin(x * .7 - y * 1.9);
+    }
+    im.data[i] = im.data[i + 1] = im.data[i + 2] = Math.max(0, Math.min(255, v)); im.data[i + 3] = 255;
+  }
+  c.putImageData(im, 0, 0);
+  return moonCv;
+}
+
+/* ---------- content: star map ---------- */
+const ORION = { Betelgeuse:[5.92,7.4], Bellatrix:[5.42,6.35], Saiph:[5.80,-9.67], Rigel:[5.24,-8.2], Alnitak:[5.68,-1.94], Alnilam:[5.60,-1.2], Mintaka:[5.53,-.3], Meissa:[5.59,9.93] };
+const ORION_LINES = [["Meissa","Betelgeuse"],["Meissa","Bellatrix"],["Betelgeuse","Alnitak"],["Bellatrix","Mintaka"],["Alnitak","Alnilam"],["Alnilam","Mintaka"],["Alnitak","Saiph"],["Mintaka","Rigel"],["Saiph","Rigel"]];
+const OTHER_BRIGHT = [[6.75,-16.7,2.6],[4.6,16.5,1.7],[7.65,5.2,1.8],[3.79,24.1,1.2],[5.28,46,1.8],[6.4,-52.7,2.2],[7.75,28,1.6],[2.12,23.5,1.3]];
+const FIELD = (function () { let s = 7, a = []; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; } for (let i = 0; i < 620; i++) a.push([r() * 24, r() * 140 - 70, r()]); return a; })();
+const SCALE = 3.4;
+function skyXY(ra, dec, rac) {
+  let d = rac - ra; while (d > 12) d -= 24; while (d < -12) d += 24;
+  return [120 + d * 15 * SCALE, 66 - dec * SCALE];
+}
+function drawSky(c, st) {
+  blank(c);
+  const rac = st.skyPos;
+  FIELD.forEach(function (f) { const p = skyXY(f[0], f[1], rac); if (p[0] < 0 || p[0] > W) return; const g = 70 + f[2] * 120 | 0; c.fillStyle = "rgb(" + g + "," + g + "," + (g + 12) + ")"; c.fillRect(p[0] | 0, p[1] | 0, 1, 1); });
+  OTHER_BRIGHT.forEach(function (b) { const p = skyXY(b[0], b[1], rac); circle(c, p[0], p[1], b[2] * .75, "#e8ecf7"); });
+  ORION_LINES.forEach(function (l) { const a = ORION[l[0]], b = ORION[l[1]], p = skyXY(a[0], a[1], rac), q = skyXY(b[0], b[1], rac); line(c, p[0], p[1], q[0], q[1], CIT, 1); });
+  Object.keys(ORION).forEach(function (k) { const a = ORION[k], p = skyXY(a[0], a[1], rac); circle(c, p[0], p[1], k === "Betelgeuse" ? 2.5 : k === "Rigel" ? 2.4 : 1.6, k === "Betelgeuse" ? "#ffb48a" : "#dfe9ff"); });
+  const center = skyXY(5.6, 0, rac);
+  if (center[0] < 6 || center[0] > W - 6) {
+    if (center[0] < 6) poly(c, [4, 66, 14, 59, 14, 73], CIT); else poly(c, [W - 4, 66, W - 14, 59, W - 14, 73], CIT);
+  }
+  txt(c, "Orion", 46, 12, { s: 16, b: true, c: CIT });
+  if (!st.skyMoved) hintPill(c, "Dreh den Stick!");
+  footer(c, "Orion - Bright Star");
+  tabC(c, "next"); tabB(c, "dots");
+}
+
+/* ---------- content: music band ---------- */
+const SONG = [["C",60,1],["C",60,1],["G",67,1],["G",67,1],["A",69,1],["A",69,1],["G",67,2],["F",65,1],["F",65,1],["E",64,1],["E",64,1],["D",62,1],["D",62,1],["C",60,2]];
+const NOTE_Y = { C:79, D:74, E:69, F:64, G:59, A:54 };
+const NOTE_COL = { C:"#e53935", D:"#fb8c00", E:"#fdd835", F:"#43a047", G:"#00897b", A:"#3f51b5" };
+const BEATS = SONG.reduce(function (a, n) { return a + n[2]; }, 0) + 2;
+const PX = 30, BEAT_MS = 430, PLAY_X = 64;
+function clef(c) {
+  c.strokeStyle = WHITE; c.lineWidth = 1.4;
+  c.beginPath(); c.moveTo(19, 76); c.bezierCurveTo(11, 77, 11, 66, 18, 66); c.bezierCurveTo(26, 66, 26, 80, 15, 76);
+  c.bezierCurveTo(7, 70, 16, 54, 22, 38); c.bezierCurveTo(24, 28, 17, 20, 15, 30); c.lineTo(20, 88); c.bezierCurveTo(21, 95, 13, 95, 13, 90); c.stroke();
+}
+function drawMusic(c, vt, st, live) {
+  blank(c);
+  for (let i = 0; i < 5; i++) line(c, 0, 29.5 + i * 10, W, 29.5 + i * 10, "#6f6f6f", 1);
+  const beatNow = (vt / BEAT_MS) % BEATS;
+  let pos = 0, playing = null;
+  for (let loop = 0; loop < 2; loop++) {
+    let b = loop * BEATS;
+    SONG.forEach(function (n, idx) {
+      const x = PLAY_X + (b - beatNow) * PX, y = NOTE_Y[n[0]], col = NOTE_COL[n[0]];
+      if (b <= beatNow && beatNow < b + n[2]) playing = [n, idx];
+      if (x > -10 && x < W + 10 && x > 34) {
+        if (n[0] === "C") line(c, x - 7, 79.5, x + 7, 79.5, "#6f6f6f", 1);
+        c.beginPath(); c.ellipse(x, y, 5, 3.7, -.3, 0, 7);
+        if (n[2] > 1) { c.strokeStyle = col; c.lineWidth = 1.6; c.stroke(); } else { c.fillStyle = col; c.fill(); }
+        line(c, x + 4.5, y - 1, x + 4.5, y - 26, WHITE, 1);
+        const active = b <= beatNow && beatNow < b + n[2];
+        txt(c, n[0], x, 104, { s: active ? 15 : 10, a: "center", c: active ? CIT : "#cfcfcf" });
+      }
+      b += n[2];
+    });
+    pos = b;
+  }
+  rr(c, 0, 0, 34, 118, 0, "#000");
+  for (let i = 0; i < 5; i++) line(c, 0, 29.5 + i * 10, 34, 29.5 + i * 10, "#6f6f6f", 1);
+  clef(c);
+  line(c, PLAY_X + .5, 8, PLAY_X + .5, 92, CIT, 1);
+  footer(c, "Twinkle Twinkle");
+  tabC(c, "next"); tabB(c, "dots");
+  if (live && playing && st.lastNote !== playing[1]) { st.lastNote = playing[1]; tone(playing[0][1], playing[0][2] * BEAT_MS * .9 / 1000); }
+  return pos;
+}
+
+/* ---------- content: the 2x2 pages ---------- */
+function I(fn) { return fn; }
+const ICONS = {
+  print: I(function (c, x, y) { rr(c, x + 6, y, 14, 9, 1, WHITE); rr(c, x + 1, y + 8, 24, 11, 3, "#7d8a99"); rr(c, x + 6, y + 15, 14, 11, 1, WHITE); line(c, x + 9, y + 19.5, x + 17, y + 19.5, "#555"); line(c, x + 9, y + 22.5, x + 15, y + 22.5, "#555"); circle(c, x + 21, y + 12, 1.3, CIT); }),
+  time: I(function (c, x, y) { poly(c, [x + 13, y, x + 19, y + 9, x + 7, y + 9], "#e53935"); rr(c, x + 8, y + 9, 10, 11, 1, "#e6e6e6"); circle(c, x + 13, y + 13, 2.2, "#3b82f6"); poly(c, [x + 8, y + 14, x + 3, y + 22, x + 8, y + 20], "#e53935"); poly(c, [x + 18, y + 14, x + 23, y + 22, x + 18, y + 20], "#e53935"); poly(c, [x + 10, y + 20, x + 16, y + 20, x + 13, y + 26], CIT); }),
+  mol: I(function (c, x, y) { line(c, x + 13, y + 13, x + 5, y + 6, "#aaa", 2); line(c, x + 13, y + 13, x + 22, y + 7, "#aaa", 2); line(c, x + 13, y + 13, x + 12, y + 23, "#aaa", 2); circle(c, x + 13, y + 13, 5.5, "#8f8f8f"); circle(c, x + 5, y + 6, 4, "#e53935"); circle(c, x + 22, y + 7, 4, "#3b82f6"); circle(c, x + 12, y + 23, 3.3, WHITE); }),
+  body: I(function (c, x, y) { circle(c, x + 8, y + 9, 6.5, "#e0364a"); circle(c, x + 18, y + 9, 6.5, "#e0364a"); poly(c, [x + 2, y + 12, x + 24, y + 12, x + 13, y + 25], "#e0364a"); line(c, x + 7, y + 5, x + 11, y + 9, "#ffb3bc", 1.5); }),
+  globe: I(function (c, x, y) { circle(c, x + 13, y + 14, 11.5, "#2f6fd0"); poly(c, [x + 6, y + 7, x + 14, y + 5, x + 15, y + 13, x + 9, y + 16], "#4f9a3c"); poly(c, [x + 15, y + 17, x + 22, y + 15, x + 19, y + 24], "#4f9a3c"); circle(c, x + 13, y + 5, 3, CIT); poly(c, [x + 10.5, y + 6, x + 15.5, y + 6, x + 13, y + 12], CIT); }),
+  iss: I(function (c, x, y) { rr(c, x + 10, y + 11, 6, 6, 1, "#ddd"); line(c, x + 2, y + 14, x + 24, y + 14, "#ddd", 2); [1, 5, 17, 21].forEach(function (o) { c.fillStyle = "#3066c9"; c.fillRect(x + o, y + 3, 3, 8); c.fillRect(x + o, y + 17, 3, 8); }); }),
+  physics: I(function (c, x, y) { poly(c, [x + 13, y + 17, x + 8, y + 25, x + 18, y + 25], "#8f8f8f"); line(c, x + 1, y + 11, x + 25, y + 21, CIT, 2.4); rr(c, x + 2, y + 2, 9, 9, 1, "#e53935"); circle(c, x + 21, y + 14, 4, "#3b82f6"); }),
+  graph: I(function (c, x, y) { line(c, x + 2, y + 14, x + 25, y + 14, GREY); line(c, x + 13, y + 1, x + 13, y + 26, GREY); c.beginPath(); for (let i = 0; i <= 23; i++) { const px = x + 2 + i, py = y + 14 - Math.sin(i / 23 * 6.28) * 9; i ? c.lineTo(px, py) : c.moveTo(px, py); } c.strokeStyle = CIT; c.lineWidth = 1.8; c.stroke(); }),
+  math: I(function (c, x, y) { rr(c, x + 1, y + 2, 24, 23, 4, "#2a3a55"); txt(c, "x²", x + 13, y + 14, { s: 14, b: true, a: "center" }); }),
+  timer: I(function (c, x, y) { rr(c, x + 10, y, 6, 3, 1, "#ddd"); circle(c, x + 13, y + 15, 10.5, "#ddd"); circle(c, x + 13, y + 15, 8.2, "#101010"); line(c, x + 13, y + 15, x + 18, y + 10, CIT, 1.8); }),
+  recipe: I(function (c, x, y) { c.beginPath(); c.ellipse(x + 11, y + 13, 10, 6, 0, 0, 7); c.fillStyle = "#555"; c.fill(); c.beginPath(); c.ellipse(x + 11, y + 12, 7.5, 3.8, 0, 0, 7); c.fillStyle = "#e9b65c"; c.fill(); line(c, x + 20, y + 14, x + 26, y + 18, "#777", 3); line(c, x + 7, y + 3, x + 7, y + 6, "#bbb", 1.3); line(c, x + 12, y + 2, x + 12, y + 5, "#bbb", 1.3); }),
+  clock: I(function (c, x, y) { circle(c, x + 13, y + 14, 11, WHITE); circle(c, x + 13, y + 14, 1.7, "#000"); line(c, x + 13, y + 14, x + 13, y + 7, "#000", 1.8); line(c, x + 13, y + 14, x + 19, y + 16, "#e53935", 1.6); }),
+  speak: I(function (c, x, y) { poly(c, [x + 2, y + 10, x + 8, y + 10, x + 14, y + 4, x + 14, y + 23, x + 8, y + 17, x + 2, y + 17], WHITE); [5, 9].forEach(function (r, i) { c.beginPath(); c.arc(x + 15, y + 13.5, r, -.9, .9); c.strokeStyle = i ? "#888" : CIT; c.lineWidth = 1.8; c.stroke(); }); }),
+  shake: I(function (c, x, y) { c.save(); c.translate(x + 13, y + 14); c.rotate(.2); rr(c, -5.5, -11, 11, 22, 2, "#ddd"); c.fillStyle = "#000"; c.fillRect(-4, -9, 8, 15); c.restore(); [[-11, 1], [11, -1]].forEach(function (p) { c.beginPath(); c.arc(x + 13 + p[0] * .1, y + 14, Math.abs(p[0]) + 1, p[0] < 0 ? 2.6 : -.5, p[0] < 0 ? 3.7 : .5); c.strokeStyle = CIT; c.lineWidth = 1.6; c.stroke(); }); }),
+  paint: I(function (c, x, y) { c.beginPath(); c.ellipse(x + 13, y + 14, 12, 10, 0, 0, 7); c.fillStyle = "#c79a64"; c.fill(); circle(c, x + 7, y + 12, 2.3, "#e53935"); circle(c, x + 12, y + 8, 2.3, CIT); circle(c, x + 19, y + 11, 2.3, "#3b82f6"); circle(c, x + 18, y + 18, 2.3, "#43a047"); circle(c, x + 10, y + 19, 2.6, "#101010"); }),
+  camera: I(function (c, x, y) { rr(c, x + 1, y + 7, 24, 16, 3, "#ddd"); rr(c, x + 9, y + 3, 8, 5, 1, "#ddd"); circle(c, x + 13, y + 15, 5.5, "#101010"); circle(c, x + 13, y + 15, 3, "#3b82f6"); }),
+};
+const PAGES = [
+  [["print","Drucken","Bild zeigen, B 1 Sek. halten"],["time","Zeitstrahl","Zeitstrahl der Raumfahrt"],["mol","Moleküle","Wie ist Koffein aufgebaut?"],["body","Körper","Was ist im Herz?"]],
+  [["globe","Globus","Wo liegt das Matterhorn?"],["iss","ISS live","Wo ist die ISS gerade?"],["physics","Physik","Wie funktioniert ein Hebel?"],["graph","Kurven","Zeichne x² minus 3"]],
+  [["math","Rechnen","Löse x² + x - 1 = 0"],["timer","Timer","Timer auf 5 Minuten"],["recipe","Rezepte","Wie mache ich Pfannkuchen?"],["clock","Weltuhr","Wie spät ist es in Tokio?"]],
+  [["speak","Vorlesen","M5 zweimal drücken"],["shake","Schütteln","Für eine Überraschung"],["paint","KI-Bilder","Male einen Drachen mit Hut"],["camera","Kamera","M5 dreimal, mit Kamera-Modul"]],
+];
+function drawPage(c, p, ox) {
+  PAGES[p].forEach(function (t, i) {
+    const x = ox + 6 + (i % 2) * 116, y = 16 + (i > 1 ? 1 : 0) * 53;
+    rr(c, x, y, 112, 50, 5, TILE, "#3a3a3a");
+    ICONS[t[0]](c, x + 4, y + 3);
+    let s = 12; setFont(c, s, true);
+    while (c.measureText(t[1]).width > 74 && s > 9) { s--; setFont(c, s, true); }
+    txt(c, t[1], x + 34, y + 16, { s: s, b: true });
+    wrap(c, t[2], 105, 9).slice(0, 2).forEach(function (ln, j) { txt(c, ln, x + 5, y + 33 + j * 10, { s: 9, c: "#d7d7d7" }); });
+  });
+}
+function drawGrid(c, st) {
+  blank(c);
+  for (let p = 0; p < PAGES.length; p++) { const ox = (p - st.gridPos) * W; if (Math.abs(ox) < W) drawPage(c, p, ox); }
+  line(c, 0, 3.5, W, 3.5, "#6b6b6b", 1);
+  const cur = Math.round(st.gridPos);
+  for (let p = 0; p < PAGES.length; p++) circle(c, 96 + p * 16, 3.5, p === cur ? 3.5 : 2, p === cur ? CIT : "#8a8a8a");
+  txt(c, (cur + 1) + "/" + PAGES.length, 236, 128, { s: 9, a: "right", c: "#c9c9c9" });
+  tabC(c, "next"); tabB(c, "dots");
+}
+
+/* ---------- scenes ---------- */
+function centered(c, lines, cx, y0, lh, o) { lines.forEach(function (l, i) { txt(c, l, cx, y0 + i * lh, Object.assign({ a: "center" }, o)); }); }
+
+const SCENES = {
+  ask: { title: "Hallo und erste Frage", tag: ["new", "Neu"],
+    bullets: ["Startet einmal, sobald WLAN und KI-Schlüssel funktionieren.", "Der vorgeschlagene Satz hilft, wenn jemand vor dem leeren Bildschirm stockt.", "M5 ist hier die Aufgabe. B öffnet das Menü, nichts bricht direkt ab."],
+    nudge: ["A"],
+    draw: function (c, vt, st, now) { blank(c); lemon(c, 40, 24); txt(c, "Hallo, ich bin Zitro!", 56, 24, { s: 14, b: true }); pressRow(c, "Drück", "und sprich:", 128, 62, 14); centered(c, ["«Wie weit ist der Mond weg?»"], 128, 94, 18, { s: 12, c: CIT }); tabA(c, pulse(now)); tabB(c, "dots"); } },
+  rec: { title: "Aufnahme", tag: ["old", "Vorhanden, Hinweis neu"],
+    bullets: ["Die Kästchen zeigen die Aufnahme wie heute, im Mock 3 statt 5 Sekunden.", "Antippen startet neu, zweimal schnell bricht ab.", "Neu ist nur «Sprich jetzt!»."],
+    draw: function (c, vt) { blank(c); centered(c, ["Sprich jetzt!"], 128, 34, 18, { s: 14, b: true }); mic(c, 30, 72, WHITE, 1.5); const n = Math.min(5, Math.floor(vt / 600) + 1); for (let i = 0; i < 5; i++) rr(c, 54 + i * 34, 65, 28, 14, 3, i < n ? WHITE : null, WHITE); } },
+  heard: { title: "Zitro zeigt, was es gehört hat", tag: ["new", "Neu"],
+    bullets: ["Das ist der Moment, in dem Stimme zu Text wird.", "Heute springt der Stick von Transcribing direkt zu Thinking, nur die Tour zeigt den Satz.", "Hat Zitro falsch verstanden, sieht man es hier sofort."],
+    draw: function (c, vt, st) {
+      blank(c);
+      if (vt < 800) { centered(c, ["Transcribing..."], 120, 66, 20, { s: 18 }); return; }
+      const full = "Wie weit ist der Mond weg?", n = Math.min(full.length, Math.floor((vt - 800) / 34));
+      centered(c, ["Du hast gesagt:"], 120, 26, 14, { s: 11, c: GREY });
+      wrap(c, "«" + full.slice(0, n) + (n === full.length ? "»" : ""), 216, 16, true).forEach(function (l, i) { txt(c, l, 120, 58 + i * 22, { s: 16, b: true, a: "center" }); });
+      if (vt > 1800) centered(c, ["Thinking..."], 120, 116, 14, { s: 12, c: CIT });
+    } },
+  answer: { title: "Die echte Antwort", tag: ["old", "Vorhanden"],
+    bullets: ["Die einzige Aufnahme und der einzige KI-Aufruf der Tour.", "Im Mock ist der Text fest.", "▶ geht weiter. M5 und B öffnen das Menü, «Zurück» führt zur Frage."],
+    fail: true, nudge: ["C"],
+    draw: function (c, vt, st, now) { blank(c); wrap(c, "Der Mond ist im Schnitt 384'400 km von der Erde entfernt. Licht braucht gut eine Sekunde.", 226, 15).forEach(function (l, i) { txt(c, l, 120, 26 + i * 25, { s: 15, a: "center" }); }); tabC(c, "next", pulse(now)); tabB(c, "dots"); } },
+  retry: { title: "Fehlerfall: nicht verstanden", tag: ["new", "Neu"],
+    bullets: ["Wer nochmals drückt, nimmt neu auf.", "Mit ▶ geht es trotzdem weiter, denn die Beispiele brauchen keine Aufnahme."],
+    nudge: ["A"],
+    draw: function (c, vt, st, now) { blank(c); centered(c, ["Das habe ich nicht", "verstanden."], 128, 30, 22, { s: 15 }); pressRow(c, "Drück", "nochmal", 128, 92, 14); tabA(c, pulse(now)); tabC(c, "next"); tabB(c, "dots"); } },
+  photo: { title: "Spezial 1: Foto-Antwort", tag: ["old", "Vorhanden"], quote: "Wie sieht der Mond aus?",
+    bullets: ["Eigenständige Frage, weil die erste Frage des Kindes von etwas anderem handeln kann.", "Lehrt den Griff: hochkant stellen und zurück wechselt zwischen Bild und Text.", "Das Mondbild ist hier ein gezeichneter Platzhalter."],
+    gest: ["flip"], nudge: ["C"],
+    draw: function (c, vt, st) {
+      if (st.flipped) { blank(c); wrap(c, "Der Mond ist grau und voller Krater. Sie stammen von Einschlägen.", 226, 15).forEach(function (l, i) { txt(c, l, 120, 34 + i * 25, { s: 15, a: "center" }); }); }
+      else { c.drawImage(moon(), 0, 0); hintPill(c, "Stell mich hochkant!"); footer(c, "Mond - Wikimedia"); }
+      tabC(c, "next"); tabB(c, "dots");
+    } },
+  sky: { title: "Spezial 2: Stick drehen", tag: ["old", "Vorhanden"], quote: "Wo ist Orion?",
+    bullets: ["Die Sternkarte steckt in der Firmware und läuft ohne Server.", "Im Mock: «Kippen» drücken oder auf dem Bildschirm ziehen.", "Sterne ausserhalb von Orion sind hier nur zufällig verteilt."],
+    gest: ["tilt"], nudge: ["C"],
+    draw: function (c, vt, st) { drawSky(c, st); } },
+  music: { title: "Spezial 3: Musik", tag: ["old", "Vorhanden"], quote: "Spiel Twinkle Twinkle Little Star",
+    bullets: ["Eines der 26 eingebauten Lieder, läuft ohne WLAN.", "Farbige Notenköpfe wie im echten Notenband.", "In der Tour ist C ▶ und B das Menü. Pause und Lautstärke gibt es hier nicht."],
+    nudge: ["C"],
+    draw: function (c, vt, st, now, live) { drawMusic(c, vt, st, live); } },
+  grid: { title: "Was sonst noch geht", tag: ["new", "Neu"],
+    bullets: ["Vier Seiten mit je vier Kacheln. C blättert vor, Kippen schiebt in beide Richtungen, zurück geht auch übers Menü.", "Jede Kachel zeigt ein Bild und einen Satz zum Nachsprechen, die Kacheln öffnen nichts.", "Drucken steht ganz vorne. Einstellungen per Stimme sind noch nicht drin."],
+    gest: ["tilt"], nudge: ["C"],
+    draw: function (c, vt, st) { drawGrid(c, st); } },
+  done: { title: "Jetzt du", tag: ["new", "Neu"],
+    bullets: ["M5 startet die erste normale Frage.", "Die Tour gilt als gesehen und kommt nicht wieder von selbst."],
+    nudge: ["A"],
+    draw: function (c, vt, st, now) { blank(c); lemon(c, 128, 28); centered(c, ["Jetzt du!"], 128, 58, 20, { s: 22, b: true }); centered(c, ["Frag mich, was du willst."], 128, 92, 16, { s: 13 }); tabA(c, pulse(now)); tabB(c, "dots"); } },
+  menu: { title: "Menü in der Tour", tag: ["new", "Neu"],
+    bullets: ["M5 und B öffnen es, nichts bricht direkt ab.", "«Weiter» ist vorgewählt: Zweimal M5 läuft also harmlos weiter.", "Bedienung wie die Druckerliste: ▼ nächste Zeile, ✓ wählen, ✕ schliessen.", "Bei der ersten Frage fehlt «Zurück», weil es davor nichts gibt."],
+    nudge: ["A"],
+    draw: function (c, vt, st) {
+      blank(c);
+      const rows = st.menuRows || MENU_ROWS, h = 30, gap = 4, y0 = 67 - (rows.length * h + (rows.length - 1) * gap) / 2;
+      rows.forEach(function (r, i) {
+        const y = y0 + i * (h + gap), on = i === st.menuSel;
+        if (on) rr(c, 20, y, 214, h, 6, WHITE);
+        glyphAt(c, r.glyph, 36, y + h / 2, on ? "#000" : WHITE);
+        txt(c, r.label, 50, y + h / 2, { s: 14, b: on, c: on ? "#000" : WHITE });
+      });
+      rr(c, -5, 50, 20, 34, 6, WHITE); glyphAt(c, "check", 7, 67, "#000");
+      tabC(c, "down"); tabB(c, "x");
+    } },
+  home: { title: "Startbildschirm", tag: ["old", "Vorhanden"],
+    bullets: ["Hier beginnt der normale Betrieb.", "Der echte Startbildschirm ist heute nur englisch. Die Tour braucht Deutsch und Englisch."],
+    draw: function (c) { blank(c); const y = 30; setFont(c, 14, false); lemon(c, 30, y); txt(c, "Press", 48, y, { s: 15 }); setFont(c, 15); const px = 48 + c.measureText("Press").width + 6; const bx = px + keycap(c, px, y - 8) + 5; txt(c, "button", bx, y, { s: 15 }); centered(c, ["to ask a question"], 120, 60, 20, { s: 15 }); ICONS.shake(c, 8, 92); txt(c, "Shake for a surprise.", 38, 106, { s: 14 }); } },
+};
+const FLOW = ["ask", "rec", "heard", "answer", "photo", "sky", "music", "grid", "done", "home"];
+const MENU_ROWS = [{ k: "go", label: "Weiter", glyph: "next" }, { k: "back", label: "Ein Schritt zurück", glyph: "prev" }, { k: "end", label: "Tour beenden", glyph: "x" }];
+
+/* ---------- player ---------- */
+const scr = document.getElementById("screen"), ctx = scr.getContext("2d");
+const $ = function (id) { return document.getElementById(id); };
+let scene = "ask", enteredAt = performance.now(), st = freshState();
+let soundOn = true, audio = null;
+function freshState() { return { gridPage: 0, gridPos: 0, skyTarget: 5.6, skyPos: 5.6, skyMoved: false, flipped: false, lastNote: -1, viewAt: 0, menuRows: null, menuSel: 0 }; }
+function ensureAudio() { if (!audio && window.AudioContext) { try { audio = new AudioContext(); } catch (e) { audio = null; } } if (audio && audio.state === "suspended") audio.resume(); }
+function tone(midi, dur) {
+  if (!soundOn || !audio) return;
+  const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime;
+  o.type = "square"; o.frequency.value = 440 * Math.pow(2, (midi - 69) / 12);
+  g.gain.setValueAtTime(.05, t); g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + dur);
+}
+function say(s) { $("status").textContent = s || ""; }
+function go(id, opts) {
+  scene = id; opts = opts || {};
+  enteredAt = performance.now();
+  const page = opts.page != null ? opts.page : st.gridPage;
+  st = freshState();
+  st.gridPage = id === "grid" ? page : 0; st.gridPos = st.gridPage;
+  st.viewAt = SCENES[id].quote && !opts.noQuote ? enteredAt + QUOTE_MS : enteredAt;
+  renderNotes(); markThumb(); if (!opts.keepMsg) say("");
+}
+function renderNotes() {
+  const s = SCENES[scene], el = $("notes");
+  el.replaceChildren();
+  const row = document.createElement("div"); row.className = "row";
+  const h = document.createElement("h3"); h.textContent = s.title;
+  const tag = document.createElement("span"); tag.className = "tag " + s.tag[0]; tag.textContent = s.tag[1];
+  row.append(h, tag); el.append(row);
+  if (s.quote) { const q = document.createElement("p"); q.textContent = "Beispiel-Frage: «" + s.quote + "»"; el.append(q); }
+  const ul = document.createElement("ul");
+  s.bullets.forEach(function (b) { const li = document.createElement("li"); li.textContent = b; ul.append(li); });
+  el.append(ul);
+  if (s.fail) { const b = document.createElement("button"); b.type = "button"; b.className = "linkbtn"; b.textContent = "Fehlerfall ansehen"; b.addEventListener("click", function () { go("retry"); }); el.append(b); }
+  const nudge = s.nudge || [], gest = s.gest || [];
+  ["A", "B", "C"].forEach(function (k) { $("key" + k).classList.toggle("nudge", nudge.includes(k)); });
+  $("tiltL").disabled = $("tiltR").disabled = !gest.includes("tilt");
+  $("flip").disabled = !gest.includes("flip");
+  $("tiltL").classList.toggle("nudge", gest.includes("tilt")); $("tiltR").classList.toggle("nudge", gest.includes("tilt"));
+  $("flip").classList.toggle("nudge", gest.includes("flip"));
+}
+function next() { const i = FLOW.indexOf(scene); if (i < FLOW.length - 1) go(FLOW[i + 1]); }
+function stepBack() {
+  if (scene === "grid" && st.gridPage > 0) { st.gridPage--; return; }
+  if (scene === "answer" || scene === "retry") { go("ask"); return; }
+  if (scene === "photo") { go("answer"); return; }
+  const i = FLOW.indexOf(scene);
+  if (i > 0) go(FLOW[i - 1], { page: PAGES.length - 1, noQuote: true });
+}
+function inQuote() { return !!SCENES[scene].quote && performance.now() < st.viewAt; }
+
+/* The tour menu freezes the screen behind it and picks up where it stopped */
+let menuReturn = null;
+function openMenu() {
+  menuReturn = { scene: scene, st: st, enteredAt: enteredAt, at: performance.now() };
+  const rows = scene === "ask" ? MENU_ROWS.filter(function (r) { return r.k !== "back"; }) : MENU_ROWS;
+  scene = "menu"; enteredAt = performance.now();
+  st = freshState(); st.menuRows = rows;
+  renderNotes(); markThumb(); say("");
+}
+function closeMenu() {
+  const away = performance.now() - menuReturn.at;
+  scene = menuReturn.scene; st = menuReturn.st; enteredAt = menuReturn.enteredAt + away; st.viewAt += away;
+  renderNotes(); markThumb();
+}
+function menuChoose() {
+  const choice = st.menuRows[st.menuSel].k;
+  if (choice === "go") { closeMenu(); return; }
+  if (choice === "back") { closeMenu(); stepBack(); return; }
+  go("home"); say("Tour beendet.");
+}
+function press(k) {
+  ensureAudio();
+  if (scene === "menu") {
+    if (k === "A") menuChoose();
+    else if (k === "C") st.menuSel = (st.menuSel + 1) % st.menuRows.length;
+    else closeMenu();
+    return;
+  }
+  if (scene === "rec") { if (k === "A") { enteredAt = performance.now(); say("Neu gestartet, wie heute beim Antippen."); } return; }
+  if (scene === "heard") return;
+  if (scene === "home") { say("Ab hier läuft der normale Betrieb."); return; }
+  if (k === "B") { openMenu(); return; }
+  /* On these screens M5 is the task itself, so it doesn't open the menu */
+  if (scene === "ask" || scene === "retry") { if (k === "A") go("rec"); else if (scene === "retry") go("photo"); return; }
+  if (scene === "done") { if (k === "A") { go("home"); say("Ab hier läuft der normale Betrieb."); } return; }
+  if (k === "A") { openMenu(); return; }
+  if (inQuote()) { st.viewAt = performance.now(); return; }
+  if (scene === "grid" && st.gridPage < PAGES.length - 1) { st.gridPage++; return; }
+  next();
+}
+function tilt(dir) {
+  ensureAudio();
+  if (scene === "grid") { st.gridPage = Math.max(0, Math.min(PAGES.length - 1, st.gridPage + dir)); }
+  if (scene === "sky" && !inQuote()) { st.skyTarget -= dir * 1.3; st.skyMoved = true; }
+}
+function flip() { if (scene === "photo" && !inQuote()) st.flipped = !st.flipped; }
+
+/* Quote screen: tells the child the sentence that opens this view */
+function drawQuote(c, text) {
+  blank(c); lemon(c, 120, 22);
+  centered(c, ["Du fragst:"], 120, 44, 14, { s: 11, c: GREY });
+  wrap(c, "«" + text + "»", 216, 17, true).forEach(function (l, i, a) { txt(c, l, 120, 76 + (i - (a.length - 1) / 2) * 22, { s: 17, b: true, a: "center" }); });
+}
+
+function frame(now) {
+  const s = SCENES[scene];
+  if (st.gridPos !== st.gridPage) { st.gridPos += (st.gridPage - st.gridPos) * .2; if (Math.abs(st.gridPos - st.gridPage) < .004) st.gridPos = st.gridPage; }
+  if (st.skyPos !== st.skyTarget) { st.skyPos += (st.skyTarget - st.skyPos) * .12; if (Math.abs(st.skyPos - st.skyTarget) < .002) st.skyPos = st.skyTarget; }
+  if (s.quote && now < st.viewAt) drawQuote(ctx, s.quote);
+  else s.draw(ctx, Math.max(0, now - (s.quote ? st.viewAt : enteredAt)), st, now, true);
+  if (scene === "rec" && now - enteredAt > 3000) go("heard");
+  if (scene === "heard" && now - enteredAt > 3600) go("answer");
+  requestAnimationFrame(frame);
+}
+
+/* ---------- storyboard: every screen visible without clicking ---------- */
+const BOARD = [
+  ["ask", "Hallo, erste Frage"], ["rec", "Aufnahme", { t: 1900 }], ["heard", "Zitro zeigt den Satz", { t: 3000 }], ["answer", "Antwort"],
+  ["photo", "Foto: Mond"], ["sky", "Orion: Stick drehen"], ["music", "Musik: Twinkle", { t: 2400 }],
+  ["grid", "Raster, Seite 1", { page: 0 }], ["grid", "Raster, Seite 2", { page: 1 }], ["grid", "Raster, Seite 3", { page: 2 }], ["grid", "Raster, Seite 4", { page: 3 }],
+  ["done", "Jetzt du"], ["home", "Startbildschirm"], ["retry", "Fehlerfall"], ["menu", "Menü (M5 oder B)"],
+];
+function buildBoard() {
+  const strip = $("strip");
+  BOARD.forEach(function (b, i) {
+    const opt = b[2] || {};
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "thumb"; btn.dataset.scene = b[0]; if (opt.page != null) btn.dataset.page = opt.page;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    const cap = document.createElement("span"); const n = document.createElement("b"); n.textContent = (i + 1) + "  ";
+    cap.append(n, b[1]);
+    btn.append(cv, cap);
+    const tmp = freshState(); if (opt.page != null) { tmp.gridPage = opt.page; tmp.gridPos = opt.page; }
+    SCENES[b[0]].draw(cv.getContext("2d"), opt.t != null ? opt.t : 4000, tmp, 0, false);
+    btn.addEventListener("click", function () {
+      ensureAudio();
+      if (b[0] === "menu") { if (scene !== "menu") { go("photo", { noQuote: true }); openMenu(); } return; }
+      go(b[0], { page: opt.page });
+    });
+    strip.append(btn);
+    if (i === 10) strip.append(refCard());
+  });
+}
+/* The real space timeline, for comparing the page slide. The mic tab is covered because PR #14 removes it. */
+function refCard() {
+  const d = document.createElement("div"); d.className = "thumb ref";
+  const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const cap = document.createElement("span"); const n = document.createElement("b"); n.textContent = "Vorbild  ";
+  cap.append(n, "Echter Zeitstrahl Raumfahrt");
+  d.append(cv, cap);
+  const img = new Image();
+  img.onload = function () { const c = cv.getContext("2d"); c.drawImage(img, 0, 0, W, H); c.fillStyle = "#000"; c.fillRect(0, 49, 16, 36); };
+  img.onerror = function () { d.hidden = true; };
+  img.src = "timeline-ref.png";
+  return d;
+}
+function markThumb() {
+  document.querySelectorAll(".thumb").forEach(function (t) {
+    const same = t.dataset.scene === scene && (scene !== "grid" || Number(t.dataset.page) === st.gridPage);
+    t.classList.toggle("on", same);
+  });
+}
+
+/* ---------- wiring ---------- */
+["A", "B", "C"].forEach(function (k) { $("key" + k).addEventListener("click", function () { press(k); markThumb(); }); });
+$("tiltL").addEventListener("click", function () { tilt(-1); markThumb(); });
+$("tiltR").addEventListener("click", function () { tilt(1); markThumb(); });
+$("flip").addEventListener("click", flip);
+$("restart").addEventListener("click", function () { go("ask"); });
+$("truesize").addEventListener("click", function () { const on = document.querySelector(".stick").classList.toggle("real"); this.setAttribute("aria-pressed", String(on)); this.classList.toggle("nudge", on); });
+$("snd").addEventListener("click", function () { soundOn = !soundOn; this.textContent = soundOn ? "Ton an" : "Ton aus"; this.setAttribute("aria-pressed", String(soundOn)); });
+let drag = null;
+scr.addEventListener("pointerdown", function (e) { if (scene === "sky" && !inQuote()) { drag = { x: e.clientX, tgt: st.skyTarget }; scr.setPointerCapture(e.pointerId); } });
+scr.addEventListener("pointermove", function (e) { if (drag && scene === "sky") { st.skyTarget = drag.tgt + (e.clientX - drag.x) / scr.clientWidth * 4.7; if (Math.abs(e.clientX - drag.x) > 3) st.skyMoved = true; } });
+scr.addEventListener("pointerup", function () { drag = null; });
+scr.addEventListener("pointercancel", function () { drag = null; });
+window.addEventListener("keydown", function (e) {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key.toLowerCase();
+  if (k === "a" || k === "b" || k === "c") { press(k.toUpperCase()); markThumb(); }
+  else if (k === "arrowleft") { tilt(-1); markThumb(); e.preventDefault(); }
+  else if (k === "arrowright") { tilt(1); markThumb(); e.preventDefault(); }
+  else if (k === "r") flip();
+});
+
+buildBoard();
+go("ask");
+requestAnimationFrame(frame);
+</script>

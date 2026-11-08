@@ -355,6 +355,12 @@ void handleSerialCommands() {
       // So repeated "ask" runs can't copy each other's answers
       memoryClear();
       Serial.println("Memory cleared");
+    } else if (line.startsWith("guidetype ")) {
+      serialTestQuestion = line.substring(10);  // Stands in for the recording at the next "guidekey a"
+    } else if (line == "guide") {
+      guideStartNow();
+    } else if (line.startsWith("guidekey ") && line.length() > 9) {
+      guideSerialKey(line[9]);
     } else if (line.startsWith("ask ")) {
       serialTestQuestion = line.substring(4);
       handleVoiceQuery(false);

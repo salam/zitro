@@ -83,6 +83,10 @@ static void modelShowHints() {
 
 // A tab next to every button: A always asks something new; B and C as the feature says
 static void modelDrawHints(M5Canvas& c) {
+  if (guideActive()) {
+    guideDrawViewHints(c);
+    return;
+  }
   int kindB = activeFeature->buttonB ? HINT_NONE : HINT_ZOOM;
   int kindC = activeFeature->buttonC ? HINT_NONE : HINT_TEXT;
   if (activeFeature->hints) activeFeature->hints(kindB, kindC);
@@ -92,7 +96,7 @@ static void modelDrawHints(M5Canvas& c) {
 // Draws one frame and shows it
 void modelViewRender(float dt) {
   if (!modelCanvas || !activeFeature || !activeFeature->frame) return;
-  const bool hints = modelHintsShowing(millis(), modelHintsFrom);
+  const bool hints = guideActive() || modelHintsShowing(millis(), modelHintsFrom);
   modelViewRedraw = modelHintsWereShowing && !hints;
   modelHintsWereShowing = hints;
   activeFeature->frame(*modelCanvas, dt);

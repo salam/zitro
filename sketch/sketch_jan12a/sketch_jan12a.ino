@@ -59,6 +59,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 // Custom fonts with European language support (German umlauts, Greek, Cyrillic, Hebrew)
 #include "fonts/PrimaryFont10pt.h"
 #include "fonts/PrimaryFont14pt.h"
+#include "guide_core.h"
 
 // FontManager class for smart UTF-8 font rendering
 class FontManager {
@@ -479,6 +480,21 @@ bool restoreImageFromFlash();
 void handleDeepSleepWake();
 bool modelViewBegin();
 void modelViewEnd();
+extern GuideState guideState;
+extern GuideVoice lastVoiceOutcome;
+bool guideActive();
+bool guideAutoStart();
+void guideStartNow();
+void guideSerialKey(char key);
+void guideTick();
+void guideStop(bool markDone);
+void guideRenderStep();
+void guideOnHeard(const String& question);
+void guideDecorateScreen(M5Canvas& c);
+void guideDecorateProgress(M5Canvas& c);
+void guideDrawViewHints(M5Canvas& c);
+void guideDrawIcon(M5Canvas& c, const char* id, int x, int y);
+void guideDrawGrid(M5Canvas& c, float pos, int rotation);
 bool modelViewActive();
 void modelViewRender(float dt);
 bool modelViewSpriteInPsram();
@@ -1362,6 +1378,8 @@ void drawScreen(const String &text) {
     drawModelHint(canvas);
   }
 
+  if (guideActive() && guideState.step == GUIDE_ANSWER) guideDecorateScreen(canvas);
+
   captureCanvas(canvas);
 
   canvas.pushSprite(0, 0);
@@ -1552,6 +1570,8 @@ void drawProgress(int secondsRemaining) {
   int micX = 8;
   int micY = HEIGHT / 2 - (MICICON_HEIGHT * micScale) / 2;
   drawIconScaled(canvas, micIcon, MICICON_WIDTH, MICICON_HEIGHT, micX, micY, micScale, TFT_WHITE);
+
+  if (guideActive()) guideDecorateProgress(canvas);
 
   // Draw progress rectangles
   int rectWidth = 25;
@@ -2390,6 +2410,9 @@ bool restoreImageFromFlash() {
 }
 
 void saveStateToPreferences() {
+  // Deep sleep ends the tour; none of its content may come back as a result after the wake
+  if (guideActive()) guideStop(false);
+
   Serial.println("\n========== SAVING STATE ==========");
 
   prefs.begin(PREFS_NAMESPACE, false);
@@ -2927,6 +2950,10 @@ bool inWakeCooldown() {
 
 // Show the last answer (text or image) again, or the home screen if there is none
 void redrawPreviousResult() {
+  if (guideActive()) {
+    guideRenderStep();
+    return;
+  }
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
     if (currentDisplayMode == SHOW_IMAGE && hasImage && imageBuffer) {
       displayImage(currentImageUrl.length() == 0);
@@ -3336,6 +3363,7 @@ void discoverPrinters() {
 #define HINT_CUT    16  // half-filled circle: the other view, outside or cut open
 #define HINT_EARLIER 17  // triangle to the left on any edge: earlier on a timeline
 #define HINT_LATER   18  // triangle to the right on any edge: later on a timeline
+#define HINT_MENU    19  // three dots: the tour's menu
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3518,6 +3546,11 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
     }
   } else if (kind == HINT_CUT) {
     drawCutMark(canvas, cx, cy, symbolColor);
+  } else if (kind == HINT_MENU) {
+    for (int i = -1; i <= 1; i++) {
+      if (sideEdge) canvas.fillCircle(cx, cy + i * 6, 2, symbolColor);
+      else canvas.fillCircle(cx + i * 6, cy, 2, symbolColor);
+    }
   } else if (kind == HINT_LATER) {
     canvas.fillTriangle(cx - 3, cy - 5, cx - 3, cy + 5, cx + 3, cy, symbolColor);
   } else if (kind == HINT_EARLIER) {
@@ -4913,7 +4946,7 @@ GPTResponse askGPT(const String &question) {
   if (dateTimeContext.length() > 0) {
     systemPrompt += dateTimeContext + " ";
   }
-  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false, \"is_tour\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. Will der Nutzer wissen, was Zitro alles kann, oder die Tour sehen ('Was kannst du?', 'Zeig mir die Tour', 'What can you do?', 'Show me the tour' und aehnlich), setze is_tour auf true und answer auf 'Ich zeige es dir!' oder 'Let me show you!'. Nie is_tour bei WLAN, Einrichtung oder 'onboarding'. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
   for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
     if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
   }
@@ -8145,7 +8178,7 @@ void setup() {
     discardButtonA(0);  // The wake-up press must not start a recording
     timeWokeFromSleep = millis();
   } else {
-    drawScreen(MAIN_QUESTION);
+    if (!guideAutoStart()) drawScreen(MAIN_QUESTION);
   }
 
   lastActivityTime = millis(); // Initialize activity timer
@@ -8688,6 +8721,7 @@ void handleVoiceQuery(bool playAudio) {
     currentDisplayMode = SHOW_TEXT;
     modelResetRotateToggle = true;
   }
+  lastVoiceOutcome = GUIDE_VOICE_ANSWERED;
   Serial.println("\n*** BUTTON PRESSED ***\n");
   if (playAudio) {
     Serial.println("Mode: DOUBLE-CLICK (with audio)");
@@ -8698,6 +8732,7 @@ void handleVoiceQuery(bool playAudio) {
   resetToActiveState(); // Reset to active state
 
   if (!aiChatConfigured() || !audioEndpoint().available) {
+    lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     Serial.println("AI not fully configured (chat or speech key missing)");
     drawScreen(!aiChatConfigured()
       ? "No AI key set.\nTriple-press the\nside button for\nsettings."
@@ -8711,11 +8746,13 @@ void handleVoiceQuery(bool playAudio) {
   const bool typedQuestion = serialTestQuestion.length() > 0;  // Serial "ask": no mic needed
   if (!typedQuestion && !recordAudio(recordingCancelled)) {
     if (recordingCancelled) {
+      lastVoiceOutcome = GUIDE_VOICE_CANCELLED;
       if (cameFromModel) currentDisplayMode = SHOW_MODEL;
       redrawPreviousResult();
       resetToActiveState();
       return;
     }
+    lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
     drawScreenWithIcon("Mic error", micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
     delay(2000);
     drawScreen(MAIN_QUESTION);
@@ -8729,6 +8766,7 @@ void handleVoiceQuery(bool playAudio) {
   serialTestQuestion = "";
 
   if (question.length() < 2 || question.startsWith("No ") || question.startsWith("Parse") || question.startsWith("Connection") || question.startsWith("Timeout")) {
+    lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
     Serial.println("Transcription failed or empty");
     drawScreen("Couldn't hear.\nTry again.");
     delay(2000);
@@ -8745,6 +8783,7 @@ void handleVoiceQuery(bool playAudio) {
     if (normalizedQuestion.indexOf("kindersicherung") < 0 &&
         normalizedQuestion.indexOf("einstellung") < 0 &&
         normalizedQuestion.indexOf("setting") < 0) {
+      lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
       Serial.println("Parental lock is ON and current time is restricted (8pm-6am)");
       drawScreenWithIcon("Ich schlafe z z z", nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
       M5.Display.sleep();
@@ -8752,6 +8791,8 @@ void handleVoiceQuery(bool playAudio) {
       return;
     }
   }
+
+  if (guideActive()) guideOnHeard(question);
 
   drawScreenWithIcon("Thinking...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
   GPTResponse gptResponse = askGPT(question);
@@ -8780,6 +8821,7 @@ void handleVoiceQuery(bool playAudio) {
 
   // Handle onboarding/AP mode request
   if (gptResponse.isOnboarding) {
+    lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     Serial.println("Onboarding mode requested via voice");
     response = wordWrap(gptResponse.answer, 25);
     M5.Display.setRotation(getLandscapeRotation());
@@ -8795,6 +8837,13 @@ void handleVoiceQuery(bool playAudio) {
       WiFi.disconnect();
     }
     startAPMode();
+    return;
+  }
+
+  // "What can you do?": the guided tour, also after it has been seen once
+  if (gptResponse.isTour && !guideActive()) {
+    Serial.println("Tour requested via voice");
+    guideStartNow();
     return;
   }
 
@@ -8989,7 +9038,7 @@ void loop() {
   // Detect button press edge (not pressed -> pressed).
   // Not counted in the timer and printer lists (Button C is "next" there, so three quick
   // presses must not open the settings) or while a timer alert is up.
-  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode;
+  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive();
   if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
     unsigned long now = millis();
 
@@ -9099,6 +9148,7 @@ void loop() {
       } else {
         drawScreen(MAIN_QUESTION);
       }
+      if (guideActive()) guideRenderStep();
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
@@ -9162,6 +9212,13 @@ void loop() {
       }
     }
     return;  // Don't process other buttons in timer list mode
+  }
+
+  // The guided tour takes every button until it ends
+  if (guideActive()) {
+    guideTick();
+    delay(20);
+    return;
   }
 
   // 3D view: one frame per pass, so timers, buttons and sleep keep working

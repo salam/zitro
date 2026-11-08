@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Get started with Zitro</title>
+    <meta name="description" content="Keep your Zitro in your hand and follow along: first question, photo, stars, music and everything else your stick can do. Step by step or on one page.">
+    <link rel="canonical" href="https://zitro.spot/onboarding/">
+    <meta name="theme-color" content="#f4efe6">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Zitro">
+    <meta property="og:title" content="Get started with Zitro">
+    <meta property="og:description" content="Keep your Zitro in your hand and follow along, step by step.">
+    <meta property="og:url" content="https://zitro.spot/onboarding/">
+    <meta property="og:image" content="https://zitro.spot/images/og-zitro.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Instrument+Sans:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=1.1.8">
+    <link rel="stylesheet" href="onboarding.css?v=1.0.0">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner guide-header">
+            <a class="wordmark" href="../index.html" aria-label="Zitro home">zitro<span class="wordmark-dot">.</span><span class="wordmark-tld">spot</span></a>
+            <div class="guide-switches">
+                <div class="seg" role="group" id="modeSeg" aria-label="View">
+                    <button type="button" data-mode="assistant" id="modeAssistant"></button>
+                    <button type="button" data-mode="page" id="modePage"></button>
+                </div>
+                <div class="seg seg-small" role="group" aria-label="Language">
+                    <button type="button" data-lang="de" id="langDe">DE</button>
+                    <button type="button" data-lang="en" id="langEn">EN</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="guide" class="guide">
+        <noscript>
+            <div class="container"><p>This guide needs JavaScript. The same steps are in the <a href="https://github.com/salam/zitro">user guide on GitHub</a>.</p></div>
+        </noscript>
+    </main>
+
+    <script src="onboarding.js?v=1.0.0"></script>
+</body>
+</html>

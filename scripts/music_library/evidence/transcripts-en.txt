@@ -1,0 +1,60 @@
+# Transcription log, research2-en. Each entry written before any other score of that song was consulted.
+
+## three-blind-mice  (logged 2026-11-07, before any score B was looked at)
+Scan: Twice 55 Community Songs (The Brown Book), No. 69 "Three Blind Mice (Round)", C. C. Birchard, Boston 1919
+  https://archive.org/details/twice-55-community-songs-no-1-1919/page/n43/  (image page/n43_w2400.jpg, served at 1610x2478)
+Read: 6/8 in D, no pickup, 16 bars, single melody line (round entries 1-4 ignored), bar 12.
+F#4:6 E4:6 | D4:6~ D4:4 R:2 | F#4:6 E4:6 | D4:6~ D4:4 R:2 | A4:6 G4:4 G4:2 | F#4:6~ F#4:4 R:2 | A4:6 G4:4 G4:2 | F#4:6~ F#4:4 A4:2 | D5:4 D5:2 C#5:2 B4:2 C#5:2 | D5:4 A4:2 A4:4 A4:2 | D5:2 D5:2 D5:2 C#5:2 B4:2 C#5:2 | D5:4 A4:2 A4:4 A4:2 | D5:2 D5:2 D5:2 C#5:2 B4:2 C#5:2 | D5:2 A4:2 A4:2 A4:4 G4:2 | F#4:6 E4:6 | D4:6~ D4:4 R:2
+Pitch: measured with heads2 (relative steps consistent: F#/E/D, A/G/G, D5/C#5/B4); durations by eye from 250-300% zooms.
+Flags: scan resolution is low (staff space ~10 px).
+  - bars 2, 4, 6, 8, 16: printed as dotted quarter tied to a quarter, then an eighth rest (bar 8: then the eighth "They").
+  - bar 14: 4th note A4 read as a quarter (no flag visible; the bar needs it), 5th note G4 eighth ("As").
+
+## mary-had-a-little-lamb  (logged 2026-11-07, before any score B was looked at)
+Scan: The Most Popular Mother Goose Songs, ill. Mabel Betsy Hill, Hinds, Noble & Eldredge, New York 1915, p. 12
+  https://archive.org/details/mostpopularmothe00hill/page/n15/  (image page/n15_w2400.jpg, 2650x2323)
+Read: 2/4 in F, vocal staff only (piano staves ignored), verse 1, 8 bars, pickup 0, bar 8.
+A4:3 G4:1 F4:2 G4:2 | A4:2 A4:2 A4:4 | G4:2 G4:2 G4:4 | A4:2 C5:2 C5:4 | A4:3 G4:1 F4:2 G4:2 | A4:2 A4:2 A4:2 A4:2 | G4:2 G4:2 A4:3 G4:1 | F4:6 R:2
+Pitch and rhythm by eye from 250-500% zooms (clean engraving, staff space ~16 px); every head checked against the five lines.
+Flags:
+  - The print opens with an A4 sixteenth pickup that carries "And"/"It" of verses 2-6; verse 1 starts on the downbeat, so it is left out (pickup 0).
+  - Bar 4: printed A4 eighth, C5 eighth, C5 quarter, then an A4 sixteenth (again the "And" of verses 2-6, the bar is overfull by it); verse 1 sings A4:2 C5:2 C5:4.
+  - Bars 1, 5 and 7 have a dotted-eighth + sixteenth figure (A4:3 G4:1 / A4:3 G4:1); the tune as commonly sung today is in even eighths here, so expect a difference with score B there.
+  - Bar 8: F4 dotted quarter and an eighth rest, then the repeat bar line.
+Also seen (not used): Our Old Nursery Rhymes (Augener 1917) p. 7 sets the words to a different 2/4 tune in A without the "little lamb, little lamb" repeat.
+
+## my-bonnie  (logged 2026-11-07, before any score B was looked at)
+Scan: "My Bonnie" (Slow waltz time), in Songs the Whole World Sings, ed. Albert E. Wier, D. Appleton, New York 1915, p. 181
+  https://archive.org/details/songswholeworlds00wier/page/n184/  (image page/n184_w2400.jpg, 2533x3388)
+Read: 3/4 in C, pickup a quarter, verse 1 (16 bars) + chorus (16 bars), bar 12. Melody = top voice of the right hand.
+G4:4 | E5:6 D5:2 C5:4 | D5:4 C5:4 A4:4 | G4:4 E4:8~ | E4:4 R:4 G4:4 | E5:6 D5:2 C5:4 | C5:4 B4:4 C5:4 | D5:12~ | D5:8 G4:4 | E5:6 D5:2 C5:4 | D5:4 C5:4 A4:4 | G4:4 E4:8~ | E4:4 R:4 G4:4 | A4:4 D5:4 C5:4 | B4:4 A4:4 B4:4 | C5:12~ | C5:8 R:4 | G4:12 | C5:12 | A4:12 | C5:12 | B4:4 B4:4 B4:4 | B4:4 A4:4 B4:4 | C5:8 D5:4 | E5:12 | G4:12 | C5:12 | A4:12 | D5:8 C5:4 | B4:4 B4:4 B4:4 | B4:4 A4:4 B4:4 | C5:12~ | C5:4 R:4
+Pitch by eye from 160-400% zooms against the five lines (dots of dotted chords used to fix line/space); clean engraving.
+Flags:
+  - Verse: melody stems up, a second voice (dotted halves) below; only the upper voice taken.
+  - Chorus (bars 17-32) is printed as piano chords; the top note was read as the melody. Bar 26 ("back"): C5 head displaced right of a Bb4 (second), top = C5. Bar 28 ("back, Oh,"): top D5 half then C5 quarter.
+  - Bars 31-32: C5 dotted half tied to a C5 quarter, quarter rest, end (closes against the quarter pickup).
+  - Disclosure: before choosing this print I also viewed The Golden Book of Favorite Songs (Hall & McCreary, Chicago 1923), p. 121, https://archive.org/details/goldenbookoffavo00beat_0/page/n116/ (SATB, words "My Bonnie is over the ocean"). Its soprano agrees with the reading above in bars 1-4, 21-25 and the last bar; I used it only to confirm that the top voice carries the tune in the chorus. Neither print is a score-B candidate.
+
+## hickory-dickory-dock  (substitute; logged 2026-11-07, before any score B was looked at)
+Scan: J. W. Elliott, "Dickory, dickory, dock" (Allegro), in Mother Goose's Nursery Rhymes and Nursery Songs, set to music by J. W. Elliott, engr. Dalziel, McLoughlin Bros., New York [187-?], p. 7
+  https://archive.org/details/mothergoosesnurs00elli/page/n14/  (image page/n14_w2400.jpg, 2274x3502)
+Read: 6/8 in F, separate voice staff (piano staves ignored), 8 bars, pickup 0, bar 12.
+A4:2 Bb4:2 C5:2 Bb4:2 A4:2 G4:2 | A4:2 R:8 A4:2 | A4:2 R:2 C5:2 Bb4:2 R:2 G4:2 | A4:2 R:8 A4:2 | A4:2 R:2 A4:2 C5:4 C5:2 | Bb4:2 R:2 Bb4:2 D5:6 | C5:2 D5:2 C5:2 Bb4:2 A4:2 G4:2 | F4:2 R:2 R:8
+Pitch by eye from 180-400% zooms against the five lines; clean engraving, staff space ~17 px.
+Flags:
+  - Bars 2, 4 and 8: printed rests are eighth, eighth, quarter (bar 8: plus a final eighth); written combined as R:8 (bar 8: R:2 R:8).
+  - The print is staccato throughout (eighth notes separated by eighth rests in bars 3, 5, 6): score B may hold these notes instead; the note+rest rule covers that only where the next onset matches.
+  - Bar 6: last note D5 dotted quarter (head on the D5 line, measured at 400%), accent fz.
+  - Bar 7: C5 D5 C5 Bb4 A4 G4, measured at 400%.
+
+## humpty-dumpty  (substitute; logged 2026-11-07, before any score B was looked at)
+Scan: J. W. Elliott, "Humpty Dumpty" (Allegretto), in Mother Goose's Nursery Rhymes and Nursery Songs, set to music by J. W. Elliott, McLoughlin Bros., New York [187-?], p. 30
+  https://archive.org/details/mothergoosesnurs00elli/page/n37/  (image page/n37_w2400.jpg, 2274x3502)
+Read: 6/8 in D, separate voice staff (piano ignored), 10 bars, pickup 0, bar 12.
+A4:4 D5:2 F#4:4 A4:2 | D4:2 E4:2 F#4:2 E4:6 | G4:4 B4:2 E4:4 G4:2 | C#4:2 F#4:2 E4:2 D4:6 | F#4:2 G4:2 A4:2 B4:2 A4:2 G4:2 | F#4:2 G4:2 A4:2 B4:6 | D4:2 D4:2 D4:2 E4:4 E4:2 | F#4:6 G4:2 R:2 G4:2 | A4:6~ A4:2 E4:2 F#4:2 | D4:4 R:8
+Pitch by eye from 200% zooms, each head placed against the five lines; clean engraving.
+Flags:
+  - Bar 4: first note C#4 on a ledger line below the staff (key D, so sharp).
+  - Bar 8: F#4 dotted quarter, G4 eighth, eighth rest, G4 eighth ("Dump-ty to-").
+  - Bar 9: A4 dotted quarter joined to an A4 eighth by a curve under the heads, one syllable ("ge- -"): read as a tie.
+  - Bar 10: D4 quarter, then eighth, quarter and eighth rests (written R:8).

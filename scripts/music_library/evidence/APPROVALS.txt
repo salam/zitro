@@ -1,0 +1,190 @@
+SONG LIBRARY: APPROVALS AND RULINGS
+===================================
+
+This file records every decision behind the server songs in scripts/music_library/,
+so that the library can be rebuilt and checked the same way later.
+
+Three kinds of decision are recorded:
+
+  A. Approvals by Matthias, the project owner. Only he may approve a difference
+     between score A and score B, and every such approval is also written into the song
+     file as a "settled Matthias <date>: ..." line. The tool refuses any other difference.
+  B. Rulings made by the AI controller while building the library (2026-11-07). Each
+     gives the decision, the reason, and the cost if the ruling is wrong. Each one may
+     be overruled.
+  C. Where the evidence lives.
+
+The design rules themselves are in docs/superpowers/specs/2026-11-07-song-library-design.md.
+The design marks decisions taken from Matthias with "(user)".
+
+
+A. APPROVALS BY MATTHIAS
+------------------------
+
+2026-11-07  General rules (design discussion)
+  - "Ok, wenn es Lieder nicht findet. Hohe confidence ist besser."
+    A missing song is fine. A wrong note or a legal doubt is not.
+  - "Sicher global ungeschützt": all authors died before 1926, or the melody is
+    traditional with a print before 1931, and the melody was first published before 1931.
+  - The evidence must come from two independent reputable sources that agree. A
+    traditional melody also needs a named print from before 1931.
+
+2026-11-07  Rest folding (question: does a note followed by a rest count as a longer note?)
+  Answer: "Als gleich werten (Empfohlen)"
+  Rule: a note followed by a rest counts as equal to a longer note of the same pitch,
+  when the next note starts at the same time. The tool implements this, and also
+  applies it at the end of a song, where the song end counts as the next note (ruling B27).
+
+2026-11-07  Real variants, first batch (question: when the old print and the open score
+  differ, which version plays?)
+  Answer: "Wie im alten Druck spielen"
+  Songs:  ihr-kinderlein-kommet  (bars 15-16, the ending)
+          oh-susanna             (bars 13, 15, 22: Holt vs Benteen 1848 rhythms)
+          auld-lang-syne         (the 2/4 version of 1897; bars 9-10 too, ruling B24)
+
+2026-11-07  Real variants, second batch (multi-select, same question)
+  Answer: "Die Vogelhochzeit, Camptown Races, Mary Had a Little Lamb, My Bonnie"
+  Songs:  die-vogelhochzeit      (bars 4-6, the "Fi-di" sixteenth pairs)
+          camptown-races         (bar 23; the last note too, ruling B44)
+          mary-had-a-little-lamb (bars 4 and 7)
+          my-bonnie              (bars 1/5/9 dotted, bar 20 C5, bar 28, the end)
+
+2026-11-07  Three Blind Mice (question: play the 1919 form, with each phrase sung twice?)
+  Answer: "Ja, mit Wiederholungen (Empfohlen)"
+  Song:   three-blind-mice       (the 1919 form; the shorter last note, ruling B45)
+
+2026-11-08  Merge of PR #9 approved: "ok, gut. merge to main. freigaben als txt oder
+  ähnlich behalten, damit es reproduzierbar ist." This file is the result.
+
+Still open, waiting for Matthias: three built-in songs have unclear evidence and stay
+in the firmware for now. They are kommt-ein-vogel, schneefloeckchen and
+haensel-und-gretel. See the audit table in docs/features/music.md.
+
+The exact wording of each approval, with the notes of both scores, is the "settled"
+line in each song file. List them with:
+    grep -n '^settled' scripts/music_library/*.song
+
+
+B. RULINGS BY THE AI CONTROLLER (2026-11-07, in the order made)
+---------------------------------------------------------------
+Format: Ruling: <decision> - <why> - <cost if wrong>.
+"T<n>" is the task number in docs/superpowers/plans/2026-11-07-song-library.md.
+Where a later ruling replaces an earlier one, both are kept, so the record stays complete
+(Long, Long Ago: B38 replaces B35; Sternlein: B21 follows on from B19).
+
+B01. T1 apostrophe/punctuation handling applies only with forTitles==true; forTitles==false stays byte-identical to old proteinNormalise - plan says so explicitly - cost if wrong: none, protein tests pin it.
+
+B02. T3 "no song id with a hyphen" means no built-in song id appears in MUSIC_PROMPT_RULE - the intent is "rule no longer lists ids" - cost if wrong: a slightly weaker test.
+
+B03. T8 release notes name only songs actually published in T6/T9 - avoid promising songs that failed checks - cost: none.
+
+B04. T6/T9 rsync of webpage2/data/music/ to zitro.spot is authorized by the approved plan; controller runs it after the task review passes, never a subagent - cost if wrong: public files to delete by hand.
+
+B05. implementers run sequentially in this worktree (one stick, one branch); device steps done by the implementer of that task - cost: none.
+
+B06. typographic punctuation (en/em dash, curly quotes „ “ ” « ») rejects a whole title in title mode; AI answers often quote titles that way - carry into Task 3: in title mode those code points become spaces (still exact, not fuzzy) - cost if wrong: none, a few lines in name_match.h
+
+B07. commit trailers name the model that actually wrote the commit (Sonnet 5.5 for sonnet implementers) instead of the plan's Opus 5.5 - accurate attribution - cost if wrong: cosmetic, trailer text only
+
+B08. "best-known title in its original language" vs example 'Play Silent Night' -> 'music:Silent Night' - every index entry carries both de and en names (and the tool enforces both), so either language resolves; keep the plan's examples - cost if wrong: an English title for a server song with no en name fails; T5 makes en required.
+
+B09. Task 6 research (score A transcription + legal evidence, drafts in workspace research/, no repo edits) runs in parallel with Task 4 - it touches no repo files; score B is gathered later by a different agent to keep the two scores independent - cost if wrong: research redone
+
+B10. Review Focus 3 binds over brief step 3 wording - a malformed index (bad header, wrong count, bad line) maps to MUSIC_LOOKUP_OFFLINE; musicResolve returns a tri-state enum so fetch can tell bad index from no match/ambiguous - cost if wrong: one sentence choice on a rare server fault
+
+B11. T5 requires both de and en in every .song - AI may give either language's title - cost if wrong: an extra translation per song
+
+B12. T5 strengthens testServerData (each entry resolves by own de/en, aliases pre-normalised, every file sound) - carries Task 2 deferred minor - cost: none
+
+B13. two composer sources must be on different registrable domains (en.wikipedia + de.wikipedia = one source, Wikipedia) - spec says "independent" - cost if wrong: slightly more evidence work per song
+
+B14. run.sh rebuilds the data into a temp folder and fails if it differs from committed webpage2/data/music (when present) - guarantees served data comes from checked song files - cost: a few lines
+
+B15. score B LilyPond notes may sit in scripts/music_library/*.song with URL + licence, exactly as tests/music/references.txt already holds Wikipedia notes; "our song data" = the served files, which never contain B - spec allows B "only to compare, as references.txt does" - cost if wrong: repo carries attributed CC BY-SA excerpts, as it already does
+
+B16. run Task 7 (built-in audit, docs only) before Task 6 while the Task 6 research agent is still working - no shared files - cost: none
+
+B17. when score A and B differ, A may be corrected only where A's own scan unambiguously shows the other note (re-measured, recorded in NOTES.md); a genuine variant drops the song unless the user settles it - spec says only "a person" may settle - cost if wrong: fewer songs in this round
+
+B18. reclassify london-bridge and kommt-ein-vogel as unclear unless a print of today's exact tune before 1931 is seen (one bounded search: Rosewig 1879; a print of the Kommt-ein-Vogel tune) - spec: missing evidence = stays out; built-ins only reported - cost if wrong: user sees 4 unclear instead of 2
+
+B19. Sternlein needs a new score B - de.wp's is copied from Carus (all rights reserved), spec forbids those even to compare; if no open B is found, the song stays out this round - cost: one song fewer
+
+B20. settled lines name the user's decision: "settled Matthias 2026-11-07: <reason>"; the AI never writes one on its own - cost: none
+
+B21. Sternlein waits for Task 9 - its new B was read from a scan by an agent who had A open, so the reading isn't independent; Task 9 gets a blind B reading plus folding of a trailing rest into the last note (same total length = same "next onset", the loop restart) - cost if wrong: one song later
+
+B22. Oh Susanna stays - A's reader saw one Benteen page before transcribing; the B agent re-measured every difference on A's own Holt scan, user settled the rest; disclose to user - cost if wrong: a verse note could share a misreading with Benteen (unlikely, Benteen is a print)
+
+B23. fix the public-facing minors (hedge the Kinderlein attribution, en "O Come, Little Children", hymnary.org as Auld's second source) before deploy, since SOURCES.txt goes public - cost: one small fix round
+
+B24. user's "play as in the old print" covers Auld Lang Syne bars 9-10 (B4 vs E5) too - the question said the old print's version plays - report to user
+
+B25. accuracy over the plan's example release-note wording - score B may be a modern open score - cost: none
+
+B26. include the "exactly as written" USERGUIDE wording in the fix (user-facing inaccuracy) - cost: none
+
+B27. Task 9a - fold a trailing rest into the last note at song end (the song end is the 'next onset'); within the user's rule, needed for Sternlein's Schaeublin B - cost if wrong: a song whose last note is shorter in one edition passes
+
+B28. score B agents may append a trailing rest to B when B's last bar is short only because it balances a pickup (notation-equivalent, recorded in NOTES) - keeps settled for real differences - cost if wrong: none, rests are never served
+
+B29. no "Wooden Heart" alias for Muss i denn - the 1960 song is a different, protected work - cost: a child asking for Wooden Heart hears the honest miss
+
+B30. muss-i-denn - A's own scan has repeat signs on part 2, so writing A as A A B B follows A's print (allowed A correction) - cost: none
+
+B31. die-vogelhochzeit held for the user's decision (variant), batched with any other variants at the end of Task 9 research - user's earlier answer covered three named songs only - cost: one question round
+
+B32. filing choices stand (Mary, My Bonnie traditional; Hickory/Humpty composer Elliott d.1915) - every alternative author also died before 1926, so the legal verdict doesn't depend on the choice - cost: attribution wording only
+
+B33. CC BY-NC-SA is not an open licence for our purposes (NC) - Yankee Doodle stays out - cost: one song
+
+B34. a CC BY arrangement's top voice, or the same tune under another title (Goodnight Ladies), may serve as B if it is the same melody; scores that exist only as images go to a blind reader - cost: none
+
+B35. Long, Long Ago stays - first printed c.1843, 4 years after Bayly's death; the spec's "late first edition" exclusion targets posthumous editions recent enough to carry rights (any editio-princeps term from 1843 expired long ago) - cost if wrong: one song to remove
+
+B36. a B that is an independent modern transcription of the same historic print counts - the check guards against misreading, and two independent readings agree; reported to user - cost if wrong: an error in the print itself would be shared (Chappell, Petrie are standard sources)
+
+B37. B agents may trim a trailing rest from B when B's last bar is long only because it ignores A's pickup (mirror of the append ruling; rests are never served) - funiculi passes, camptown's last-bar difference too - cost: none
+
+B38. drop long-long-ago - IMSLP says it is unclear whether Bayly wrote the music; spec: disputed evidence stays out - cost: one song
+
+B39. camptown-races bar 23 held for the user's decision with die-vogelhochzeit - cost: one question
+
+B40. drop humpty-dumpty - A (Elliott's own print) is not the tune children sing today; spec anti-goal "wrong song under the name" - cost: one song
+
+B41. keep hickory-dickory-dock - two independent old prints (Elliott c.1870, Wier 1918) agree note by note - cost if wrong: an older tune than some children know
+
+B42. three-blind-mice gets a blind reading of a different pre-1931 print (Augener 1917) - famous song, worth one agent - cost: one agent run
+
+B43. batch user question for variants: die-vogelhochzeit, camptown-races, mary-had-a-little-lamb, my-bonnie
+
+B44. camptown-races last note (A E4:6 vs B E4:8, B's last bar ignores the pickup) is covered by the user's choice that Camptown plays as the old print shows - the decision was for the print's version, the bar list was informational - cost if wrong: one settled line to edit; reported to user
+
+B45. remove the r8 pad; the settled line names the last-note length (A 12 vs B 10) like Camptown's - covered by the user's choice of the 1919 form - cost: none
+
+B46. Important 1 is scrubbed by the controller from every unpushed commit (git filter-branch over 4d8547a..HEAD, backup ref kept) - the plan commit is in history, a later edit would still publish it - cost: rewritten local SHAs (branch never pushed)
+
+B47. fix wave also takes Minor 1 (swap guard: any music: model with no song loaded gets the UNKNOWN sentence - the anti-goal is a promise with nothing playing), Minor 3 (.htaccess charset), Minor 4, Minor 5, REQUIREMENTS wording - all cheap; Minor 2, 6, 7 stay deferred
+
+
+C. WHERE THE EVIDENCE LIVES
+---------------------------
+  scripts/music_library/<id>.song   score A notes, the score A source, score B (URL, licence,
+                                    notes), the legal evidence, the settled line
+  webpage2/data/music/SOURCES.txt   the published evidence per song (built by the tool)
+  evidence/transcripts-*.txt        score A readings, logged before any other score of
+                                    the song was opened (this keeps them independent)
+  evidence/research-*.md            research notes per round: the sources searched, the
+                                    differences between A and B, crop positions on A's
+                                    scan, and the songs dropped and why
+                                    (round1 = the first five songs; de, en, ever = round 2)
+
+The scan crops mentioned in the notes (for example "crop x900-1560 y1680-1960") were
+temporary files and are not kept. They can be made again from the archive.org page
+image named next to each crop, at the stated pixel size. "<scratchpad>" in the notes
+stands for that temporary folder.
+
+The notes are working records written during the research. Where they disagree with a
+.song file, the .song file is the one that counts. In particular, the notes still list
+long-long-ago and humpty-dumpty, which were dropped later (rulings B38, B40), and their
+"final tool output" sections show the state at that time.

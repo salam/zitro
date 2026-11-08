@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "astro_core.h"
 #include "physics_atom_table.h"
 
 static const float PHYSICS_PI = 3.14159265358979f;
@@ -371,7 +372,9 @@ inline double physicsJulianDayFromUnix(double seconds) { return 2440587.5 + seco
 
 // ---- Seasons: the Earth's axis stays tilted while it goes around the Sun ----
 static const float PHYSICS_EARTH_TILT = 23.44f * PHYSICS_DEG;
-static const float PHYSICS_HOME_LATITUDE = 47.0f * PHYSICS_DEG;  // Middle of Switzerland, north
+// Home, until the home city setting sets PhysicsState.homeLatitude and homeLongitude
+static const float PHYSICS_HOME_LATITUDE = 47.0f * PHYSICS_DEG;   // Middle of Switzerland, north
+static const float PHYSICS_HOME_LONGITUDE = 8.5f * PHYSICS_DEG;   // East
 
 inline float physicsDegrees360(double deg) {
   double r = fmod(deg, 360.0);
@@ -430,6 +433,37 @@ inline void physicsLatitudePoint(const float axis[3], float latitude, float t, f
   out[2] = axis[2] * s + c * (uz * ct + vz * st);
 }
 
+// ---- The Sun in the home sky ----
+// Right ascension in degrees, from its longitude: the Astronomical Almanac's low-precision formula
+inline double physicsSunRightAscension(double julianDay, float longitude) {
+  const double obliquity = (23.439 - 0.0000004 * (julianDay - 2451545.0)) * ASTRO_RAD;
+  return astroWrap360(atan2(cos(obliquity) * sin((double)longitude), cos((double)longitude)) / ASTRO_RAD);
+}
+
+// Greenwich mean sidereal time in degrees, from the UT Julian day: Meeus, ch. 12, without the tiny T^2 terms
+inline double physicsSiderealDegrees(double julianDay) {
+  return astroWrap360(280.46061837 + 360.98564736629 * (julianDay - 2451545.0));
+}
+
+// Height above the horizon and direction (from north, clockwise), radians, of a body at this
+// declination and hour angle (0 when it is due south or north, positive after)
+inline void physicsSkyPosition(float latitude, float declination, float hourAngle, float& height, float& azimuth) {
+  const float sl = sinf(latitude), cl = cosf(latitude), sd = sinf(declination), cd = cosf(declination);
+  const float ch = cosf(hourAngle);
+  height = asinf(physicsClamp(sl * sd + cl * cd * ch, -1.0f, 1.0f));
+  azimuth = atan2f(-cd * sinf(hourAngle), sd * cl - cd * ch * sl);
+  if (azimuth < 0) azimuth += 2.0f * PHYSICS_PI;
+}
+
+// Where the Sun stands right now, for a clock's Julian day (UT) and a place. East longitudes positive.
+inline void physicsSunNow(double julianDay, float latitude, float longitude, float& height, float& azimuth) {
+  const float sunLongitude = physicsSunLongitude(julianDay);
+  const double hourAngle = physicsSiderealDegrees(julianDay) + longitude / PHYSICS_DEG -
+                           physicsSunRightAscension(julianDay, sunLongitude);
+  physicsSkyPosition(latitude, physicsSunDeclination(sunLongitude), (float)(astroWrap180(hourAngle) * ASTRO_RAD), height,
+                     azimuth);
+}
+
 // ---- Moon: how far it is from the Sun, seen from Earth. Meeus, Astronomical Algorithms, ch. 48 ----
 // 0 new moon, 180 full moon, in degrees. Below 180 it is growing.
 inline float physicsMoonElongation(double julianDay) {
@@ -467,6 +501,191 @@ inline void physicsLitSpan(float y, float radius, float lit, bool growing, float
   }
 }
 
+// ---- Double pendulum: two rods, two weights, and chaos ----
+struct PhysicsDoublePendulum { float angle1, speed1, angle2, speed2; };  // Radians from hanging straight down
+
+// The full equations of motion (Lagrange), for point masses on light rods
+inline void physicsDoublePendulumAccel(const PhysicsDoublePendulum& p, float m1, float m2, float l1, float l2, float g,
+                                       float& accel1, float& accel2) {
+  const float d = p.angle1 - p.angle2;
+  const float sd = sinf(d), cd = cosf(d);
+  const float den = 2.0f * m1 + m2 - m2 * cosf(2.0f * d);
+  accel1 = (-g * (2.0f * m1 + m2) * sinf(p.angle1) - m2 * g * sinf(p.angle1 - 2.0f * p.angle2) -
+            2.0f * sd * m2 * (p.speed2 * p.speed2 * l2 + p.speed1 * p.speed1 * l1 * cd)) /
+           (l1 * den);
+  accel2 = (2.0f * sd *
+            (p.speed1 * p.speed1 * l1 * (m1 + m2) + g * (m1 + m2) * cosf(p.angle1) + p.speed2 * p.speed2 * l2 * m2 * cd)) /
+           (l2 * den);
+}
+
+// One Runge-Kutta step
+inline void physicsDoublePendulumStep(PhysicsDoublePendulum& p, float m1, float m2, float l1, float l2, float g, float dt) {
+  PhysicsDoublePendulum k = p;
+  float a1, a2;
+  physicsDoublePendulumAccel(k, m1, m2, l1, l2, g, a1, a2);
+  const float k1[4] = {p.speed1, a1, p.speed2, a2};
+  k = {p.angle1 + 0.5f * dt * k1[0], p.speed1 + 0.5f * dt * k1[1], p.angle2 + 0.5f * dt * k1[2], p.speed2 + 0.5f * dt * k1[3]};
+  physicsDoublePendulumAccel(k, m1, m2, l1, l2, g, a1, a2);
+  const float k2[4] = {k.speed1, a1, k.speed2, a2};
+  k = {p.angle1 + 0.5f * dt * k2[0], p.speed1 + 0.5f * dt * k2[1], p.angle2 + 0.5f * dt * k2[2], p.speed2 + 0.5f * dt * k2[3]};
+  physicsDoublePendulumAccel(k, m1, m2, l1, l2, g, a1, a2);
+  const float k3[4] = {k.speed1, a1, k.speed2, a2};
+  k = {p.angle1 + dt * k3[0], p.speed1 + dt * k3[1], p.angle2 + dt * k3[2], p.speed2 + dt * k3[3]};
+  physicsDoublePendulumAccel(k, m1, m2, l1, l2, g, a1, a2);
+  const float k4[4] = {k.speed1, a1, k.speed2, a2};
+  p.angle1 += dt / 6.0f * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]);
+  p.speed1 += dt / 6.0f * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]);
+  p.angle2 += dt / 6.0f * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2]);
+  p.speed2 += dt / 6.0f * (k1[3] + 2 * k2[3] + 2 * k3[3] + k4[3]);
+}
+
+// Motion plus height energy, joules; the pivot is height zero
+inline float physicsDoublePendulumEnergy(const PhysicsDoublePendulum& p, float m1, float m2, float l1, float l2, float g) {
+  const float motion = 0.5f * m1 * l1 * l1 * p.speed1 * p.speed1 +
+                       0.5f * m2 *
+                           (l1 * l1 * p.speed1 * p.speed1 + l2 * l2 * p.speed2 * p.speed2 +
+                            2.0f * l1 * l2 * p.speed1 * p.speed2 * cosf(p.angle1 - p.angle2));
+  const float height = -(m1 + m2) * g * l1 * cosf(p.angle1) - m2 * g * l2 * cosf(p.angle2);
+  return motion + height;
+}
+
+// ---- Doppler effect: a moving source squeezes its waves ahead and stretches them behind ----
+// What a listener at rest hears, f c / (c - v cos a); a: angle between the source's way and the line
+// from the source to the listener, at the moment the wave set off
+inline float physicsDopplerHeard(float frequency, float waveSpeed, float sourceSpeed, float cosAngle) {
+  return frequency * waveSpeed / (waveSpeed - sourceSpeed * cosAngle);
+}
+
+// A source moving along y = 0 from x = startX at speed v sends out a wave crest at time sent.
+// When it reaches the listener at (lx, ly), and the cosine of the angle it set off at.
+inline float physicsDopplerArrival(float sent, float startX, float v, float c, float lx, float ly, float& cosAngle) {
+  const float sx = startX + v * sent;
+  const float dx = lx - sx;
+  const float distance = sqrtf(dx * dx + ly * ly);
+  cosAngle = distance > 0 ? dx / distance : 1.0f;
+  return sent + distance / c;
+}
+
+// ---- Two sources in step: light through a double slit ----
+// Brightness from two equal waves, 0 to 4 (the sum of the two is 2): 4 cos^2(pi (r1 - r2) / lambda)
+inline float physicsTwoWaveBrightness(float r1, float r2, float wavelength) {
+  const float c = cosf(PHYSICS_PI * (r1 - r2) / wavelength);
+  return 4.0f * c * c;
+}
+
+// ---- Prism: Snell's law with a refractive index that depends on the colour ----
+// Sellmeier's equation, n^2 = 1 + sum B lambda^2 / (lambda^2 - C), lambda in micrometres
+struct PhysicsGlass {
+  const char* de;
+  const char* en;
+  const char* code;  // Maker's name for it, or nullptr
+  double b[4], c[4];
+};
+// N-BK7 and N-SF11: SCHOTT optical glass catalogue (2017), at 20 C, relative to air.
+// Water: Daimon and Masumura, Applied Optics 46, 3811 (2007), distilled water at 20 C.
+static const PhysicsGlass PHYSICS_GLASSES[3] = {
+    {"Wasser", "Water", nullptr,
+     {5.684027565e-1, 1.726177391e-1, 2.086189578e-2, 1.130748688e-1},
+     {5.101829712e-3, 1.821153936e-2, 2.620722293e-2, 1.069792721e1}},
+    {"Kronglas", "Crown glass", "N-BK7",
+     {1.03961212, 0.231792344, 1.01046945, 0}, {0.00600069867, 0.0200179144, 103.560653, 0}},
+    {"Flintglas", "Flint glass", "N-SF11",
+     {1.73759695, 0.313747346, 1.89878101, 0}, {0.013188707, 0.0623068142, 155.23629, 0}},
+};
+
+inline float physicsSellmeier(const PhysicsGlass& glass, float micrometres) {
+  const double l2 = (double)micrometres * micrometres;
+  double n2 = 1.0;
+  for (int i = 0; i < 4; i++) n2 += glass.b[i] * l2 / (l2 - glass.c[i]);
+  return (float)sqrt(n2);
+}
+
+// Snell's law for a direction (dx, dy) meeting a surface with unit normal (nx, ny) pointing back
+// towards where it comes from. False: total reflection.
+inline bool physicsRefract(float dx, float dy, float nx, float ny, float n1, float n2, float& ox, float& oy) {
+  const float ratio = n1 / n2;
+  const float cosIn = -(dx * nx + dy * ny);
+  const float k = 1.0f - ratio * ratio * (1.0f - cosIn * cosIn);
+  if (k < 0) return false;
+  const float m = ratio * cosIn - sqrtf(k);
+  ox = ratio * dx + m * nx;
+  oy = ratio * dy + m * ny;
+  return true;
+}
+
+// Where a ray from (ox, oy) along (dx, dy) crosses the segment a-b. False if it misses.
+inline bool physicsRaySegment(float ox, float oy, float dx, float dy, float ax, float ay, float bx, float by, float& t) {
+  const float ex = bx - ax, ey = by - ay;
+  const float den = dx * ey - dy * ex;
+  if (fabsf(den) < 1e-9f) return false;
+  t = ((ax - ox) * ey - (ay - oy) * ex) / den;
+  const float u = ((ax - ox) * dy - (ay - oy) * dx) / den;
+  return t > 1e-4f && u >= 0.0f && u <= 1.0f;
+}
+
+// A ray through a triangular prism in air: corners (x[i], y[i]), in, then out at another face.
+// Gives the entry and exit points and the way out. False if it misses or is reflected inside.
+inline bool physicsPrismRay(const float* x, const float* y, float n, float ox, float oy, float dx, float dy, float& inX,
+                            float& inY, float& outX, float& outY, float& outDx, float& outDy) {
+  const float cx = (x[0] + x[1] + x[2]) / 3.0f, cy = (y[0] + y[1] + y[2]) / 3.0f;
+  for (int pass = 0; pass < 2; pass++) {
+    int hitFace = -1;
+    float best = 1e30f;
+    for (int f = 0; f < 3; f++) {
+      float t;
+      const int g = (f + 1) % 3;
+      if (physicsRaySegment(ox, oy, dx, dy, x[f], y[f], x[g], y[g], t) && t < best) {
+        best = t;
+        hitFace = f;
+      }
+    }
+    if (hitFace < 0) return false;
+    const int g = (hitFace + 1) % 3;
+    const float hx = ox + best * dx, hy = oy + best * dy;
+    // The face's normal, pointing out of the prism
+    float nx = y[g] - y[hitFace], ny = -(x[g] - x[hitFace]);
+    const float length = sqrtf(nx * nx + ny * ny);
+    nx /= length;
+    ny /= length;
+    if (nx * (hx - cx) + ny * (hy - cy) < 0) { nx = -nx; ny = -ny; }
+    float rx, ry;
+    if (pass == 0) {
+      if (!physicsRefract(dx, dy, nx, ny, 1.0f, n, rx, ry)) return false;
+      inX = hx; inY = hy;
+    } else {
+      if (!physicsRefract(dx, dy, -nx, -ny, n, 1.0f, rx, ry)) return false;
+      outX = hx; outY = hy;
+      outDx = rx; outDy = ry;
+    }
+    ox = hx; oy = hy;
+    dx = rx; dy = ry;
+  }
+  return true;
+}
+
+// The textbook way for the same prism, for the tests: apex angle and the angle in, from the normal.
+// Deviation = in + out - apex. Negative when the light can't get out.
+inline float physicsPrismDeviation(float apex, float angleIn, float n) {
+  const float inside = asinf(sinf(angleIn) / n);
+  const float s = n * sinf(apex - inside);
+  if (fabsf(s) > 1.0f) return -1.0f;
+  return angleIn + asinf(s) - apex;
+}
+
+// ---- Half-life: each atom decays by chance, with the same chance in each moment ----
+// Chance for one atom to decay within dt
+inline float physicsDecayChance(float dt, float halfLife) { return 1.0f - exp2f(-dt / halfLife); }
+inline float physicsRemaining(float start, float t, float halfLife) { return start * exp2f(-t / halfLife); }
+
+// A small, repeatable random number generator (xorshift32): 0 to 1
+inline float physicsRandom(uint32_t& state) {
+  if (state == 0) state = 2463534242u;
+  state ^= state << 13;
+  state ^= state >> 17;
+  state ^= state << 5;
+  return (state >> 8) * (1.0f / 16777216.0f);
+}
+
 // ---- The scenes: a closed list, in the order a school would teach them ----
 enum PhysicsSceneId : uint8_t {
   PHYSICS_FALLING,
@@ -485,7 +704,17 @@ enum PhysicsSceneId : uint8_t {
   PHYSICS_MATTER,
   PHYSICS_SEASONS,
   PHYSICS_MOON,
-  PHYSICS_ATOM
+  PHYSICS_ATOM,
+  PHYSICS_DOUBLE_PENDULUM,
+  PHYSICS_DOPPLER,
+  PHYSICS_DOUBLE_SLIT,
+  PHYSICS_PRISM,
+  PHYSICS_HALF_LIFE,
+  PHYSICS_PLANETS,
+  PHYSICS_RETROGRADE,
+  PHYSICS_SUNPATH,
+  PHYSICS_SATELLITES,
+  PHYSICS_SIZES
 };
 
 struct PhysicsSceneInfo {
@@ -513,6 +742,16 @@ static const PhysicsSceneInfo PHYSICS_SCENES[] = {
     {"matter", "Aggregatzust\xC3\xA4nde", "States of matter", PHYSICS_MATTER, 3},
     {"seasons", "Jahreszeiten", "Seasons", PHYSICS_SEASONS, 4},
     {"moon", "Mondphasen", "Moon phases", PHYSICS_MOON, 2},
+    {"double-pendulum", "Doppelpendel", "Double pendulum", PHYSICS_DOUBLE_PENDULUM, 4},
+    {"doppler", "Doppler-Effekt", "Doppler effect", PHYSICS_DOPPLER, 3},
+    {"double-slit", "Doppelspalt", "Double slit", PHYSICS_DOUBLE_SLIT, 3},
+    {"prism", "Prisma", "Prism", PHYSICS_PRISM, 3},
+    {"half-life", "Halbwertszeit", "Half-life", PHYSICS_HALF_LIFE, 4},
+    {"planets", "Planeten", "Planets", PHYSICS_PLANETS, 4},
+    {"retrograde", "Planetenschleife", "Retrograde loop", PHYSICS_RETROGRADE, 2},
+    {"sunpath", "Sonnenbahn", "Sun path", PHYSICS_SUNPATH, 4},
+    {"satellites", "Satellitenbahnen", "Satellite orbits", PHYSICS_SATELLITES, 4},
+    {"sizes", "Gr\xC3\xB6ssenvergleich", "Size comparison", PHYSICS_SIZES, 5},
     {"atom", "Atom", "Atom", PHYSICS_ATOM, PHYSICS_ELEMENT_COUNT},
 };
 static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
@@ -522,9 +761,18 @@ static const char PHYSICS_PROMPT_RULE[] =
     "PHYSIK: Setze 'model' auf 'physics:<id>' NUR wenn der Nutzer fragt, wie etwas Physikalisches funktioniert "
     "oder warum es passiert, und eine dieser Szenen genau passt (z.B. 'Wie funktioniert ein Hebel?' ergibt "
     "lever, 'Warum schwimmt Holz?' ergibt buoyancy, 'Warum knickt ein Stab im Wasser?' ergibt refraction, "
-    "'Warum gibt es Jahreszeiten?' ergibt seasons, 'Warum sieht der Mond mal rund, mal schmal aus?' ergibt moon). "
+    "'Warum gibt es Jahreszeiten?' ergibt seasons, 'Warum sieht der Mond mal rund, mal schmal aus?' ergibt moon, "
+    "'Was ist Chaos?' oder 'Wie schwingt ein Doppelpendel?' ergibt double-pendulum, 'Warum klingt ein "
+    "Krankenwagen anders, wenn er vorbeifaehrt?' ergibt doppler, 'Was passiert beim Doppelspalt?' oder 'Was ist "
+    "Interferenz?' ergibt double-slit, 'Warum macht ein Prisma Regenbogenfarben?' ergibt prism, 'Was ist eine "
+    "Halbwertszeit?' oder 'Wie zerfaellt radioaktives Material?' ergibt half-life, 'Wo stehen die Planeten gerade?' "
+    "oder 'Wie sieht unser Sonnensystem aus?' ergibt planets, 'Warum laeuft der Mars manchmal rueckwaerts?' ergibt "
+    "retrograde, 'Warum steht die Sonne im Winter so tief?' oder 'Wie laeuft die Sonne ueber den Himmel?' ergibt "
+    "sunpath, 'Wie hoch fliegt die ISS?' oder 'Was ist ein geostationaerer Satellit?' ergibt satellites, 'Wie gross "
+    "ist Jupiter im Vergleich zur Erde?' oder 'Wie gross ist die Sonne?' ergibt sizes). "
     "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
-    "sound circuit matter seasons moon atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
+    "sound circuit matter seasons moon double-pendulum doppler double-slit prism half-life planets retrograde "
+    "sunpath satellites sizes atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
     "Kohlenstoffatom aufgebaut?' ergibt atom-C). Frage nach dem Aufbau eines Atoms ergibt immer physics:atom-<Symbol>, "
     "nie molecule. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";
@@ -630,6 +878,63 @@ static const float PHYSICS_BULB_OHMS = 15.0f;  // A small torch bulb, taken as c
 static const double PHYSICS_REFERENCE_NEW_MOON = 2451550.26;
 // Clock values before this mean the device hasn't got the time yet (2024-01-01)
 static const double PHYSICS_CLOCK_VALID_FROM = 1704067200.0;
+
+// Double pendulum: two rods of 25 cm with equal weights; the second one starts a thousandth of a radian further out
+static const float PHYSICS_CHAOS_STARTS[4] = {30.0f, 90.0f, 135.0f, 170.0f};  // Degrees, both rods
+static const float PHYSICS_CHAOS_LENGTH = 0.25f;  // m
+static const float PHYSICS_CHAOS_NUDGE = 0.001f;  // rad
+#define PHYSICS_CHAOS_TRAIL 40
+
+// Doppler: a siren at 440 Hz going past at these speeds. Slowed on screen, with the true ratio v / c
+static const float PHYSICS_SIREN_HZ = 440.0f;
+static const float PHYSICS_DOPPLER_KMH[3] = {0.0f, 100.0f, 300.0f};
+static const float PHYSICS_DOPPLER_SCREEN_C = 160.0f;  // Pixels per second for the sound on screen
+static const float PHYSICS_DOPPLER_CREST = 0.25f;      // Seconds between drawn wave crests on screen
+#define PHYSICS_DOPPLER_CRESTS 64
+
+// Double slit: typical laser pointer colours
+struct PhysicsLight { const char* de; const char* en; float nanometres; uint16_t color; };
+static const PhysicsLight PHYSICS_LASERS[3] = {
+    {"Rot", "Red", 650.0f, 0xF8A2}, {"Gr\xC3\xBCn", "Green", 532.0f, 0x2FE4}, {"Blau", "Blue", 450.0f, 0x435F}};
+static const float PHYSICS_SLIT_NM_PER_PIXEL = 81.25f;  // 650 nm is 8 pixels on screen
+#define PHYSICS_SLIT_COLUMNS 90
+#define PHYSICS_SLIT_ROWS 40
+
+// Prism: seven colours of white light, nanometres, and how they look on screen
+static const float PHYSICS_PRISM_NM[7] = {660.0f, 610.0f, 580.0f, 530.0f, 490.0f, 450.0f, 410.0f};
+static const uint16_t PHYSICS_PRISM_COLORS[7] = {0xF800, 0xFC00, 0xFFE0, 0x07E0, 0x07FF, 0x001F, 0x801F};
+
+// Half-life: half-lives from the IAEA's nuclide data (ENSDF / NUBASE), www-nds.iaea.org/relnsd/v1
+struct PhysicsIsotope {
+  const char* de; const char* en;
+  float halfLife; int decimals;  // In the unit below
+  const char* unitDe; const char* unitEn;
+};
+static const PhysicsIsotope PHYSICS_ISOTOPES[4] = {
+    {"Barium-137m", "Barium-137m", 2.552f, 3, "min", "min"},
+    {"Radon-222", "Radon-222", 3.8222f, 3, "Tage", "days"},
+    {"Iod-131", "Iodine-131", 8.0252f, 3, "Tage", "days"},
+    {"Kohlenstoff-14", "Carbon-14", 5700.0f, 0, "Jahre", "years"}};
+static const float PHYSICS_DECAY_SCREEN_HALF_LIFE = 6.0f;  // Seconds on screen, time-lapse
+#define PHYSICS_DECAY_COLUMNS 16
+#define PHYSICS_DECAY_ROWS 16
+#define PHYSICS_DECAY_CURVE 136
+
+// Planets: days per second when the time-lapse runs
+static const float PHYSICS_PLANET_DAYS_INNER = 10.0f;
+static const float PHYSICS_PLANET_DAYS_ALL = 120.0f;
+#define PHYSICS_ORBIT_POINTS 64
+// Retrograde: days per second, and how far before and after the opposition the run goes
+static const float PHYSICS_LOOP_DAYS_PER_SECOND = 20.0f;
+static const float PHYSICS_LOOP_HALF_SPAN[2] = {120.0f, 180.0f};  // Mars, Jupiter
+#define PHYSICS_LOOP_POINTS 201
+#define PHYSICS_LOOP_STARS 48
+// Obliquity of the ecliptic at J2000, IAU: 84381.412 arcseconds
+static const double PHYSICS_OBLIQUITY_J2000 = 84381.412 / 3600.0 * ASTRO_RAD;
+
+// Satellites: seconds on screen for one trip around
+static const float PHYSICS_ORBIT_SCREEN_SECONDS[4] = {6.0f, 10.0f, 12.0f, 16.0f};
+static const double PHYSICS_SIDEREAL_DAY = 86164.09054;  // s, IAU
 
 // Scales an RGB565 colour by 0..1
 inline uint16_t physicsShade565(uint16_t color, float brightness) {

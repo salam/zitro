@@ -36,6 +36,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "edu_feature.h"
 #include "button_rules.h"
 #include "clock_core.h"  // World clock: cities, time zones, the Sun (feature_worldclock.ino)
+#include "shake_core.h"  // What a shake can show besides a fact
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -155,8 +156,8 @@ unsigned long lastConnectionCheck = 0;
 unsigned long wikipediaBlockedUntil = 0;  // Timestamp when Wikipedia requests can resume
 
 // Home screen key: drawScreen() draws this text as the home screen
-// ("[lemon] Press [M5] button / to ask a question / [shake] Shake for random fact.")
-const String MAIN_QUESTION = "Press BUTTON\nto ask a question\n\nShake for random fact.";
+// ("[lemon] Press [M5] button / to ask a question / [shake] Shake for a surprise.")
+const String MAIN_QUESTION = "Press BUTTON\nto ask a question\n\nShake for a surprise.";
 String response = MAIN_QUESTION;
 
 // Display sleep management
@@ -346,7 +347,7 @@ static const SettingDef settingsRegistry[] = {
   {"useWolfram",  "bool",   "Wolfram Alpha",      "Wolfram Alpha",    "Wolfram for math",          -1, -1,      NULL,         false, 1},
   {"localQuotes", "bool",   "Lokale Zitate",      "Local quotes",     "Use local CSV quotes",      -1, -1,      NULL,         false, 1},
   {"parentLock",  "bool",   "Kindersicherung",    "Parental lock",    "Parental lock 20-06h",      -1, -1,      NULL,         false, 0},
-  {"shakeRandom", "bool",   "Schuetteln",         "Shake fact",       "Shake for random fact",     -1, -1,      NULL,         false, 1},
+  {"shakeRandom", "bool",   "Schuetteln",         "Shake surprise",   "Shake for a fact or scene", -1, -1,      NULL,         false, 1},
   {"tripleAudio", "bool",   "Doppelklick Audio",  "Double-click audio","Double-click for audio",   -1, -1,      NULL,         false, 1},
   {"autoAudio",   "bool",   "Auto-Audio",         "Auto audio",       "Auto-play audio requests",  -1, -1,      NULL,         false, 0},
   {"moveZoom",    "bool",   "Roll-Zoom",          "Roll zoom",        "Roll gesture for zoom",     -1, -1,      NULL,         false, 1},
@@ -483,6 +484,16 @@ void modelViewRender(float dt);
 bool modelViewSpriteInPsram();
 void modelBench(int atoms);
 bool fetchModel(const ModelRef& ref);
+bool openShakeMedia();
+// The "Shake for a surprise" setting, read only when a shake happened
+bool shakeSurpriseEnabled() {
+  Preferences prefs;
+  prefs.begin("settings", true);
+  const bool on = prefs.getBool("shakeRandom", true);
+  prefs.end();
+  if (!on) Serial.println("Shake ignored: switched off in the settings");
+  return on;
+}
 void eduUnloadActive();
 bool modelViewShow();
 bool modelButtonCHold();
@@ -722,7 +733,7 @@ const char* setupPage = R"rawliteral(
         <div class="checkbox-group"><input type="checkbox" id="useWolfram" checked><label for="useWolfram" id="labelUseWolfram">Wolfram Alpha math</label></div>
         <div class="checkbox-group"><input type="checkbox" id="localQuotes" checked><label for="localQuotes" id="labelLocalQuotes">Local quotes</label></div>
         <div class="checkbox-group"><input type="checkbox" id="parentLock"><label for="parentLock" id="labelParentLock">Parental lock (8pm-6am)</label></div>
-        <div class="checkbox-group"><input type="checkbox" id="shakeRandom" checked><label for="shakeRandom" id="labelShakeRandom">Shake for random fact</label></div>
+        <div class="checkbox-group"><input type="checkbox" id="shakeRandom" checked><label for="shakeRandom" id="labelShakeRandom">Shake for a surprise</label></div>
         <div class="checkbox-group"><input type="checkbox" id="tripleAudio" checked><label for="tripleAudio" id="labelTripleAudio">Double-click for audio</label></div>
         <div class="checkbox-group"><input type="checkbox" id="autoAudio"><label for="autoAudio" id="labelAutoAudio">Auto-audio for music/stories</label></div>
         <div class="checkbox-group"><input type="checkbox" id="moveZoom" checked><label for="moveZoom" id="labelMoveZoom">Roll to zoom</label></div>
@@ -776,7 +787,7 @@ const char* setupPage = R"rawliteral(
         labelVolume: 'Volume (0-255)', labelDispSleep: 'Display sleep (seconds)',
         labelLightSleep: 'Light sleep (seconds)', labelDeepSleep: 'Deep sleep (seconds)',
         labelSearchImg: 'Wikipedia images', labelUseWolfram: 'Wolfram Alpha math', labelLocalQuotes: 'Local quotes',
-        labelParentLock: 'Parental lock (8pm-6am)', labelShakeRandom: 'Shake for random fact',
+        labelParentLock: 'Parental lock (8pm-6am)', labelShakeRandom: 'Shake for a surprise (fact or scene)',
         labelTripleAudio: 'Double-click for audio', labelAutoAudio: 'Auto-audio for music/stories',
         labelMoveZoom: 'Roll to zoom', labelMoveToggle: 'Rotate to toggle', saveSettingsBtn: 'Save settings',
         tutorialTitle1: "Hi, I'm Zitro.",
@@ -812,7 +823,7 @@ const char* setupPage = R"rawliteral(
         labelVolume: 'Lautstärke (0-255)', labelDispSleep: 'Display-Ruhemodus (Sek.)',
         labelLightSleep: 'Leichter Ruhemodus (Sek.)', labelDeepSleep: 'Tiefer Ruhemodus (Sek.)',
         labelSearchImg: 'Wikipedia-Bilder', labelUseWolfram: 'Wolfram Alpha Mathematik', labelLocalQuotes: 'Lokale Zitate',
-        labelParentLock: 'Kindersicherung (20-6 Uhr)', labelShakeRandom: 'Schütteln für Fakten',
+        labelParentLock: 'Kindersicherung (20-6 Uhr)', labelShakeRandom: 'Schütteln für eine Überraschung (Fakt oder Szene)',
         labelTripleAudio: 'Doppelklick für Audio', labelAutoAudio: 'Auto-Audio für Musik/Geschichten',
         labelMoveZoom: 'Rollen zum Zoomen', labelMoveToggle: 'Drehen zum Umschalten', saveSettingsBtn: 'Speichern',
         tutorialTitle1: 'Hallo, ich bin Zitro.',
@@ -1430,7 +1441,7 @@ void drawHomeScreen() {
   y += lh + lh / 2;
 
   // Shake icon + hint
-  String shake = "Shake for random fact.";
+  String shake = "Shake for a surprise.";
   const int gap = 6;
   int rowW = SHAKEICON_WIDTH + gap + canvas.textWidth(shake);
   x = (WIDTH - rowW) / 2;
@@ -9160,9 +9171,16 @@ void loop() {
 
   // Detect shake gesture to trigger surprise fact query
   if (!displaySleeping && currentPowerState == POWER_ACTIVE && !inPrinterSelectionMode &&
-      currentDisplayMode != SHOW_MODEL && detectShakeGesture()) {
-    Serial.println("\n*** SHAKE DETECTED - SURPRISE FACT ***\n");
+      currentDisplayMode != SHOW_MODEL && detectShakeGesture() && shakeSurpriseEnabled()) {
+    Serial.println("\n*** SHAKE DETECTED - SURPRISE ***\n");
     resetToActiveState();
+
+    // Half the time a scene, a shape, a star map or the time somewhere instead of a fact. All built in,
+    // so it opens at once. If it can't (no memory, no clock yet), the fact comes as before.
+    if (random(0, 2) == 0 && openShakeMedia()) {
+      Serial.println("\n*** SHAKE INTERACTION COMPLETE (media) ***\n");
+      return;
+    }
 
     // Wake display if sleeping (though check above prevents this)
     if (displaySleeping) {

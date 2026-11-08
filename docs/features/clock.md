@@ -14,7 +14,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - City lookup: only names in the built-in table count (`clockFindCity`). Case, accents and punctuation are ignored ("Zürich", "zurich", "Zuerich"); German and English names and a few hand-written aliases (Peking, Bombay, NYC...) work. A name two cities share goes to the national capital, otherwise to the bigger city.
 - Clock: needs a clock set by NTP (after 2024-01-01). No network in the lookup or the view, so it works offline once the clock is set, also for a shake.
 - View: globe on the right (centre x 168), times on the left, all live:
-  - city time big in citrus, with the difference to home next to it ("+8 h", "-4:30 h", "="), then the weekday and the UTC offset on their own lines;
+  - the city's name on top (requested 2026-11-08: the footer alone was too small to tell whose time it is), then its time big in citrus with the difference to home next to it ("+8 h", "-4:30 h", "="), then short weekday and UTC offset ("So, UTC+9");
   - when the city isn't home: home name, and below it the home time;
   - the globe starts with the city in the middle, north up, pin in citrus; arrow when it's out of sight;
   - day and night on the ocean as they are now (see below), and a small sun where the Sun stands overhead, if that side faces the viewer;

@@ -166,9 +166,12 @@ static void clockFrame(M5Canvas& c, float dt) {
       clockPanelText(c, line, 96, TFT_LIGHTGREY);
       clockPanelText(c, clockCityName(clockHome, clockGerman), 75, TFT_WHITE);
     }
+    // Short weekday and UTC offset share a line: "So, UTC+9"
+    static const char* const shortDe[7] = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
+    static const char* const shortEn[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     clockFormatOffset(zone, sizeof(zone), offset);
-    clockPanelText(c, zone, 52, TFT_LIGHTGREY);
-    clockPanelText(c, clockGerman ? CLOCK_WEEKDAY_DE[d.weekday] : CLOCK_WEEKDAY_EN[d.weekday], 31, TFT_WHITE);
+    snprintf(line, sizeof(line), "%s, %s", clockGerman ? shortDe[d.weekday] : shortEn[d.weekday], zone);
+    clockPanelText(c, line, 52, TFT_LIGHTGREY);
     char gapText[16] = "";
     if (away) {
       // How far the city is ahead (+) or behind (-) of home, next to its time
@@ -180,14 +183,17 @@ static void clockFrame(M5Canvas& c, float dt) {
     }
     c.setFreeFont(FontManager::getFont16pt());
     snprintf(line, sizeof(line), "%02d:%02d", d.hour, d.minute);
-    clockPanelText(c, line, 2, citrus);
+    clockPanelText(c, line, 21, citrus);
     if (gapText[0]) {
       const int x = 3 + c.textWidth(line) + 6;
       c.setFreeFont(FontManager::getFont12pt());
-      c.fillRect(x - 2, 8, c.textWidth(gapText) + 4, c.fontHeight() - 2, TFT_BLACK);
+      c.fillRect(x - 2, 27, c.textWidth(gapText) + 4, c.fontHeight() - 2, TFT_BLACK);
       c.setTextColor(TFT_LIGHTGREY);
-      c.drawString(gapText, x, 9);
+      c.drawString(gapText, x, 28);
     }
+    // The city's name on top, so it's clear whose time this is
+    c.setFreeFont(FontManager::getFont12pt());
+    clockPanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
   }
   eduDrawFooter(c, 0);
 }

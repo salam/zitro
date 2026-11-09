@@ -62,6 +62,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - Also in `tests/clock/run.sh`: all 392 zones the server can send against the host's tz database (4.58 million comparisons, none differ); the generator and lookup on real GeoNames lines (biggest wins, hints, Cologne, Brooklyn, refusals, the endpoint's 400); hostile replies on the stick's side; Python's and the stick's fold agree on every name in the data (929,314 with `GEONAMES_CITIES` set to the real file).
 - `tests/globe/run.sh`: shading levels, the disc filled only where it should be, the Sun's direction on screen.
 - On the stick (2026-11-08, screenshots with `shot`): Tokyo, New Delhi (+4:30 h) and Sydney (summer time, UTC+11) show the right times, the night side and the Sun's overhead point where they belong, and the panel fits. Not checked: long home names (cut with "..."), how turning feels.
+- Places from the server, on the stick (2026-11-09): the voice flow "Wie spaet ist es in Knoxville?" set `clock:Knoxville` and showed 01:57, -6 h, UTC-5 at 06:57 UTC, with "Knoxville, TN - GeoNames" on the bottom line (the panel shows "Knoxville": the region doesn't fit there). `clock:Paris, Texas` opened Paris, TX; `clock:Paris` still came from the table in 26 ms; a place nobody knows got the honest refusal. A lookup took 340-390 ms. Not checked: the written answer on screen (Button C), the sentence for an unreachable server on the stick (tested on the host).
 
 ## User guide
 

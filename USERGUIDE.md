@@ -305,7 +305,7 @@ Zitro shows the Earth turned to that city, with a yellow pin. The time there is 
 - **Button B** zooms in.
 - **Button C** shows the answer as text.
 
-Zitro knows 320 cities: every capital and the biggest cities of the world. It works out the time itself, summer time included, so it needs to have been online once to set its clock. For a city it doesn't know, it says so.
+Zitro has 320 cities built in: every capital and the biggest cities of the world. For other places, such as "Wie spät ist es in Knoxville?", it asks the Zitro server, so those need WiFi. If several places share the name, you get the biggest, and you can say which one you mean: "Wie spät ist es in Paris in Texas?". Zitro always works out the time itself, summer time included, so it needs to have been online once to set its clock. For a place it can't find, it says so.
 
 Set your own city on the setup page under **Home city**, or say "Stelle meinen Wohnort auf Berlin". It also sets your Zitro's time zone.
 

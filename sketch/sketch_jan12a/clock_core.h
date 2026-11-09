@@ -313,20 +313,14 @@ inline void clockFormatGap(char* out, size_t size, int32_t seconds, bool german)
 }
 
 // The written answer. Everything in it is computed: the AI's own words about times never reach the screen.
-inline void clockAnswer(char* out, size_t size, bool german, int city, int home, int64_t utc) {
-  ClockRule cityRule, homeRule;
-  if (!clockZoneRule(CLOCK_CITIES[city].zone, cityRule) || !clockZoneRule(CLOCK_CITIES[home].zone, homeRule)) {
-    snprintf(out, size, "%s", german ? "Die Zeitzone kenne ich nicht." : "I don't know that time zone.");
-    return;
-  }
+inline void clockAnswerFor(char* out, size_t size, bool german, const char* name, const ClockRule& cityRule, bool isHome,
+                           const char* homeName, const ClockRule& homeRule, int64_t utc) {
   const int32_t cityOffset = clockUtcOffset(cityRule, utc), homeOffset = clockUtcOffset(homeRule, utc);
   ClockDate d;
   clockCivil(utc + cityOffset, d);
-  const char* name = clockCityName(city, german);
-  const char* homeName = clockCityName(home, german);
   const char* weekday = german ? CLOCK_WEEKDAY_DE[d.weekday] : CLOCK_WEEKDAY_EN[d.weekday];
   char first[128];
-  if (city == home) {
+  if (isHome) {
     snprintf(first, sizeof(first), german ? "Es ist jetzt %02d:%02d Uhr, %s, in %s." : "It is %02d:%02d now, %s, in %s.",
              d.hour, d.minute, weekday, name);
     snprintf(out, size, "%s", first);
@@ -352,6 +346,15 @@ inline void clockAnswer(char* out, size_t size, bool german, int city, int home,
   snprintf(out, size, "%s %s", first, second);
 }
 
+inline void clockAnswer(char* out, size_t size, bool german, int city, int home, int64_t utc) {
+  ClockRule cityRule, homeRule;
+  if (!clockZoneRule(CLOCK_CITIES[city].zone, cityRule) || !clockZoneRule(CLOCK_CITIES[home].zone, homeRule)) {
+    snprintf(out, size, "%s", german ? "Die Zeitzone kenne ich nicht." : "I don't know that time zone.");
+    return;
+  }
+  clockAnswerFor(out, size, german, clockCityName(city, german), cityRule, city == home, clockCityName(home, german), homeRule, utc);
+}
+
 // The honest answer when there is no clock to show
 inline void clockNoAnswer(char* out, size_t size, bool german, bool clockKnown, const char* query) {
   if (!clockKnown) {
@@ -364,12 +367,24 @@ inline void clockNoAnswer(char* out, size_t size, bool german, bool clockKnown, 
   }
 }
 
+// The honest answer when the server that knows the smaller places can't be reached
+inline void clockNoServerAnswer(char* out, size_t size, bool german, const char* query) {
+  snprintf(out, size, german ? "Ich kann %s gerade nicht nachschlagen: Der Zitro-Server antwortet nicht. Hauptstädte und grosse Städte gehen auch ohne ihn."
+                             : "I can't look up %s right now: the Zitro server doesn't answer. Capitals and big cities work without it.",
+           query);
+}
+
+// "14:32" under a time zone rule now
+inline void clockRuleTime(const ClockRule& r, int64_t utc, ClockDate& out, int32_t& offset) {
+  offset = clockUtcOffset(r, utc);
+  clockCivil(utc + offset, out);
+}
+
 // "14:32" in a city now
 inline bool clockCityTime(int city, int64_t utc, ClockDate& out, int32_t& offset) {
   ClockRule r;
   if (!clockZoneRule(CLOCK_CITIES[city].zone, r)) return false;
-  offset = clockUtcOffset(r, utc);
-  clockCivil(utc + offset, out);
+  clockRuleTime(r, utc, out, offset);
   return true;
 }
 

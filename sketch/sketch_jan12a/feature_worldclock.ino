@@ -1,13 +1,22 @@
 // World clock: "Wie spät ist es in Tokio?" shows the Earth turned to that city, lit by the Sun as it is right
-// now, with the time there and at home. Everything is built in and computed: cities and zones from
-// clock_data.h, daylight saving from the zones' rules, the Sun from the date. No network, so it also works
-// for a shake. The written answer is computed too (modelAnswerText): the AI never knows the time.
+// now, with the time there and at home. The time is always computed here: daylight saving from the zone's
+// rule, the Sun from the date. The written answer too (modelAnswerText): the AI never knows the time.
+//
+// The 320 big cities of clock_data.h are built in and need no network, so they also work for a shake. Any
+// other place comes from zitro.spot/api/place.php (GeoNames, see scripts/make_place_data.py), which only
+// says where it is and which rule its zone follows.
 //
 // The file comes after feature_globe.ino in the build, and reuses its coastline, shading and spin:
 // only one result is loaded at a time, so they share the globe's buffers.
 #include "clock_core.h"
+#include "clock_place.h"
 
-static int clockCity = -1, clockHome = -1;
+static const char CLOCK_PLACE_URL[] = "https://zitro.spot/api/place.php";
+static const size_t CLOCK_PLACE_REPLY_LIMIT = 1024;
+
+static int clockCity = -1, clockHome = -1;  // clockCity -1 and clockIsPlace true: a place from the server
+static bool clockIsPlace = false;
+static ClockPlace clockPlace;
 static bool clockGerman = true;
 static GlobeSpin clockSpin;
 static float clockPin[3];
@@ -17,6 +26,21 @@ static const int CLOCK_GLOBE_CX = 168;                 // The globe sits right, 
 static void clockUnload() {
   globeUnload();
   clockCity = clockHome = -1;
+  clockIsPlace = false;
+}
+
+// A place that isn't built in, from the server. Only asked once the built-in table has said no.
+static ClockPlaceResult clockAskServer(const char* query, ClockPlace& out) {
+  char name[64], hint[64];
+  if (!clockSplitPlaceQuery(query, name, sizeof(name), hint, sizeof(hint))) return CLOCK_PLACE_UNKNOWN;
+  String url = String(CLOCK_PLACE_URL) + "?q=" + name;  // Folded: letters a-z only, nothing to encode
+  if (hint[0]) url += String("&r=") + hint;
+  char* body = (char*)ps_malloc(CLOCK_PLACE_REPLY_LIMIT);
+  size_t length = 0;
+  const bool answered = body && eduHttpGet(url, millis() + EDU_LOOKUP_DEADLINE_MS, body, CLOCK_PLACE_REPLY_LIMIT, length);
+  const ClockPlaceResult result = answered ? clockParsePlace(body, length, out) : CLOCK_PLACE_BAD;
+  free(body);
+  return result;
 }
 
 static bool clockFetch(const char* query) {
@@ -27,11 +51,16 @@ static bool clockFetch(const char* query) {
   clockFold(query, folded, sizeof(folded));
   const bool here = strcmp(folded, "here") == 0 || strcmp(folded, "home") == 0;
   const int city = here ? clockHomeCity() : clockFindCity(query);
+  // The whole name first: "Paris, Texas" must not become the Paris in the table
+  ClockPlaceResult asked = CLOCK_PLACE_UNKNOWN;
+  if (clockKnown && city < 0) asked = clockAskServer(query, clockPlace);
+  const bool isPlace = city < 0 && asked == CLOCK_PLACE_FOUND;
   char text[256];
-  if (!clockKnown || city < 0) {
-    clockNoAnswer(text, sizeof(text), clockGerman, clockKnown, query);
+  if (!clockKnown || (city < 0 && !isPlace)) {
+    if (clockKnown && asked == CLOCK_PLACE_BAD) clockNoServerAnswer(text, sizeof(text), clockGerman, query);
+    else clockNoAnswer(text, sizeof(text), clockGerman, clockKnown, query);
     modelAnswerText = text;
-    Serial.printf("Clock lookup '%s': %s\n", query, clockKnown ? "city not in the table" : "no clock yet");
+    Serial.printf("Clock lookup '%s': %s\n", query, !clockKnown ? "no clock yet" : asked == CLOCK_PLACE_BAD ? "no answer from the server" : "place unknown");
     return false;
   }
   if (!globeLoadCoast(GLOBE_COAST_BUILTIN, GLOBE_COAST_BUILTIN_SIZE)) {
@@ -39,24 +68,37 @@ static bool clockFetch(const char* query) {
     return false;
   }
   clockCity = city;
+  clockIsPlace = isPlace;
   clockHome = clockHomeCity();
-  clockAnswer(text, sizeof(text), clockGerman, clockCity, clockHome, (int64_t)now);
+  float lat, lon;
+  if (isPlace) {
+    ClockRule homeRule;
+    if (!clockZoneRule(CLOCK_CITIES[clockHome].zone, homeRule)) return false;
+    clockAnswerFor(text, sizeof(text), clockGerman, clockPlace.label, clockPlace.rule, false, clockCityName(clockHome, clockGerman), homeRule, (int64_t)now);
+    modelLabel = clockPlace.label;
+    modelSourceName = "GeoNames";
+    lat = clockPlace.lat;
+    lon = clockPlace.lon;
+  } else {
+    clockAnswer(text, sizeof(text), clockGerman, clockCity, clockHome, (int64_t)now);
+    modelLabel = clockCityName(clockCity, clockGerman);
+    lat = CLOCK_CITIES[clockCity].lat100 / 100.0f;
+    lon = CLOCK_CITIES[clockCity].lon100 / 100.0f;
+  }
   modelAnswerText = text;
-  modelLabel = clockCityName(clockCity, clockGerman);
-  const ClockCity& c = CLOCK_CITIES[clockCity];
-  globeUnitVector(c.lat100 / 100.0f, c.lon100 / 100.0f, clockPin);
-  globeFacing(c.lat100 / 100.0f, c.lon100 / 100.0f, modelRotation.m);
+  globeUnitVector(lat, lon, clockPin);
+  globeFacing(lat, lon, modelRotation.m);
   for (int i = 0; i < CLOCK_CITY_COUNT; i++) {
     float v[3];
     globeUnitVector(CLOCK_CITIES[i].lat100 / 100.0f, CLOCK_CITIES[i].lon100 / 100.0f, v);
     for (int k = 0; k < 3; k++) clockCapitalXyz[i][k] = (int16_t)lroundf(v[k] * GLOBE_Q14);
   }
-  Serial.printf("Clock lookup '%s': %s, %s, home %s\n", query, c.en, CLOCK_ZONES[c.zone].iana, CLOCK_CITIES[clockHome].en);
+  Serial.printf("Clock lookup '%s': %s, home %s\n", query, isPlace ? clockPlace.label : CLOCK_CITIES[clockCity].en, CLOCK_CITIES[clockHome].en);
   return true;
 }
 
 static bool clockBegin(M5Canvas& c) {
-  if (clockCity < 0 || !globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
+  if ((clockCity < 0 && !clockIsPlace) || !globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
   globePreparePalette(c);
   globeSpinReset(clockSpin);
   return true;
@@ -138,7 +180,10 @@ static void clockFrame(M5Canvas& c, float dt) {
   int32_t offset = 0, homeOffset = 0;
   c.setTextDatum(textdatum_t::top_left);
   c.setTextSize(1);
-  if (clockCityTime(clockCity, now, d, offset)) {
+  bool timeKnown = true;
+  if (clockIsPlace) clockRuleTime(clockPlace.rule, now, d, offset);
+  else timeKnown = clockCityTime(clockCity, now, d, offset);
+  if (timeKnown) {
     char line[48], zone[16];
     // Bottom line first: each line's black box may reach into the descenders of the one above
     c.setFreeFont(FontManager::getFont12pt());
@@ -175,7 +220,12 @@ static void clockFrame(M5Canvas& c, float dt) {
     }
     // The city's name on top, so it's clear whose time this is
     c.setFreeFont(FontManager::getFont12pt());
-    globePanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
+    if (clockIsPlace) {
+      // "Knoxville, TN"; if that doesn't fit, the name matters more than the region
+      globePanelText(c, c.textWidth(clockPlace.label) <= GLOBE_PANEL_W ? clockPlace.label : clockPlace.name, 2, TFT_WHITE);
+    } else {
+      globePanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
+    }
   }
   eduDrawFooter(c, 0);
 }
@@ -185,7 +235,9 @@ const EduFeature FEATURE_CLOCK = {
     "UHRZEIT: Fragt der Nutzer nach der Uhrzeit oder der Zeitverschiebung ('Wie spaet ist es?', 'Wie spaet ist es in "
     "Tokio?', 'Welche Uhrzeit ist jetzt in New York?', 'Wie viel Zeitverschiebung hat Sydney?'), setze 'model' auf "
     "'clock:<englischer Name der Stadt>', fuer die eigene Uhrzeit auf 'clock:here'. Bei einem Land nimm die Hauptstadt "
-    "('Wie spaet ist es in Japan?' ergibt 'clock:Tokyo'). Du kennst die Uhrzeit NICHT: nenne in 'answer' nie eine "
+    "('Wie spaet ist es in Japan?' ergibt 'clock:Tokyo'). Auch kleinere Orte gehen ('Wie spaet ist es in Knoxville?' "
+    "ergibt 'clock:Knoxville'). Nennt der Nutzer Region oder Land dazu, haenge sie mit Komma an ('Paris in Texas' ergibt "
+    "'clock:Paris, Texas'). Du kennst die Uhrzeit NICHT: nenne in 'answer' nie eine "
     "Uhrzeit, ein Datum oder eine Zeitverschiebung, schreibe nur 'Ich schaue auf die Weltuhr.' oder 'Let me check the "
     "world clock.'. Zitro rechnet die Zeit selbst. image_query bleibt leer.",
     true, clockFetch, clockUnload, clockBegin, clockFrame, nullptr, nullptr, nullptr, nullptr};

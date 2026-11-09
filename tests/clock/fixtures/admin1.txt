@@ -1,0 +1,20 @@
+DE.09	Saarland	Saarland	2842635
+DE.08	Rheinland-Pfalz	Rheinland-Pfalz	2847618
+DE.07	North Rhine-Westphalia	North Rhine-Westphalia	2861876
+DE.06	Lower Saxony	Lower Saxony	2862926
+DE.05	Hesse	Hesse	2905330
+DE.04	Hamburg	Hamburg	2911297
+DE.03	Bremen	Bremen	2944387
+DE.02	Bavaria	Bavaria	2951839
+DE.01	Baden-Wurttemberg	Baden-Wurttemberg	2953481
+FR.11	Île-de-France	Ile-de-France	3012874
+IT.09	Lombardy	Lombardy	3174618
+US.GA	Georgia	Georgia	4197000
+US.MO	Missouri	Missouri	4398678
+US.TN	Tennessee	Tennessee	4662168
+US.TX	Texas	Texas	4736286
+US.IA	Iowa	Iowa	4862182
+US.IL	Illinois	Illinois	4896861
+US.NY	New York	New York	5128638
+US.OH	Ohio	Ohio	5165418
+US.MA	Massachusetts	Massachusetts	6254926

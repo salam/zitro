@@ -1,5 +1,10 @@
 # Release Notes
 
+## Mon 9 Nov, 2026
+
+- **Any town, any time**: ask "Wie spät ist es in Knoxville?" and Zitro finds the place, even a small one, and turns the globe to it.
+- **Which Paris?** Say "Paris in Texas" and Zitro knows you don't mean France.
+
 ## Sun 8 Nov, 2026
 
 - **Zitro shows you around**: after setup, ask your first question, see a photo, turn the stars and hear a song, then slide through everything else your stick can do, printing included.

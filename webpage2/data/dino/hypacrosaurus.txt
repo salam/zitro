@@ -1,0 +1,10 @@
+ZDS1	hypacrosaurus	Q311563
+name	Hypacrosaurus
+group	0
+image	6451	176	117	540eb5b5	Kabacchi, CC BY 2.0
+length	900	900
+lived	75000000	67000000
+named	1913
+era	Kreide	Cretaceous
+source	Wikidata
+end

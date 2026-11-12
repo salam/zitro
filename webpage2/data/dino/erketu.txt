@@ -1,0 +1,8 @@
+ZDS1	erketu	Q138872
+name	Erketu
+group	0
+image	8509	240	117	7936cb15	CC BY 2.5
+length	1500	1500
+named	2006
+source	Wikidata
+end

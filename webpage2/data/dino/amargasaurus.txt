@@ -1,0 +1,12 @@
+ZDS1	amargasaurus	Q18510922
+name	Amargasaurus
+group	0
+image	8611	184	117	46a607e0	-
+length	1000	1200
+height	270	270
+mass	2600000	2600000
+lived	129400000	122460000
+named	1991
+era	Kreide	Cretaceous
+source	Wikidata
+end

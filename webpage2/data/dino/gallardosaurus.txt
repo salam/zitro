@@ -1,0 +1,10 @@
+ZDS1	gallardosaurus	Q389864
+name	Gallardosaurus
+group	3
+image	3639	240	117	b97b4007	Nobu Tamura, CC BY-SA 3.0
+length	300	300
+lived	161000000	156000000
+named	2009
+era	Jura	Jurassic
+source	Wikidata
+end

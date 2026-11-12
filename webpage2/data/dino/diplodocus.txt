@@ -1,0 +1,14 @@
+ZDS1	diplodocus	Q14330
+name	Diplodocus
+group	0
+image	3758	240	117	74351495	Fred Wierum, CC BY-SA 4.0
+length	2600	3200
+mass	113000000	113000000
+lived	154000000	152000000
+named	1878
+era	Jura	Jurassic
+meaning	Doppelbalken	double beam
+found	westliches Nordamerika	western North America
+fun	Abgüsse eines fast vollständigen Diplodocus-Skeletts stehen in Museen auf der ganzen Welt.	Casts of a nearly complete Diplodocus skeleton stand in museums all over the world.	Wikipedia (DE): Diplodocus
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,6 @@
+ZDS1	noguerornis	Q7047527
+name	Noguerornis
+group	1
+image	5133	181	117	c8b40c2a	Larua46, CC BY 4.0
+source	Wikidata
+end

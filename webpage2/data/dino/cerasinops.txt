@@ -1,0 +1,6 @@
+ZDS1	cerasinops	Q134334
+name	Cerasinops
+group	0
+image	6535	240	117	dda1fcca	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

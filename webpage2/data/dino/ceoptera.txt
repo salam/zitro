@@ -1,0 +1,7 @@
+ZDS1	ceoptera	Q124434036
+name	Ceoptera
+group	2
+image	4171	84	117	4f0aaf97	CC BY 4.0
+named	2024
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	gryphoceratops	Q966828
+name	Gryphoceratops
+group	0
+image	4787	240	117	ded2af9b	Caz41985, CC BY-SA 4.0
+source	Wikidata
+end

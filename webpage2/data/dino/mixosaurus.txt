@@ -1,0 +1,10 @@
+ZDS1	mixosaurus	Q134753
+name	Mixosaurus
+group	3
+image	3192	240	75	838203fa	Nobu Tamura, CC BY 2.5
+length	200	200
+lived	247000000	242000000
+named	1887
+era	Trias	Triassic
+source	Wikidata
+end

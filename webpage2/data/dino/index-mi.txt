@@ -1,0 +1,43 @@
+ZDX1	mi	42
+microceratops	microceratus
+microceratus	microceratus
+microcleidus	microcleidus
+microcleidus homalospondylus	microcleidus
+microcleidus melusinae	microcleidus
+microcoelus	microcoelus
+micropachycephalosaurus	micropachycephalosaurus
+micropachycephalosaurus hongtuyanensis	micropachycephalosaurus
+microraptor	microraptor
+microraptor gui	microraptor
+microraptor hanqingi	microraptor
+microraptor zhaoianus	microraptor
+microtuban	microtuban
+microtuban altivolans	microtuban
+microvenator	microvenator
+microvenator celer	microvenator
+mierasaurus	mierasaurus
+mikadocephalus	mikadocephalus
+mikadocephalus gracilirostris	mikadocephalus
+mimodactylus	mimodactylus
+mimodactylus libanensis	mimodactylus
+minimocursor	minimocursor
+minimocursor phunoiensis	minimocursor
+minmi	minmi
+minmi paravertebra	minmi
+minmi paravertebrata	minmi
+minotaurasaurus	minotaurasaurus
+minotaurasaurus ramachandrani	minotaurasaurus
+minqaria	minqaria
+minqaria bata	minqaria
+miragaia	miragaia
+mirarce	mirarce
+mirischia	mirischia
+mirischia asymmetrica	mirischia
+mirusavis	mirusavis
+mirusavis parvus	mirusavis
+mixosaurus	mixosaurus
+mixosaurus cornalianus	mixosaurus
+mixosaurus kuhnschnyderi	mixosaurus
+mixosaurus maotaiensis	mixosaurus
+mixosaurus nordenskioeldii	mixosaurus
+mixosaurus panxianensis	mixosaurus

@@ -1,0 +1,7 @@
+ZDS1	clidastes	Q134597
+name	Clidastes
+group	3
+length	300	300
+named	1868
+source	Wikidata
+end

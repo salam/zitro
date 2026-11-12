@@ -1,0 +1,6 @@
+ZDS1	sierraceratops	Q108751474
+name	Sierraceratops
+group	0
+image	4222	166	117	335a07ba	SmirnovaNataliaArt, CC BY-SA 4.0
+source	Wikidata
+end

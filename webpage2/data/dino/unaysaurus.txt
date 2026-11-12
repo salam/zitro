@@ -1,0 +1,10 @@
+ZDS1	unaysaurus	Q133130
+name	Unaysaurus
+group	0
+image	5219	159	117	d90342ff	CC BY-SA 3.0
+length	250	250
+height	80	80
+mass	70000	70000
+named	2004
+source	Wikidata
+end

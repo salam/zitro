@@ -1,0 +1,9 @@
+ZDS1	halisaurus	Q134622
+name	Halisaurus
+group	3
+image	4165	240	93	bcc3cc0c	DiBgd, CC BY-SA 4.0
+lived	86300000	66000000
+named	1869
+era	Kreide	Cretaceous
+source	Wikidata
+end

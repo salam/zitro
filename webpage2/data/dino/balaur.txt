@@ -1,0 +1,6 @@
+ZDS1	balaur	Q18511081
+name	Balaur
+group	1
+image	3335	127	117	8aac4250	Ferahgo the Assassin (Emily Willoughby), CC BY-SA 3.0
+source	Wikidata
+end

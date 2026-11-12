@@ -1,0 +1,7 @@
+ZDS1	diuqin	Q126640833
+name	Diuqin
+group	0
+image	4560	240	117	b85528ec	TotalDino, CC BY 4.0
+named	2024
+source	Wikidata
+end

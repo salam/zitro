@@ -1,0 +1,6 @@
+ZDS1	hypsibema	Q1056871
+name	Hypsibema
+group	0
+image	5491	156	117	dfd9aef0	Geekgecko, CC BY-SA 4.0
+source	Wikidata
+end

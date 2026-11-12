@@ -1,0 +1,8 @@
+ZDS1	stegopelta	Q142971
+name	Stegopelta
+group	0
+image	10004	240	117	3b1a7113	-
+lived	100500000	97000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

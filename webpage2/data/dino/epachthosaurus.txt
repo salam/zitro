@@ -1,0 +1,6 @@
+ZDS1	epachthosaurus	Q134607
+name	Epachthosaurus
+group	0
+image	5515	156	117	04abe514	PaleoNeolitic, CC BY-SA 4.0
+source	Wikidata
+end

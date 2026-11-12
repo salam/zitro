@@ -1,0 +1,8 @@
+ZDS1	thescelosaurus	Q131150
+name	Thescelosaurus
+group	0
+image	6146	169	117	70711d6b	Ben Jacobson (Kranar Drogin), CC BY 2.5
+length	350	350
+named	1913
+source	Wikidata
+end

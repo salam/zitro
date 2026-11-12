@@ -1,0 +1,6 @@
+ZDS1	longchengpterus	Q1014497
+name	Longchengpterus
+group	2
+image	3881	153	117	eefd8519	DarkWerewolf, CC BY-SA 4.0
+source	Wikidata
+end

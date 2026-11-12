@@ -1,0 +1,6 @@
+ZDS1	tianyuraptor	Q18511085
+name	Tianyuraptor
+group	0
+image	4730	240	117	f5b6f625	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

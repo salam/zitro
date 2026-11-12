@@ -1,0 +1,7 @@
+ZDS1	ornithocheirus	Q131373
+name	Ornithocheirus
+group	2
+image	2664	141	117	8b2a0628	Nobu Tamura, CC BY 3.0
+named	1870
+source	Wikidata
+end

@@ -1,0 +1,12 @@
+ZDS1	ostafrikasaurus	Q2671476
+name	Ostafrikasaurus
+group	0
+image	2656	100	117	5b9bed9b	PaleoGeekSquared, CC BY-SA 4.0
+length	840	840
+height	210	210
+mass	1150000	1150000
+lived	152100000	145000000
+named	2012
+era	Jura	Jurassic
+source	Wikidata
+end

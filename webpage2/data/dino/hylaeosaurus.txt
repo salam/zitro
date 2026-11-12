@@ -1,0 +1,7 @@
+ZDS1	hylaeosaurus	Q131770
+name	Hylaeosaurus
+group	0
+image	3749	240	74	e9e1264a	TotalDino, CC BY-SA 4.0
+length	500	500
+source	Wikidata
+end

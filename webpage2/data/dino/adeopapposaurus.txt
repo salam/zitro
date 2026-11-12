@@ -1,0 +1,6 @@
+ZDS1	adeopapposaurus	Q24039152
+name	Adeopapposaurus
+group	0
+image	4656	240	117	5e43afd8	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

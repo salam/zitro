@@ -1,0 +1,8 @@
+ZDS1	xuanhanosaurus	Q134319
+name	Xuanhanosaurus
+group	0
+image	4624	240	117	0c78fd2b	Audrey.m.horn, CC BY-SA 4.0
+lived	167700000	161200000
+era	Jura	Jurassic
+source	Wikidata
+end

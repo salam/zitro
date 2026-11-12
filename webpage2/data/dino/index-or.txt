@@ -1,0 +1,44 @@
+ZDX1	or	43
+ordosipterus	ordosipterus
+ordosipterus planignathus	ordosipterus
+orkoraptor	orkoraptor
+orkoraptor burkei	orkoraptor
+ornatops	ornatops
+ornithocheirus	ornithocheirus
+ornithocheirus buenzeli	ornithocheirus
+ornithocheirus compressirostris	ornithocheirus
+ornithocheirus curtus	ornithocheirus
+ornithocheirus cuvieri	ornithocheirus
+ornithocheirus daviesi	ornithocheirus
+ornithocheirus fittoni	ornithocheirus
+ornithocheirus giganteus	ornithocheirus
+ornithocheirus hlavaci	ornithocheirus
+ornithocheirus hlavatschi	ornithocheirus
+ornithocheirus nobilis	ornithocheirus
+ornithocheirus sedgwicki	aerodraco
+ornithocheirus simus	ornithocheirus
+ornithodesmus	ornithodesmus
+ornithodesmus cluniculus	ornithodesmus
+ornitholestes	ornitholestes
+ornitholestes hermanni	ornitholestes
+ornithomimoides	ornithomimoides
+ornithomimoides barasimlensis	ornithomimoides
+ornithomimoides mobilis	ornithomimoides
+ornithomimus	ornithomimus
+ornithomimus edmontonicus	ornithomimus
+ornithomimus velox	ornithomimus
+ornithopsis	ornithopsis
+ornithopsis eucamerotus	ornithopsis
+ornithopsis hulkei	ornithopsis
+ornithopsis leedsi	ornithopsis
+ornithopterus	rhamphorhynchus
+ornithostoma	ornithostoma
+ornithostoma sedgwicki	ornithostoma
+ornithotarsus	ornithotarsus
+ornithotarsus immanis	ornithotarsus
+orodromeus	orodromeus
+orodromeus makelai	orodromeus
+orodromeus makelei	orodromeus
+orthomerus	orthomerus
+oryctodromeus	oryctodromeus
+oryctodromeus cubicularis	oryctodromeus

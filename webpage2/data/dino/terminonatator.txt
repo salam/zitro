@@ -1,0 +1,10 @@
+ZDS1	terminonatator	Q3984454
+name	Terminonatator
+group	3
+image	3031	240	43	62264b7b	Connor Ashbridge, CC BY-SA 4.0
+length	700	700
+lived	83600000	72100000
+named	2003
+era	Kreide	Cretaceous
+source	Wikidata
+end

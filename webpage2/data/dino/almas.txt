@@ -1,0 +1,6 @@
+ZDS1	almas	Q45920779
+name	Almas
+group	0
+image	5008	240	117	5053426f	Tomopteryx, CC BY-SA 4.0
+source	Wikidata
+end

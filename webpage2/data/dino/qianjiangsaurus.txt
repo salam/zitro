@@ -1,0 +1,7 @@
+ZDS1	qianjiangsaurus	Q129891986
+name	Qianjiangsaurus
+group	0
+image	4025	240	89	39f7a6b9	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

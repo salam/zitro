@@ -1,0 +1,7 @@
+ZDS1	dermodactylus	Q20672287
+name	Dermodactylus
+group	2
+image	2091	78	117	b5da7aa3	Skye McDavid, CC BY 4.0
+named	1881
+source	Wikidata
+end

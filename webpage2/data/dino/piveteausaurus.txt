@@ -1,0 +1,7 @@
+ZDS1	piveteausaurus	Q134625
+name	Piveteausaurus
+group	0
+image	4216	188	117	d0940e6a	Jordan Mallon, CC BY-SA 2.5
+named	1977
+source	Wikidata
+end

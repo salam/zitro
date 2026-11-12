@@ -1,0 +1,7 @@
+ZDS1	perijasaurus	Q113489834
+name	Perijasaurus
+group	0
+image	3583	156	117	303eab9a	-
+named	2022
+source	Wikidata
+end

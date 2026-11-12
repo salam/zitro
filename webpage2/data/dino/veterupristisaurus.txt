@@ -1,0 +1,6 @@
+ZDS1	veterupristisaurus	Q1933735
+name	Veterupristisaurus
+group	0
+image	3624	240	117	68bfad72	IJReid, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	alexornis	Q4254960
+name	Alexornis
+group	1
+image	3964	156	117	a32540bd	Luxquine, CC BY-SA 4.0
+source	Wikidata
+end

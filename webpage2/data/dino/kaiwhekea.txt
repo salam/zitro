@@ -1,0 +1,7 @@
+ZDS1	kaiwhekea	Q786325
+name	Kaiwhekea
+group	3
+length	700	700
+named	2002
+source	Wikidata
+end

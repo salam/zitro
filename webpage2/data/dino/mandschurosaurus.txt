@@ -1,0 +1,6 @@
+ZDS1	mandschurosaurus	Q1076898
+name	Mandschurosaurus
+group	0
+image	2713	70	117	60c3197c	-
+source	Wikidata
+end

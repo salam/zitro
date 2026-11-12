@@ -1,0 +1,7 @@
+ZDS1	laquintasaura	Q17486753
+name	Laquintasaura
+group	0
+image	3210	240	88	28710172	Tomopteryx, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	labocania	Q1827222
+name	Labocania
+group	0
+image	4452	240	117	98bdc5bb	D. Barrera Guevara, CC BY-SA 4.0
+named	1974
+source	Wikidata
+end

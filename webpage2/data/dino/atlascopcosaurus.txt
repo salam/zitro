@@ -1,0 +1,8 @@
+ZDS1	atlascopcosaurus	Q131399
+name	Atlascopcosaurus
+group	0
+image	11703	240	117	8fd39609	-
+length	300	300
+named	1989
+source	Wikidata
+end

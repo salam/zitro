@@ -1,0 +1,6 @@
+ZDS1	tochisaurus	Q1526317
+name	Tochisaurus
+group	0
+image	4016	109	117	e857b468	Sergej M. Kurzanov and Halszka Osmolska, CC BY 2.0
+source	Wikidata
+end

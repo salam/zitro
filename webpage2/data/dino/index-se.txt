@@ -1,0 +1,27 @@
+ZDX1	se	26
+seazzadactylus	seazzadactylus
+seazzadactylus venieri	seazzadactylus
+secernosaurus	secernosaurus
+seeleyosaurus	seeleyosaurus
+seeleyosaurus guilelmiimperatoris	seeleyosaurus
+segisaurus	segisaurus
+segisaurus halli	segisaurus
+segnosaurus	segnosaurus
+segnosaurus galbinensis	segnosaurus
+seismosaurus	diplodocus
+seismosaurus halli	diplodocus
+seismosaurus hallorum	diplodocus
+seitaad	seitaad
+seitaad ruessi	seitaad
+sellosaurus	plateosaurus
+selmasaurus	selmasaurus
+selmasaurus russelli	selmasaurus
+serendipaceratops	serendipaceratops
+serendipaceratops arthurcclarkei	serendipaceratops
+sericipterus	sericipterus
+sericipterus wucaiwanensis	sericipterus
+serikornis	serikornis
+serikornis sungei	serikornis
+serpentisuchops	serpentisuchops
+serpentisuchops pfisterae	serpentisuchops
+serradraco	serradraco

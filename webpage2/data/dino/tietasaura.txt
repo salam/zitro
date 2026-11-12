@@ -1,0 +1,6 @@
+ZDS1	tietasaura	Q125447291
+name	Tietasaura
+group	0
+image	3314	240	86	3e4d3083	SlvrHwk, CC BY-SA 4.0
+source	Wikidata
+end

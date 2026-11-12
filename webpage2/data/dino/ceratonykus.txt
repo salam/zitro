@@ -1,0 +1,6 @@
+ZDS1	ceratonykus	Q675014
+name	Ceratonykus
+group	0
+image	3605	174	117	726c45e2	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

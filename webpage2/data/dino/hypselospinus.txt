@@ -1,0 +1,6 @@
+ZDS1	hypselospinus	Q1706548
+name	Hypselospinus
+group	0
+image	5393	240	117	bbf414a0	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,31 @@
+ZDX1	ji	30
+jianchangnathus	jianchangnathus
+jianchangnathus robustus	jianchangnathus
+jianchangornis	jianchangornis
+jianchangornis microdonta	jianchangornis
+jianchangosaurus	jianchangosaurus
+jianchangosaurus yixianensis	jianchangosaurus
+jiangshanosaurus	jiangshanosaurus
+jiangshanosaurus lixianensis	jiangshanosaurus
+jiangxisaurus	jiangxisaurus
+jiangxisaurus ganzhouensis	jiangxisaurus
+jianianhualong	jianianhualong
+jianianhualong tengi	jianianhualong
+jidapterus	jidapterus
+jidapterus edentus	jidapterus
+jinchuanloong	jinchuanloong
+jinchuanloong niedu	jinchuanloong
+jinfengopteryx	jinfengopteryx
+jinfengopteryx elegans	jinfengopteryx
+jingia dongxingensis	jingiella
+jingiella	jingiella
+jingiella dongxingensis	jingiella
+jinguofortis	jinguofortis
+jinjuichnus	jinjuichnus
+jinjuichnus procerus	jinjuichnus
+jintasaurus	jintasaurus
+jinyunpelta	jinyunpelta
+jinzhousaurus	jinzhousaurus
+jinzhousaurus yangi	jinzhousaurus
+jiuquanornis	jiuquanornis
+jiuquanornis niui	jiuquanornis

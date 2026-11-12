@@ -1,0 +1,7 @@
+ZDS1	doolysaurus	Q138722514
+name	Doolysaurus
+group	0
+image	10422	240	117	7d84c2ea	J. Jung, K. Kim, H. Jo & J. A. Clarke, CC BY 4.0
+named	2026
+source	Wikidata
+end

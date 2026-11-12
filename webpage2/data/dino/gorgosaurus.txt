@@ -1,0 +1,12 @@
+ZDS1	gorgosaurus	Q40752
+name	Gorgosaurus
+group	0
+image	7026	240	117	c9df27a0	-
+length	500	860
+height	300	300
+mass	2000000	2000000
+lived	76600000	75100000
+named	1914
+era	Kreide	Cretaceous
+source	Wikidata
+end

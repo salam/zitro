@@ -1,0 +1,6 @@
+ZDS1	aurornis	Q13407566
+name	Aurornis
+group	1
+image	4676	176	117	be641528	El fosilmaniaco, CC BY-SA 3.0
+source	Wikidata
+end

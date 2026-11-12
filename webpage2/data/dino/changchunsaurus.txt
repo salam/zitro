@@ -1,0 +1,6 @@
+ZDS1	changchunsaurus	Q1656788
+name	Changchunsaurus
+group	0
+image	3391	240	80	3e6f2b22	Nesnad, CC BY-SA 4.0
+source	Wikidata
+end

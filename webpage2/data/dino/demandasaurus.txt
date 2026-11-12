@@ -1,0 +1,6 @@
+ZDS1	demandasaurus	Q1932503
+name	Demandasaurus
+group	0
+image	4294	168	117	7adc0bf6	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

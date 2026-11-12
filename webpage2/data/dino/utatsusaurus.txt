@@ -1,0 +1,10 @@
+ZDS1	utatsusaurus	Q20672904
+name	Utatsusaurus
+group	3
+image	3905	240	117	fdc63255	Nobu Tamura, CC BY 2.5
+length	300	300
+lived	248000000	245000000
+named	1978
+era	Trias	Triassic
+source	Wikidata
+end

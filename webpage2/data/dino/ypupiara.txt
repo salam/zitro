@@ -1,0 +1,7 @@
+ZDS1	ypupiara	Q107969684
+name	Ypupiara
+group	0
+image	2189	183	117	112610d6	BipedalSarcopterygian201.3, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

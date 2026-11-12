@@ -1,0 +1,7 @@
+ZDS1	lindwurmia	Q63524265
+name	Lindwurmia
+group	3
+image	4360	240	83	7278c640	Nobu Tamura, CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

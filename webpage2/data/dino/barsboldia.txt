@@ -1,0 +1,6 @@
+ZDS1	barsboldia	Q18606529
+name	Barsboldia
+group	0
+image	6600	240	117	b113a34a	Dmitry Bogdanov, CC BY 3.0
+source	Wikidata
+end

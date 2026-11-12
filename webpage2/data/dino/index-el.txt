@@ -1,0 +1,17 @@
+ZDX1	el	16
+elaltitan	elaltitan
+elaltitan lilloi	elaltitan
+elaphrosaurus	elaphrosaurus
+elaphrosaurus gautieri	spinostropheus
+elasmaria	macrogryphosaurus
+elasmosaurus	elasmosaurus
+elasmosaurus platyurus	elasmosaurus
+elemgasem	elemgasem
+elemgasem nubilus	elemgasem
+elmisaurus	elmisaurus
+elmisaurus elegans	elmisaurus
+elmisaurus rarus	elmisaurus
+elopteryx	elopteryx
+elopteryx nopcsai	elopteryx
+elrhazosaurus	elrhazosaurus
+elrhazosaurus nigeriensis	elrhazosaurus

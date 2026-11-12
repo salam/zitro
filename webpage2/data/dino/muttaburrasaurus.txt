@@ -1,0 +1,10 @@
+ZDS1	muttaburrasaurus	Q131170
+name	Muttaburrasaurus
+group	0
+image	3452	80	117	d1983c11	-
+length	700	700
+lived	105000000	103000000
+named	1981
+era	Kreide	Cretaceous
+source	Wikidata
+end

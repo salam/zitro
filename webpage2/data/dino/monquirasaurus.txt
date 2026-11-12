@@ -1,0 +1,6 @@
+ZDS1	monquirasaurus	Q110219714
+name	Monquirasaurus
+group	3
+image	2444	94	117	f362a467	Dmitry Bogdanov, CC BY 3.0
+source	Wikidata
+end

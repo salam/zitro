@@ -1,0 +1,6 @@
+ZDS1	jinfengopteryx	Q132717
+name	Jinfengopteryx
+group	0
+image	3347	191	117	a38d4093	Matt Martyniuk (Dinoguy2), CC BY 2.5
+source	Wikidata
+end

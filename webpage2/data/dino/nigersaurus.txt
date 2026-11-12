@@ -1,0 +1,14 @@
+ZDS1	nigersaurus	Q18511062
+name	Nigersaurus
+group	0
+image	7166	135	117	4e1da9a4	Kabacchi, CC BY 2.0
+length	1000	1500
+lived	115000000	105000000
+named	1999
+era	Kreide	Cretaceous
+meaning	Niger-Reptil	Niger reptile
+diet	Pflanzen	Plants
+found	Niger	Niger
+fun	Nigersaurus hatte mehr als 500 Zähne. Sie wurden etwa alle 14 Tage ersetzt.	Nigersaurus had more than 500 teeth. They were replaced about every 14 days.	Wikipedia (EN): Nigersaurus
+source	Wikidata, Wikipedia
+end

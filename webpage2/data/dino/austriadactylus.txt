@@ -1,0 +1,7 @@
+ZDS1	austriadactylus	Q19298186
+name	Austriadactylus
+group	2
+image	3023	61	117	67ea8daf	F.M. Dalla Vecchia, CC BY-SA 3.0
+named	2002
+source	Wikidata
+end

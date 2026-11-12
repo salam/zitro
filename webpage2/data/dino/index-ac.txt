@@ -1,0 +1,27 @@
+ZDX1	ac	26
+acamptonectes	acamptonectes
+acamptonectes densus	acamptonectes
+acantholipan	acantholipan
+acanthopholis	acanthopholis
+acanthopholis eucercus	acanthopholis
+acanthopholis horrida	acanthopholis
+acanthopholis horridus	acanthopholis
+acanthopholis stereocercus	acanthopholis
+achelousaurus	achelousaurus
+achelousaurus horneri	achelousaurus
+acheroraptor	acheroraptor
+acheroraptor temertyorum	acheroraptor
+achillesaurus	achillesaurus
+achillesaurus manazzonei	achillesaurus
+achillobator	achillobator
+achillobator giganticus	achillobator
+acostasaurus	acostasaurus
+acostasaurus pavachoquensis	acostasaurus
+acracanthus	acrocanthosaurus
+acristavus	acristavus
+acristavus gagslarsoni	acristavus
+acrocanthosaurus	acrocanthosaurus
+acrocanthosaurus atokensis	acrocanthosaurus
+acrocanthus	acrocanthosaurus
+acrotholus	acrotholus
+acrotholus audeti	acrotholus

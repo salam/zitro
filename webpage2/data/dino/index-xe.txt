@@ -1,0 +1,13 @@
+ZDX1	xe	12
+xenoceratops	xenoceratops
+xenoceratops foremostensis	xenoceratops
+xenodens	xenodens
+xenodens calminechari	xenodens
+xenoposeidon	xenoposeidon
+xenoposeidon proneneukos	xenoposeidon
+xenotarsosaurus	xenotarsosaurus
+xenotarsosaurus bonapartei	xenotarsosaurus
+xenovenator	xenovenator
+xenovenator espinosai	xenovenator
+xericeps	xericeps
+xericeps curvirostris	xericeps

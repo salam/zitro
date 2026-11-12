@@ -1,0 +1,9 @@
+ZDS1	eoplesiosaurus	Q5381847
+name	Eoplesiosaurus
+group	3
+image	7514	188	117	f42d8cd1	CC BY 2.5
+lived	201300000	196500000
+named	2012
+era	Jura	Jurassic
+source	Wikidata
+end

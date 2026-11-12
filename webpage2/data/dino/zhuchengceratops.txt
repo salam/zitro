@@ -1,0 +1,6 @@
+ZDS1	zhuchengceratops	Q170121
+name	Zhuchengceratops
+group	0
+image	4089	111	117	376c910c	CC BY 2.5
+source	Wikidata
+end

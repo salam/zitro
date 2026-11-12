@@ -1,0 +1,7 @@
+ZDS1	aviatyrannis	Q110602
+name	Aviatyrannis
+group	0
+image	4254	240	117	70137784	IJReid, CC BY 4.0
+named	2003
+source	Wikidata
+end

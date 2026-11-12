@@ -1,0 +1,6 @@
+ZDS1	campananeyen	Q129069825
+name	Campananeyen
+group	0
+image	2974	240	69	21002a0a	TotalDino, CC BY 4.0
+source	Wikidata
+end

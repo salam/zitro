@@ -1,0 +1,8 @@
+ZDS1	luskhan	Q30088293
+name	Luskhan
+group	3
+image	5050	240	59	5eebcd91	Ghedo, CC BY-SA 4.0
+length	500	500
+named	2017
+source	Wikidata
+end

@@ -1,0 +1,26 @@
+ZDX1	lo	25
+lohuecotitan	lohuecotitan
+lokiceratops	lokiceratops
+lokiceratops rangiformis	lokiceratops
+lonchodectes	lonchodectes
+lonchodectes compressirostris	lonchodectes
+lonchodectes microdon	lonchodectes
+lonchodraco	lonchodraco
+lonchodraco giganteus	lonchodraco
+longchengpterus	longchengpterus
+longchengpterus zhaoi	longchengpterus
+longirostria	platypterygius
+longosaurus	coelophysis
+longosaurus longicollis	coelophysis
+longusunguis	longusunguis
+longusunguis kurochkini	longusunguis
+lophorhothon	lophorhothon
+lophorhothon atopus	lophorhothon
+loricatosaurus	loricatosaurus
+loricatosaurus priscus	loricatosaurus
+lorrainosaurus	lorrainosaurus
+lorrainosaurus keileni	lorrainosaurus
+losillasaurus	losillasaurus
+lourinhanosaurus	lourinhanosaurus
+lourinhanosaurus antunesi	lourinhanosaurus
+lovingly called "pepito"	concavenator

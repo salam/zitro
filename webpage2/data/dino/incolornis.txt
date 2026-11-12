@@ -1,0 +1,7 @@
+ZDS1	incolornis	Q12071324
+name	Incolornis
+group	1
+lived	89000000	86000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

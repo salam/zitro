@@ -1,0 +1,8 @@
+ZDS1	cathetosaurus	Q16975532
+name	Cathetosaurus
+group	0
+image	5807	178	117	77a63f36	Ghedoghedo, CC BY-SA 3.0
+lived	155000000	145000000
+era	Jura	Jurassic
+source	Wikidata
+end

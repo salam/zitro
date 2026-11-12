@@ -1,0 +1,8 @@
+ZDS1	guanlingsaurus	Q9000990
+name	Guanlingsaurus
+group	3
+image	5466	240	117	6e127fa0	DiBgd, CC BY-SA 4.0
+lived	235000000	221500000
+era	Trias	Triassic
+source	Wikidata
+end

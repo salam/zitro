@@ -1,0 +1,6 @@
+ZDS1	lohuecotitan	Q26261015
+name	Lohuecotitan
+group	0
+image	3958	124	117	f8e83ef5	PePeEfe, CC BY-SA 4.0
+source	Wikidata
+end

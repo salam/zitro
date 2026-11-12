@@ -1,0 +1,10 @@
+ZDS1	mapusaurus	Q131176
+name	Mapusaurus
+group	0
+image	5672	240	117	86e24e9e	Nobu Tamura, CC BY 2.5
+length	1300	1300
+lived	97000000	93500000
+named	2006
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,15 @@
+ZDS1	borealopelta	Q29947914
+name	Borealopelta
+group	0
+image	7108	156	117	563f5539	CC BY-SA 4.0
+length	550	550
+mass	1300000	1300000
+lived	112000000	106000000
+named	2017
+era	Kreide	Cretaceous
+meaning	nördlicher Schild	northern shield
+diet	Pflanzen	Plants
+found	Alberta (Kanada)	Alberta (Canada)
+fun	Der Mageninhalt von Borealopelta war etwa so gross wie ein Fussball und bestand vor allem aus Farnen.	The stomach contents of Borealopelta were about the size of a football and were mostly ferns.	Wikipedia (DE): Borealopelta
+source	Wikidata, Wikipedia
+end

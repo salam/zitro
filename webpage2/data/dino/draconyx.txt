@@ -1,0 +1,7 @@
+ZDS1	draconyx	Q1954594
+name	Draconyx
+group	0
+image	4655	240	78	1ec013cb	Miracusaurs, CC BY-SA 4.0
+named	2001
+source	Wikidata
+end

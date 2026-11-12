@@ -1,0 +1,7 @@
+ZDS1	gargoyleosaurus	Q134736
+name	Gargoyleosaurus
+group	0
+image	6680	172	117	14ff08ad	Firsfron, CC BY-SA 3.0
+length	400	400
+source	Wikidata
+end

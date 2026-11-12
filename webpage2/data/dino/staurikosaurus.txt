@@ -1,0 +1,8 @@
+ZDS1	staurikosaurus	Q131145
+name	Staurikosaurus
+group	0
+image	3548	103	117	73d7282a	Kabacchi, CC BY 2.0
+length	200	200
+named	1970
+source	Wikidata
+end

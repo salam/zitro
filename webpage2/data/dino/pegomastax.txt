@@ -1,0 +1,7 @@
+ZDS1	pegomastax	Q138106
+name	Pegomastax
+group	0
+image	2738	94	117	6595c445	Todd Marshall, CC BY 3.0
+named	2012
+source	Wikidata
+end

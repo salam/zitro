@@ -1,0 +1,8 @@
+ZDS1	borealonectes	Q2812361
+name	Borealonectes
+group	3
+lived	165000000	161000000
+named	2008
+era	Jura	Jurassic
+source	Wikidata
+end

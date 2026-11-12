@@ -1,0 +1,7 @@
+ZDS1	geosternbergia	Q132174867
+name	Geosternbergia
+group	2
+image	4495	189	117	dc10703e	Kenn Chaplin from Toronto, Canada, CC BY-SA 2.0
+named	1978
+source	Wikidata
+end

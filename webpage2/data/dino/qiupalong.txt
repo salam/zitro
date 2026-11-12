@@ -1,0 +1,8 @@
+ZDS1	qiupalong	Q1909495
+name	Qiupalong
+group	0
+image	4847	240	117	fa1ee3f6	PaleoNeolitic, CC BY 4.0
+lived	76500000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

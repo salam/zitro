@@ -1,0 +1,6 @@
+ZDS1	trigonosaurus	Q134650
+name	Trigonosaurus
+group	0
+image	8594	240	117	a1ba4109	CC BY 4.0
+source	Wikidata
+end

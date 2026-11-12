@@ -1,0 +1,6 @@
+ZDS1	jiangshanosaurus	Q140114
+name	Jiangshanosaurus
+group	0
+image	7295	176	117	d93f04aa	Shallowell, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	ulughbegsaurus	Q108460606
+name	Ulughbegsaurus
+group	0
+image	7835	240	117	f426482d	CC BY 4.0
+source	Wikidata
+end

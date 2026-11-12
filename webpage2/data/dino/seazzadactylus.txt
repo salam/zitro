@@ -1,0 +1,7 @@
+ZDS1	seazzadactylus	Q65952825
+name	Seazzadactylus
+group	2
+image	7355	240	117	456db214	Fabio Marco Dalla Vecchia, CC BY 4.0
+named	2019
+source	Wikidata
+end

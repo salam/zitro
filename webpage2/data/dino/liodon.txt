@@ -1,0 +1,7 @@
+ZDS1	liodon	Q146627
+name	Liodon
+group	3
+image	2766	115	117	99782e2a	Kevmin, CC BY-SA 3.0
+named	1846
+source	Wikidata
+end

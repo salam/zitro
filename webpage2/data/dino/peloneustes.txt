@@ -1,0 +1,10 @@
+ZDS1	peloneustes	Q242046
+name	Peloneustes
+group	3
+image	2387	128	117	1347ce09	Slate Weasel, CC BY 4.0
+length	350	350
+lived	165300000	161500000
+named	1889
+era	Jura	Jurassic
+source	Wikidata
+end

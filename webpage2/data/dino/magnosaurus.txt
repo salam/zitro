@@ -1,0 +1,9 @@
+ZDS1	magnosaurus	Q736000
+name	Magnosaurus
+group	0
+image	3915	240	86	bae2a559	Ghedoghedo, CC BY-SA 3.0
+height	140	140
+lived	173000000	169000000
+era	Jura	Jurassic
+source	Wikidata
+end

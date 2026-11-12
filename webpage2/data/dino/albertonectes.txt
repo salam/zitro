@@ -1,0 +1,7 @@
+ZDS1	albertonectes	Q149959
+name	Albertonectes
+group	3
+image	3447	78	117	059cd7be	Roland Tanglao from Vancouver, Canada, CC BY 2.0
+named	2012
+source	Wikidata
+end

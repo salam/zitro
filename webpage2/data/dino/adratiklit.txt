@@ -1,0 +1,6 @@
+ZDS1	adratiklit	Q66553039
+name	Adratiklit
+group	0
+image	3690	121	117	1ea0fb5f	-
+source	Wikidata
+end

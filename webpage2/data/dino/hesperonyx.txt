@@ -1,0 +1,6 @@
+ZDS1	hesperonyx	Q124975016
+name	Hesperonyx
+group	0
+image	3732	240	117	7b46e564	SlvrHwk, CC BY-SA 4.0
+source	Wikidata
+end

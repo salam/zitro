@@ -1,0 +1,6 @@
+ZDS1	amtosaurus	Q18606614
+name	Amtosaurus
+group	0
+image	8086	240	117	a5497882	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	wintonotitan	Q132883
+name	Wintonotitan
+group	0
+image	4000	240	77	2507c184	CC BY 2.5
+named	2009
+source	Wikidata
+end

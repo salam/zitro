@@ -1,0 +1,6 @@
+ZDS1	megapterygius	Q123766172
+name	Megapterygius
+group	3
+image	3756	240	88	63bf446e	-
+source	Wikidata
+end

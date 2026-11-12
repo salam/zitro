@@ -1,0 +1,6 @@
+ZDS1	archaeodontosaurus	Q132840
+name	Archaeodontosaurus
+group	0
+image	4756	153	117	3984a578	Didier Descouens, CC BY-SA 4.0
+source	Wikidata
+end

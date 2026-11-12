@@ -1,0 +1,7 @@
+ZDS1	gigantosaurus	Q767702
+name	Gigantosaurus
+group	0
+image	3689	108	117	364d9849	-
+named	1869
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	teinurosaurus	Q870938
+name	Teinurosaurus
+group	0
+image	4672	240	117	5859f575	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

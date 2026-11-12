@@ -1,0 +1,8 @@
+ZDS1	confuciusornis	Q644544
+name	Confuciusornis
+group	1
+image	7254	240	117	d8282eb6	Tommy from Arad, CC BY 2.0
+length	25	25
+named	1995
+source	Wikidata
+end

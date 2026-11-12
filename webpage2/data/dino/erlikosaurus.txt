@@ -1,0 +1,11 @@
+ZDS1	erlikosaurus	Q132549
+name	Erlikosaurus
+group	0
+image	4477	240	117	7aff0516	PaleoNeolitic, CC BY 4.0
+length	340	340
+mass	250000	250000
+lived	96000000	89000000
+named	1980
+era	Kreide	Cretaceous
+source	Wikidata
+end

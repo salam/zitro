@@ -1,0 +1,6 @@
+ZDS1	avimaia	Q62184816
+name	Avimaia
+group	1
+image	3546	66	117	98bbff08	Barbara Marrs, CC BY-SA 4.0
+source	Wikidata
+end

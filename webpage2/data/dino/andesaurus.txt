@@ -1,0 +1,9 @@
+ZDS1	andesaurus	Q134701
+name	Andesaurus
+group	0
+image	3770	240	117	e14f3b34	Levi bernardo, CC BY-SA 3.0
+lived	99600000	97000000
+named	1991
+era	Kreide	Cretaceous
+source	Wikidata
+end

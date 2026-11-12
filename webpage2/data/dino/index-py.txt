@@ -1,0 +1,5 @@
+ZDX1	py	4
+pycnonemosaurus	pycnonemosaurus
+pycnonemosaurus nevesi	pycnonemosaurus
+pyroraptor	pyroraptor
+pyroraptor olympius	pyroraptor

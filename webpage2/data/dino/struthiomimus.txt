@@ -1,0 +1,12 @@
+ZDS1	struthiomimus	Q310535
+name	Struthiomimus
+group	0
+image	4696	240	117	db5f7ffa	Nobu Tamura, CC BY 3.0
+length	400	430
+height	140	140
+mass	150000	150000
+lived	77000000	66000000
+named	1916
+era	Kreide	Cretaceous
+source	Wikidata
+end

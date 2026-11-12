@@ -1,0 +1,7 @@
+ZDS1	neuquensaurus	Q284931
+name	Neuquensaurus
+group	0
+image	5819	159	117	6027c6c1	Alejandro Otero, CC BY 2.0
+length	1500	1500
+source	Wikidata
+end

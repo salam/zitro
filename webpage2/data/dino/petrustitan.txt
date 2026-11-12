@@ -1,0 +1,7 @@
+ZDS1	petrustitan	Q132639258
+name	Petrustitan
+group	0
+image	3615	240	117	156d904b	Ddinodan, CC BY 4.0
+named	2025
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	parapsicephalus	Q28554581
+name	Parapsicephalus
+group	2
+image	1951	92	117	2c1d04d3	Smokeybjb, CC BY-SA 3.0
+named	1919
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	navaornis	Q131169627
+name	Navaornis
+group	1
+image	3712	144	117	2a380ed2	Paleo Miguel, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

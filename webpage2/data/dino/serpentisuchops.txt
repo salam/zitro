@@ -1,0 +1,7 @@
+ZDS1	serpentisuchops	Q114355683
+name	Serpentisuchops
+group	3
+image	5073	240	117	83d4a601	Connor Ashbridge, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

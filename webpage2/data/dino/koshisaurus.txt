@@ -1,0 +1,6 @@
+ZDS1	koshisaurus	Q18961256
+name	Koshisaurus
+group	0
+image	4568	175	117	4a9394dd	Titomaurer, CC BY-SA 4.0
+source	Wikidata
+end

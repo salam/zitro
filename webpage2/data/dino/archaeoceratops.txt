@@ -1,0 +1,7 @@
+ZDS1	archaeoceratops	Q131435
+name	Archaeoceratops
+group	0
+image	5840	240	117	50030f6c	Nobu Tamura, CC BY 3.0
+length	130	130
+source	Wikidata
+end

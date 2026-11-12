@@ -1,0 +1,6 @@
+ZDS1	akainacephalus	Q55656519
+name	Akainacephalus
+group	0
+image	6300	240	117	81ec0cd4	Juandertal, CC BY-SA 4.0
+source	Wikidata
+end

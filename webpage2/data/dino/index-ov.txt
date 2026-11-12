@@ -1,0 +1,7 @@
+ZDX1	ov	6
+overosaurus	overosaurus
+overosaurus paradasorum	overosaurus
+oviraptor	oviraptor
+oviraptor mongoliensis	rinchenia
+oviraptor philoceratops	oviraptor
+ovoraptor djadochtari	velociraptor

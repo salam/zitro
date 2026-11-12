@@ -1,0 +1,7 @@
+ZDS1	stenopelix	Q134600
+name	Stenopelix
+group	0
+image	4703	124	117	56dc384a	Richard J. Butler and Robert M. Sullivan, CC BY 2.0
+length	150	150
+source	Wikidata
+end

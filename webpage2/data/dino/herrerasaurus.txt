@@ -1,0 +1,14 @@
+ZDS1	herrerasaurus	Q131014
+name	Herrerasaurus
+group	0
+image	4403	172	117	bfa1f79b	Fred Wierum, CC BY-SA 4.0
+length	300	300
+lived	235000000	231400000
+named	1963
+era	Trias	Triassic
+meaning	Herreras Echse	Herrera's lizard
+diet	Fleisch	Meat
+found	Nordwest-Argentinien	Northwestern Argentina
+fun	Herrerasaurus ist nach Victorino Herrera benannt, einem Ziegenhirten, der das erste Fossil fand.	Herrerasaurus is named after Victorino Herrera, a goat herder who found the first fossil.	Wikipedia (DE): Herrerasaurus
+source	Wikidata, Wikipedia
+end

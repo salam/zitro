@@ -1,0 +1,7 @@
+ZDS1	lingyuanopterus	Q113297803
+name	Lingyuanopterus
+group	2
+image	6468	149	117	749f6aaa	Xu et al., (2022), CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

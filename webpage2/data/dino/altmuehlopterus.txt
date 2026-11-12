@@ -1,0 +1,7 @@
+ZDS1	altmuehlopterus	Q3501878
+name	Altmuehlopterus
+group	2
+image	5873	148	117	25634d55	Ghedoghedo, CC BY-SA 3.0
+named	2017
+source	Wikidata
+end

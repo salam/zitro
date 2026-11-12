@@ -1,0 +1,6 @@
+ZDS1	phuwiangosaurus	Q135641
+name	Phuwiangosaurus
+group	0
+image	2223	55	117	d915773b	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

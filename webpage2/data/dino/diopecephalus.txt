@@ -1,0 +1,7 @@
+ZDS1	diopecephalus	Q2580497
+name	Diopecephalus
+group	2
+image	8514	191	117	10799d15	Tiia Monto, CC BY-SA 3.0
+named	1871
+source	Wikidata
+end

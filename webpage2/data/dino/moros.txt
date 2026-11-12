@@ -1,0 +1,7 @@
+ZDS1	moros	Q61806760
+name	Moros
+group	0
+image	7882	240	117	e60f6d22	CC BY 4.0
+named	2019
+source	Wikidata
+end

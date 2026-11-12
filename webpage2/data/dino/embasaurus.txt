@@ -1,0 +1,6 @@
+ZDS1	embasaurus	Q20672462
+name	Embasaurus
+group	0
+image	4552	128	117	e4812e83	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

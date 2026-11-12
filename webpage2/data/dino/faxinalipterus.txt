@@ -1,0 +1,7 @@
+ZDS1	faxinalipterus	Q18581873
+name	Faxinalipterus
+group	2
+image	5544	147	117	88bc8afa	CC BY 4.0
+named	2010
+source	Wikidata
+end

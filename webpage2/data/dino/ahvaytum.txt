@@ -1,0 +1,7 @@
+ZDS1	ahvaytum	Q131701579
+name	Ahvaytum
+group	0
+image	3005	240	77	1d7d23da	SlvrHwk, CC BY-SA 4.0
+named	2025
+source	Wikidata
+end

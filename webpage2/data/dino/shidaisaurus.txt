@@ -1,0 +1,6 @@
+ZDS1	shidaisaurus	Q1655352
+name	Shidaisaurus
+group	0
+image	2319	117	117	36497505	Luigi Gaskell, CC BY-SA 4.0
+source	Wikidata
+end

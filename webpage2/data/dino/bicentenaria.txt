@@ -1,0 +1,6 @@
+ZDS1	bicentenaria	Q747009
+name	Bicentenaria
+group	0
+image	4167	80	117	080994e7	CC BY 3.0
+source	Wikidata
+end

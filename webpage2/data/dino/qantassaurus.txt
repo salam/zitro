@@ -1,0 +1,7 @@
+ZDS1	qantassaurus	Q664272
+name	Qantassaurus
+group	0
+image	5938	176	117	e91a3a46	Matt Martyniuk (Dinoguy2), CC BY-SA 4.0
+named	1999
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	serendipaceratops	Q135287
+name	Serendipaceratops
+group	0
+lived	122460000	112030000
+era	Kreide	Cretaceous
+source	Wikidata
+end

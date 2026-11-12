@@ -1,0 +1,6 @@
+ZDS1	antrodemus	Q772822
+name	Antrodemus
+group	0
+image	6396	150	117	c4f60177	-
+source	Wikidata
+end

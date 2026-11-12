@@ -1,0 +1,8 @@
+ZDS1	kosmoceratops	Q937710
+name	Kosmoceratops
+group	0
+image	8569	240	117	596fad8e	CC BY 2.5
+lived	76400000	75500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

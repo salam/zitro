@@ -1,0 +1,12 @@
+ZDS1	deinocheirus	Q131142
+name	Deinocheirus
+group	0
+image	4168	240	117	7de0bd5a	PaleoNeolitic, CC BY 4.0
+length	1000	1100
+height	440	440
+mass	6400000	6400000
+lived	71000000	69000000
+named	1970
+era	Kreide	Cretaceous
+source	Wikidata
+end

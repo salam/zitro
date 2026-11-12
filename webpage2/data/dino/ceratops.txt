@@ -1,0 +1,7 @@
+ZDS1	ceratops	Q134704
+name	Ceratops
+group	0
+image	2641	73	117	656c8ba3	-
+named	1888
+source	Wikidata
+end

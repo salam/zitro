@@ -1,0 +1,6 @@
+ZDS1	huayracursor	Q136506586
+name	Huayracursor
+group	0
+image	4201	240	117	670e8b4f	Martin Hechenleitner and Malena Juarez, CC BY 2.5 ar
+source	Wikidata
+end

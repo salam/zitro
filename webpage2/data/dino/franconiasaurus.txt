@@ -1,0 +1,7 @@
+ZDS1	franconiasaurus	Q124407976
+name	Franconiasaurus
+group	3
+image	3827	159	117	6c8b7676	Joschua Knuppe, CC BY 4.0
+named	2024
+source	Wikidata
+end

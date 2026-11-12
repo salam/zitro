@@ -1,0 +1,6 @@
+ZDS1	pellegrinisaurus	Q144074
+name	Pellegrinisaurus
+group	0
+image	8574	240	117	5c16c6ed	PaleoNeolitic, CC BY-SA 4.0
+source	Wikidata
+end

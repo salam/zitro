@@ -1,0 +1,7 @@
+ZDS1	huayangosaurus	Q131648
+name	Huayangosaurus
+group	0
+image	5492	103	117	8c558a2c	CC BY-SA 3.0
+length	450	450
+source	Wikidata
+end

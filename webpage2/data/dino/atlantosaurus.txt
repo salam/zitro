@@ -1,0 +1,6 @@
+ZDS1	atlantosaurus	Q616671
+name	Atlantosaurus
+group	0
+image	5562	128	117	c194d12f	-
+source	Wikidata
+end

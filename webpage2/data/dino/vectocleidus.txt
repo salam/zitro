@@ -1,0 +1,9 @@
+ZDS1	vectocleidus	Q868535
+name	Vectocleidus
+group	3
+image	4957	240	117	bf7f44e4	Dmitry Bogdanov, CC BY 3.0
+lived	127000000	125000000
+named	2012
+era	Kreide	Cretaceous
+source	Wikidata
+end

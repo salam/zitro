@@ -1,0 +1,6 @@
+ZDS1	hungarosaurus	Q134332
+name	Hungarosaurus
+group	0
+image	8783	240	117	87271c43	CC BY 3.0
+source	Wikidata
+end

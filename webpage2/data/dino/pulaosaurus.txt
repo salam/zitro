@@ -1,0 +1,6 @@
+ZDS1	pulaosaurus	Q135277762
+name	Pulaosaurus
+group	0
+image	6670	186	117	3173bd2a	CC BY 4.0
+source	Wikidata
+end

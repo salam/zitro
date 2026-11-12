@@ -1,0 +1,10 @@
+ZDS1	styxosaurus	Q2555300
+name	Styxosaurus
+group	3
+image	2981	240	75	6a821f66	Nobu Tamura, CC BY 2.5
+length	1100	1100
+lived	83500000	80500000
+named	1943
+era	Kreide	Cretaceous
+source	Wikidata
+end

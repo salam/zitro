@@ -1,0 +1,6 @@
+ZDS1	bonatitan	Q135396
+name	Bonatitan
+group	0
+image	10144	240	117	be4575fe	-
+source	Wikidata
+end

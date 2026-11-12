@@ -1,0 +1,6 @@
+ZDS1	xiyunykus	Q56249760
+name	Xiyunykus
+group	0
+image	2539	112	117	3229b362	Tomopteryx, CC BY-SA 4.0
+source	Wikidata
+end

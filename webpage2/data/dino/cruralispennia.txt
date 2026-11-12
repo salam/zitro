@@ -1,0 +1,7 @@
+ZDS1	cruralispennia	Q29413838
+name	Cruralispennia
+group	1
+image	6961	181	117	a5ad402d	CC BY 4.0
+named	2017
+source	Wikidata
+end

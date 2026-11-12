@@ -1,0 +1,6 @@
+ZDS1	menefeeceratops	Q106797815
+name	Menefeeceratops
+group	0
+image	4729	240	92	5c4dec85	TotalDino, CC BY-SA 4.0
+source	Wikidata
+end

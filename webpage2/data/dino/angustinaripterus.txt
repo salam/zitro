@@ -1,0 +1,6 @@
+ZDS1	angustinaripterus	Q2679173
+name	Angustinaripterus
+group	2
+image	5471	240	117	86eb3506	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

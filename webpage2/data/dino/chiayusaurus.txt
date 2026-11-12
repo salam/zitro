@@ -1,0 +1,8 @@
+ZDS1	chiayusaurus	Q719905
+name	Chiayusaurus
+group	0
+lived	145000000	115000000
+named	1953
+era	Kreide	Cretaceous
+source	Wikidata
+end

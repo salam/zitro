@@ -1,0 +1,10 @@
+ZDS1	centrosaurus	Q131589
+name	Centrosaurus
+group	0
+image	3784	162	117	75e05ff1	Fred Wierum, CC BY-SA 4.0
+length	600	600
+lived	76500000	75500000
+named	1904
+era	Kreide	Cretaceous
+source	Wikidata
+end

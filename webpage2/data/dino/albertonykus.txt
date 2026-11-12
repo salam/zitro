@@ -1,0 +1,6 @@
+ZDS1	albertonykus	Q131750
+name	Albertonykus
+group	0
+image	4850	240	117	dd5ee851	Karkemish, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	eshanosaurus	Q778183
+name	Eshanosaurus
+group	0
+image	6349	240	117	776ea83f	Conty, CC BY 3.0
+source	Wikidata
+end

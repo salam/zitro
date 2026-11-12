@@ -1,0 +1,7 @@
+ZDS1	gongbusaurus	Q1656761
+name	Gongbusaurus
+group	0
+image	6025	164	117	849922b0	Zhiheng Li, Zhonghe Zhou, Julia A. Clarke, CC BY 4.0
+named	1983
+source	Wikidata
+end

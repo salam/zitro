@@ -1,0 +1,6 @@
+ZDS1	boreonykus	Q21977554
+name	Boreonykus
+group	0
+image	4665	240	117	4cbb1066	Levi bernardo, CC BY-SA 3.0
+source	Wikidata
+end

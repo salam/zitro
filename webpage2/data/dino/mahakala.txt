@@ -1,0 +1,6 @@
+ZDS1	mahakala	Q134166
+name	Mahakala
+group	0
+image	3173	139	117	cc60f442	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

@@ -28,6 +28,7 @@ static const char* const TIMELINE_TOPICS[] = {
     "famous_buildings",
     "communication",
     "cars",
+    "life_history",
 };
 
-#define TIMELINE_TOPIC_LIST "world_wars, space_exploration, dinosaurs, roman_empire, inventions, swiss_history, ancient_egypt, ancient_greece, middle_ages, explorers, aviation, railways, computers, moon_missions, mars_missions, olympics, medicine, scientists, composers, painters, earth_history, cold_war, famous_buildings, communication, cars"
+#define TIMELINE_TOPIC_LIST "world_wars, space_exploration, dinosaurs, roman_empire, inventions, swiss_history, ancient_egypt, ancient_greece, middle_ages, explorers, aviation, railways, computers, moon_missions, mars_missions, olympics, medicine, scientists, composers, painters, earth_history, cold_war, famous_buildings, communication, cars, life_history"

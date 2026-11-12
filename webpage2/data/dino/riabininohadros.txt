@@ -1,0 +1,7 @@
+ZDS1	riabininohadros	Q19605699
+name	Riabininohadros
+group	0
+image	5234	240	117	6dd7af7e	Nobu Tamura, CC BY-SA 4.0
+named	2015
+source	Wikidata
+end

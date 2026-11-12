@@ -1,0 +1,7 @@
+ZDS1	cymbospondylus	Q133027
+name	Cymbospondylus
+group	3
+image	2566	240	54	973b4619	Slate Weasel, CC BY 4.0
+named	1868
+source	Wikidata
+end

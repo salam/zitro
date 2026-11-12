@@ -1,0 +1,7 @@
+ZDS1	lanzhousaurus	Q735082
+name	Lanzhousaurus
+group	0
+image	3524	240	69	0dfb8993	TotalDino, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

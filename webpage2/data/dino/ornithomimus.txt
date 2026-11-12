@@ -1,0 +1,10 @@
+ZDS1	ornithomimus	Q131067
+name	Ornithomimus
+group	0
+image	4487	102	117	03b58965	Sebastian Bergmann from Siegburg, Germany, CC BY-SA 2.0
+length	400	400
+lived	76500000	66500000
+named	1890
+era	Kreide	Cretaceous
+source	Wikidata
+end

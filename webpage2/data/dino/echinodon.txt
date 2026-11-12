@@ -1,0 +1,7 @@
+ZDS1	echinodon	Q134292
+name	Echinodon
+group	0
+image	4336	92	117	55f82e28	-
+named	1861
+source	Wikidata
+end

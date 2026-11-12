@@ -1,0 +1,9 @@
+ZDS1	dearcmhara	Q18759715
+name	Dearcmhara
+group	3
+length	430	430
+lived	183000000	168400000
+named	2015
+era	Jura	Jurassic
+source	Wikidata
+end

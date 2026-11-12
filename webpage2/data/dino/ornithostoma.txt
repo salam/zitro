@@ -1,0 +1,7 @@
+ZDS1	ornithostoma	Q988125
+name	Ornithostoma
+group	2
+image	5012	240	117	794994f0	-
+named	1871
+source	Wikidata
+end

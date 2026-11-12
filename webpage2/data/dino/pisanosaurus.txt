@@ -1,0 +1,8 @@
+ZDS1	pisanosaurus	Q44246
+name	Pisanosaurus
+group	0
+image	4603	240	117	53ebd32c	FunkMonk, CC BY-SA 3.0
+lived	228000000	216500000
+era	Trias	Triassic
+source	Wikidata
+end

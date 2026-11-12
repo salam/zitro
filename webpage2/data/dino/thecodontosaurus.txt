@@ -1,0 +1,9 @@
+ZDS1	thecodontosaurus	Q131300
+name	Thecodontosaurus
+group	0
+image	3716	240	77	3568a9a0	-
+length	250	250
+lived	203600000	201300000
+era	Trias	Triassic
+source	Wikidata
+end

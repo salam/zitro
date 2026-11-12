@@ -1,0 +1,8 @@
+ZDS1	wulagasaurus	Q2362767
+name	Wulagasaurus
+group	0
+image	4062	240	84	b4b6ae05	Connor Ashbridge, CC BY-SA 4.0
+lived	69000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

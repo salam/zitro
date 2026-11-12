@@ -1,0 +1,8 @@
+ZDS1	glacialisaurus	Q431390
+name	Glacialisaurus
+group	0
+image	8679	240	117	954186a5	Nathan D. Smith and Diego Pol, CC BY 2.0
+lived	189000000	183000000
+era	Jura	Jurassic
+source	Wikidata
+end

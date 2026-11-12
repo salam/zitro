@@ -1,0 +1,3 @@
+ZDX1	_d	2
+"dimorphodon" weintraubi	dimorphodon
+"dryosaurus" grandis	dryosaurus

@@ -1,0 +1,9 @@
+ZDS1	klamelisaurus	Q1958019
+name	Klamelisaurus
+group	0
+image	4785	109	117	3a81eeb6	Kabacchi, CC BY 2.0
+lived	174000000	163000000
+named	1993
+era	Jura	Jurassic
+source	Wikidata
+end

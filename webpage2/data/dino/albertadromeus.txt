@@ -1,0 +1,9 @@
+ZDS1	albertadromeus	Q12973101
+name	Albertadromeus
+group	0
+image	3525	240	92	3da6fe24	Levi Martinez-Reza, CC BY-SA 3.0
+lived	77000000	76000000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

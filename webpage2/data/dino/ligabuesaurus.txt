@@ -1,0 +1,9 @@
+ZDS1	ligabuesaurus	Q2107235
+name	Ligabuesaurus
+group	0
+image	3984	240	117	c6e32cf7	Miracusaurs, CC BY-SA 4.0
+length	2400	2400
+lived	112000000	109000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

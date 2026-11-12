@@ -1,0 +1,7 @@
+ZDS1	siamosaurus	Q134636
+name	Siamosaurus
+group	0
+image	2140	87	117	84dee7cb	PaleoGeekSquared, CC BY-SA 4.0
+named	1986
+source	Wikidata
+end

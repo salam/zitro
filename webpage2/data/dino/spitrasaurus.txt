@@ -1,0 +1,7 @@
+ZDS1	spitrasaurus	Q7578308
+name	Spitrasaurus
+group	3
+image	3243	240	45	bebd0d4e	Connor Ashbridge, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

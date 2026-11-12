@@ -1,0 +1,6 @@
+ZDS1	neosodon	Q2030683
+name	Neosodon
+group	0
+image	2988	156	117	12022890	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

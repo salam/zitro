@@ -1,0 +1,10 @@
+ZDS1	pluridens	Q23655541
+name	Pluridens
+group	3
+image	3833	240	92	9306a563	megabass22, CC BY-SA 3.0
+length	500	500
+lived	70600000	66000000
+named	1998
+era	Kreide	Cretaceous
+source	Wikidata
+end

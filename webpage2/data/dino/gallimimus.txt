@@ -1,0 +1,10 @@
+ZDS1	gallimimus	Q309467
+name	Gallimimus
+group	0
+image	3535	88	117	da8f1404	Hiuppo, CC BY 3.0
+length	600	600
+height	190	190
+mass	440000	440000
+named	1972
+source	Wikidata
+end

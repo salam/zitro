@@ -1,0 +1,6 @@
+ZDS1	sordes	Q133000
+name	Sordes
+group	2
+image	3080	178	117	289122e9	Dmitry Bogdanov, CC BY-SA 3.0
+source	Wikidata
+end

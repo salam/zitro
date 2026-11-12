@@ -1,0 +1,6 @@
+ZDS1	gideonmantellia	Q2457727
+name	Gideonmantellia
+group	0
+image	3983	240	79	48a250c0	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

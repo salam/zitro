@@ -1,0 +1,15 @@
+ZDS1	brontosaurus	Q3222766
+name	Brontosaurus
+group	0
+image	11119	240	117	85154bf6	Matthew Bellemare, CC BY-SA 2.0
+length	2100	2300
+mass	15000000	30000000
+lived	156000000	146000000
+named	1879
+era	Jura	Jurassic
+meaning	Donnerechse	thunder lizard
+diet	Pflanzen	Plants
+found	Wyoming und Utah (USA)	Wyoming and Utah (USA)
+fun	Lange galt Brontosaurus als dasselbe Tier wie Apatosaurus. Seit 2015 ist er wieder eine eigene Gattung.	For a long time, Brontosaurus was thought to be Apatosaurus. Since 2015 it is its own genus again.	Wikipedia (DE): Brontosaurus
+source	Wikidata, Wikipedia
+end

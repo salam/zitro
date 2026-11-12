@@ -1,0 +1,17 @@
+ZDX1	po	16
+podokesaurus	podokesaurus
+podokesaurus holyokensis	podokesaurus
+poekilopleuron	poekilopleuron
+poekilopleuron bucklandii	poekilopleuron
+polacanthus	polacanthus
+polacanthus foxii	polacanthus
+polacanthus rudgwickensis	polacanthus
+polycotylus	polycotylus
+polycotylus latipinnis	polycotylus
+polyptychodon	polyptychodon
+polyptychodon continuus	polyptychodon
+polyptychodon interruptus	polyptychodon
+ponerosteus	ponerosteus
+portellsaurus	portellsaurus
+portellsaurus sosbaynati	portellsaurus
+possibly fabrosaurus	lesothosaurus

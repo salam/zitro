@@ -1,0 +1,11 @@
+ZDS1	lythronax	Q15137014
+name	Lythronax
+group	0
+image	4341	240	117	b96e4f87	Tomopteryx, CC BY-SA 3.0
+length	800	800
+mass	2500000	2500000
+lived	80600000	79900000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

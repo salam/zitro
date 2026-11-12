@@ -1,0 +1,6 @@
+ZDS1	lufengocephalus	Q15723482
+name	Lufengocephalus
+group	0
+image	7228	176	117	f2826b25	Jonathan Chen, CC BY-SA 4.0
+source	Wikidata
+end

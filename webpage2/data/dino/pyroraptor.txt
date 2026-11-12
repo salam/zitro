@@ -1,0 +1,8 @@
+ZDS1	pyroraptor	Q132542
+name	Pyroraptor
+group	0
+image	4522	240	117	a048089a	Mette Aumala, CC BY-SA 4.0
+length	128	128
+named	2000
+source	Wikidata
+end

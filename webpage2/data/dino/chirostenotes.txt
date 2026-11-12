@@ -1,0 +1,8 @@
+ZDS1	chirostenotes	Q131400
+name	Chirostenotes
+group	0
+image	3050	119	117	28ab0c87	ArthurWeasley, CC BY 2.5
+length	170	170
+named	1924
+source	Wikidata
+end

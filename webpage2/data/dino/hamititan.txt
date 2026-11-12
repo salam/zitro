@@ -1,0 +1,6 @@
+ZDS1	hamititan	Q108068415
+name	Hamititan
+group	0
+image	6495	240	117	b933d068	Armin Reindl, CC BY-SA 4.0
+source	Wikidata
+end

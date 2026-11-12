@@ -1,0 +1,8 @@
+ZDS1	fresnosaurus	Q1015298
+name	Fresnosaurus
+group	3
+image	2826	240	86	07b295d6	-
+length	900	900
+named	1943
+source	Wikidata
+end

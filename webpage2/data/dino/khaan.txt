@@ -1,0 +1,9 @@
+ZDS1	khaan	Q135295
+name	Khaan
+group	0
+image	10807	240	117	2133e28f	Steve Starer from Commack NY, USA, CC BY 2.0
+length	180	180
+lived	84000000	75000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

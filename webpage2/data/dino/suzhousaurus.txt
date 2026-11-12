@@ -1,0 +1,6 @@
+ZDS1	suzhousaurus	Q18915834
+name	Suzhousaurus
+group	0
+image	5620	156	117	3355ef9a	SSR2000, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	tethyshadros	Q133402
+name	Tethyshadros
+group	0
+image	10425	240	117	ab76e957	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

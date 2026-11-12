@@ -1,0 +1,7 @@
+ZDS1	tupuxuara	Q132567
+name	Tupuxuara
+group	2
+image	3842	149	117	b7fd89ee	Dmitry Bogdanov, CC BY-SA 3.0
+named	1988
+source	Wikidata
+end

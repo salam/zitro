@@ -1,0 +1,14 @@
+ZDS1	carcharodontosaurus	Q14431
+name	Carcharodontosaurus
+group	0
+image	3729	240	86	29fedbef	TotalDino, CC BY-SA 4.0
+length	1250	1250
+lived	100000000	94000000
+named	1931
+era	Kreide	Cretaceous
+meaning	Haizahn-Echse	shark-toothed lizard
+diet	Fleisch	Meat
+found	Nordwestafrika	Northwest Africa
+fun	Carcharodontosaurus ist nach dem Weissen Hai benannt.	Carcharodontosaurus is named after the great white shark.	Wikipedia (DE): Carcharodontosaurus
+source	Wikidata, Wikipedia
+end

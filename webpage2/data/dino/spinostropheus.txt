@@ -1,0 +1,8 @@
+ZDS1	spinostropheus	Q134710
+name	Spinostropheus
+group	0
+image	4199	240	117	fe12b664	Nobu Tamura, CC BY-SA 4.0
+height	170	170
+named	2004
+source	Wikidata
+end

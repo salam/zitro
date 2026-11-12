@@ -1,0 +1,6 @@
+ZDS1	riparovenator	Q108742236
+name	Riparovenator
+group	0
+image	7641	156	117	29a10997	-
+source	Wikidata
+end

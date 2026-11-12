@@ -1,0 +1,8 @@
+ZDS1	saurolophus	Q131096
+name	Saurolophus
+group	0
+image	7564	164	117	16280a11	Yuya Tamai from Gifu, Japan, CC BY 2.0
+length	900	900
+named	1912
+source	Wikidata
+end

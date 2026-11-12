@@ -1,0 +1,7 @@
+ZDS1	tameryraptor	Q131755747
+name	Tameryraptor
+group	0
+image	3846	109	117	2fb5d47a	M. Kellermann, E. Cuesta, O. W. M. Rauhut, CC BY 4.0
+named	2025
+source	Wikidata
+end

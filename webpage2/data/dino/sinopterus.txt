@@ -1,0 +1,7 @@
+ZDS1	sinopterus	Q311479
+name	Sinopterus
+group	2
+image	4445	155	117	f9ce9f5d	Ghedoghedo, CC BY-SA 3.0
+named	2003
+source	Wikidata
+end

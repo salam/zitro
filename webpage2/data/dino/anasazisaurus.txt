@@ -1,0 +1,7 @@
+ZDS1	anasazisaurus	Q1705543
+name	Anasazisaurus
+group	0
+image	6992	156	117	38cef7c5	NickLongrich, CC BY-SA 4.0
+named	1993
+source	Wikidata
+end

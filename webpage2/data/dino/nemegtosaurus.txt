@@ -1,0 +1,7 @@
+ZDS1	nemegtosaurus	Q132500
+name	Nemegtosaurus
+group	0
+image	4199	142	117	bd347a9d	-
+length	1300	1300
+source	Wikidata
+end

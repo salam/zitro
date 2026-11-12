@@ -1,0 +1,7 @@
+ZDS1	caupedactylus	Q14944113
+name	Caupedactylus
+group	2
+image	4809	138	117	f22ed2ce	CC BY 2.5
+named	2013
+source	Wikidata
+end

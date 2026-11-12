@@ -1,0 +1,7 @@
+ZDS1	georgiasaurus	Q5548152
+name	Georgiasaurus
+group	3
+image	4094	240	91	69b67cf9	Connor Ashbridge, CC BY-SA 4.0
+named	1977
+source	Wikidata
+end

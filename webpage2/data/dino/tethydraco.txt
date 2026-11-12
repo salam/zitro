@@ -1,0 +1,7 @@
+ZDS1	tethydraco	Q50612615
+name	Tethydraco
+group	2
+image	3237	87	117	0cdb7f0c	CC BY 4.0
+named	2018
+source	Wikidata
+end

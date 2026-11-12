@@ -1,0 +1,6 @@
+ZDS1	adelolophus	Q18600343
+name	Adelolophus
+group	0
+image	3621	134	117	33757ab3	Levi B. Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

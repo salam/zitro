@@ -1,0 +1,7 @@
+ZDS1	sibirotitan	Q46995838
+name	Sibirotitan
+group	0
+image	5293	187	117	99924a68	Alexander Averianov, CC BY-SA 4.0
+named	2017
+source	Wikidata
+end

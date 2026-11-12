@@ -1,0 +1,6 @@
+ZDS1	arcovenator	Q15303586
+name	Arcovenator
+group	0
+image	4632	144	117	04fe6a63	CC BY 3.0
+source	Wikidata
+end

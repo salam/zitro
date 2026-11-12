@@ -1,0 +1,7 @@
+ZDS1	ardeadactylus	Q18584796
+name	Ardeadactylus
+group	2
+image	2670	85	117	a8acec5d	Ghedoghedo, CC BY-SA 3.0
+named	2013
+source	Wikidata
+end

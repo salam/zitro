@@ -1,0 +1,8 @@
+ZDS1	umoonasaurus	Q311503
+name	Umoonasaurus
+group	3
+image	4665	240	117	297b9f6e	Nobu Tamura, CC BY 2.5
+length	250	250
+named	2006
+source	Wikidata
+end

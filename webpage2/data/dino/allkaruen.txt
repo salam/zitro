@@ -1,0 +1,8 @@
+ZDS1	allkaruen	Q26985345
+name	Allkaruen
+group	2
+image	4311	96	117	e0745262	CC BY 4.0
+lived	178000000	168000000
+era	Jura	Jurassic
+source	Wikidata
+end

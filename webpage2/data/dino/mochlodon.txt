@@ -1,0 +1,6 @@
+ZDS1	mochlodon	Q18578509
+name	Mochlodon
+group	0
+image	4362	92	117	25962fed	CC BY 2.5
+source	Wikidata
+end

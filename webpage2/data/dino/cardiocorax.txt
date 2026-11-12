@@ -1,0 +1,9 @@
+ZDS1	cardiocorax	Q21127231
+name	Cardiocorax
+group	3
+image	3366	88	117	6638f3fd	Skye McDavid, CC BY-SA 4.0
+lived	74100000	71640000
+named	2015
+era	Kreide	Cretaceous
+source	Wikidata
+end

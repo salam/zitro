@@ -1,0 +1,6 @@
+ZDS1	yasykovia	Q25348269
+name	Yasykovia
+group	3
+image	4364	164	117	d49ea196	Dmitry Bogdanov, CC BY 3.0
+source	Wikidata
+end

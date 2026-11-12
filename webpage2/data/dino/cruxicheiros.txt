@@ -1,0 +1,6 @@
+ZDS1	cruxicheiros	Q2447024
+name	Cruxicheiros
+group	0
+image	8003	179	117	b60b48f0	Roger B. J. Benson and Jonathan D. Radley, CC BY 2.0
+source	Wikidata
+end

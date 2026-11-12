@@ -1,0 +1,6 @@
+ZDS1	lonchodraco	Q13438849
+name	Lonchodraco
+group	2
+image	4550	98	117	014532a4	CC BY 3.0
+source	Wikidata
+end

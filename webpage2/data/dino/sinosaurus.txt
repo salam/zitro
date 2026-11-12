@@ -1,0 +1,8 @@
+ZDS1	sinosaurus	Q149083
+name	Sinosaurus
+group	0
+image	4026	89	117	b04a3a86	Claire H. from New York City, USA, CC BY-SA 2.0
+lived	201000000	196000000
+era	Jura	Jurassic
+source	Wikidata
+end

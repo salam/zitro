@@ -1,0 +1,7 @@
+ZDS1	kiyacursor	Q125911674
+name	Kiyacursor
+group	0
+image	5888	150	117	e3524ce3	CC BY 4.0
+named	2024
+source	Wikidata
+end

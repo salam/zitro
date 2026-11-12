@@ -1,0 +1,7 @@
+ZDS1	acristavus	Q1932513
+name	Acristavus
+group	0
+image	5587	156	117	a7356244	CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

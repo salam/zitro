@@ -1,0 +1,7 @@
+ZDS1	sinotyrannus	Q1187687
+name	Sinotyrannus
+group	0
+image	4189	240	83	c2a031e9	Dibrangosaurus, CC BY-SA 4.0
+named	2009
+source	Wikidata
+end

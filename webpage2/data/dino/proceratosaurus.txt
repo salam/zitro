@@ -1,0 +1,8 @@
+ZDS1	proceratosaurus	Q132619
+name	Proceratosaurus
+group	0
+image	8434	240	117	a92b0161	CC BY 4.0
+length	300	410
+named	1926
+source	Wikidata
+end

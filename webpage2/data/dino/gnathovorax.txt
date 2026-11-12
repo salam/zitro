@@ -1,0 +1,6 @@
+ZDS1	gnathovorax	Q74029713
+name	Gnathovorax
+group	0
+image	4956	96	117	6db41c64	CC BY 4.0
+source	Wikidata
+end

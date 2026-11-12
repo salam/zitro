@@ -1,0 +1,9 @@
+ZDS1	vinialesaurus	Q29568727
+name	Vinialesaurus
+group	3
+image	3797	240	64	1af7de7c	Connor Ashbridge, CC BY-SA 4.0
+lived	161000000	156000000
+named	2002
+era	Jura	Jurassic
+source	Wikidata
+end

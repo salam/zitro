@@ -1,0 +1,9 @@
+ZDS1	graciliceratops	Q133140
+name	Graciliceratops
+group	0
+image	3787	187	117	76a77fea	Nobu Tamura, CC BY 3.0
+lived	97000000	83000000
+named	2000
+era	Kreide	Cretaceous
+source	Wikidata
+end

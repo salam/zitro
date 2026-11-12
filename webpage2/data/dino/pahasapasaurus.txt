@@ -1,0 +1,7 @@
+ZDS1	pahasapasaurus	Q7124532
+name	Pahasapasaurus
+group	3
+image	4655	240	117	aa2193fc	Connor Ashbridge, CC BY-SA 4.0
+named	2007
+source	Wikidata
+end

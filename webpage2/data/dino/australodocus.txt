@@ -1,0 +1,6 @@
+ZDS1	australodocus	Q588058
+name	Australodocus
+group	0
+image	6029	156	117	304c5ee8	Matt Wedel, CC BY 4.0
+source	Wikidata
+end

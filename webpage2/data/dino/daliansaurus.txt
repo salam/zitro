@@ -1,0 +1,6 @@
+ZDS1	daliansaurus	Q30246653
+name	Daliansaurus
+group	0
+image	5336	240	117	a961d90f	Tomopteryx, CC BY-SA 4.0
+source	Wikidata
+end

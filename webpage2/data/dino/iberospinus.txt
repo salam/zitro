@@ -1,0 +1,7 @@
+ZDS1	iberospinus	Q110939377
+name	Iberospinus
+group	0
+image	4113	240	89	c90efe5f	Connor Ashbridge, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	jainosaurus	Q135272
+name	Jainosaurus
+group	0
+image	3196	176	117	b9ab4ca7	Ansh Saxena, CC BY-SA 4.0
+named	1995
+source	Wikidata
+end

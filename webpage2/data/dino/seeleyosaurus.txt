@@ -1,0 +1,8 @@
+ZDS1	seeleyosaurus	Q7445837
+name	Seeleyosaurus
+group	3
+lived	182700000	174100000
+named	1940
+era	Jura	Jurassic
+source	Wikidata
+end

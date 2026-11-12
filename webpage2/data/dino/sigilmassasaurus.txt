@@ -1,0 +1,7 @@
+ZDS1	sigilmassasaurus	Q18602106
+name	Sigilmassasaurus
+group	0
+image	4424	86	117	0290cfac	CC BY 4.0
+named	1996
+source	Wikidata
+end

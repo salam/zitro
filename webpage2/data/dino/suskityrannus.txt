@@ -1,0 +1,9 @@
+ZDS1	suskityrannus	Q20728010
+name	Suskityrannus
+group	0
+image	8913	240	117	a274503c	CC BY-SA 2.0
+lived	93500000	89300000
+named	2019
+era	Kreide	Cretaceous
+source	Wikidata
+end

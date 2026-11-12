@@ -1,0 +1,7 @@
+ZDS1	alwalkeria	Q133238
+name	Alwalkeria
+group	0
+image	4547	240	87	ba9897c1	Karkemish, CC BY 3.0
+named	1994
+source	Wikidata
+end

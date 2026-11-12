@@ -1,0 +1,97 @@
+ZDX1	ca	96
+cacibupteryx	cacibupteryx
+cacibupteryx caribensis	cacibupteryx
+caelestiventus	caelestiventus
+caelestiventus hanseni	caelestiventus
+caenagnathasia	caenagnathasia
+caenagnathasia martinsoni	caenagnathasia
+caenagnathus	caenagnathus
+caenagnathus collinsi	caenagnathus
+caieiria	caieiria
+caieiria allocaudata	caieiria
+caihong	caihong
+caihong juji	caihong
+cairanoolithus	cairanoolithus
+caletodraco	caletodraco
+caletodraco cottardi	caletodraco
+californosaurus	californosaurus
+californosaurus perrini	californosaurus
+callawayasaurus	callawayasaurus
+callawayasaurus colombiensis	callawayasaurus
+callawayia	callawayia
+callawayia neoscapularis	callawayia
+callawayia oweni	callawayia
+callawayia wolonggangense	callawayia
+callovosaurus	callovosaurus
+callovosaurus leedsi	callovosaurus
+camarasaurus	camarasaurus
+camarasaurus agilis	camarasaurus
+camarasaurus grandis	camarasaurus
+camarasaurus lentus	camarasaurus
+camarasaurus lewisi	cathetosaurus
+camarasaurus supremus	camarasaurus
+camarillasaurus	camarillasaurus
+camarillasaurus cirugedae	camarillasaurus
+camelotia	camelotia
+camelotia borealis	camelotia
+campananeyen	campananeyen
+camposaurus	camposaurus
+camposaurus arizonensis	camposaurus
+camposipterus	camposipterus
+camposipterus colorhinus	camposipterus
+camposipterus nasutus	camposipterus
+camposipterus sedgwickii	camposipterus
+camptosaurus	camptosaurus
+camptosaurus dispar	camptosaurus
+camptosaurus leedsi	camptosaurus
+camptosaurus valdensis	camptosaurus
+campylodoniscus	campylodoniscus
+campylodoniscus ameghinoi	campylodoniscus
+campylognathoides	campylognathoides
+campylognathoides liasicus	campylognathoides
+campylognathoides zitteli	campylognathoides
+campylognathus	campylognathus
+campylognathus zitteli	campylognathus
+canardia	canardia
+canardia garonnensis	canardia
+carchadorontosaurus tendagurensis	allosaurus
+carcharodontosaurus	carcharodontosaurus
+carcharodontosaurus iguidensis	carcharodontosaurus
+carcharodontosaurus saharicus	carcharodontosaurus
+cardiocorax	cardiocorax
+cardiocorax mukulu	cardiocorax
+cardiodon	cardiodon
+cardiodon rugulosus	cardiodon
+carinodens	carinodens
+carinodens acrodon	carinodens
+carinodens belgicus	carinodens
+carinodens minalmamar	carinodens
+carniadactylus	carniadactylus
+carniadactylus rosenfeldi	carniadactylus
+carnotaurus	carnotaurus
+carnotaurus sastrei	carnotaurus
+caseosaurus	caseosaurus
+caseosaurus crosbyensis	caseosaurus
+castignovolucris	castignovolucris
+cathartesaura	cathartesaura
+cathartesaura anaerobica	cathartesaura
+cathayornis	cathayornis
+cathayornis aberransis	cathayornis
+cathayornis caudatus	cathayornis
+cathayornis chabuensis	cathayornis
+cathayornis yandica	cathayornis
+cathetosaurus	cathetosaurus
+cathetosaurus lewisi	cathetosaurus
+caudipteridae	caudipteryx
+caudipteryx	caudipteryx
+caudipteryx dongi	caudipteryx
+caudipteryx zoui	caudipteryx
+caulkicephalus	caulkicephalus
+caulkicephalus trimicrodon	caulkicephalus
+caulodon	camarasaurus
+caupedactylus	caupedactylus
+caupedactylus ybaka	caupedactylus
+caviramus	caviramus
+caviramus schesaplanensis	caviramus
+caypullisaurus	caypullisaurus
+caypullisaurus bonapartei	caypullisaurus

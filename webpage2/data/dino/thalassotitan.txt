@@ -1,0 +1,7 @@
+ZDS1	thalassotitan	Q113620659
+name	Thalassotitan
+group	3
+image	4851	117	117	2d76d024	NickLongrich, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

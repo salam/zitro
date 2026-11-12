@@ -1,0 +1,27 @@
+ZDX1	sp	26
+spathagnathus	spathagnathus
+spathagnathus roeperi	spathagnathus
+spectrovenator	spectrovenator
+spectrovenator ragei	spectrovenator
+sphaerotholus	sphaerotholus
+sphaerotholus buchholtzae	sphaerotholus
+sphaerotholus edmontonensis	sphaerotholus
+sphaerotholus goodwini	sphaerotholus
+sphaerotholus lyonsi	sphaerotholus
+sphaerotholus triregnum	sphaerotholus
+spiclypeus	spiclypeus
+spiclypeus shipporum	spiclypeus
+spicomellus	spicomellus
+spicomellus afer	spicomellus
+spinophorosaurus	spinophorosaurus
+spinophorosaurus nigerensis	spinophorosaurus
+spinosaurus	spinosaurus
+spinosaurus aegyptiacus	spinosaurus
+spinosaurus maroccanus	spinosaurus
+spinosaurus marrocanus	spinosaurus
+spinosaurus mirabilis	spinosaurus
+spinostropheus	spinostropheus
+spinostropheus gautieri	spinostropheus
+spitrasaurus	spitrasaurus
+spondylosoma	spondylosoma
+spondylosoma absconditum	spondylosoma

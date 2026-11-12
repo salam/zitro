@@ -1,0 +1,7 @@
+ZDS1	xenoceratops	Q18435
+name	Xenoceratops
+group	0
+image	4427	157	117	3d5243f5	Nobu Tamura, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	terminocavus	Q96077702
+name	Terminocavus
+group	0
+image	7330	240	117	1746cfee	CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	genusaurus	Q18915968
+name	Genusaurus
+group	0
+image	3630	102	117	fb803f21	Ruben Juarez Valieri, Lucas Fiorelli, Laura Cruz, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	gasparinisaura	Q2704268
+name	Gasparinisaura
+group	0
+image	5243	240	117	cf10bd75	Nobu Tamura, CC BY 3.0
+length	80	80
+source	Wikidata
+end

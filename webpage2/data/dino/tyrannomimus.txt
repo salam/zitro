@@ -1,0 +1,7 @@
+ZDS1	tyrannomimus	Q122323203
+name	Tyrannomimus
+group	0
+image	3486	240	117	fc3fb231	Sino-Pteryx, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

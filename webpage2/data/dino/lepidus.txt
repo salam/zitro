@@ -1,0 +1,6 @@
+ZDS1	lepidus	Q24090791
+name	Lepidus
+group	0
+image	6694	240	71	3615c89e	Sterling J. Nesbitt and Martin D. Ezcurra, CC BY 2.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	rhoetosaurus	Q333524
+name	Rhoetosaurus
+group	0
+image	3271	72	117	1ac7126d	CC BY-SA 4.0
+length	1500	1500
+source	Wikidata
+end

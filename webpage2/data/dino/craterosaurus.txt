@@ -1,0 +1,7 @@
+ZDS1	craterosaurus	Q136991
+name	Craterosaurus
+group	0
+image	5284	161	117	a6f75adc	-
+named	1874
+source	Wikidata
+end

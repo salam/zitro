@@ -1,0 +1,9 @@
+ZDS1	monolophosaurus	Q131553
+name	Monolophosaurus
+group	0
+image	5338	240	117	6b8841ea	Jordan Mallon, CC BY-SA 2.5
+length	500	570
+mass	475000	475000
+named	1993
+source	Wikidata
+end

@@ -1,0 +1,15 @@
+ZDS1	megalosaurus	Q131056
+name	Megalosaurus
+group	0
+image	6387	240	117	e5385f03	Conty, CC BY-SA 3.0
+length	600	600
+mass	700000	700000
+lived	168000000	166000000
+named	1824
+era	Jura	Jurassic
+meaning	grosse Echse	great lizard
+diet	Fleisch	Meat
+found	Westeuropa	Western Europe
+fun	Megalosaurus bekam 1824 als erste Dinosauriergattung ausser Vögeln einen gültigen Namen.	In 1824, Megalosaurus was the first dinosaur genus other than birds to get a valid name.	Wikipedia (EN): Megalosaurus
+source	Wikidata, Wikipedia
+end

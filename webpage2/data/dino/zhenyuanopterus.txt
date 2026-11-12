@@ -1,0 +1,7 @@
+ZDS1	zhenyuanopterus	Q1985598
+name	Zhenyuanopterus
+group	2
+image	4924	188	117	1e9f67f0	Dean Schnabel (SassyPaleoNerd), CC BY 3.0
+named	2010
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	cionodon	Q2973290
+name	Cionodon
+group	0
+image	2306	61	117	7ce0f7ba	Ghedoghedo, CC BY-SA 4.0
+named	1874
+source	Wikidata
+end

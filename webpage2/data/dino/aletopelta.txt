@@ -1,0 +1,6 @@
+ZDS1	aletopelta	Q134299
+name	Aletopelta
+group	0
+image	3679	240	74	601fae49	TotalDino, CC BY-SA 4.0
+source	Wikidata
+end

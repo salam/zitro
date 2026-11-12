@@ -1,0 +1,6 @@
+ZDS1	barrosasaurus	Q2098630
+name	Barrosasaurus
+group	0
+image	4671	182	117	11e746c3	Skye McDavid, CC BY-SA 4.0
+source	Wikidata
+end

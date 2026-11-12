@@ -1,0 +1,6 @@
+ZDS1	spectrovenator	Q100308560
+name	Spectrovenator
+group	0
+image	6928	240	117	118356eb	Johnny Mingau, CC BY-SA 3.0
+source	Wikidata
+end

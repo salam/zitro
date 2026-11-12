@@ -1,0 +1,7 @@
+ZDS1	shuvuuia	Q134230
+name	Shuvuuia
+group	0
+image	4116	240	78	c66e3e5a	Jaime A. Headden, CC BY-SA 3.0
+length	60	60
+source	Wikidata
+end

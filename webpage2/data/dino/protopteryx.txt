@@ -1,0 +1,7 @@
+ZDS1	protopteryx	Q2113781
+name	Protopteryx
+group	1
+image	7444	176	117	4b565e73	Tiouraren (Y.-C. Tsai), CC BY-SA 4.0
+named	2000
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	chilantaisaurus	Q134633
+name	Chilantaisaurus
+group	0
+image	4254	240	89	9c5b58ee	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

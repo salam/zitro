@@ -1,0 +1,8 @@
+ZDS1	brachytrachelopan	Q131670
+name	Brachytrachelopan
+group	0
+image	7114	240	117	d700262b	Nobu Tamura, CC BY 3.0
+length	1000	1000
+named	2005
+source	Wikidata
+end

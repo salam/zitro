@@ -1,0 +1,7 @@
+ZDS1	taniwhasaurus	Q136278
+name	Taniwhasaurus
+group	3
+image	4999	240	117	81a94c75	-
+named	1874
+source	Wikidata
+end

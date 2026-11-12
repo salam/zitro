@@ -1,0 +1,8 @@
+ZDS1	pterodaustro	Q311497
+name	Pterodaustro
+group	2
+image	3195	126	117	dad6ca6e	Connor Ashbridge, CC BY 4.0
+wingspan	250	250
+named	1970
+source	Wikidata
+end

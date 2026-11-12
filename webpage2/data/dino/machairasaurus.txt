@@ -1,0 +1,6 @@
+ZDS1	machairasaurus	Q1930333
+name	Machairasaurus
+group	0
+image	5618	240	117	bc18d5c9	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

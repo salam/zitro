@@ -1,0 +1,10 @@
+ZDS1	aegirosaurus	Q2640204
+name	Aegirosaurus
+group	3
+image	7269	240	90	fd01e89f	Ghedoghedo, CC BY-SA 3.0
+length	200	200
+lived	152100000	132900000
+named	2000
+era	Jura bis Kreide	Jurassic to Cretaceous
+source	Wikidata
+end

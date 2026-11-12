@@ -1,0 +1,8 @@
+ZDS1	sachicasaurus	Q62023578
+name	Sachicasaurus
+group	3
+image	6677	187	117	2fb6fbe5	CC BY 4.0
+length	1000	1000
+named	2019
+source	Wikidata
+end

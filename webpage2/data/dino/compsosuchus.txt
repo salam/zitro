@@ -1,0 +1,8 @@
+ZDS1	compsosuchus	Q20672144
+name	Compsosuchus
+group	0
+image	4035	113	117	8ee9d2a8	Ghedoghedo, CC BY-SA 4.0
+lived	69000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

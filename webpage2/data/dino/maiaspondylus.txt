@@ -1,0 +1,8 @@
+ZDS1	maiaspondylus	Q6735251
+name	Maiaspondylus
+group	3
+lived	113000000	94300000
+named	2006
+era	Kreide	Cretaceous
+source	Wikidata
+end

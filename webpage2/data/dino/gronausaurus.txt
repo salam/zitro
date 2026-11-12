@@ -1,0 +1,7 @@
+ZDS1	gronausaurus	Q12175625
+name	Gronausaurus
+group	3
+image	7269	163	117	af63fa1f	CC BY 4.0
+named	2013
+source	Wikidata
+end

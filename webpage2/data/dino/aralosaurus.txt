@@ -1,0 +1,7 @@
+ZDS1	aralosaurus	Q132769
+name	Aralosaurus
+group	0
+image	4538	240	91	e8e8409c	Connor Ashbridge, CC BY-SA 4.0
+length	800	800
+source	Wikidata
+end

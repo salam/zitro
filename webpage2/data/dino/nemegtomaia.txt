@@ -1,0 +1,6 @@
+ZDS1	nemegtomaia	Q935296
+name	Nemegtomaia
+group	0
+image	4387	157	117	aee89855	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

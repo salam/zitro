@@ -1,0 +1,7 @@
+ZDS1	traskasaura	Q134547214
+name	Traskasaura
+group	3
+image	9778	240	117	a3921b2f	D. Gordon E. Robertson, CC BY-SA 3.0
+named	2025
+source	Wikidata
+end

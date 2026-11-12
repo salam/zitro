@@ -1,0 +1,7 @@
+ZDS1	hudsonelpidia	Q5929067
+name	Hudsonelpidia
+group	3
+image	3105	240	117	aa9ea368	Ghedoghedo, CC BY-SA 3.0
+named	1995
+source	Wikidata
+end

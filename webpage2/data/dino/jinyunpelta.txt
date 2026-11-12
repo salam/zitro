@@ -1,0 +1,6 @@
+ZDS1	jinyunpelta	Q50244145
+name	Jinyunpelta
+group	0
+image	5587	130	117	15a007eb	CC BY 4.0
+source	Wikidata
+end

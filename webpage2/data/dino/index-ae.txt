@@ -1,0 +1,22 @@
+ZDX1	ae	21
+aegirosaurus	aegirosaurus
+aegyptosaurus	aegyptosaurus
+aegyptosaurus baharijensis	aegyptosaurus
+aeolosaurus	aeolosaurus
+aeolosaurus colhuehuapensis	aeolosaurus
+aeolosaurus rionegrinus	aeolosaurus
+aepisaurus	aepisaurus
+aepisaurus elephantinus	aepisaurus
+aepyornithomimus	aepyornithomimus
+aepyornithomimus tugrikinensis	aepyornithomimus
+aerodactylus	aerodactylus
+aerodactylus scolopaciceps	aerodactylus
+aerodraco	aerodraco
+aerodraco sedgwickii	aerodraco
+aerosteon	aerosteon
+aerosteon riocoloradensis	aerosteon
+aerotitan	aerotitan
+aerotitan sudamericanus	aerotitan
+aetodactylus	aetodactylus
+aetodactylus halli	aetodactylus
+aetonyx	massospondylus

@@ -1,0 +1,6 @@
+ZDS1	judiceratops	Q18755860
+name	Judiceratops
+group	0
+image	7367	240	117	67d3aaab	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

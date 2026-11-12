@@ -1,0 +1,7 @@
+ZDS1	euronychodon	Q1577405
+name	Euronychodon
+group	0
+image	6652	240	87	b39c4bb7	Jaime A. Headden, CC BY 3.0
+named	1991
+source	Wikidata
+end

@@ -1,0 +1,20 @@
+ZDX1	su	19
+suchomimus	suchomimus
+suchomimus tenerensis	suchomimus
+suchosaurus	suchosaurus
+suchosaurus cultridens	suchosaurus
+suevoleviathan	suevoleviathan
+sulcavis	sulcavis
+sulcavis geeorum	sulcavis
+sulcusuchus	sulcusuchus
+sulcusuchus erraini	sulcusuchus
+suncor nodosaur	borealopelta
+suncor nodosaurier	borealopelta
+supersaurus	supersaurus
+supersaurus vivianae	supersaurus
+suskityrannus	suskityrannus
+suskityrannus hazelae	suskityrannus
+suuwassea	suuwassea
+suuwassea emilieae	suuwassea
+suzhousaurus	suzhousaurus
+suzhousaurus megatherioides	suzhousaurus

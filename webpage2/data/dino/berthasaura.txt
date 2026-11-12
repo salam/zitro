@@ -1,0 +1,7 @@
+ZDS1	berthasaura	Q109626219
+name	Berthasaura
+group	0
+image	9444	168	117	52f6a388	CC BY 4.0
+named	2021
+source	Wikidata
+end

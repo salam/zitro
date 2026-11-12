@@ -1,0 +1,9 @@
+ZDS1	besanosaurus	Q829430
+name	Besanosaurus
+group	3
+length	600	600
+lived	247200000	235000000
+named	1996
+era	Trias	Triassic
+source	Wikidata
+end

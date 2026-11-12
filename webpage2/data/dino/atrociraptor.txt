@@ -1,0 +1,6 @@
+ZDS1	atrociraptor	Q134005
+name	Atrociraptor
+group	0
+image	10562	240	117	2fe65b2f	Ferahgo the Assassin (Emily Willoughby), CC BY-SA 3.0
+source	Wikidata
+end

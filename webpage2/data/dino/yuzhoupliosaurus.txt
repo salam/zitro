@@ -1,0 +1,9 @@
+ZDS1	yuzhoupliosaurus	Q29565928
+name	Yuzhoupliosaurus
+group	3
+length	400	400
+lived	174100000	163500000
+named	1985
+era	Jura	Jurassic
+source	Wikidata
+end

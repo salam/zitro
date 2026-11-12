@@ -1,0 +1,8 @@
+ZDS1	othnielia	Q131783
+name	Othnielia
+group	0
+image	9228	182	117	37f8b90b	Zach Tirrell from Plymouth, USA, CC BY-SA 2.0
+length	140	140
+named	1977
+source	Wikidata
+end

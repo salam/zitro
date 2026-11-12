@@ -1,0 +1,7 @@
+ZDS1	tupandactylus	Q2118470
+name	Tupandactylus
+group	2
+image	5767	240	117	aeef8219	Dmitry Bogdanov, CC BY-SA 3.0
+named	1997
+source	Wikidata
+end

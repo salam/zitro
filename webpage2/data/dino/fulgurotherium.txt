@@ -1,0 +1,6 @@
+ZDS1	fulgurotherium	Q18602041
+name	Fulgurotherium
+group	0
+image	2335	86	117	5085fc89	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

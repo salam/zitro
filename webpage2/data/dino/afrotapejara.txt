@@ -1,0 +1,7 @@
+ZDS1	afrotapejara	Q88262453
+name	Afrotapejara
+group	2
+image	3941	240	117	61ea1ee7	Antonio R. Mihaila, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

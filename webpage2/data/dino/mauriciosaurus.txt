@@ -1,0 +1,10 @@
+ZDS1	mauriciosaurus	Q29032438
+name	Mauriciosaurus
+group	3
+image	3229	156	117	5a5446c7	Nobu Tamura, CC BY-SA 4.0
+length	400	400
+lived	94000000	92000000
+named	2017
+era	Kreide	Cretaceous
+source	Wikidata
+end

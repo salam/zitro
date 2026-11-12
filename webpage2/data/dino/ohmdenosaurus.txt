@@ -1,0 +1,6 @@
+ZDS1	ohmdenosaurus	Q311380
+name	Ohmdenosaurus
+group	0
+image	1639	52	117	e92c9a74	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	anchisaurus	Q311281
+name	Anchisaurus
+group	0
+image	5500	156	117	111e88a6	Nobu Tamura, CC BY-SA 3.0
+length	200	200
+named	1885
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	albertaceratops	Q131573
+name	Albertaceratops
+group	0
+image	5987	240	117	d52b8aab	Nobu Tamura, CC BY 3.0
+length	500	700
+named	2007
+source	Wikidata
+end

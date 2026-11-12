@@ -1,0 +1,7 @@
+ZDS1	masiakasaurus	Q131197
+name	Masiakasaurus
+group	0
+length	200	200
+named	2001
+source	Wikidata
+end

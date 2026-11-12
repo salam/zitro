@@ -1,0 +1,7 @@
+ZDS1	elemgasem	Q113754163
+name	Elemgasem
+group	0
+image	6421	240	117	f6e091ce	CC BY 4.0
+named	2022
+source	Wikidata
+end

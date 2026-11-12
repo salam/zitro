@@ -1,0 +1,7 @@
+ZDS1	deltadromeus	Q131629
+name	Deltadromeus
+group	0
+image	5030	185	117	e773d823	CC BY 4.0
+length	810	810
+source	Wikidata
+end

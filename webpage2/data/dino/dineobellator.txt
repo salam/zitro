@@ -1,0 +1,7 @@
+ZDS1	dineobellator	Q88688924
+name	Dineobellator
+group	0
+image	7958	240	117	afd07254	CC BY 4.0
+named	2020
+source	Wikidata
+end

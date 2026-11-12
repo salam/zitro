@@ -1,0 +1,7 @@
+ZDS1	koparion	Q1821811
+name	Koparion
+group	0
+image	5651	240	117	5b27902b	CC BY 4.0
+named	1994
+source	Wikidata
+end

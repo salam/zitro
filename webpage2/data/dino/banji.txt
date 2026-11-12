@@ -1,0 +1,6 @@
+ZDS1	banji	Q133253
+name	Banji
+group	0
+image	2482	88	117	46a26c5d	Matt Martyniuk (Dinoguy2), CC BY 2.5
+source	Wikidata
+end

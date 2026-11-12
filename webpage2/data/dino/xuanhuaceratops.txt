@@ -1,0 +1,9 @@
+ZDS1	xuanhuaceratops	Q134321
+name	Xuanhuaceratops
+group	0
+image	4750	145	117	8c9cd0e1	Mette Aumala, CC BY-SA 4.0
+lived	150800000	145500000
+named	2006
+era	Jura	Jurassic
+source	Wikidata
+end

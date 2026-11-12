@@ -1,0 +1,6 @@
+ZDS1	callovosaurus	Q1579204
+name	Callovosaurus
+group	0
+image	3452	240	76	c3d790f0	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

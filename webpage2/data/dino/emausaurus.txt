@@ -1,0 +1,8 @@
+ZDS1	emausaurus	Q133065
+name	Emausaurus
+group	0
+image	3311	240	92	2c1ab114	TotalDino, CC BY 4.0
+length	200	200
+named	1990
+source	Wikidata
+end

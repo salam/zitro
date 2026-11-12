@@ -1,0 +1,9 @@
+ZDS1	pectinodon	Q4037858
+name	Pectinodon
+group	0
+image	2952	99	117	037d0587	Derek W. Larson, Philip J. Currie, CC BY 2.5
+lived	67000000	66000000
+named	1982
+era	Kreide	Cretaceous
+source	Wikidata
+end

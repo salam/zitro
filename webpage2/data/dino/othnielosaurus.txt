@@ -1,0 +1,7 @@
+ZDS1	othnielosaurus	Q1081247
+name	Othnielosaurus
+group	0
+image	4939	240	117	2ee5ff2f	Nobu Tamura, CC BY 2.5
+named	1877
+source	Wikidata
+end

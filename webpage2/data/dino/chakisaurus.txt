@@ -1,0 +1,7 @@
+ZDS1	chakisaurus	Q124813502
+name	Chakisaurus
+group	0
+image	4291	240	117	111bdabe	TotalDino, CC BY 4.0
+named	2024
+source	Wikidata
+end

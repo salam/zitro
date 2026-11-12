@@ -1,0 +1,7 @@
+ZDS1	bagualosaurus	Q54315693
+name	Bagualosaurus
+group	0
+image	6227	240	117	81484bbb	Nobu Tamura, CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

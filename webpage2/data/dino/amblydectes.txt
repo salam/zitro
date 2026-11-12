@@ -1,0 +1,7 @@
+ZDS1	amblydectes	Q2782984
+name	Amblydectes
+group	2
+image	7433	183	117	5791f1f3	CC BY 3.0
+named	1914
+source	Wikidata
+end

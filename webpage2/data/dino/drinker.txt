@@ -1,0 +1,7 @@
+ZDS1	drinker	Q134751
+name	Drinker
+group	0
+image	4305	240	94	18b3b13f	Jfstudiospaleoart, CC BY-SA 4.0
+named	1990
+source	Wikidata
+end

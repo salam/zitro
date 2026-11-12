@@ -1,0 +1,6 @@
+ZDS1	coelosaurus	Q1106617
+name	Coelosaurus
+group	0
+image	2727	240	55	00e3b8b6	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

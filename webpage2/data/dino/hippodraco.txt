@@ -1,0 +1,6 @@
+ZDS1	hippodraco	Q1705946
+name	Hippodraco
+group	0
+image	4292	240	89	7132861f	Lukas Panzarin, CC BY 2.5
+source	Wikidata
+end

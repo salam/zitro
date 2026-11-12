@@ -1,0 +1,6 @@
+ZDS1	koreanosaurus	Q1360752
+name	Koreanosaurus
+group	0
+image	8250	240	117	434a727f	CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	inabtanin	Q130243398
+name	Inabtanin
+group	2
+image	3660	143	117	49d94e32	SlvrHwk, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

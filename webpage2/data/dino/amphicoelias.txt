@@ -1,0 +1,7 @@
+ZDS1	amphicoelias	Q131091
+name	Amphicoelias
+group	0
+image	4538	191	117	fc3bd051	CC BY-SA 4.0
+named	1878
+source	Wikidata
+end

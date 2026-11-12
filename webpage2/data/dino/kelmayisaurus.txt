@@ -1,0 +1,6 @@
+ZDS1	kelmayisaurus	Q1576736
+name	Kelmayisaurus
+group	0
+image	6986	186	117	1fa7011c	CC BY 2.0
+source	Wikidata
+end

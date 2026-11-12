@@ -1,0 +1,15 @@
+ZDS1	pachycephalosaurus	Q14455
+name	Pachycephalosaurus
+group	0
+image	3655	240	117	0ef941b6	Fred Wierum, CC BY 4.0
+length	300	500
+mass	370000	450000
+lived	69000000	66000000
+named	1943
+era	Kreide	Cretaceous
+meaning	Dickkopf-Echse	thick-headed lizard
+diet	Pflanzen	Plants
+found	westliches Nordamerika	western North America
+fun	Pachycephalosaurus hatte ein gewölbtes Schädeldach, bis zu 25 Zentimeter dick.	Pachycephalosaurus had a domed skull roof up to 25 centimetres thick.	Wikipedia (DE): Pachycephalosaurus
+source	Wikidata, Wikipedia
+end

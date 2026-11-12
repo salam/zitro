@@ -1,0 +1,7 @@
+ZDS1	phosphatodraco	Q754604
+name	Phosphatodraco
+group	2
+image	3127	133	117	b34ea7fc	FunkMonk, CC BY-SA 3.0
+named	2003
+source	Wikidata
+end

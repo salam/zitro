@@ -1,0 +1,8 @@
+ZDS1	cratoavis	Q20645262
+name	Cratoavis
+group	1
+image	2805	126	117	9020cf73	JohnnyMingau, CC BY-SA 4.0
+lived	125000000	113000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

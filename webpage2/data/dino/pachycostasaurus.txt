@@ -1,0 +1,8 @@
+ZDS1	pachycostasaurus	Q3888477
+name	Pachycostasaurus
+group	3
+image	6444	184	117	a4dfe4dd	DaCaTaraptor, CC BY-SA 4.0
+length	310	310
+named	1996
+source	Wikidata
+end

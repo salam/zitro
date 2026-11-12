@@ -1,0 +1,8 @@
+ZDS1	leptopterygius	Q41217032
+name	Leptopterygius
+group	3
+length	450	450
+mass	800000	800000
+named	1871
+source	Wikidata
+end

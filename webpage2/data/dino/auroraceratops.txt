@@ -1,0 +1,6 @@
+ZDS1	auroraceratops	Q133183
+name	Auroraceratops
+group	0
+image	5985	185	117	c997a82f	SSR2000, CC BY-SA 3.0
+source	Wikidata
+end

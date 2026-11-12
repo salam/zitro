@@ -1,0 +1,7 @@
+ZDS1	eopteranodon	Q2358922
+name	Eopteranodon
+group	2
+image	4653	90	117	034ec4a8	CC BY 4.0
+named	2005
+source	Wikidata
+end

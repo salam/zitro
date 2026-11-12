@@ -1,0 +1,74 @@
+ZDX1	al	73
+alamosaurus	alamosaurus
+alamosaurus sanjuanensis	alamosaurus
+alanqa	alanqa
+alanqa saharica	alanqa
+alaskacephale	alaskacephale
+alaskacephale gangloffi	alaskacephale
+albadraco	albadraco
+albadraco tharmisensis	albadraco
+albalophosaurus	albalophosaurus
+albertaceratops	albertaceratops
+albertaceratops nesmoi	albertaceratops
+albertadromeus	albertadromeus
+albertadromeus syntarsus	albertadromeus
+albertavenator	albertavenator
+albertonectes	albertonectes
+albertonectes vanderveldei	albertonectes
+albertonykus	albertonykus
+albertonykus borealis	albertonykus
+albertosaurus	albertosaurus
+albertosaurus megagracilis	albertosaurus
+albertosaurus periculosus	albertosaurus
+albertosaurus sarcophagus	albertosaurus
+albertosaurus sp.	albertosaurus
+albinykus	albinykus
+albinykus baatar	albinykus
+alcione	alcione
+alcione elainus	alcione
+alcmonavis	alcmonavis
+alcmonavis poeschli	alcmonavis
+alcovasaurus	alcovasaurus
+alectrosaurus	alectrosaurus
+alectrosaurus olseni	alectrosaurus
+aletopelta	aletopelta
+aletopelta coombsi	aletopelta
+alexandronectes	alexandronectes
+alexandronectes zealandiensis	alexandronectes
+alexornis	alexornis
+alexornis antecedens	alexornis
+algoasaurus	algoasaurus
+algoasaurus bauri	algoasaurus
+alioramus	alioramus
+alioramus altai	alioramus
+alioramus remotus	alioramus
+aliwalia	eucnemesaurus
+allkaruen	allkaruen
+allkaruen koi	allkaruen
+allosaurus	allosaurus
+allosaurus anax	allosaurus
+allosaurus atrox	allosaurus
+allosaurus europaeus	allosaurus
+allosaurus fragilis	allosaurus
+allosaurus jimmadseni	allosaurus
+allosaurus tendagurensis	allosaurus
+almas	almas
+almas ukhaa	almas
+alnashetri	alnashetri
+alnashetri cerropoliciensis	alnashetri
+alocodon	alocodon
+alocodon kuehnei	alocodon
+alpkarakush	alpkarakush
+alpkarakush kyrgyzicus	alpkarakush
+altirhinus	altirhinus
+altirhinus kurzanovi	altirhinus
+altispinax	altispinax
+altispinax dunkeri	becklespinax
+altmuehlopterus	altmuehlopterus
+altmuehlopterus rhamphastinus	altmuehlopterus
+alvarezsaurus	alvarezsaurus
+alvarezsaurus calvoi	alvarezsaurus
+alwalkeria	alwalkeria
+alwalkeria maleriensis	alwalkeria
+alxasaurus	alxasaurus
+alxasaurus elesitaiensis	alxasaurus

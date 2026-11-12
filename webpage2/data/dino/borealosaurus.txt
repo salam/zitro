@@ -1,0 +1,6 @@
+ZDS1	borealosaurus	Q2448178
+name	Borealosaurus
+group	0
+image	3836	240	117	a5232bce	-
+source	Wikidata
+end

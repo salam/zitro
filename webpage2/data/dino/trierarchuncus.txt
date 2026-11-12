@@ -1,0 +1,8 @@
+ZDS1	trierarchuncus	Q97120065
+name	Trierarchuncus
+group	0
+lived	70600000	66000000
+named	2020
+era	Kreide	Cretaceous
+source	Wikidata
+end

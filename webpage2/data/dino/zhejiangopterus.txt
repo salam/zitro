@@ -1,0 +1,9 @@
+ZDS1	zhejiangopterus	Q1933299
+name	Zhejiangopterus
+group	2
+image	2837	117	117	e9cbafd8	John.Conway at English Wikipedia, CC BY-SA 3.0
+wingspan	350	350
+mass	7900	7900
+named	1994
+source	Wikidata
+end

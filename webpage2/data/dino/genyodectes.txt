@@ -1,0 +1,6 @@
+ZDS1	genyodectes	Q134643
+name	Genyodectes
+group	0
+image	3965	114	117	06c5d056	Patricia Curcio, CC BY-SA 3.0
+source	Wikidata
+end

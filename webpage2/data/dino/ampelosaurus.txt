@@ -1,0 +1,8 @@
+ZDS1	ampelosaurus	Q132588
+name	Ampelosaurus
+group	0
+image	6820	240	117	bb272de9	Ghedoghedo, CC BY-SA 3.0
+length	1500	1500
+named	1995
+source	Wikidata
+end

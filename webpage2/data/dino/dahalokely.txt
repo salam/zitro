@@ -1,0 +1,8 @@
+ZDS1	dahalokely	Q11514710
+name	Dahalokely
+group	0
+image	4765	94	117	6b48abb7	Andrew A. Farke, Joseph J. W. Sertich, CC BY 2.5
+lived	94300000	89300000
+era	Kreide	Cretaceous
+source	Wikidata
+end

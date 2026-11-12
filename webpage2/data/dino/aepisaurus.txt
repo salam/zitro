@@ -1,0 +1,6 @@
+ZDS1	aepisaurus	Q133074
+name	Aepisaurus
+group	0
+image	1858	60	117	00f72d6a	-
+source	Wikidata
+end

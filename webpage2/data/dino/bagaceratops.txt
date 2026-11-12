@@ -1,0 +1,7 @@
+ZDS1	bagaceratops	Q18511050
+name	Bagaceratops
+group	0
+image	5304	169	117	509a0eea	Ghedoghedo, CC BY-SA 3.0
+length	100	100
+source	Wikidata
+end

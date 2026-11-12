@@ -1,0 +1,7 @@
+ZDS1	teihivenator	Q33133600
+name	Teihivenator
+group	0
+image	3990	115	117	706b4316	Chase D Brownstein, CC BY 4.0
+named	2017
+source	Wikidata
+end

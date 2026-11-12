@@ -1,0 +1,6 @@
+ZDS1	klobiodon	Q58403912
+name	Klobiodon
+group	2
+image	7040	240	117	553ee272	MOS1985, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	baalsaurus	Q59871859
+name	Baalsaurus
+group	0
+image	5348	136	117	0fd72f62	Jorge O. Calvo & Bernardo Gonzalez Riga, CC BY-SA 4.0
+source	Wikidata
+end

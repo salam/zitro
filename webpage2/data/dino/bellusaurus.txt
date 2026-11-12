@@ -1,0 +1,8 @@
+ZDS1	bellusaurus	Q29057471
+name	Bellusaurus
+group	0
+image	6446	156	117	ba90f73c	Luis Alvaz, CC BY-SA 4.0
+length	500	500
+named	1990
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	dracorex	Q134203
+name	Dracorex
+group	0
+image	4144	157	117	b8271604	Nobu Tamura, CC BY 3.0
+length	400	400
+named	1931
+source	Wikidata
+end

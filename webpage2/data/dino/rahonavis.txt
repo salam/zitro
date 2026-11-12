@@ -1,0 +1,7 @@
+ZDS1	rahonavis	Q131167
+name	Rahonavis
+group	0
+image	3525	240	117	1dd00b7b	Nobu Tamura, CC BY 3.0
+named	1998
+source	Wikidata
+end

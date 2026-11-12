@@ -1,0 +1,8 @@
+ZDS1	claosaurus	Q133801
+name	Claosaurus
+group	0
+image	5302	102	117	29a9ca3b	CC BY 4.0
+lived	87000000	82000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	bakiribu	Q136756872
+name	Bakiribu
+group	2
+image	5641	107	117	f18fa474	CC BY 4.0
+named	2025
+source	Wikidata
+end

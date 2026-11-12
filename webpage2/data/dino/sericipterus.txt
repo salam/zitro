@@ -1,0 +1,7 @@
+ZDS1	sericipterus	Q18585288
+name	Sericipterus
+group	2
+image	7486	240	117	52a81b9e	NobuTamura palaeocritti, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

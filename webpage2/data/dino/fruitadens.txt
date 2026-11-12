@@ -1,0 +1,6 @@
+ZDS1	fruitadens	Q133058
+name	Fruitadens
+group	0
+image	3885	240	117	4bd98c8d	Smokeybjb, CC BY-SA 3.0
+source	Wikidata
+end

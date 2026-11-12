@@ -1,0 +1,8 @@
+ZDS1	barosaurus	Q309390
+name	Barosaurus
+group	0
+image	3967	78	117	459386d7	Greg from New York, NY, America, CC BY 2.0
+length	2400	2400
+named	1890
+source	Wikidata
+end

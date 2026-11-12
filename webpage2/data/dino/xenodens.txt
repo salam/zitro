@@ -1,0 +1,6 @@
+ZDS1	xenodens	Q104883923
+name	Xenodens
+group	3
+image	3610	90	117	24343d1a	NickLongrich, CC BY-SA 4.0
+source	Wikidata
+end

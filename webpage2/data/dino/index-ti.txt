@@ -1,0 +1,28 @@
+ZDX1	ti	27
+tiamat	tiamat
+tiamat valdecii	tiamat
+tianyulong	tianyulong
+tianyulong confuciusi	tianyulong
+tianyuraptor	tianyuraptor
+tianyuraptor ostromi	tianyuraptor
+tianzhenosaurus	tianzhenosaurus
+tianzhenosaurus chengi	tianzhenosaurus
+tianzhenosaurus youngi	tianzhenosaurus
+tichosteus	tichosteus
+tietasaura	tietasaura
+tietasaura derbyiana	tietasaura
+timimus	timimus
+timimus hermani	timimus
+timurlengia	timurlengia
+timurlengia euotica	timurlengia
+tingmiatornis	tingmiatornis
+tingmiatornis arctica	tingmiatornis
+titanoceratops	titanoceratops
+titanoceratops ouranos	titanoceratops
+titanoceratops ouranous	titanoceratops
+titanomachya	titanomachya
+titanomachya gimenezi	titanomachya
+titanosauro gigante di chubut	patagotitan
+titanosaurus	titanosaurus
+titanosaurus blanfordi	titanosaurus
+titanosaurus indicus	titanosaurus

@@ -1,0 +1,8 @@
+ZDS1	temnodontosaurus	Q853721
+name	Temnodontosaurus
+group	3
+image	10537	240	117	d98dcc1c	-
+length	900	900
+named	1889
+source	Wikidata
+end

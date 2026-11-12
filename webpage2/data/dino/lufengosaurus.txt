@@ -1,0 +1,9 @@
+ZDS1	lufengosaurus	Q131561
+name	Lufengosaurus
+group	0
+image	7454	156	117	473f7af1	M.violante, CC BY-SA 3.0
+length	600	600
+lived	201300000	163500000
+era	Jura	Jurassic
+source	Wikidata
+end

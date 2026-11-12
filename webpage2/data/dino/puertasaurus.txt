@@ -1,0 +1,10 @@
+ZDS1	puertasaurus	Q133158
+name	Puertasaurus
+group	0
+image	3979	240	117	8ee833c2	-
+length	3000	3000
+lived	70600000	66043000
+named	2005
+era	Kreide	Cretaceous
+source	Wikidata
+end

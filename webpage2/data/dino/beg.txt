@@ -1,0 +1,7 @@
+ZDS1	beg	Q107155305
+name	Beg
+group	0
+image	6357	240	79	59afef63	Yu et al, CC BY 4.0
+named	2020
+source	Wikidata
+end

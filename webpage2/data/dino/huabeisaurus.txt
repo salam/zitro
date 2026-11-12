@@ -1,0 +1,6 @@
+ZDS1	huabeisaurus	Q311494
+name	Huabeisaurus
+group	0
+image	4781	102	117	82e03f95	Kabacchi, CC BY 2.0
+source	Wikidata
+end

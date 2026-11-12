@@ -1,0 +1,7 @@
+ZDS1	saltasaurus	Q131111
+name	Saltasaurus
+group	0
+image	4973	240	117	473501ad	-
+length	1200	1200
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	mongolostegus	Q61732137
+name	Mongolostegus
+group	0
+image	5603	240	88	197995f7	Connor Ashbridge, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

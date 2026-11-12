@@ -1,0 +1,6 @@
+ZDS1	ornithotarsus	Q3886098
+name	Ornithotarsus
+group	0
+image	2384	98	117	a975d621	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

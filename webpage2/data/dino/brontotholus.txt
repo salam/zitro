@@ -1,0 +1,7 @@
+ZDS1	brontotholus	Q136465240
+name	Brontotholus
+group	0
+image	3986	240	117	5c51ca2b	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

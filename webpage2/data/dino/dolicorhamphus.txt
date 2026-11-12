@@ -1,0 +1,7 @@
+ZDS1	dolicorhamphus	Q114044002
+name	Dolicorhamphus
+group	2
+image	7047	240	117	bfa5db0b	-
+named	1885
+source	Wikidata
+end

@@ -1,0 +1,41 @@
+ZDX1	he	40
+hecatosaurus	telmatosaurus
+helioceratops	helioceratops
+heptasteornis	heptasteornis
+heptasteornis andrewsi	heptasteornis
+herbstosaurus	herbstosaurus
+herbstosaurus pigmaeus	herbstosaurus
+herrarasaurus	herrerasaurus
+herrerasaurus	herrerasaurus
+herrerasaurus ischigualastensis	herrerasaurus
+hesperonychus	hesperonychus
+hesperonychus elizabethae	hesperonychus
+hesperonyx	hesperonyx
+hesperonyx martinhotomasorum	hesperonyx
+hesperornis	hesperornis
+hesperornis altus	hesperornis
+hesperornis bairdi	hesperornis
+hesperornis chowi	hesperornis
+hesperornis crassipes	hesperornis
+hesperornis gracilis	hesperornis
+hesperornis lumgairi	hesperornis
+hesperornis macdonaldi	hesperornis
+hesperornis mengeli	hesperornis
+hesperornis montana	hesperornis
+hesperornis montanus	hesperornis
+hesperornis regalis	hesperornis
+hesperornis rossicus	hesperornis
+hesperornithoides	hesperornithoides
+hesperornithoides miessleri	hesperornithoides
+hesperosaurus	hesperosaurus
+hesperosaurus mjosi	hesperosaurus
+heterodontosaurus	heterodontosaurus
+heterodontosaurus tucki	heterodontosaurus
+hexatarsostinus	hexatarsostinus
+hexing	hexing
+hexing qingyi	hexing
+hexinlusaurus	hexinlusaurus
+hexinlusaurus multidens	hexinlusaurus
+heyuannia	heyuannia
+heyuannia huangi	heyuannia
+heyuannia yanshini	heyuannia

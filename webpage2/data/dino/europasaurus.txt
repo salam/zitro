@@ -1,0 +1,8 @@
+ZDS1	europasaurus	Q131712
+name	Europasaurus
+group	0
+image	4570	156	117	0a27cf48	Nils Knotschke, CC BY-SA 2.5
+length	620	620
+named	2006
+source	Wikidata
+end

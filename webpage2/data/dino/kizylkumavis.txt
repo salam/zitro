@@ -1,0 +1,6 @@
+ZDS1	kizylkumavis	Q10890890
+name	Kizylkumavis
+group	1
+image	3764	156	117	0bb07d7b	Luxquine, CC BY-SA 4.0
+source	Wikidata
+end

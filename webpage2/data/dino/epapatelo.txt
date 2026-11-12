@@ -1,0 +1,7 @@
+ZDS1	epapatelo	Q113871591
+name	Epapatelo
+group	2
+image	6910	240	117	0368c399	CC BY 4.0
+named	2022
+source	Wikidata
+end

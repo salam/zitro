@@ -1,0 +1,6 @@
+ZDS1	equijubus	Q941092
+name	Equijubus
+group	0
+image	10185	240	117	0e50eac0	CC BY 4.0
+source	Wikidata
+end

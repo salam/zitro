@@ -1,0 +1,6 @@
+ZDS1	kaijiangosaurus	Q871868
+name	Kaijiangosaurus
+group	0
+image	3300	240	85	2bd81ea5	Slate Weasel, CC BY 4.0
+source	Wikidata
+end

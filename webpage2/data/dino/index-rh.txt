@@ -1,0 +1,31 @@
+ZDX1	rh	30
+rhabdodon	rhabdodon
+rhabdodon priscus	rhabdodon
+rhabdodon septimanicus	rhabdodon
+rhadinosaurus	rhadinososaurus
+rhadinosaurus alcinus	rhadinososaurus
+rhadinososaurus	rhadinososaurus
+rhamphocephalus	rhamphocephalus
+rhamphocephalus bucklandi	rhamphocephalus
+rhamphocephalus depressirostris	rhamphocephalus
+rhamphocephalus prestwichi	rhamphocephalus
+rhamphorhynchus	rhamphorhynchus
+rhamphorhynchus etchesi	rhamphorhynchus
+rhamphorhynchus gemmingi	rhamphorhynchus
+rhamphorhynchus intermedius	rhamphorhynchus
+rhamphorhynchus jessoni	rhamphorhynchus
+rhamphorhynchus longicaudus	rhamphorhynchus
+rhamphorhynchus manseli	rhamphorhynchus
+rhamphorhynchus manselii	rhamphorhynchus
+rhamphorhynchus muensteri	rhamphorhynchus
+rhamphorhynchus pleydellii	rhamphorhynchus
+rhinorex	rhinorex
+rhinorex condrupus	rhinorex
+rhoetosaurus	rhoetosaurus
+rhomaleopakhus	rhomaleopakhus
+rhomaleopakhus turpanensis	rhomaleopakhus
+rhomaleosaurus	rhomaleosaurus
+rhomaleosaurus cramptoni	rhomaleosaurus
+rhomaleosaurus megacephalus	rhomaleosaurus
+rhomaleosaurus propinquus	rhomaleosaurus
+rhomaleosaurus thorntoni	rhomaleosaurus

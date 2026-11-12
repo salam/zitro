@@ -1,0 +1,7 @@
+ZDS1	nurhachius	Q2591525
+name	Nurhachius
+group	2
+image	5003	127	117	155937d3	Nobu Tamura, CC BY 3.0
+named	2005
+source	Wikidata
+end

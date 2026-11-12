@@ -1,0 +1,15 @@
+ZDS1	iguanodon	Q130980
+name	Iguanodon
+group	0
+image	4478	240	117	2caa985f	Nobu Tamura, CC BY-SA 4.0
+length	900	1100
+mass	4500000	4500000
+speed	240	240
+lived	126000000	122000000
+named	1825
+era	Kreide	Cretaceous
+meaning	Leguanzahn	iguana tooth
+diet	Pflanzen	Plants
+fun	Iguanodon hatte Daumen in Form eines Dorns. Sie dienten wohl als Waffe.	Iguanodon had thumbs shaped like spikes. They were probably used as weapons.	Wikipedia (DE): Iguanodon
+source	Wikidata, Wikipedia
+end

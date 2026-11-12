@@ -1,0 +1,6 @@
+ZDS1	epidendrosaurus	Q133119
+name	Epidendrosaurus
+group	0
+image	3573	75	117	d7ffdaff	Matthew Martyniuk (Dinoguy2), CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	preondactylus	Q134645
+name	Preondactylus
+group	2
+image	5800	240	117	9fafcaee	Nobu Tamura, CC BY 3.0
+named	1984
+source	Wikidata
+end

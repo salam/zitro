@@ -1,0 +1,7 @@
+ZDS1	campylodoniscus	Q2336626
+name	Campylodoniscus
+group	0
+image	3426	126	117	e27a8f04	Bricksmashtv4, CC BY-SA 4.0
+named	1929
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	minqaria	Q124534277
+name	Minqaria
+group	0
+image	3649	123	117	446823a8	Olof Moleman, CC BY-SA 4.0
+source	Wikidata
+end

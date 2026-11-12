@@ -1,0 +1,10 @@
+ZDS1	hadrosaurus	Q14511
+name	Hadrosaurus
+group	0
+image	4529	240	117	d0c6e845	Audrey.m.horn, CC BY-SA 4.0
+length	900	900
+lived	80500000	78500000
+named	1858
+era	Kreide	Cretaceous
+source	Wikidata
+end

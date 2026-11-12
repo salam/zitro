@@ -1,0 +1,6 @@
+ZDS1	ekrixinatosaurus	Q132571
+name	Ekrixinatosaurus
+group	0
+image	4927	240	84	787c2849	Joseph Shanks, CC BY-SA 4.0
+source	Wikidata
+end

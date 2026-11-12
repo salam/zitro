@@ -1,0 +1,6 @@
+ZDS1	syngonosaurus	Q5674171
+name	Syngonosaurus
+group	0
+image	5391	156	117	08366875	-
+source	Wikidata
+end

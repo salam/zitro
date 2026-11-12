@@ -1,0 +1,6 @@
+ZDS1	ganzhousaurus	Q18755856
+name	Ganzhousaurus
+group	0
+image	3528	157	117	5c50297e	CC BY-SA 3.0
+source	Wikidata
+end

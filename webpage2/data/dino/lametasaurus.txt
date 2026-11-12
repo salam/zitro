@@ -1,0 +1,7 @@
+ZDS1	lametasaurus	Q285063
+name	Lametasaurus
+group	0
+image	2915	87	117	612cb019	-
+named	1924
+source	Wikidata
+end

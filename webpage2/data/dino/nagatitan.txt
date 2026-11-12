@@ -1,0 +1,7 @@
+ZDS1	nagatitan	Q139792760
+name	Nagatitan
+group	0
+image	3492	240	117	d51fd837	SlvrHwk, CC BY 4.0
+named	2026
+source	Wikidata
+end

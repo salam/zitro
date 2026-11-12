@@ -1,0 +1,9 @@
+ZDS1	tholodus	Q6146009
+name	Tholodus
+group	3
+image	8239	240	117	684768da	Ghedoghedo, CC BY-SA 4.0
+lived	245000000	235000000
+named	1851
+era	Trias	Triassic
+source	Wikidata
+end

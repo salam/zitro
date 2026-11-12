@@ -1,0 +1,7 @@
+ZDS1	hastanectes	Q868529
+name	Hastanectes
+group	3
+image	4726	240	117	bd75fd9e	Connor Ashbridge, CC BY-SA 4.0
+named	2013
+source	Wikidata
+end

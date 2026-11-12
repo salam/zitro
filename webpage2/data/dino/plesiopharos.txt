@@ -1,0 +1,7 @@
+ZDS1	plesiopharos	Q107207764
+name	Plesiopharos
+group	3
+image	3521	240	62	a45f2b7c	Connor Ashbridge, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

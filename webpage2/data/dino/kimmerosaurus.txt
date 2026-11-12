@@ -1,0 +1,9 @@
+ZDS1	kimmerosaurus	Q619384
+name	Kimmerosaurus
+group	3
+image	6753	165	117	c2ad0674	Alexander Lovegrove, CC BY-SA 4.0
+lived	150800000	145500000
+named	1981
+era	Jura	Jurassic
+source	Wikidata
+end

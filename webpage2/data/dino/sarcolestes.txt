@@ -1,0 +1,6 @@
+ZDS1	sarcolestes	Q138520
+name	Sarcolestes
+group	0
+image	2919	71	117	7bea6a51	-
+source	Wikidata
+end

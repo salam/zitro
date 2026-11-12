@@ -1,0 +1,6 @@
+ZDS1	apatornis	Q4779241
+name	Apatornis
+group	1
+image	4109	240	89	cf9708f6	-
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	dzharaonyx	Q111182041
+name	Dzharaonyx
+group	0
+image	6619	240	117	34522419	-
+named	2022
+source	Wikidata
+end

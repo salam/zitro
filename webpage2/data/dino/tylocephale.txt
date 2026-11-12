@@ -1,0 +1,7 @@
+ZDS1	tylocephale	Q132563
+name	Tylocephale
+group	0
+image	4294	140	117	588375c1	PaleoNeolitic, CC BY 4.0
+length	140	140
+source	Wikidata
+end

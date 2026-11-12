@@ -1,0 +1,7 @@
+ZDS1	transylvanosaurus	Q115405192
+name	Transylvanosaurus
+group	0
+image	4124	117	117	c5f2bbd4	Felix J. Augustin, Attila Osi, Zoltan Csiki-Sava, CC BY 4.0
+named	2022
+source	Wikidata
+end

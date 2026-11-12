@@ -1,0 +1,8 @@
+ZDS1	cairanoolithus	Q5017647
+name	Cairanoolithus
+group	0
+image	6204	173	117	d65274ae	Ghedoghedo, CC BY-SA 3.0
+lived	99600000	65000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

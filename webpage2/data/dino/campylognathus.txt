@@ -1,0 +1,7 @@
+ZDS1	campylognathus	Q141750581
+name	Campylognathus
+group	2
+image	4586	240	117	d6c95b18	-
+named	1894
+source	Wikidata
+end

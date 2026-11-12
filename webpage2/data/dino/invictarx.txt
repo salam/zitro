@@ -1,0 +1,6 @@
+ZDS1	invictarx	Q56247617
+name	Invictarx
+group	0
+image	6344	149	117	d3c3ff32	Andrew T. McDonald, Douglas G. Wolfe, CC BY 4.0
+source	Wikidata
+end

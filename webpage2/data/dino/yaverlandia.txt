@@ -1,0 +1,7 @@
+ZDS1	yaverlandia	Q133114
+name	Yaverlandia
+group	0
+image	2193	114	117	d4473c2a	Ghedoghedo, CC BY-SA 4.0
+named	1971
+source	Wikidata
+end

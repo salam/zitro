@@ -1,0 +1,7 @@
+ZDS1	huaxiapterus	Q988297
+name	Huaxiapterus
+group	2
+image	6948	172	117	01e5c4b3	Bjoertvedt, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

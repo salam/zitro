@@ -1,0 +1,6 @@
+ZDS1	glyptodontopelta	Q522942
+name	Glyptodontopelta
+group	0
+image	3208	91	117	e59fd0b7	Df9465 (Denver Fowler), CC BY-SA 4.0
+source	Wikidata
+end

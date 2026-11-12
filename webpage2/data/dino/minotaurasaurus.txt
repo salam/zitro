@@ -1,0 +1,6 @@
+ZDS1	minotaurasaurus	Q134146
+name	Minotaurasaurus
+group	0
+image	5770	144	117	7f96bd76	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

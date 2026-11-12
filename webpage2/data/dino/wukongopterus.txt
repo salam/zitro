@@ -1,0 +1,7 @@
+ZDS1	wukongopterus	Q18915218
+name	Wukongopterus
+group	2
+image	4243	159	117	e516228b	Nobu Tamura, CC BY 3.0
+named	2009
+source	Wikidata
+end

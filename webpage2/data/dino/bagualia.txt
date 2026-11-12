@@ -1,0 +1,6 @@
+ZDS1	bagualia	Q102104838
+name	Bagualia
+group	0
+image	4959	156	117	8a802c96	Sreuil, CC BY-SA 4.0
+source	Wikidata
+end

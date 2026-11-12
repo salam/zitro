@@ -1,0 +1,6 @@
+ZDS1	angulomastacator	Q769994
+name	Angulomastacator
+group	0
+image	4365	121	117	2c3d0755	-
+source	Wikidata
+end

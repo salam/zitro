@@ -1,0 +1,6 @@
+ZDS1	rubeosaurus	Q18915255
+name	Rubeosaurus
+group	0
+image	4915	177	117	569f2586	Andrew T. McDonald, CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	megaraptor	Q131540
+name	Megaraptor
+group	0
+image	4933	240	117	917f998d	Foolp, CC BY-SA 4.0
+lived	91000000	88000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

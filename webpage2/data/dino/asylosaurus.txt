@@ -1,0 +1,6 @@
+ZDS1	asylosaurus	Q2145674
+name	Asylosaurus
+group	0
+image	3339	150	117	533cf1f5	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

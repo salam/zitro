@@ -1,0 +1,7 @@
+ZDS1	aristonectes	Q2154474
+name	Aristonectes
+group	3
+image	4066	156	117	c8f2419a	Nobu Tamura, CC BY-SA 4.0
+named	1941
+source	Wikidata
+end

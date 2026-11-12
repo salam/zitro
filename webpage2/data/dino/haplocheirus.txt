@@ -1,0 +1,6 @@
+ZDS1	haplocheirus	Q81482
+name	Haplocheirus
+group	0
+image	5532	174	117	70a56d24	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

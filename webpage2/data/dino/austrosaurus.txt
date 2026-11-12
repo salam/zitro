@@ -1,0 +1,10 @@
+ZDS1	austrosaurus	Q135324
+name	Austrosaurus
+group	0
+image	2766	160	117	315a7d7f	Levi bernardo, CC BY-SA 3.0
+length	1500	1500
+lived	105000000	100500000
+named	1933
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	zuolong	Q150218
+name	Zuolong
+group	0
+image	4769	240	117	4ae2ba1e	FunkMonk, CC BY-SA 3.0
+lived	161200000	155200000
+era	Jura	Jurassic
+source	Wikidata
+end

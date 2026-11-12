@@ -1,0 +1,6 @@
+ZDS1	amargatitanis	Q133512
+name	Amargatitanis
+group	0
+image	3418	240	80	63f7c1fe	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

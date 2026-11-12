@@ -1,0 +1,6 @@
+ZDS1	hoplitosaurus	Q139951
+name	Hoplitosaurus
+group	0
+image	2498	60	117	5c5e5a03	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

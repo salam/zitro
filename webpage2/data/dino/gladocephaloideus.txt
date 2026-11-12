@@ -1,0 +1,7 @@
+ZDS1	gladocephaloideus	Q2046750
+name	Gladocephaloideus
+group	2
+image	2497	83	117	eaa2df59	Junchang Lu, Martin Kundrat, Caizhi Shen, CC BY 2.5
+named	2012
+source	Wikidata
+end

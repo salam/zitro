@@ -1,0 +1,8 @@
+ZDS1	jeyawati	Q1955067
+name	Jeyawati
+group	0
+image	8341	240	117	1a779b7c	Nobu Tamura, CC BY-SA 4.0
+lived	93000000	91000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

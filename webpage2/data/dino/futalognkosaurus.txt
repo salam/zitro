@@ -1,0 +1,7 @@
+ZDS1	futalognkosaurus	Q131249
+name	Futalognkosaurus
+group	0
+image	4004	88	117	4fc2e45d	Esv, CC BY-SA 3.0
+named	2007
+source	Wikidata
+end

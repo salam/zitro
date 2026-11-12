@@ -1,0 +1,7 @@
+ZDS1	aphrosaurus	Q4180945
+name	Aphrosaurus
+group	3
+image	3482	240	70	129dc3c1	Connor Ashbridge, CC BY-SA 4.0
+named	1943
+source	Wikidata
+end

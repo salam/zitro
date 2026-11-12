@@ -1,0 +1,8 @@
+ZDS1	aardonyx	Q131298
+name	Aardonyx
+group	0
+image	3289	240	86	a23e27cf	-
+length	800	800
+named	2010
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	anoplosaurus	Q134558
+name	Anoplosaurus
+group	0
+image	7385	156	117	ced74d67	-
+source	Wikidata
+end

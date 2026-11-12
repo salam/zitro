@@ -1,0 +1,6 @@
+ZDS1	chondrosteosaurus	Q627974
+name	Chondrosteosaurus
+group	0
+image	4311	91	117	6fa76857	-
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	jinchuanloong	Q134552006
+name	Jinchuanloong
+group	0
+image	2908	191	117	acf87e6f	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

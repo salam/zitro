@@ -1,0 +1,41 @@
+ZDX1	ic	40
+ichthyornis	ichthyornis
+ichthyornis antecessor	ichthyornis
+ichthyornis dispar	ichthyornis
+ichthyornis maltschevskyii	ichthyornis
+ichthyornis maltshevskyi	ichthyornis
+ichthyornis minusculus	ichthyornis
+ichthyosaurus	ichthyosaurus
+ichthyosaurus acutirostris	ichthyosaurus
+ichthyosaurus anningae	ichthyosaurus
+ichthyosaurus australis	ichthyosaurus
+ichthyosaurus breviceps	ichthyosaurus
+ichthyosaurus californicus	ichthyosaurus
+ichthyosaurus campylodon	ichthyosaurus
+ichthyosaurus communis	ichthyosaurus
+ichthyosaurus conybeari	ichthyosaurus
+ichthyosaurus dilatatus	ichthyosaurus
+ichthyosaurus entheciodon	ichthyosaurus
+ichthyosaurus enthekiodon	ichthyosaurus
+ichthyosaurus extremus	ichthyosaurus
+ichthyosaurus franciscanus	ichthyosaurus
+ichthyosaurus immanis	ichthyosaurus
+ichthyosaurus indicus	ichthyosaurus
+ichthyosaurus integer	ichthyosaurus
+ichthyosaurus intermedius	ichthyosaurus
+ichthyosaurus latifrons	ichthyosaurus
+ichthyosaurus leptospondylus	ichthyosaurus
+ichthyosaurus lonchiodon	ichthyosaurus
+ichthyosaurus longimanus	ichthyosaurus
+ichthyosaurus ovalis	ichthyosaurus
+ichthyosaurus platyodon	ichthyosaurus
+ichthyosaurus posthumus	ichthyosaurus
+ichthyosaurus sp	ichthyosaurus
+ichthyosaurus tenuirostris	ichthyosaurus
+ichthyosaurus thyreospondylus	ichthyosaurus
+ichthyosaurus trigonus	ichthyosaurus
+ichthyosaurus zetlandicus	ichthyosaurus
+ichthyotitan	ichthyotitan
+ichthyotitan severnensis	ichthyotitan
+ichthyovenator	ichthyovenator
+ichthyovenator laosensis	ichthyovenator

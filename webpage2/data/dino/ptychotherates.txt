@@ -1,0 +1,7 @@
+ZDS1	ptychotherates	Q139345300
+name	Ptychotherates
+group	0
+image	4046	113	117	5709f975	SlvrHwk, CC BY-SA 4.0
+named	2026
+source	Wikidata
+end

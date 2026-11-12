@@ -1,0 +1,6 @@
+ZDS1	tendaguria	Q278093
+name	Tendaguria
+group	0
+image	6270	240	117	66599dc4	Phillip D. Mannion, CC BY-SA 4.0
+source	Wikidata
+end

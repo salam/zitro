@@ -1,0 +1,6 @@
+ZDS1	juratyrant	Q18602114
+name	Juratyrant
+group	0
+image	6906	158	117	51bc101e	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,74 @@
+ZDX1	si	73
+siamodon	siamodon
+siamodon nimngami	siamodon
+siamosaurus	siamosaurus
+siamosaurus suteethorni	siamosaurus
+siamotyrannus	siamotyrannus
+siamotyrannus isanensis	siamotyrannus
+siamraptor	siamraptor
+siamraptor suwati	siamraptor
+siats	siats
+siats meekerorum	siats
+sibirotitan	sibirotitan
+sibirotitan astrosacralis	sibirotitan
+sidersaura	sidersaura
+sierraceratops	sierraceratops
+sierraceratops turneri	sierraceratops
+sigilmassasaurus	sigilmassasaurus
+sigilmassasaurus brevicollis	sigilmassasaurus
+silutitan	silutitan
+silutitan sinensis	silutitan
+silvisaurus	silvisaurus
+silvisaurus condrayi	silvisaurus
+similicaudipteryx	similicaudipteryx
+similicaudipteryx yixianensis	similicaudipteryx
+simolestes	simolestes
+simolestes indicus	simolestes
+simolestes keileni	simolestes
+simolestes vorax	simolestes
+simurghia	simurghia
+sinocalliopteryx	sinocalliopteryx
+sinocalliopteryx gigas	sinocalliopteryx
+sinocephale	sinocephale
+sinocephale bexelli	sinocephale
+sinoceratops	sinoceratops
+sinoceratops zhuchengensis	sinoceratops
+sinocoelurus	sinocoelurus
+sinocoelurus fragilis	sinocoelurus
+sinomacrops	sinomacrops
+sinomacrops bondei	sinomacrops
+sinopliosaurus	sinopliosaurus
+sinopliosaurus fusuiensis	sinopliosaurus
+sinopliosaurus weiyuanensis	sinopliosaurus
+sinopterus	sinopterus
+sinopterus dongi	sinopterus
+sinopterus gui	sinopterus
+sinornis	sinornis
+sinornis santensis	sinornis
+sinornithoides	sinornithoides
+sinornithoides youngi	sinornithoides
+sinornithomimus	sinornithomimus
+sinornithomimus dongi	sinornithomimus
+sinornithosaurier	sinornithosaurus
+sinornithosaurus	sinornithosaurus
+sinornithosaurus haoiana	sinornithosaurus
+sinornithosaurus millenii	sinornithosaurus
+sinosauropteryx	sinosauropteryx
+sinosauropteryx lingyuanensis	sinosauropteryx
+sinosauropteryx prima	sinosauropteryx
+sinosaurus	sinosaurus
+sinosaurus sinensis	sinosaurus
+sinosaurus triassicus	sinosaurus
+sinotyrannus	sinotyrannus
+sinotyrannus kazuoensis	sinotyrannus
+sinovenator	sinovenator
+sinovenator changiae	sinovenator
+sinovenator changii	sinovenator
+sinraptor	sinraptor
+sinraptor dongi	sinraptor
+sinraptor hepingensis	sinraptor
+sinusonasus	sinusonasus
+sinusonasus magnodens	sinusonasus
+sirindhorna	sirindhorna
+siroccopteryx	siroccopteryx
+sisteronia	sisteronia

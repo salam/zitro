@@ -1,0 +1,7 @@
+ZDS1	zuul	Q29890400
+name	Zuul
+group	0
+image	4900	95	117	dd42396e	Victoria M. Arbour, David C. Evans, CC BY 4.0
+named	2017
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	aerodactylus	Q18341804
+name	Aerodactylus
+group	2
+image	3793	166	117	1dc456b3	Steven U. Vidovic, David M. Martill, CC BY 2.5
+lived	150800000	148500000
+named	2014
+era	Jura	Jurassic
+source	Wikidata
+end

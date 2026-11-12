@@ -1,0 +1,8 @@
+ZDS1	callawayia	Q5021806
+name	Callawayia
+group	3
+lived	221500000	212000000
+named	2000
+era	Trias	Triassic
+source	Wikidata
+end

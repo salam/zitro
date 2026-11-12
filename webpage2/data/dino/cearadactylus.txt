@@ -1,0 +1,9 @@
+ZDS1	cearadactylus	Q133271
+name	Cearadactylus
+group	2
+image	2746	124	117	534be520	Smokeybjb, CC BY-SA 3.0
+wingspan	550	550
+mass	15000	15000
+named	1985
+source	Wikidata
+end

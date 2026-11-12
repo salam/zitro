@@ -1,0 +1,7 @@
+ZDS1	hypselosaurus	Q133062
+name	Hypselosaurus
+group	0
+image	4308	156	117	e0f253fe	Nobu Tamura, CC BY-SA 4.0
+named	1869
+source	Wikidata
+end

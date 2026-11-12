@@ -1,0 +1,7 @@
+ZDS1	shantungosaurus	Q131158
+name	Shantungosaurus
+group	0
+image	5696	240	117	53d88d45	IJReid, CC BY 4.0
+length	1500	1500
+source	Wikidata
+end

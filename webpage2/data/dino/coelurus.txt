@@ -1,0 +1,9 @@
+ZDS1	coelurus	Q131228
+name	Coelurus
+group	0
+image	4153	240	71	cea8b6c3	Jaime A. Headden, CC BY 3.0
+length	180	180
+lived	155000000	152000000
+era	Jura	Jurassic
+source	Wikidata
+end

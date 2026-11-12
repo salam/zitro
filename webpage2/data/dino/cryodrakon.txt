@@ -1,0 +1,7 @@
+ZDS1	cryodrakon	Q67206352
+name	Cryodrakon
+group	2
+image	3720	172	117	c7034b7d	PaleoEquii, CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

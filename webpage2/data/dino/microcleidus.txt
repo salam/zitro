@@ -1,0 +1,10 @@
+ZDS1	microcleidus	Q2462673
+name	Microcleidus
+group	3
+image	4359	240	117	debee720	Dmitry Bogdanov, CC BY 3.0
+length	300	300
+lived	182000000	175000000
+named	1909
+era	Jura	Jurassic
+source	Wikidata
+end

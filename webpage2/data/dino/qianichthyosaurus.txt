@@ -1,0 +1,10 @@
+ZDS1	qianichthyosaurus	Q7267639
+name	Qianichthyosaurus
+group	3
+image	3270	240	117	34c98eb6	Slate Weasel, CC BY 4.0
+length	150	150
+lived	232000000	221500000
+named	1999
+era	Trias	Triassic
+source	Wikidata
+end

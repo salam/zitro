@@ -1,0 +1,9 @@
+ZDS1	selmasaurus	Q7211269
+name	Selmasaurus
+group	3
+length	400	400
+lived	85800000	70600000
+named	1988
+era	Kreide	Cretaceous
+source	Wikidata
+end

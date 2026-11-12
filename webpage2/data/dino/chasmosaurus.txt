@@ -1,0 +1,10 @@
+ZDS1	chasmosaurus	Q131586
+name	Chasmosaurus
+group	0
+image	4750	177	117	813207ad	Nobu Tamura, CC BY 3.0
+length	480	500
+mass	2000000	2000000
+lived	76500000	75500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

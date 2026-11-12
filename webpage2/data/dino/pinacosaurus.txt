@@ -1,0 +1,8 @@
+ZDS1	pinacosaurus	Q31422
+name	Pinacosaurus
+group	0
+image	5029	240	63	b3afedb1	Laikayiu, CC BY-SA 3.0
+length	500	500
+named	1933
+source	Wikidata
+end

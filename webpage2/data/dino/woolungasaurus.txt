@@ -1,0 +1,10 @@
+ZDS1	woolungasaurus	Q29601138
+name	Woolungasaurus
+group	3
+image	5036	176	117	20adc9b3	Ryan Somma, CC BY 2.0
+length	950	950
+lived	145000000	100500000
+named	1960
+era	Kreide	Cretaceous
+source	Wikidata
+end

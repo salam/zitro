@@ -1,0 +1,9 @@
+ZDS1	halszkaraptor	Q44884994
+name	Halszkaraptor
+group	0
+image	6122	240	117	bc314d1c	CC BY 4.0
+lived	75000000	71000000
+named	2017
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	zanabazar	Q593763
+name	Zanabazar
+group	0
+image	4451	240	117	389da8e1	FunkMonk, CC BY 3.0
+length	230	230
+mass	25000	25000
+named	2009
+source	Wikidata
+end

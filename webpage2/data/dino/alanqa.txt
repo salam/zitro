@@ -1,0 +1,8 @@
+ZDS1	alanqa	Q18584847
+name	Alanqa
+group	2
+image	3860	240	84	7dc9fda2	CC BY 2.5
+wingspan	600	600
+named	2010
+source	Wikidata
+end

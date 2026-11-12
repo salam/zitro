@@ -1,0 +1,6 @@
+ZDS1	thyreosaurus	Q125200697
+name	Thyreosaurus
+group	0
+image	3981	240	86	f6c22876	TotalDino, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	lamplughsaura	Q1705966
+name	Lamplughsaura
+group	0
+image	4432	240	117	58b951d6	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

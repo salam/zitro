@@ -1,0 +1,7 @@
+ZDS1	kileskus	Q132522
+name	Kileskus
+group	0
+image	4751	240	117	d5a209e9	Petr Menshikov, CC BY-SA 4.0
+named	2010
+source	Wikidata
+end

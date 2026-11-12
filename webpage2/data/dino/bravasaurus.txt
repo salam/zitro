@@ -1,0 +1,6 @@
+ZDS1	bravasaurus	Q100937716
+name	Bravasaurus
+group	0
+image	5266	240	74	fb9b5a08	CC BY-SA 4.0
+source	Wikidata
+end

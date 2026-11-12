@@ -1,0 +1,8 @@
+ZDS1	gettyia	Q58680607
+name	Gettyia
+group	1
+image	2505	78	117	90e52f50	CC BY 4.0
+lived	75000000	74000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

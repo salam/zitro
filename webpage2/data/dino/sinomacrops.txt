@@ -1,0 +1,9 @@
+ZDS1	sinomacrops	Q106303603
+name	Sinomacrops
+group	2
+image	3163	83	117	de332c14	Zhao Chuang, CC BY 4.0
+lived	165300000	154800000
+named	2021
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	santanadactylus	Q144435
+name	Santanadactylus
+group	2
+image	3674	80	117	20289fe2	Ghedoghedo, CC BY-SA 3.0
+named	1980
+source	Wikidata
+end

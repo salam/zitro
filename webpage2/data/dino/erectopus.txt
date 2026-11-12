@@ -1,0 +1,6 @@
+ZDS1	erectopus	Q2342517
+name	Erectopus
+group	0
+image	1881	47	117	2b2cf828	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

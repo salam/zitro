@@ -1,0 +1,8 @@
+ZDS1	makhaira	Q34652646
+name	Makhaira
+group	3
+image	5669	240	87	46cf4432	CC BY-SA 4.0
+length	500	500
+named	2015
+source	Wikidata
+end

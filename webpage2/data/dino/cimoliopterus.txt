@@ -1,0 +1,9 @@
+ZDS1	cimoliopterus	Q13438970
+name	Cimoliopterus
+group	2
+image	4496	106	117	97ede9f1	CC BY 3.0
+lived	112000000	94000000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

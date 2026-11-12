@@ -1,0 +1,9 @@
+ZDS1	mosaiceratops	Q21011930
+name	Mosaiceratops
+group	0
+image	4361	94	117	f186b97d	Wenjie Zheng, Xingsheng Jin & Xing Xu, CC BY 4.0
+lived	94000000	72000000
+named	2015
+era	Kreide	Cretaceous
+source	Wikidata
+end

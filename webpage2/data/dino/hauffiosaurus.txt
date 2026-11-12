@@ -1,0 +1,10 @@
+ZDS1	hauffiosaurus	Q3783670
+name	Hauffiosaurus
+group	3
+image	5305	240	117	d57046b7	Ghedoghedo, CC BY-SA 3.0
+length	340	340
+lived	182700000	180700000
+named	2001
+era	Jura	Jurassic
+source	Wikidata
+end

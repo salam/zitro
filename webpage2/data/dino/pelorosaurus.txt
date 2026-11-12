@@ -1,0 +1,7 @@
+ZDS1	pelorosaurus	Q1067635
+name	Pelorosaurus
+group	0
+image	5444	145	117	d73a2718	-
+length	2500	2500
+source	Wikidata
+end

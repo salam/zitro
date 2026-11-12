@@ -1,0 +1,8 @@
+ZDS1	scansoriopteryx	Q1192657
+name	Scansoriopteryx
+group	0
+image	3871	152	117	341c9e87	(Matt Martyniuk), CC BY 2.5
+lived	165000000	156000000
+era	Jura	Jurassic
+source	Wikidata
+end

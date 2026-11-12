@@ -1,0 +1,6 @@
+ZDS1	isisaurus	Q311505
+name	Isisaurus
+group	0
+image	3293	176	117	4f024553	Ansh Saxena, CC BY-SA 4.0
+source	Wikidata
+end

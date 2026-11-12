@@ -1,0 +1,7 @@
+ZDS1	scipionyx	Q134119
+name	Scipionyx
+group	0
+image	6809	176	117	1811f8c3	Giovanni Dall'Orto, CC BY-SA 2.5 it
+named	1998
+source	Wikidata
+end

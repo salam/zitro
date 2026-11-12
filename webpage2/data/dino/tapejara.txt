@@ -1,0 +1,7 @@
+ZDS1	tapejara	Q131424
+name	Tapejara
+group	2
+image	3651	88	117	1c02fa45	Tim Evanson, CC BY-SA 2.0
+named	1989
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	rahiolisaurus	Q134070
+name	Rahiolisaurus
+group	0
+image	2830	240	92	4862132b	Paleocolour, CC BY-SA 3.0
+lived	72100000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

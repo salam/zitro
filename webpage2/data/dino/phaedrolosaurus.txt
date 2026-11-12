@@ -1,0 +1,7 @@
+ZDS1	phaedrolosaurus	Q2649007
+name	Phaedrolosaurus
+group	0
+image	2454	92	117	9d1a7999	HaziiDozen, CC BY 4.0
+named	1973
+source	Wikidata
+end

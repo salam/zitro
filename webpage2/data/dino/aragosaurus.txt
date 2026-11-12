@@ -1,0 +1,7 @@
+ZDS1	aragosaurus	Q132623
+name	Aragosaurus
+group	0
+image	3958	240	117	3b4f734b	Levi bernardo, CC BY-SA 3.0
+length	1800	1800
+source	Wikidata
+end

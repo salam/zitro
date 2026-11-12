@@ -1,0 +1,7 @@
+ZDS1	lapparentosaurus	Q2154332
+name	Lapparentosaurus
+group	0
+image	4444	109	117	f8c374f9	-
+named	1986
+source	Wikidata
+end

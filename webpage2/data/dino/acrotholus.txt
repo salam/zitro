@@ -1,0 +1,7 @@
+ZDS1	acrotholus	Q12973012
+name	Acrotholus
+group	0
+image	3357	182	117	383963ec	Nobu Tamura, CC BY-SA 4.0
+named	2013
+source	Wikidata
+end

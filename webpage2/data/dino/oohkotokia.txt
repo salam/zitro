@@ -1,0 +1,7 @@
+ZDS1	oohkotokia	Q20675364
+name	Oohkotokia
+group	0
+image	5278	146	117	fedfac71	Paul Penkalski, CC BY 2.0
+named	2014
+source	Wikidata
+end

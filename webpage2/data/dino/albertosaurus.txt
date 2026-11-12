@@ -1,0 +1,16 @@
+ZDS1	albertosaurus	Q40751
+name	Albertosaurus
+group	0
+image	3575	174	117	deee4c4b	Nobu Tamura, CC BY-SA 4.0
+length	900	1000
+height	270	270
+mass	2500000	2500000
+lived	71000000	68000000
+named	1905
+era	Kreide	Cretaceous
+meaning	Alberta-Echse	Alberta lizard
+diet	Fleisch	Meat
+found	Alberta (Kanada)	Alberta (Canada)
+fun	An einer einzigen Fundstelle entdeckte man 22 Albertosaurus. Vielleicht lebten sie in Rudeln.	22 Albertosaurus were found at a single site. They may have lived in packs.	Wikipedia (DE): Albertosaurus
+source	Wikidata, Wikipedia
+end

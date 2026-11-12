@@ -1,0 +1,9 @@
+ZDX1	va	8
+vagaceratops	vagaceratops
+vagaceratops irvinensis	vagaceratops
+valdoraptor	valdoraptor
+valdoraptor oweni	valdoraptor
+valdosaurus	valdosaurus
+valdosaurus canaliculatus	valdosaurus
+vallibonavenatrix	vallibonavenatrix
+vayuraptor	vayuraptor

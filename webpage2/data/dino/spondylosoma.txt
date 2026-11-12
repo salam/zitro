@@ -1,0 +1,6 @@
+ZDS1	spondylosoma	Q549748
+name	Spondylosoma
+group	0
+image	3851	240	84	c186c3f6	Jaime A. Headden, CC BY-SA 3.0
+source	Wikidata
+end

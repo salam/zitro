@@ -1,0 +1,11 @@
+ZDS1	dromaeosaurus	Q131082
+name	Dromaeosaurus
+group	0
+image	3638	240	117	4832cf48	Fred Wierum, CC BY-SA 4.0
+length	180	200
+mass	15000	15000
+lived	76500000	74800000
+named	1922
+era	Kreide	Cretaceous
+source	Wikidata
+end

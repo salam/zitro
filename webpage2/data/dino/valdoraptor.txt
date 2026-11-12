@@ -1,0 +1,6 @@
+ZDS1	valdoraptor	Q1576716
+name	Valdoraptor
+group	0
+image	3639	91	117	1dda5532	-
+source	Wikidata
+end

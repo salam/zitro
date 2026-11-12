@@ -1,0 +1,7 @@
+ZDS1	inawentu	Q123256184
+name	Inawentu
+group	0
+image	3810	240	117	60308764	Connor Ashbridge, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

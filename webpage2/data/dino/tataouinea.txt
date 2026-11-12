@@ -1,0 +1,6 @@
+ZDS1	tataouinea	Q17126082
+name	Tataouinea
+group	0
+image	3772	240	52	d95d762d	CC BY 2.5
+source	Wikidata
+end

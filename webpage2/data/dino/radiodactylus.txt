@@ -1,0 +1,7 @@
+ZDS1	radiodactylus	Q14944695
+name	Radiodactylus
+group	2
+image	3802	165	117	8208cccc	jack liddle, CC BY 4.0
+named	2012
+source	Wikidata
+end

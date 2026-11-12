@@ -1,0 +1,6 @@
+ZDS1	galgadraco	Q136364496
+name	Galgadraco
+group	2
+image	3854	88	117	9d556545	CC BY 4.0
+source	Wikidata
+end

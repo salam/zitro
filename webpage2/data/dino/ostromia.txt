@@ -1,0 +1,9 @@
+ZDS1	ostromia	Q44533656
+name	Ostromia
+group	1
+image	3395	192	117	2c739fae	Mariolanzas, CC BY-SA 4.0
+lived	150800000	145500000
+named	2017
+era	Jura	Jurassic
+source	Wikidata
+end

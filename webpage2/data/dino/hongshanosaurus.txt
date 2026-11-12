@@ -1,0 +1,6 @@
+ZDS1	hongshanosaurus	Q134392
+name	Hongshanosaurus
+group	0
+image	7287	183	117	680aebf0	Laikayiu, CC BY-SA 3.0
+source	Wikidata
+end

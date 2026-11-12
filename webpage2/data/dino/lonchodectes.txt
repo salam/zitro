@@ -1,0 +1,6 @@
+ZDS1	lonchodectes	Q961700
+name	Lonchodectes
+group	2
+image	3835	83	117	ccc38b85	CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	sinornithomimus	Q132996
+name	Sinornithomimus
+group	0
+image	5364	240	117	82edb241	CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,5 @@
+ZDX1	cl	4
+claosaurus	claosaurus
+claosaurus agilis	claosaurus
+clidastes	clidastes
+clidastes propython	clidastes

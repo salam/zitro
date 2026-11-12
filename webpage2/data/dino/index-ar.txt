@@ -1,0 +1,70 @@
+ZDX1	ar	69
+arackar	arackar
+arackar licanantay	arackar
+aragosaurus	aragosaurus
+aragosaurus ischiaticus	aragosaurus
+aralazhdarcho	aralazhdarcho
+aralazhdarcho bostobensis	aralazhdarcho
+aralosaurus	aralosaurus
+aralosaurus tuberiferus	aralosaurus
+arambourgiania	arambourgiania
+arambourgiania philadelphiae	arambourgiania
+araripesaurus	araripesaurus
+araripesaurus castilhoi	araripesaurus
+aratasaurus	aratasaurus
+aratasaurus museunacionali	aratasaurus
+archaeoceratops	archaeoceratops
+archaeoceratops oshimai	archaeoceratops
+archaeoceratops yujingziensis	archaeoceratops
+archaeocursor	archaeocursor
+archaeocursor asiaticus	archaeocursor
+archaeodontosaurus	archaeodontosaurus
+archaeodontosaurus descouensi	archaeodontosaurus
+archaeonectrus	archaeonectrus
+archaeonectrus rostratus	archaeonectrus
+archaeopteryx	archaeopteryx
+archaeopteryx albersdoerferi	archaeopteryx
+archaeopteryx lithographica	archaeopteryx
+archaeopteryx siemensii	archaeopteryx
+archaeornithoides	archaeornithoides
+archaeornithoides deinosauriscus	archaeornithoides
+archaeornithura	archaeornithura
+arcovenator	arcovenator
+arcovenator escotae	arcovenator
+arcticodactylus	arcticodactylus
+arcticodactylus cromptonellus	arcticodactylus
+arcusaurus	arcusaurus
+arcusaurus pereirabdalorum	arcusaurus
+ardeadactylus	ardeadactylus
+ardeadactylus longicollum	ardeadactylus
+ardetosaurus	ardetosaurus
+ardetosaurus viator	ardetosaurus
+arenysaurus	arenysaurus
+arenysaurus ardevoli	arenysaurus
+argentinadraco	argentinadraco
+argentinonectes	argentinonectes
+argentinonectes calafatensis	argentinonectes
+argentinosaurus	argentinosaurus
+argentinosaurus huinculensis	argentinosaurus
+argovisaurus	argovisaurus
+argovisaurus martafernandezi	argovisaurus
+argyrosaurinae	argyrosaurus
+argyrosaurus	argyrosaurus
+argyrosaurus superbus	argyrosaurus
+aristonectes	aristonectes
+aristonectes parvidens	aristonectes
+aristonectes quiriquinensis	aristonectes
+arkansaurus	arkansaurus
+arminisaurus	arminisaurus
+arminisaurus schuberti	arminisaurus
+arrhinoceratops	arrhinoceratops
+arrhinoceratops brachyops	arrhinoceratops
+arriagadoolithus	arriagadoolithus
+arrudatitan	arrudatitan
+arstanosaurus	arstanosaurus
+arstanosaurus akkurganensis	arstanosaurus
+arthropterygius	arthropterygius
+arthropterygius chrisorum	arthropterygius
+arthurdactylus	arthurdactylus
+arthurdactylus conan doylei	arthurdactylus
+arthurdactylus conandoylei	arthurdactylus

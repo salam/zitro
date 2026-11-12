@@ -1,0 +1,9 @@
+ZDS1	dimorphodon	Q131245
+name	Dimorphodon
+group	2
+image	3556	85	117	e0c6afd4	Frank Kovalchek from Anchorage, Alaska, USA, CC BY 2.0
+length	100	100
+wingspan	145	145
+named	1859
+source	Wikidata
+end

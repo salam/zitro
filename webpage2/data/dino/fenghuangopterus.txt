@@ -1,0 +1,7 @@
+ZDS1	fenghuangopterus	Q3281020
+name	Fenghuangopterus
+group	2
+image	8622	240	117	b7bb9179	Bjoertvedt, CC BY-SA 4.0
+named	2010
+source	Wikidata
+end

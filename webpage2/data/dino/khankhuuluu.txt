@@ -1,0 +1,7 @@
+ZDS1	khankhuuluu	Q134876964
+name	Khankhuuluu
+group	0
+image	4044	240	117	8b9e2521	TotalDino, CC BY 4.0
+named	2025
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	darwinopterus	Q131776
+name	Darwinopterus
+group	2
+image	4914	156	117	d2e037a5	Nobu Tamura, CC BY 3.0
+lived	160890000	160250000
+named	2010
+era	Jura	Jurassic
+source	Wikidata
+end

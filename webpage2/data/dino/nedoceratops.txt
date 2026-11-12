@@ -1,0 +1,9 @@
+ZDS1	nedoceratops	Q132602
+name	Nedoceratops
+group	0
+image	4900	132	117	9b00c242	Nobu Tamura, CC BY 3.0
+length	700	700
+lived	67000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	banguela	Q16740190
+name	Banguela
+group	2
+image	3641	240	83	ae4d51c3	CC BY 4.0
+named	2015
+source	Wikidata
+end

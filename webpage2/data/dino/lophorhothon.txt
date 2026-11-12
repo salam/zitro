@@ -1,0 +1,7 @@
+ZDS1	lophorhothon	Q18577860
+name	Lophorhothon
+group	0
+image	4981	184	117	b9bcceab	Ghedoghedo, CC BY-SA 4.0
+length	450	450
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	kryptodrakon	Q16643876
+name	Kryptodrakon
+group	2
+image	2727	139	117	c587ae88	El fosilmaniaco, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

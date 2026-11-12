@@ -1,0 +1,7 @@
+ZDS1	siats	Q15221367
+name	Siats
+group	0
+image	4098	240	78	5e0a7090	CC BY-SA 4.0
+named	2013
+source	Wikidata
+end

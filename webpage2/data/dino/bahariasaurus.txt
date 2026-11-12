@@ -1,0 +1,6 @@
+ZDS1	bahariasaurus	Q133070
+name	Bahariasaurus
+group	0
+image	4213	240	117	f8ed11e2	Foolp, CC BY-SA 4.0
+source	Wikidata
+end

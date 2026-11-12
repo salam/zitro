@@ -1,0 +1,9 @@
+ZDS1	malawania	Q13220913
+name	Malawania
+group	3
+image	4250	240	117	1efe943c	Ghedoghedo, CC BY-SA 3.0
+lived	132000000	125000000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

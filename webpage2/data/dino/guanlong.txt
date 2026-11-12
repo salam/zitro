@@ -1,0 +1,10 @@
+ZDS1	guanlong	Q131121
+name	Guanlong
+group	0
+image	7542	191	117	b31f0a28	CC BY-SA 2.0
+length	300	300
+lived	161200000	155700000
+named	2006
+era	Jura	Jurassic
+source	Wikidata
+end

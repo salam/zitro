@@ -1,0 +1,7 @@
+ZDS1	mantellisaurus	Q783455
+name	Mantellisaurus
+group	0
+image	4339	240	88	e8f508df	Steveoc 86, CC BY-SA 3.0
+named	2006
+source	Wikidata
+end

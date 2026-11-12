@@ -1,0 +1,10 @@
+ZDS1	phantomosaurus	Q7180630
+name	Phantomosaurus
+group	3
+image	5790	146	117	6b41dcc2	Ghedoghedo, CC BY-SA 4.0
+length	600	600
+lived	247200000	242000000
+named	2000
+era	Trias	Triassic
+source	Wikidata
+end

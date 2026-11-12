@@ -1,0 +1,6 @@
+ZDS1	saltillomimus	Q19958407
+name	Saltillomimus
+group	0
+image	4149	240	117	461661da	Levi bernardo, CC BY-SA 3.0
+source	Wikidata
+end

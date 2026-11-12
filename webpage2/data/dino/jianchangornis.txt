@@ -1,0 +1,6 @@
+ZDS1	jianchangornis	Q6191480
+name	Jianchangornis
+group	1
+image	2679	79	117	706cf064	William Galland, CC BY-SA 4.0
+source	Wikidata
+end

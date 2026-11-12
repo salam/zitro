@@ -1,0 +1,9 @@
+ZDS1	eurycleidus	Q3616157
+name	Eurycleidus
+group	3
+image	4469	176	117	827fd8ca	Karin Martin, CC BY-SA 4.0
+lived	199600000	198000000
+named	1922
+era	Jura	Jurassic
+source	Wikidata
+end

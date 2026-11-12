@@ -1,0 +1,10 @@
+ZDS1	scelidosaurus	Q18862
+name	Scelidosaurus
+group	0
+image	8360	192	117	ca028ad7	5of7, CC BY-SA 2.0
+length	400	400
+lived	196500000	183000000
+named	1860
+era	Jura	Jurassic
+source	Wikidata
+end

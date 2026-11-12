@@ -1,0 +1,7 @@
+ZDS1	afromimus	Q43188357
+name	Afromimus
+group	0
+image	2850	240	88	ef744f70	Levi Martinez-Reza, CC BY-SA 3.0
+named	2017
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	xinminosaurus	Q15916956
+name	Xinminosaurus
+group	3
+lived	245000000	235000000
+named	2008
+era	Trias	Triassic
+source	Wikidata
+end

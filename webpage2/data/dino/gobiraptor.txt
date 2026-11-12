@@ -1,0 +1,6 @@
+ZDS1	gobiraptor	Q61607177
+name	Gobiraptor
+group	0
+image	7328	170	117	cd60020f	2019 Lee et al, CC BY 4.0
+source	Wikidata
+end

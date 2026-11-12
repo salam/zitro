@@ -1,0 +1,9 @@
+ZDS1	vulcanodon	Q131302
+name	Vulcanodon
+group	0
+image	7955	176	117	6f28df6e	-
+length	650	650
+lived	199000000	188000000
+era	Jura	Jurassic
+source	Wikidata
+end

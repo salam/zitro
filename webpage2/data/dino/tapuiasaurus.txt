@@ -1,0 +1,6 @@
+ZDS1	tapuiasaurus	Q134310
+name	Tapuiasaurus
+group	0
+image	9332	240	117	e5ff3551	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

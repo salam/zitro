@@ -1,0 +1,6 @@
+ZDS1	teyuwasu	Q1031486
+name	Teyuwasu
+group	0
+image	4088	240	117	0abe0345	GabrielBie, CC BY-SA 4.0
+source	Wikidata
+end

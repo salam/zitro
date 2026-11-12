@@ -1,0 +1,9 @@
+ZDS1	germanodactylus	Q135246
+name	Germanodactylus
+group	2
+image	3263	105	117	5c40b0f2	H. Zell, CC BY-SA 3.0
+lived	150800000	148500000
+named	1964
+era	Jura	Jurassic
+source	Wikidata
+end

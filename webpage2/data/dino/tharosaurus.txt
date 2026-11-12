@@ -1,0 +1,7 @@
+ZDS1	tharosaurus	Q121179093
+name	Tharosaurus
+group	0
+image	2935	240	69	31bc7cdc	TotalDino, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

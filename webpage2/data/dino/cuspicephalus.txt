@@ -1,0 +1,9 @@
+ZDS1	cuspicephalus	Q3281003
+name	Cuspicephalus
+group	2
+image	6469	156	117	fb5f2206	Nobu Tamura, CC BY-SA 3.0
+lived	155700000	153000000
+named	2013
+era	Jura	Jurassic
+source	Wikidata
+end

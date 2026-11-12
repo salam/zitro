@@ -1,0 +1,7 @@
+ZDS1	guaibasaurus	Q133115
+name	Guaibasaurus
+group	0
+image	5051	240	117	3bf500d1	-
+length	180	180
+source	Wikidata
+end

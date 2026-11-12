@@ -1,0 +1,6 @@
+ZDS1	kookne	Q111893487
+name	Kookne
+group	1
+image	4744	137	117	73ade40c	CC BY 3.0
+source	Wikidata
+end

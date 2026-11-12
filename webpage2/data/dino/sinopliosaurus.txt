@@ -1,0 +1,9 @@
+ZDS1	sinopliosaurus	Q7524937
+name	Sinopliosaurus
+group	3
+image	2871	129	117	c3b956d8	Jonathan Chen, CC BY 4.0
+lived	125450000	112600000
+named	1944
+era	Kreide	Cretaceous
+source	Wikidata
+end

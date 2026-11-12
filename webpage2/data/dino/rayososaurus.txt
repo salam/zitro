@@ -1,0 +1,9 @@
+ZDS1	rayososaurus	Q145260
+name	Rayososaurus
+group	0
+image	3222	240	77	bcabc95d	Slate Weasel, CC BY 4.0
+lived	99000000	95000000
+named	1996
+era	Kreide	Cretaceous
+source	Wikidata
+end

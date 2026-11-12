@@ -1,0 +1,8 @@
+ZDS1	bonitasaura	Q135544
+name	Bonitasaura
+group	0
+image	3014	59	117	a9c22866	Pablo A. Gallina and Sebastian Apesteguia, CC BY 4.0
+length	1000	1000
+named	2004
+source	Wikidata
+end

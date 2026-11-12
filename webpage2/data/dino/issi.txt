@@ -1,0 +1,6 @@
+ZDS1	issi	Q109380018
+name	Issi
+group	0
+image	6890	240	117	d56a924d	CC BY-SA 4.0
+source	Wikidata
+end

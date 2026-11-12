@@ -1,0 +1,13 @@
+ZDS1	ichthyosaurus	Q131565
+name	Ichthyosaurus
+group	3
+image	4319	240	117	f218bac9	Nobu Tamura, CC BY 3.0
+length	300	300
+named	1822
+era	Jura	Jurassic
+meaning	Fischechse	fish lizard
+diet	Fisch und Kopffüsser	Fish and cephalopods
+found	Europa (auch Schweiz)	Europe (also Switzerland)
+fun	In manchen Fossilien fand man ungeborene Junge, ein Hinweis, dass Ichthyosaurus lebende Junge gebar.	Unborn young were found inside some fossils, a sign that Ichthyosaurus gave birth to live young.	Wikipedia (DE): Ichthyosaurus
+source	Wikidata, Wikipedia
+end

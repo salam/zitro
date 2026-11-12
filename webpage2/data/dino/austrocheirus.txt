@@ -1,0 +1,7 @@
+ZDS1	austrocheirus	Q133408
+name	Austrocheirus
+group	0
+image	3298	240	117	e270de77	Levi bernardo, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

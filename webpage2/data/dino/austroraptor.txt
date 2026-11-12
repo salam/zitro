@@ -1,0 +1,9 @@
+ZDS1	austroraptor	Q132257
+name	Austroraptor
+group	0
+image	3488	240	117	164484c6	Fred Wierum, CC BY-SA 4.0
+lived	78000000	66000000
+named	2008
+era	Kreide	Cretaceous
+source	Wikidata
+end

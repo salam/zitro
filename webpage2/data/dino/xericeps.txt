@@ -1,0 +1,7 @@
+ZDS1	xericeps	Q41525505
+name	Xericeps
+group	2
+image	5833	165	117	ae34f50d	CC BY 4.0
+named	2018
+source	Wikidata
+end

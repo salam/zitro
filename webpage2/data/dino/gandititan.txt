@@ -1,0 +1,6 @@
+ZDS1	gandititan	Q124309835
+name	Gandititan
+group	0
+image	3691	240	117	900a1f4c	Ddinodan, CC BY 4.0
+source	Wikidata
+end

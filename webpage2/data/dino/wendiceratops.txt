@@ -1,0 +1,11 @@
+ZDS1	wendiceratops	Q20651326
+name	Wendiceratops
+group	0
+image	4730	146	117	8762ccda	Danielle Dufault, CC BY 4.0
+length	600	600
+mass	1000000	1000000
+lived	79000000	78700000
+named	2015
+era	Kreide	Cretaceous
+source	Wikidata
+end

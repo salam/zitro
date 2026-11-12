@@ -1,0 +1,10 @@
+ZDS1	lambeosaurus	Q132683
+name	Lambeosaurus
+group	0
+image	3898	122	117	76037f63	Ryan Somma, CC BY-SA 2.0
+length	900	900
+lived	76000000	75000000
+named	1923
+era	Kreide	Cretaceous
+source	Wikidata
+end

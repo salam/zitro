@@ -1,0 +1,8 @@
+ZDS1	isanosaurus	Q1555632
+name	Isanosaurus
+group	0
+image	2883	88	117	d9e91ed3	Ghedoghedo, CC BY-SA 3.0
+lived	214000000	201000000
+era	Trias	Triassic
+source	Wikidata
+end

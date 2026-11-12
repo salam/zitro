@@ -1,0 +1,10 @@
+ZDS1	riojasaurus	Q131780
+name	Riojasaurus
+group	0
+image	4952	240	117	d4232efb	Deivid, CC BY-SA 3.0
+length	515	515
+lived	227000000	213000000
+named	1969
+era	Trias	Triassic
+source	Wikidata
+end

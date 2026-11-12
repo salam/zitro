@@ -1,0 +1,6 @@
+ZDS1	oligosaurus	Q65088699
+name	Oligosaurus
+group	0
+image	4469	124	117	7f0449e4	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

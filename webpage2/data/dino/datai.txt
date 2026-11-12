@@ -1,0 +1,7 @@
+ZDS1	datai	Q124616010
+name	Datai
+group	0
+image	3963	240	57	33cb6c3e	Ddinodan, CC BY 4.0
+named	2023
+source	Wikidata
+end

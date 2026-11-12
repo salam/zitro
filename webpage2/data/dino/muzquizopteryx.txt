@@ -1,0 +1,6 @@
+ZDS1	muzquizopteryx	Q2377787
+name	Muzquizopteryx
+group	2
+image	5953	177	117	83e4bd41	Karkemish, CC BY 3.0
+source	Wikidata
+end

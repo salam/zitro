@@ -1,0 +1,7 @@
+ZDS1	dearc	Q110983876
+name	Dearc
+group	2
+image	5236	163	117	df547b04	El fosilmaniaco, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

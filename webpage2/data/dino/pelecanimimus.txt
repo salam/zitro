@@ -1,0 +1,9 @@
+ZDS1	pelecanimimus	Q134151
+name	Pelecanimimus
+group	0
+image	2871	161	117	e0ff6aa1	El fosilmaniaco, CC BY-SA 4.0
+length	250	250
+mass	25000	25000
+named	1994
+source	Wikidata
+end

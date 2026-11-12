@@ -1,0 +1,6 @@
+ZDS1	dyslocosaurus	Q2006215
+name	Dyslocosaurus
+group	0
+image	3309	63	117	3459f28f	Skye McDavid, CC BY-SA 4.0
+source	Wikidata
+end

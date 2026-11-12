@@ -1,0 +1,6 @@
+ZDS1	uberabatitan	Q136460
+name	Uberabatitan
+group	0
+image	3389	86	117	dd5e1632	CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	epanterias	Q1994612
+name	Epanterias
+group	0
+image	2664	155	117	a57f2e17	Levi B. Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

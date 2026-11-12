@@ -1,0 +1,7 @@
+ZDS1	wellnhopterus	Q107751301
+name	Wellnhopterus
+group	2
+image	5358	172	117	2d67709a	Sauriazoicillus, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

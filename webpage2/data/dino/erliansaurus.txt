@@ -1,0 +1,6 @@
+ZDS1	erliansaurus	Q1525258
+name	Erliansaurus
+group	0
+image	3436	175	117	195e6b08	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

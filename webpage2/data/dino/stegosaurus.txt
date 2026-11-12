@@ -1,0 +1,17 @@
+ZDS1	stegosaurus	Q14388
+name	Stegosaurus
+group	0
+image	5224	240	117	85c52e28	Fred Wierum, CC BY-SA 4.0
+length	900	900
+height	300	300
+mass	7000000	7000000
+speed	60	179
+lived	155000000	145000000
+named	1877
+era	Jura	Jurassic
+meaning	Dachechse	roof lizard
+diet	Pflanzen	Plants
+found	westliche USA und Portugal	western USA and Portugal
+fun	Stegosaurus hatte ein sehr kleines Gehirn, vielleicht das kleinste aller Dinosaurier.	Stegosaurus had a very small brain, perhaps the smallest of all dinosaurs.	Wikipedia (DE): Stegosaurus
+source	Wikidata, Wikipedia
+end

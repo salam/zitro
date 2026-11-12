@@ -1,0 +1,6 @@
+ZDS1	colepiocephale	Q135806
+name	Colepiocephale
+group	0
+image	4295	240	85	12fd1ffa	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

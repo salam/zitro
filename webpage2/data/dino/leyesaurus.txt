@@ -1,0 +1,8 @@
+ZDS1	leyesaurus	Q1656645
+name	Leyesaurus
+group	0
+image	5477	131	117	58f7e73a	CC BY 2.5
+lived	202000000	176000000
+era	Jura	Jurassic
+source	Wikidata
+end

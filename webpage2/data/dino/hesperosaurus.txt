@@ -1,0 +1,7 @@
+ZDS1	hesperosaurus	Q134389
+name	Hesperosaurus
+group	0
+image	9257	240	117	217cde92	Ninjatacoshell, CC BY-SA 3.0
+length	600	600
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	australovenator	Q18511054
+name	Australovenator
+group	0
+image	5197	240	84	7fb708f4	CC BY 2.5
+source	Wikidata
+end

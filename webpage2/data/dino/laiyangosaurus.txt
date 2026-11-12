@@ -1,0 +1,6 @@
+ZDS1	laiyangosaurus	Q38573287
+name	Laiyangosaurus
+group	0
+image	3277	110	117	513ffb3d	Danny Cicchetti, CC BY-SA 4.0
+source	Wikidata
+end

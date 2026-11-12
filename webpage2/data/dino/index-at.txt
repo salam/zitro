@@ -1,0 +1,18 @@
+ZDX1	at	17
+atacamatitan	atacamatitan
+atacamatitan chilensis	atacamatitan
+athabascasaurus	athabascasaurus
+athenar	athenar
+athenar bermani	athenar
+atlantosaurus	atlantosaurus
+atlascopcosaurus	atlascopcosaurus
+atlascopcosaurus loadsi	atlascopcosaurus
+atrociraptor	atrociraptor
+atrociraptor marshalli	atrociraptor
+atrociraptors	atrociraptor
+atsinganosaurus	atsinganosaurus
+atsinganosaurus velauciensis	atsinganosaurus
+attenborosaurus	attenborosaurus
+attenborosaurus conybeari	attenborosaurus
+atychodracon	atychodracon
+atychodracon megacephalus	atychodracon

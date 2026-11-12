@@ -1,0 +1,8 @@
+ZDS1	gigantspinosaurus	Q134984
+name	Gigantspinosaurus
+group	0
+image	5097	240	117	7b23443c	Antonio R. Mihaila, CC BY-SA 4.0
+lived	163500000	157300000
+era	Jura	Jurassic
+source	Wikidata
+end

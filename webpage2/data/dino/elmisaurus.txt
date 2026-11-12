@@ -1,0 +1,6 @@
+ZDS1	elmisaurus	Q133081
+name	Elmisaurus
+group	0
+image	5270	164	117	85b58e8c	CC BY 4.0
+source	Wikidata
+end

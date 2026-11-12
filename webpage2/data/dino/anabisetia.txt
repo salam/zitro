@@ -1,0 +1,8 @@
+ZDS1	anabisetia	Q73556
+name	Anabisetia
+group	0
+image	2739	98	117	9bdada4e	Kabacchi, CC BY 2.0
+lived	95000000	92000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

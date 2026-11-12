@@ -1,0 +1,7 @@
+ZDS1	lorrainosaurus	Q123101650
+name	Lorrainosaurus
+group	3
+image	6189	131	117	4a6cadef	CC BY 4.0
+named	2023
+source	Wikidata
+end

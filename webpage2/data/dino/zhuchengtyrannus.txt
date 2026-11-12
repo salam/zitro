@@ -1,0 +1,8 @@
+ZDS1	zhuchengtyrannus	Q1705935
+name	Zhuchengtyrannus
+group	0
+lived	73500000	73500000
+named	2011
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,11 @@
+ZDS1	wuerhosaurus	Q131639
+name	Wuerhosaurus
+group	0
+image	5732	164	117	6d3a5843	ABelov2014, CC BY-SA 3.0
+length	700	700
+mass	4000000	4000000
+lived	132000000	129000000
+named	1973
+era	Kreide	Cretaceous
+source	Wikidata
+end

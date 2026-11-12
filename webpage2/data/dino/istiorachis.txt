@@ -1,0 +1,6 @@
+ZDS1	istiorachis	Q135922217
+name	Istiorachis
+group	0
+image	4536	240	88	82ade681	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

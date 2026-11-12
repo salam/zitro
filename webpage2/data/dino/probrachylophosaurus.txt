@@ -1,0 +1,6 @@
+ZDS1	probrachylophosaurus	Q21494374
+name	Probrachylophosaurus
+group	0
+image	8022	181	117	26cc5992	Elizabeth A. Freedman Fowler, John R. Horner, CC BY 2.5
+source	Wikidata
+end

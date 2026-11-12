@@ -1,0 +1,8 @@
+ZDS1	thalassomedon	Q2467257
+name	Thalassomedon
+group	3
+image	3743	240	117	a0b4d05a	Nobu Tamura, CC BY 2.5
+length	1170	1170
+named	1943
+source	Wikidata
+end

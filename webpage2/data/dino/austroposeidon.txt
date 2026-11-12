@@ -1,0 +1,9 @@
+ZDS1	austroposeidon	Q27145711
+name	Austroposeidon
+group	0
+image	4479	113	117	69e7f0b5	CC BY 2.5
+lived	83600000	66000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

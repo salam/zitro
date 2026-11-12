@@ -1,0 +1,6 @@
+ZDS1	breviceratops	Q18606469
+name	Breviceratops
+group	0
+image	5117	240	117	e07a6eef	PaleoNeolitic, CC BY 4.0
+source	Wikidata
+end

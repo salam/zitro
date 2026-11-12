@@ -1,0 +1,9 @@
+ZDS1	lesothosaurus	Q131088
+name	Lesothosaurus
+group	0
+image	4046	240	79	6ee35818	Jack Wood, CC BY-SA 4.0
+length	100	100
+lived	199000000	189000000
+era	Jura	Jurassic
+source	Wikidata
+end

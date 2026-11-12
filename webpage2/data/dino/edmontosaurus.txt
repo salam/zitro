@@ -1,0 +1,15 @@
+ZDS1	edmontosaurus	Q309466
+name	Edmontosaurus
+group	0
+image	4643	240	88	585206fa	Nobu Tamura, CC BY 2.5
+length	1300	1300
+speed	450	450
+lived	73000000	65000000
+named	1917
+era	Kreide	Cretaceous
+meaning	Echse aus Edmonton	lizard from Edmonton
+diet	Pflanzen	Plants
+found	Nordamerika	North America
+fun	Von Edmontosaurus kennt man gut erhaltene Funde mit grossen Hautabdrücken.	Some well-preserved Edmontosaurus finds include large skin impressions.	Wikipedia (EN): Edmontosaurus
+source	Wikidata, Wikipedia
+end

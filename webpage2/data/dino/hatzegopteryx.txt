@@ -1,0 +1,13 @@
+ZDS1	hatzegopteryx	Q133849
+name	Hatzegopteryx
+group	2
+image	2840	157	117	d7a4ba64	Nobu Tamura, CC BY 3.0
+length	1000	1000
+wingspan	1100	1100
+named	2002
+era	Kreide	Cretaceous
+meaning	Flügel aus Hateg	Hateg basin wing
+found	Rumänien	Romania
+fun	Hatzegopteryx-Fossilien fand man 1978 in Rumänien. Zuerst hielt man sie für Reste eines Dinosauriers.	Hatzegopteryx fossils were found in Romania in 1978. At first they were thought to be the remains of a dinosaur.	Wikipedia (DE): Hatzegopteryx
+source	Wikidata, Wikipedia
+end

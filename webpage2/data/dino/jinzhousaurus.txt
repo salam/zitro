@@ -1,0 +1,6 @@
+ZDS1	jinzhousaurus	Q18602131
+name	Jinzhousaurus
+group	0
+image	10468	240	117	a53e88cf	Laikayiu, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	plateosauravus	Q1827198
+name	Plateosauravus
+group	0
+image	1809	79	117	008881b4	Ghedoghedo, CC BY-SA 4.0
+lived	221000000	202000000
+era	Trias	Triassic
+source	Wikidata
+end

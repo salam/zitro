@@ -1,0 +1,10 @@
+ZDS1	polyptychodon	Q572528
+name	Polyptychodon
+group	3
+image	3209	146	117	1d9c7255	Dmitry Bogdanov, CC BY 3.0
+length	700	700
+lived	101000000	89300000
+named	1841
+era	Kreide	Cretaceous
+source	Wikidata
+end

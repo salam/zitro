@@ -1,0 +1,7 @@
+ZDS1	ordosipterus	Q89461992
+name	Ordosipterus
+group	2
+image	5277	240	117	464e21b9	Skye McDavid, CC BY 4.0
+named	2020
+source	Wikidata
+end

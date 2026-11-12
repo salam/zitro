@@ -1,0 +1,7 @@
+ZDS1	corythoraptor	Q33666005
+name	Corythoraptor
+group	0
+image	3073	156	117	8ed47641	PaleoNeolitic, CC BY 4.0
+named	2017
+source	Wikidata
+end

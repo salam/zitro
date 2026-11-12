@@ -1,0 +1,6 @@
+ZDS1	ojoceratops	Q21445795
+name	Ojoceratops
+group	0
+image	6588	182	117	5b6dafc0	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

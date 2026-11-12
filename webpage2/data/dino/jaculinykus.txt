@@ -1,0 +1,6 @@
+ZDS1	jaculinykus	Q123458061
+name	Jaculinykus
+group	0
+image	3862	99	117	3559bf70	CC BY 4.0
+source	Wikidata
+end

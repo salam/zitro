@@ -1,0 +1,6 @@
+ZDS1	gongpoquansaurus	Q15221671
+name	Gongpoquansaurus
+group	0
+image	10503	240	117	74136320	Baomi, CC BY-SA 3.0
+source	Wikidata
+end

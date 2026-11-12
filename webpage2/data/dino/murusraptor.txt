@@ -1,0 +1,9 @@
+ZDS1	murusraptor	Q25963034
+name	Murusraptor
+group	0
+image	4940	128	117	227d22a1	Rodolfo A. Coria, Philip J. Currie, CC BY 4.0
+lived	93000000	89000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

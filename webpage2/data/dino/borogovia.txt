@@ -1,0 +1,7 @@
+ZDS1	borogovia	Q27444
+name	Borogovia
+group	0
+image	4331	76	117	75a5336e	Halszka Osmolska, CC BY 4.0
+length	150	150
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	brevirostruavis	Q109941739
+name	Brevirostruavis
+group	1
+image	5434	117	117	6c77c1a2	Hodjiraptor, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	sulcusuchus	Q16745564
+name	Sulcusuchus
+group	3
+image	3925	240	87	bc4cc44e	Connor Ashbridge, CC BY-SA 4.0
+named	1990
+source	Wikidata
+end

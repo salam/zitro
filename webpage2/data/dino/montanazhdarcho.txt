@@ -1,0 +1,7 @@
+ZDS1	montanazhdarcho	Q17339503
+name	Montanazhdarcho
+group	2
+image	2519	133	117	910b02fd	Jfstudiospaleoart, CC BY-SA 4.0
+named	1998
+source	Wikidata
+end

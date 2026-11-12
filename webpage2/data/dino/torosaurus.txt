@@ -1,0 +1,10 @@
+ZDS1	torosaurus	Q14491
+name	Torosaurus
+group	0
+image	5034	172	117	31cd27c5	Nobu Tamura, CC BY 3.0
+length	750	750
+lived	68000000	65000000
+named	1891
+era	Kreide	Cretaceous
+source	Wikidata
+end

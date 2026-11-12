@@ -1,0 +1,11 @@
+ZDS1	foraminacephale	Q5863739
+name	Foraminacephale
+group	0
+image	4886	240	117	7745eba4	IJReid, CC BY-SA 4.0
+length	150	150
+mass	10000	10000
+lived	77000000	73000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

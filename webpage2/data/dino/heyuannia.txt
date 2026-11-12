@@ -1,0 +1,7 @@
+ZDS1	heyuannia	Q134594
+name	Heyuannia
+group	0
+image	10173	240	117	29e85732	CC BY 4.0
+length	200	200
+source	Wikidata
+end

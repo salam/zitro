@@ -1,0 +1,6 @@
+ZDS1	plataleorhynchus	Q988142
+name	Plataleorhynchus
+group	2
+image	3766	240	117	9ee32d0d	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

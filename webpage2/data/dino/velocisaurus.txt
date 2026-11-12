@@ -1,0 +1,7 @@
+ZDS1	velocisaurus	Q311492
+name	Velocisaurus
+group	0
+image	4249	187	117	0bb02dc1	FunkMonk, CC BY-SA 3.0
+named	1991
+source	Wikidata
+end

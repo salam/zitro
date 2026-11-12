@@ -1,0 +1,7 @@
+ZDS1	smitanosaurus	Q104440015
+name	Smitanosaurus
+group	0
+image	7153	159	117	f64791d3	-
+named	2020
+source	Wikidata
+end

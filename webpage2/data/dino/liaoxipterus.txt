@@ -1,0 +1,7 @@
+ZDS1	liaoxipterus	Q988427
+name	Liaoxipterus
+group	2
+image	5937	240	75	1985abbe	Zhiheng Li, Zhonghe Zhou, and Julia A. Clarke, CC BY 4.0
+named	2005
+source	Wikidata
+end

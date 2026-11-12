@@ -1,0 +1,9 @@
+ZDS1	ichthyornis	Q132820
+name	Ichthyornis
+group	1
+image	2756	117	117	39851a2d	Nobu Tamura, CC BY 3.0
+lived	95000000	83500000
+named	1872
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	yangchuanosaurus	Q131131
+name	Yangchuanosaurus
+group	0
+image	4041	240	82	5cd92bff	Nobu Tamura, CC BY-SA 4.0
+length	1000	1000
+lived	168300000	163500000
+era	Jura	Jurassic
+source	Wikidata
+end

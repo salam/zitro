@@ -1,0 +1,10 @@
+ZDS1	sthenarosaurus	Q7616093
+name	Sthenarosaurus
+group	3
+image	3915	98	117	aa3134d6	Ghedoghedo, CC BY-SA 3.0
+length	300	300
+lived	183000000	176000000
+named	1909
+era	Jura	Jurassic
+source	Wikidata
+end

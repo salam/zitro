@@ -1,0 +1,7 @@
+ZDS1	argovisaurus	Q124969619
+name	Argovisaurus
+group	3
+image	3700	156	117	ceded773	CC BY 4.0
+named	2024
+source	Wikidata
+end

@@ -1,0 +1,15 @@
+ZDS1	ankylosaurus	Q40621
+name	Ankylosaurus
+group	0
+image	5067	240	117	9561e7f2	Emily Willoughby, CC BY-SA 3.0
+length	800	900
+mass	3500000	6000000
+lived	68000000	65000000
+named	1908
+era	Kreide	Cretaceous
+meaning	versteifte Echse	stiffened lizard
+diet	Pflanzen	Plants
+found	westliches Nordamerika	western North America
+fun	Ankylosaurus war mit Knochenplatten gepanzert und hatte am Schwanzende eine grosse Keule.	Ankylosaurus was covered in armour plates and had a large club at the end of its tail.	Wikipedia (EN): Ankylosaurus
+source	Wikidata, Wikipedia
+end

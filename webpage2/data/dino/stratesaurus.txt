@@ -1,0 +1,9 @@
+ZDS1	stratesaurus	Q5492579
+name	Stratesaurus
+group	3
+image	8947	190	117	ec63baef	CC BY 2.5
+lived	199600000	198000000
+named	2012
+era	Jura	Jurassic
+source	Wikidata
+end

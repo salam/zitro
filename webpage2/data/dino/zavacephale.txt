@@ -1,0 +1,7 @@
+ZDS1	zavacephale	Q136311161
+name	Zavacephale
+group	0
+image	5581	240	117	a8e01ac3	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

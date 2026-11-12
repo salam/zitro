@@ -1,0 +1,6 @@
+ZDS1	argyrosaurus	Q133210
+name	Argyrosaurus
+group	0
+image	3322	72	117	58bdd6ce	-
+source	Wikidata
+end

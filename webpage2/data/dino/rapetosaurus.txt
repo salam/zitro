@@ -1,0 +1,6 @@
+ZDS1	rapetosaurus	Q135300
+name	Rapetosaurus
+group	0
+image	8527	240	117	48962f78	Lisa Andres from Riverside, USA, CC BY 2.0
+source	Wikidata
+end

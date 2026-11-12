@@ -1,0 +1,7 @@
+ZDS1	aralazhdarcho	Q3504831
+name	Aralazhdarcho
+group	2
+image	8734	240	117	0965ce18	CC BY 3.0
+named	2007
+source	Wikidata
+end

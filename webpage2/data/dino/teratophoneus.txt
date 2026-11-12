@@ -1,0 +1,9 @@
+ZDS1	teratophoneus	Q1705998
+name	Teratophoneus
+group	0
+image	5017	240	117	f97d9332	Nobu Tamura, CC BY-SA 4.0
+lived	77000000	76000000
+named	2011
+era	Kreide	Cretaceous
+source	Wikidata
+end

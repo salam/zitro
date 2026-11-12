@@ -1,0 +1,6 @@
+ZDS1	cardiodon	Q18578336
+name	Cardiodon
+group	0
+image	8035	240	117	99ee53f9	-
+source	Wikidata
+end

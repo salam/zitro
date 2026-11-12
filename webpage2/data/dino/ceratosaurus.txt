@@ -1,0 +1,16 @@
+ZDS1	ceratosaurus	Q130902
+name	Ceratosaurus
+group	0
+image	9630	240	117	89bcd5e5	Richie D. from Chicago, IL, USA, CC BY 2.0
+length	600	600
+height	250	250
+mass	600000	600000
+lived	153000000	148000000
+named	1884
+era	Jura	Jurassic
+meaning	Hornechse	horn lizard
+diet	Fleisch	Meat
+found	Nordamerika und Europa	North America and Europe
+fun	Ceratosaurus hatte drei auffällige Hörner auf dem Kopf und kleine Knochenplatten auf Hals, Rücken und Schwanz.	Ceratosaurus had three striking horns on its head and small bony plates along its neck, back and tail.	Wikipedia (DE): Ceratosaurus
+source	Wikidata, Wikipedia
+end

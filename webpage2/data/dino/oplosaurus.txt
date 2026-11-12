@@ -1,0 +1,6 @@
+ZDS1	oplosaurus	Q4765905
+name	Oplosaurus
+group	0
+image	4001	95	117	1c964247	-
+source	Wikidata
+end

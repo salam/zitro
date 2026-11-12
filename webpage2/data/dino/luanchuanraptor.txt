@@ -1,0 +1,6 @@
+ZDS1	luanchuanraptor	Q2029421
+name	Luanchuanraptor
+group	0
+image	4570	240	117	12e09d2f	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

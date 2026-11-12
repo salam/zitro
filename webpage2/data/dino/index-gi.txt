@@ -1,0 +1,21 @@
+ZDX1	gi	20
+giant of rio negro	cathartesaura
+gideonmantellia	gideonmantellia
+gideonmantellia amosanjuanae	gideonmantellia
+giganotosaurus	giganotosaurus
+giganotosaurus carolinii	giganotosaurus
+gigante rionegrino	cathartesaura
+gigantoraptor	gigantoraptor
+gigantoraptor erlianensis	gigantoraptor
+gigantosaurus	gigantosaurus
+gigantosaurus megalonyx	gigantosaurus
+gigantspinosaurus	gigantspinosaurus
+gigantspinosaurus sichuanensis	gigantspinosaurus
+gilmoreosaurus	gilmoreosaurus
+gilmoreosaurus arkhangelskyi	gilmoreosaurus
+gilmoreosaurus atavus	gilmoreosaurus
+gilmoreosaurus kysylkumensis	gilmoreosaurus
+gilmoreosaurus mongoliensis	gilmoreosaurus
+gilmoretyrannus lethaeus	nanotyrannus
+giraffatitan	giraffatitan
+giraffatitan brancai	giraffatitan

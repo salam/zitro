@@ -1,0 +1,8 @@
+ZDS1	sauropelta	Q131073
+name	Sauropelta
+group	0
+image	5010	240	117	ad566c97	John.Conway [1], CC BY-SA 3.0
+length	650	650
+named	1970
+source	Wikidata
+end

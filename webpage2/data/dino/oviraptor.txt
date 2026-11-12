@@ -1,0 +1,10 @@
+ZDS1	oviraptor	Q131070
+name	Oviraptor
+group	0
+image	5363	132	117	b1d164ad	-
+length	200	200
+lived	89800000	70600000
+named	1924
+era	Kreide	Cretaceous
+source	Wikidata
+end

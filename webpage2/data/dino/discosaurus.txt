@@ -1,0 +1,7 @@
+ZDS1	discosaurus	Q5281707
+name	Discosaurus
+group	3
+image	5201	134	117	285168bb	-
+named	1851
+source	Wikidata
+end

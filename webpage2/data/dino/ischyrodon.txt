@@ -1,0 +1,6 @@
+ZDS1	ischyrodon	Q113549840
+name	Ischyrodon
+group	3
+image	9775	240	117	8ffc5b52	Madzia et al. (2022), CC BY-SA 4.0
+source	Wikidata
+end

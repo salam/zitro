@@ -1,0 +1,10 @@
+ZDS1	westphaliasaurus	Q2882036
+name	Westphaliasaurus
+group	3
+image	3332	240	59	ec339e73	Connor Ashbridge, CC BY-SA 4.0
+length	450	450
+lived	190800000	182700000
+named	2011
+era	Jura	Jurassic
+source	Wikidata
+end

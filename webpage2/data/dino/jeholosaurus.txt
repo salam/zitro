@@ -1,0 +1,7 @@
+ZDS1	jeholosaurus	Q137694
+name	Jeholosaurus
+group	0
+image	4471	186	117	f6abb0ee	Ballista, CC BY-SA 3.0
+named	2000
+source	Wikidata
+end

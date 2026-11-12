@@ -1,0 +1,6 @@
+ZDS1	eopengornis	Q21369127
+name	Eopengornis
+group	1
+image	9482	240	117	de7a224b	Han Hu, Jingmai O'Connor, & Zhonghe Zhou, CC BY 4.0
+source	Wikidata
+end

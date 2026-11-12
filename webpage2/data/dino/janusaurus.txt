@@ -1,0 +1,9 @@
+ZDS1	janusaurus	Q17506260
+name	Janusaurus
+group	3
+image	5462	240	86	66be6365	CC BY 2.5
+lived	150800000	145500000
+named	2014
+era	Jura	Jurassic
+source	Wikidata
+end

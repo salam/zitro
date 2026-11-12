@@ -1,0 +1,6 @@
+ZDS1	eogranivora	Q47536173
+name	Eogranivora
+group	1
+image	4069	156	117	9340419b	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

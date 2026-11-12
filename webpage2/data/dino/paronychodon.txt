@@ -1,0 +1,9 @@
+ZDS1	paronychodon	Q2193022
+name	Paronychodon
+group	0
+image	3924	165	117	4ae1001b	Thomas E. Williamson, Stephen L. Brusatte, CC BY 2.5
+lived	75000000	66000000
+named	1876
+era	Kreide	Cretaceous
+source	Wikidata
+end

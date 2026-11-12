@@ -1,0 +1,8 @@
+ZDX1	b_	7
+b. altithorax	brachiosaurus
+b. excelsus	brontosaurus
+b. lentus	barosaurus
+b. maeuseri	balaenognathus
+b. mesai	brachytrachelopan
+b. sicinskii	barsboldia
+b. walkeri	baryonyx

@@ -1,0 +1,7 @@
+ZDS1	ornithodesmus	Q1578419
+name	Ornithodesmus
+group	0
+image	4398	91	117	7e627f49	-
+named	1887
+source	Wikidata
+end

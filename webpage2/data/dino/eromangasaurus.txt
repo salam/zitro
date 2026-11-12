@@ -1,0 +1,7 @@
+ZDS1	eromangasaurus	Q5395315
+name	Eromangasaurus
+group	3
+image	4254	240	81	04e307d3	Nobu Tamura, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	duriatitan	Q1934581
+name	Duriatitan
+group	0
+image	5123	157	117	df24b9f7	-
+source	Wikidata
+end

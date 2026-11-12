@@ -1,0 +1,8 @@
+ZDS1	arthropterygius	Q23014869
+name	Arthropterygius
+group	3
+image	5568	110	117	3c48ffd3	Nikolay G. Zverkov, Natalya E. Prilepskaya, CC BY 4.0
+length	450	450
+named	2010
+source	Wikidata
+end

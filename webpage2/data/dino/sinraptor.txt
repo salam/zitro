@@ -1,0 +1,7 @@
+ZDS1	sinraptor	Q311284
+name	Sinraptor
+group	0
+image	9250	240	117	2cc97fc8	CC BY-SA 2.0
+length	760	760
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	sinocalliopteryx	Q133117
+name	Sinocalliopteryx
+group	0
+image	8039	156	117	cc9ddb4d	Nobu Tamura, CC BY 3.0
+length	237	237
+source	Wikidata
+end

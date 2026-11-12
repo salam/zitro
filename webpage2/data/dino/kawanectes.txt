@@ -1,0 +1,8 @@
+ZDS1	kawanectes	Q28432499
+name	Kawanectes
+group	3
+image	3258	240	80	993cfbfe	Connor Ashbridge, CC BY-SA 4.0
+length	380	380
+named	2016
+source	Wikidata
+end

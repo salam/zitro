@@ -1,0 +1,15 @@
+ZDS1	allosaurus	Q14400
+name	Allosaurus
+group	0
+image	4441	145	117	16011d32	The_Wookies, CC BY 2.5
+length	850	1200
+mass	6000000	6000000
+lived	155000000	145000000
+named	1877
+era	Jura	Jurassic
+meaning	andersartige Echse	different lizard
+diet	Fleisch	Meat
+found	Nordamerika und Südeuropa	North America, southern Europe
+fun	Ein bemerkenswert vollständiges Allosaurus-Skelett ist als «Big Al» bekannt.	A remarkably complete Allosaurus skeleton is known as 'Big Al'.	Wikipedia (DE): Allosaurus
+source	Wikidata, Wikipedia
+end

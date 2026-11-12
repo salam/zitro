@@ -1,0 +1,7 @@
+ZDS1	elaltitan	Q966487
+name	Elaltitan
+group	0
+image	4383	152	117	71fa9a09	Bricksmashtv4, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	dryptosaurus	Q131634
+name	Dryptosaurus
+group	0
+image	3538	240	117	9d5ebe73	Driptosaurus, CC BY-SA 4.0
+length	640	640
+named	1877
+source	Wikidata
+end

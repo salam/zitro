@@ -1,0 +1,6 @@
+ZDS1	tarascosaurus	Q132528
+name	Tarascosaurus
+group	0
+image	2984	88	117	3bec2021	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

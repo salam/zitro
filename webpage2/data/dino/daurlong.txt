@@ -1,0 +1,7 @@
+ZDS1	daurlong	Q115287977
+name	Daurlong
+group	0
+image	4390	240	117	5e8b067e	Ivan Iofrida, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

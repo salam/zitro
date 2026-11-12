@@ -1,0 +1,8 @@
+ZDS1	platypelta	Q50355971
+name	Platypelta
+group	0
+image	5856	148	117	619433a2	Victoria M. Arbour, Philip J. Currie, CC BY 2.5
+lived	77500000	76500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

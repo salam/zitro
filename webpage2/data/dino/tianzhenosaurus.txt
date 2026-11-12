@@ -1,0 +1,6 @@
+ZDS1	tianzhenosaurus	Q326596
+name	Tianzhenosaurus
+group	0
+image	7039	176	117	32822614	Kabacchi, CC BY 2.0
+source	Wikidata
+end

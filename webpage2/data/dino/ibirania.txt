@@ -1,0 +1,7 @@
+ZDS1	ibirania	Q113996051
+name	Ibirania
+group	0
+image	7427	240	117	3d6d481d	Brnonavarro, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

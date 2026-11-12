@@ -1,0 +1,6 @@
+ZDS1	pterospondylus	Q871939
+name	Pterospondylus
+group	0
+image	5542	154	117	8f53d69a	-
+source	Wikidata
+end

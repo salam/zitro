@@ -1,0 +1,8 @@
+ZDS1	amygdalodon	Q133524
+name	Amygdalodon
+group	0
+image	3666	240	117	e0b75c6d	Levi bernardo, CC BY-SA 3.0
+length	1500	1500
+named	1947
+source	Wikidata
+end

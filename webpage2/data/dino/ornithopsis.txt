@@ -1,0 +1,6 @@
+ZDS1	ornithopsis	Q735811
+name	Ornithopsis
+group	0
+image	4772	99	117	b31a3585	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	embaphias	Q122889083
+name	Embaphias
+group	3
+image	3579	83	117	d733e2c9	Augustios Paleo, CC BY 4.0
+named	1894
+source	Wikidata
+end

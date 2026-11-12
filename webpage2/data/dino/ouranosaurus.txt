@@ -1,0 +1,8 @@
+ZDS1	ouranosaurus	Q131124
+name	Ouranosaurus
+group	0
+image	4663	240	117	ef72b2f9	Audrey.m.horn, CC BY-SA 4.0
+length	700	700
+named	1976
+source	Wikidata
+end

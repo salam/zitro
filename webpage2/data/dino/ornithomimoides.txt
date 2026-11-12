@@ -1,0 +1,6 @@
+ZDS1	ornithomimoides	Q3493531
+name	Ornithomimoides
+group	0
+image	4255	132	117	7e605ccd	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

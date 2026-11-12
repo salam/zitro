@@ -1,0 +1,7 @@
+ZDS1	jucha	Q100673073
+name	Jucha
+group	3
+image	3478	240	78	098d1314	Connor Ashbridge, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

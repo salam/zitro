@@ -1,0 +1,9 @@
+ZDS1	segnosaurus	Q131102
+name	Segnosaurus
+group	0
+image	3382	179	117	98c93b32	PaleoNeolitic, CC BY-SA 4.0
+length	400	700
+mass	1300000	1300000
+named	1979
+source	Wikidata
+end

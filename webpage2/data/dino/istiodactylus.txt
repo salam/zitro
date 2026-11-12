@@ -1,0 +1,7 @@
+ZDS1	istiodactylus	Q1098279
+name	Istiodactylus
+group	2
+image	6068	182	117	3a7b9747	Mark P. Witton, CC BY 2.5
+named	1901
+source	Wikidata
+end

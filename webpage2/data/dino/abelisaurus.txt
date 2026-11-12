@@ -1,0 +1,8 @@
+ZDS1	abelisaurus	Q130921
+name	Abelisaurus
+group	0
+image	5152	155	117	8f9703df	Kokoo, CC BY-SA 2.5
+length	900	900
+named	1985
+source	Wikidata
+end

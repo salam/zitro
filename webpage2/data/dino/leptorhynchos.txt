@@ -1,0 +1,7 @@
+ZDS1	leptorhynchos	Q11878382
+name	Leptorhynchos
+group	0
+lived	75000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

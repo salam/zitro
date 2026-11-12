@@ -1,0 +1,7 @@
+ZDS1	neimongosaurus	Q2583641
+name	Neimongosaurus
+group	0
+image	3267	152	117	ce3e309b	FunkMonk, CC BY-SA 3.0
+named	2001
+source	Wikidata
+end

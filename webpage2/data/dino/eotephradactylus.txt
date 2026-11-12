@@ -1,0 +1,7 @@
+ZDS1	eotephradactylus	Q135234984
+name	Eotephradactylus
+group	2
+image	2315	138	117	6f6b85cf	SlvrHwk, CC BY-SA 4.0
+named	2025
+source	Wikidata
+end

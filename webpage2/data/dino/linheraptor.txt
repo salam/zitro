@@ -1,0 +1,6 @@
+ZDS1	linheraptor	Q132521
+name	Linheraptor
+group	0
+image	3823	155	117	4d57046d	Smokeybjb, CC BY-SA 3.0
+source	Wikidata
+end

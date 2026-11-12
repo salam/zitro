@@ -1,0 +1,7 @@
+ZDS1	byronosaurus	Q134297
+name	Byronosaurus
+group	0
+image	3261	151	117	b4a8e895	FunkMonk, CC BY-SA 3.0
+named	2002
+source	Wikidata
+end

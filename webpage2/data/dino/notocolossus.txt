@@ -1,0 +1,7 @@
+ZDS1	notocolossus	Q23768183
+name	Notocolossus
+group	0
+image	7191	240	117	961a010a	CC BY 4.0
+named	2016
+source	Wikidata
+end

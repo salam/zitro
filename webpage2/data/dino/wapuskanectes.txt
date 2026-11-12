@@ -1,0 +1,7 @@
+ZDS1	wapuskanectes	Q3337066
+name	Wapuskanectes
+group	3
+image	4192	240	117	b85568cb	Connor Ashbridge, CC BY-SA 4.0
+named	2006
+source	Wikidata
+end

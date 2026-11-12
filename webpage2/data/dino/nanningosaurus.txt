@@ -1,0 +1,7 @@
+ZDS1	nanningosaurus	Q2537541
+name	Nanningosaurus
+group	0
+image	7972	176	117	e3f09ee7	Jonathan Chen, CC BY 4.0
+named	2007
+source	Wikidata
+end

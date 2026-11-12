@@ -1,0 +1,10 @@
+ZDS1	kritosaurus	Q968771
+name	Kritosaurus
+group	0
+image	4702	178	117	48e48a91	Nobu Tamura, CC BY 2.5
+length	800	800
+lived	74500000	66000000
+named	1910
+era	Kreide	Cretaceous
+source	Wikidata
+end

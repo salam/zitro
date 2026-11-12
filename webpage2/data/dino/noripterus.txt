@@ -1,0 +1,7 @@
+ZDS1	noripterus	Q2078996
+name	Noripterus
+group	2
+image	6132	240	117	28a9856d	Stanton F. Fink (Apokryltaros), CC BY 3.0
+named	1973
+source	Wikidata
+end

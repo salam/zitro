@@ -1,0 +1,6 @@
+ZDS1	shenzhousaurus	Q134103
+name	Shenzhousaurus
+group	0
+image	4930	240	86	aa3ef216	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

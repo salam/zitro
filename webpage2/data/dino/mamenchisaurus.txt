@@ -1,0 +1,9 @@
+ZDS1	mamenchisaurus	Q131038
+name	Mamenchisaurus
+group	0
+image	2966	156	117	6b02c4ae	Steveoc 86, CC BY-SA 2.5
+length	2200	2200
+lived	161000000	114400000
+era	Jura bis Kreide	Jurassic to Cretaceous
+source	Wikidata
+end

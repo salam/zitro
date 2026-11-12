@@ -1,0 +1,70 @@
+ZDX1	an	69
+anabisetia	anabisetia
+anabisetia saldiviai	anabisetia
+anasazisaurus	anasazisaurus
+anasazisaurus horneri	anasazisaurus
+anatosaurus	anatosaurus
+anatotitan	anatotitan
+anatotitan copei	anatotitan
+anatotitan longiceps	anatotitan
+anchiceratops	anchiceratops
+anchiceratops ornatus	anchiceratops
+anchiornis	anchiornis
+anchiornis huxleyi	anchiornis
+anchisaurus	anchisaurus
+anchisaurus major	anchisaurus
+anchisaurus sinensis	anchisaurus
+andesaurus	andesaurus
+andesaurus delgadoi	andesaurus
+angaturama	angaturama
+anglosaurus	anglosaurus
+angolasaurus	anglosaurus
+angolasaurus bocagei	anglosaurus
+angolatitan	angolatitan
+angolatitan adamastor	angolatitan
+anguanax	anguanax
+anguanax zignoi	anguanax
+angulomastacator	angulomastacator
+angulomastacator daviesi	angulomastacator
+angustinaripterus	angustinaripterus
+angustinaripterus longicephalus	angustinaripterus
+anhanguera	anhanguera
+anhanguera blittersdorffi	anhanguera
+anhanguera ligabuei	anhanguera
+anhanguera piscator	anhanguera
+anhanguera robustus	anhanguera
+anhanguera santanae	anhanguera
+anhuilong	anhuilong
+anhuilong diboensis	anhuilong
+aniksosaurus	aniksosaurus
+aniksosaurus darwini	aniksosaurus
+animantarx	animantarx
+animantarx ramaljonesi	animantarx
+ankylosaurus	ankylosaurus
+ankylosaurus magniventris	ankylosaurus
+anningasaura	anningasaura
+anningasaura lymense	anningasaura
+anodontosaurus	anodontosaurus
+anodontosaurus inceptus	anodontosaurus
+anodontosaurus lambei	anodontosaurus
+anomalipes	anomalipes
+anomalipes zhaoi	anomalipes
+anoplosaurus	anoplosaurus
+anserimimus	anserimimus
+anserimimus planinychus	anserimimus
+anserimimus platinychus	anserimimus
+antarctopelta	antarctopelta
+antarctopelta oliveroi	antarctopelta
+antarctosaurus	antarctosaurus
+antarctosaurus brasiliensis	antarctosaurus
+antarctosaurus giganteus	antarctosaurus
+antarctosaurus jaxartensis	antarctosaurus
+antarctosaurus wichmannianus	antarctosaurus
+antetonitrus	antetonitrus
+antetonitrus ingenipes	antetonitrus
+antrodemus	antrodemus
+antrodemus valens	antrodemus
+anurognathus	anurognathus
+anurognathus ammoni	anurognathus
+anzu	anzu
+anzu wyliei	anzu

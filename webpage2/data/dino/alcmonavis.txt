@@ -1,0 +1,9 @@
+ZDS1	alcmonavis	Q63859148
+name	Alcmonavis
+group	1
+image	6081	161	117	2bad0ba3	Oliver Rauhut, CC BY-SA 4.0
+lived	150800000	148500000
+named	2019
+era	Jura	Jurassic
+source	Wikidata
+end

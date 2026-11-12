@@ -1,0 +1,7 @@
+ZDS1	aerodraco	Q99637513
+name	Aerodraco
+group	2
+image	5596	115	117	718d480d	Borja Holgado and Rodrigo V. Pegas, CC BY 4.0
+named	2020
+source	Wikidata
+end

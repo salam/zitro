@@ -1,0 +1,8 @@
+ZDS1	meroktenos	Q22665934
+name	Meroktenos
+group	0
+image	5162	120	117	ee420e6d	CC BY 4.0
+lived	216500000	201000000
+era	Trias	Triassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	yamanasaurus	Q77331844
+name	Yamanasaurus
+group	0
+image	3966	148	117	9357358b	Prehistopia, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

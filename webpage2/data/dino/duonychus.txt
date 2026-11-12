@@ -1,0 +1,7 @@
+ZDS1	duonychus	Q133538344
+name	Duonychus
+group	0
+image	4264	189	117	1acb7d37	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

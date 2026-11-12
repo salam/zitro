@@ -1,0 +1,6 @@
+ZDS1	macrocollum	Q58979887
+name	Macrocollum
+group	0
+image	5472	240	117	2e38a849	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

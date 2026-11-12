@@ -1,0 +1,9 @@
+ZDS1	hesperornis	Q733644
+name	Hesperornis
+group	1
+image	4192	240	117	0770bdd6	Nobu Tamura, CC BY 3.0
+lived	83500000	78000000
+named	1872
+era	Kreide	Cretaceous
+source	Wikidata
+end

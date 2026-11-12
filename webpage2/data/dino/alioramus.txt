@@ -1,0 +1,7 @@
+ZDS1	alioramus	Q131174
+name	Alioramus
+group	0
+image	3996	240	117	082874ef	Fred Wierum, CC BY 3.0
+length	600	600
+source	Wikidata
+end

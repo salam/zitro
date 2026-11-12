@@ -1,0 +1,7 @@
+ZDS1	patagopteryx	Q2056622
+name	Patagopteryx
+group	1
+image	5307	148	117	328bc11d	FunkMonk, CC BY 3.0
+named	1992
+source	Wikidata
+end

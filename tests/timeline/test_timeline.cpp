@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "../../sketch/sketch_jan12a/dino_core.h"  // dinoCreditLicence, which the timeline footer shares
 #include "../../sketch/sketch_jan12a/timeline_core.h"
 
 static int failures = 0;
@@ -91,6 +92,7 @@ static void testParseGood() {
   CHECK_STR(t.events[0].credit, "");
   CHECK(t.events[0].hasImage && t.events[1].hasImage && !t.events[2].hasImage);
   CHECK_STR(t.events[2].labelDe, "Dritter \xC3\xA4");
+  CHECK(!t.events[0].fromWikipedia && !t.events[1].fromWikipedia && !t.events[2].fromWikipedia);
 }
 
 static std::string replaced(std::string text, const std::string& from, const std::string& to) {
@@ -121,7 +123,13 @@ static void testParseHostile() {
   CHECK(!parseText(good.substr(0, good.size() - 30), "demo", t, s));  // Cut off in the last line
   CHECK(!parseText(good.substr(0, good.find("Q12")), "demo", t, s));  // Cut off between lines
   CHECK(!parseText(replaced(good, "Q10", "X10"), "demo", t, s));
-  CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t4\t"), "demo", t, s));   // Unknown flags
+  CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t8\t"), "demo", t, s));   // Unknown flags
+  for (int flags = 4; flags <= 7; flags++) {  // Bit 2: the date comes from Wikipedia
+    const std::string field = "\t1945\t-\t" + std::to_string(flags) + "\t";
+    CHECK(parseText(replaced(good, "\t1945\t-\t0\t", field), "demo", t, s));
+    CHECK(t.events[2].fromWikipedia && t.events[2].circa == bool(flags & 1) && t.events[2].born == bool(flags & 2));
+    CHECK(!t.events[1].fromWikipedia);
+  }
   CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t11\t"), "demo", t, s));
   CHECK(!parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t\t"), "demo", t, s));
   CHECK(parseText(replaced(good, "\t1945\t-\t0\t", "\t1945\t-\t3\t"), "demo", t, s));
@@ -201,7 +209,9 @@ static void testImages() {
 }
 
 static void testTopics() {
+  CHECK(sizeof(TIMELINE_TOPICS) / sizeof(TIMELINE_TOPICS[0]) == 26);
   CHECK(timelineIsTopic("world_wars"));
+  CHECK(timelineIsTopic("life_history"));
   CHECK(!timelineIsTopic("World_Wars"));
   CHECK(!timelineIsTopic(""));
   CHECK(!timelineIsTopic(nullptr));
@@ -441,6 +451,16 @@ static void testGeneratedFiles(const std::string& dir) {
       if (t.events[i].hasImage) listed++;
       if (t.events[i].endYear) withEnd++;
       CHECK(t.events[i].qid[0] == 'Q');
+      // What the footer shows when the credit is too wide: the licence after the last ", ", never empty, and
+      // ASCII for DejaVu9. The generator writes "maker, licence" or the licence alone, never "..., resized"
+      if (t.events[i].hasImage && t.events[i].credit[0]) {
+        const char* licence = dinoCreditLicence(t.events[i].credit);
+        bool ascii = true;
+        for (const char* c = licence; *c; c++) ascii = ascii && (unsigned char)*c >= 0x20 && (unsigned char)*c < 0x7F;
+        const bool ok = licence[0] && ascii && strncmp(licence, "CC ", 3) == 0;
+        CHECK(ok);
+        if (!ok) printf("  %s: no licence at the end of the credit '%s'\n", id, t.events[i].credit);
+      }
     }
     const int kept = timelineCheckImages(t, (const uint8_t*)bundle.data(), bundle.size());
     CHECK(kept == listed);
@@ -467,6 +487,16 @@ static void testGeneratedFiles(const std::string& dir) {
           printf("FAIL too wide: %s\n", label);
         }
       }
+    }
+    // The footer names Wikipedia exactly for the dates taken from it
+    std::string fromWikipedia;
+    for (int i = 0; i < t.eventCount; i++) {
+      if (t.events[i].fromWikipedia) fromWikipedia += std::string(t.events[i].qid) + " ";
+    }
+    if (strcmp(id, "life_history") == 0) {
+      CHECK_STR(fromWikipedia.c_str(), "Q849168 Q176739 Q723846 Q131986 Q131481 Q131813 Q25314 ");
+    } else {
+      CHECK_STR(fromWikipedia.c_str(), "");
     }
     // Serves as the check that the file names match the list: no others are referenced
     std::vector<char> copy(text.begin(), text.end());
@@ -500,6 +530,28 @@ static void printFontMetrics() {
   printf("Label font: line advance %d, Latin letters reach %d above and %d below the baseline\n", font.yAdvance, -top, bottom);
 }
 
+static void testDeepTime() {
+  char big[32], small[32], span[32];
+  timelineFormatYear(-3500000000LL, 0, true, false, false, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "ca. 3,5");
+  CHECK_STR(small, "Mrd. Jahre her");
+  timelineFormatYear(-2450000000LL, 0, false, false, true, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "2.45");
+  CHECK_STR(small, "billion years ago");
+  timelineFormatYear(-541000000, 0, false, false, false, big, sizeof(big), small, sizeof(small));
+  CHECK_STR(big, "541");
+  CHECK_STR(small, "Mio. Jahre her");
+  timelineFormatSpan(-3500000000LL, -2450000000LL, false, span, sizeof(span));
+  CHECK_STR(span, "1,05 Mrd. Jahre");
+  timelineFormatSpan(-3500000000LL, -2450000000LL, true, span, sizeof(span));
+  CHECK_STR(span, "1.05 billion years");
+  Timeline t;
+  std::vector<char> s;
+  CHECK(parseText("ZTL1\tdeep\tQ1\tT\tT\t1\t0\nQ2\t-3500000000\t-\t1\tA\tA\t0\t0\t0\t0\t-\t-\n", "deep", t, s));
+  CHECK(t.events[0].year == -3500000000LL);
+  CHECK(!parseText("ZTL1\tdeep\tQ1\tT\tT\t1\t0\nQ2\t-5000000001\t-\t1\tA\tA\t0\t0\t0\t0\t-\t-\n", "deep", t, s));
+}
+
 int main(int argc, char** argv) {
   printFontMetrics();
   testParseGood();
@@ -511,6 +563,7 @@ int main(int argc, char** argv) {
   testMotion();
   testTilt();
   testWrap();
+  testDeepTime();
   if (argc > 1) testGeneratedFiles(argv[1]);
   printf("%d checks, %d failures\n", checks, failures);
   return failures ? 1 : 0;

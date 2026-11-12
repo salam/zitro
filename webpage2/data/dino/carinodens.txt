@@ -1,0 +1,10 @@
+ZDS1	carinodens	Q1622418
+name	Carinodens
+group	3
+image	4703	240	71	fbc877a0	Ghedoghedo, CC BY-SA 3.0
+length	350	350
+lived	70600000	66000000
+named	1969
+era	Kreide	Cretaceous
+source	Wikidata
+end

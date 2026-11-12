@@ -1,0 +1,8 @@
+ZDS1	zuniceratops	Q131773
+name	Zuniceratops
+group	0
+image	6277	240	117	5cb3c7d3	Nobu Tamura, CC BY 3.0
+lived	93000000	91000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

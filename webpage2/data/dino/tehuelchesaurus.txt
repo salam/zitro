@@ -1,0 +1,7 @@
+ZDS1	tehuelchesaurus	Q2451710
+name	Tehuelchesaurus
+group	0
+image	3709	240	117	05e70cdd	Levi bernardo, CC BY-SA 3.0
+named	1999
+source	Wikidata
+end

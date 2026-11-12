@@ -1,0 +1,9 @@
+ZDS1	zarafasaura	Q18585011
+name	Zarafasaura
+group	3
+image	6255	240	117	b4f772a0	incidencematrix, CC BY 2.0
+lived	72100000	66000000
+named	2011
+era	Kreide	Cretaceous
+source	Wikidata
+end

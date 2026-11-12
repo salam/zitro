@@ -1,0 +1,6 @@
+ZDS1	craspedodon	Q1657542
+name	Craspedodon
+group	0
+image	2313	171	117	10abf5d4	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

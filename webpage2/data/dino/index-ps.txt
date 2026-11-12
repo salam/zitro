@@ -1,0 +1,16 @@
+ZDX1	ps	15
+psittacosaurus	psittacosaurus
+psittacosaurus amitabha	psittacosaurus
+psittacosaurus gobiensis	psittacosaurus
+psittacosaurus houi	psittacosaurus
+psittacosaurus lujiatunensis	psittacosaurus
+psittacosaurus major	psittacosaurus
+psittacosaurus mazongshanensis	psittacosaurus
+psittacosaurus meileyingensis	psittacosaurus
+psittacosaurus mongoliensis	psittacosaurus
+psittacosaurus neimongoliensis	psittacosaurus
+psittacosaurus ordosensis	psittacosaurus
+psittacosaurus sattayaraki	psittacosaurus
+psittacosaurus sibiricus	psittacosaurus
+psittacosaurus sinensis	psittacosaurus
+psittacosaurus xinjiangensis	psittacosaurus

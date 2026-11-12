@@ -1,0 +1,4 @@
+ZDX1	gy	3
+gyposaurus	gyposaurus
+gyposaurus capensis	gyposaurus
+gyposaurus sinensis	gyposaurus

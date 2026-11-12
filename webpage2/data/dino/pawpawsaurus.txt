@@ -1,0 +1,7 @@
+ZDS1	pawpawsaurus	Q135483
+name	Pawpawsaurus
+group	0
+image	4673	123	117	7d1e9c1c	Ghedoghedo, CC BY-SA 3.0
+named	1996
+source	Wikidata
+end

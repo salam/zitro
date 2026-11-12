@@ -1,0 +1,6 @@
+ZDS1	fukuipteryx	Q75218540
+name	Fukuipteryx
+group	1
+image	3688	132	117	ebbc6dc1	M. Yoshida, CC BY-SA 4.0
+source	Wikidata
+end

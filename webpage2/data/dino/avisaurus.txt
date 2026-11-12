@@ -1,0 +1,8 @@
+ZDS1	avisaurus	Q4828982
+name	Avisaurus
+group	1
+lived	68000000	66000000
+named	1985
+era	Kreide	Cretaceous
+source	Wikidata
+end

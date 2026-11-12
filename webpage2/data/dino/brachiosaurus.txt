@@ -1,0 +1,16 @@
+ZDS1	brachiosaurus	Q14397
+name	Brachiosaurus
+group	0
+image	5118	240	117	5c549700	-
+length	2100	3000
+height	940	1300
+mass	58000000	58000000
+lived	155600000	145500000
+named	1903
+era	Jura	Jurassic
+meaning	Armechse	arm lizard
+diet	Pflanzen	Plants
+found	Nordamerika	North America
+fun	Brachiosaurus gehört zu den grössten Landtieren, die je gelebt haben.	Brachiosaurus was one of the largest land animals that ever lived.	Wikipedia (DE): Brachiosaurus
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,8 @@
+ZDS1	gastonia	Q134170
+name	Gastonia
+group	0
+image	7718	240	117	1c0d3deb	-
+length	460	460
+named	1998
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	cretornis	Q21087975
+name	Cretornis
+group	2
+image	3061	156	117	1b4d3593	Meridas (Vladimir Socha), CC BY-SA 4.0
+named	1881
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	garumbatitan	Q122849073
+name	Garumbatitan
+group	0
+image	3480	240	117	26c330dc	TotalDino, CC BY-SA 4.0
+source	Wikidata
+end

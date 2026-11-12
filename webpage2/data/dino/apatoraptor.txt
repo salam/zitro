@@ -1,0 +1,6 @@
+ZDS1	apatoraptor	Q23807302
+name	Apatoraptor
+group	0
+image	10150	240	117	e9945d43	Roland Tanglao from Vancouver, Canada, CC BY 2.0
+source	Wikidata
+end

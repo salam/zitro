@@ -1,0 +1,6 @@
+ZDS1	graciliraptor	Q134623
+name	Graciliraptor
+group	0
+image	4994	240	117	8625f2cf	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

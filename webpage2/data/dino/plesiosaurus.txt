@@ -1,0 +1,14 @@
+ZDS1	plesiosaurus	Q857081
+name	Plesiosaurus
+group	3
+image	3693	164	117	745ff861	Dmitry Bogdanov, CC BY 3.0
+length	350	350
+lived	199600000	175600000
+named	1821
+era	Jura	Jurassic
+meaning	fast eine Echse	near to a lizard
+diet	wohl Fische, Belemniten	Probably fish, belemnites
+found	England	England
+fun	Mary Anning entdeckte Plesiosaurus, eines der ersten ausgestorbenen Meeresreptilien, die man beschrieb.	Mary Anning discovered Plesiosaurus, one of the first extinct sea reptiles to be described.	Wikipedia (DE): Plesiosaurus
+source	Wikidata, Wikipedia
+end

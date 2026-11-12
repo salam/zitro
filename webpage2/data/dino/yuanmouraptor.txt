@@ -1,0 +1,7 @@
+ZDS1	yuanmouraptor	Q15909169
+name	Yuanmouraptor
+group	0
+image	3693	240	82	a0df5579	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

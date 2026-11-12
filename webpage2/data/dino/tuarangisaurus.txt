@@ -1,0 +1,8 @@
+ZDS1	tuarangisaurus	Q18374302
+name	Tuarangisaurus
+group	3
+image	6627	182	117	80a1a5de	FunkMonk, CC BY 3.0
+length	800	800
+named	1986
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	toretocnemus	Q7825677
+name	Toretocnemus
+group	3
+image	7928	240	117	fefc57c7	-
+lived	235000000	221500000
+named	1903
+era	Trias	Triassic
+source	Wikidata
+end

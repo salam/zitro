@@ -1,0 +1,7 @@
+ZDS1	bashanosaurus	Q111086072
+name	Bashanosaurus
+group	0
+image	5094	240	94	9fbd1db3	SlvrHwk, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

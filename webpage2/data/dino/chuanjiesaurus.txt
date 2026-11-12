@@ -1,0 +1,6 @@
+ZDS1	chuanjiesaurus	Q136239
+name	Chuanjiesaurus
+group	0
+image	3628	134	117	67d9c494	Mlogic, CC BY-SA 3.0
+source	Wikidata
+end

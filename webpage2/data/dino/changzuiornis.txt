@@ -1,0 +1,6 @@
+ZDS1	changzuiornis	Q43323396
+name	Changzuiornis
+group	1
+image	6531	148	117	b1860afc	Huang, Wang, Hu, Liu, Peteya & Clarke, 2016, CC BY 4.0
+source	Wikidata
+end

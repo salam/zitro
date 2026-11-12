@@ -1,0 +1,8 @@
+ZDS1	wimanius	Q8023507
+name	Wimanius
+group	3
+lived	247200000	235000000
+named	1998
+era	Trias	Triassic
+source	Wikidata
+end

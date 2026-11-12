@@ -1,0 +1,7 @@
+ZDS1	acanthopholis	Q133200
+name	Acanthopholis
+group	0
+image	5667	240	91	bbc518d4	Karkemish, CC BY 3.0
+named	1867
+source	Wikidata
+end

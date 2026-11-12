@@ -1,0 +1,6 @@
+ZDS1	iguanacolossus	Q968269
+name	Iguanacolossus
+group	0
+image	4281	240	92	a2046a38	Lukas Panzarin, CC BY 2.5
+source	Wikidata
+end

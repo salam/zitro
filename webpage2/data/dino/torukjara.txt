@@ -1,0 +1,7 @@
+ZDS1	torukjara	Q126487929
+name	Torukjara
+group	2
+image	4334	134	117	c2195a49	CC BY 4.0
+named	2024
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	tropeognathus	Q2184379
+name	Tropeognathus
+group	2
+image	4970	240	76	fd58c0d4	Ghedoghedo, CC BY-SA 3.0
+wingspan	826	826
+named	1987
+source	Wikidata
+end

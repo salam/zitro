@@ -1,0 +1,9 @@
+ZDS1	paralititan	Q131636
+name	Paralititan
+group	0
+image	3916	240	117	00b2e1c8	Dmitry Bogdanov, CC BY 3.0
+length	2800	2800
+lived	99600000	93500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

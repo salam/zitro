@@ -1,0 +1,8 @@
+ZDS1	cetiosauriscus	Q1957696
+name	Cetiosauriscus
+group	0
+length	1500	1500
+lived	168000000	163000000
+era	Jura	Jurassic
+source	Wikidata
+end

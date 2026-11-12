@@ -1,0 +1,7 @@
+ZDS1	bagaraatan	Q134285
+name	Bagaraatan
+group	0
+image	4142	76	117	04b346b1	Halszka Osmolska, CC BY 2.0
+named	1996
+source	Wikidata
+end

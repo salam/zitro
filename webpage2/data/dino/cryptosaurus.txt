@@ -1,0 +1,6 @@
+ZDS1	cryptosaurus	Q18578567
+name	Cryptosaurus
+group	0
+image	2295	62	117	a5ff95d5	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	fukuititan	Q2096199
+name	Fukuititan
+group	0
+image	5353	175	117	d82e7228	Titomaurer, CC BY-SA 4.0
+source	Wikidata
+end

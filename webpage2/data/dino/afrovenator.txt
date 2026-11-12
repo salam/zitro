@@ -1,0 +1,7 @@
+ZDS1	afrovenator	Q18511003
+name	Afrovenator
+group	0
+image	4719	240	117	97261773	PaleoEquii, CC BY-SA 4.0
+length	900	900
+source	Wikidata
+end

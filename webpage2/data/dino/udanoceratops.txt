@@ -1,0 +1,6 @@
+ZDS1	udanoceratops	Q132581
+name	Udanoceratops
+group	0
+image	5286	240	117	54420c7c	PaleoNeolitic, CC BY 4.0
+source	Wikidata
+end

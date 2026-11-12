@@ -1,0 +1,6 @@
+ZDS1	intiornis	Q12071348
+name	Intiornis
+group	1
+image	4980	191	117	0bb761c3	CC BY 3.0
+source	Wikidata
+end

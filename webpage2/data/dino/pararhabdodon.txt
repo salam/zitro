@@ -1,0 +1,7 @@
+ZDS1	pararhabdodon	Q3493376
+name	Pararhabdodon
+group	0
+image	6244	156	117	4bae8e55	Apotea ((archive)), CC BY-SA 3.0
+named	1993
+source	Wikidata
+end

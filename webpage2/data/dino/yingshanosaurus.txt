@@ -1,0 +1,7 @@
+ZDS1	yingshanosaurus	Q2870799
+name	Yingshanosaurus
+group	0
+image	6597	240	117	fcc9e8ee	SlvrHwk, CC BY-SA 4.0
+named	1994
+source	Wikidata
+end

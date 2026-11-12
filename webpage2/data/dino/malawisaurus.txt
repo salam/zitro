@@ -1,0 +1,7 @@
+ZDS1	malawisaurus	Q133655
+name	Malawisaurus
+group	0
+image	3533	84	117	58fd5192	CaptMondo, CC BY-SA 3.0
+length	900	900
+source	Wikidata
+end

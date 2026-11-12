@@ -1,0 +1,18 @@
+ZDX1	ig	17
+igai	igai
+igai semkhu	igai
+ignavusaurus	ignavusaurus
+ignavusaurus rachelis	ignavusaurus
+iguanacolossus	iguanacolossus
+iguanacolossus fortis	iguanacolossus
+iguanadon	iguanodon
+iguanodon	iguanodon
+iguanodon anglicus	iguanodon
+iguanodon anglicusi	iguanodon
+iguanodon atherfieldensis	mantellisaurus
+iguanodon bernissartensis	iguanodon
+iguanodon galvensis	iguanodon
+iguanodon hoggi	iguanodon
+iguanodon valdensis	iguanodon
+iguanodonts	iguanodon
+iguanosaurus	iguanodon

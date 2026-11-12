@@ -1,0 +1,9 @@
+ZDS1	palmulasaurus	Q19297848
+name	Palmulasaurus
+group	3
+image	5251	240	117	ecca97ff	Connor Ashbridge, CC BY-SA 4.0
+lived	94000000	89000000
+named	2007
+era	Kreide	Cretaceous
+source	Wikidata
+end

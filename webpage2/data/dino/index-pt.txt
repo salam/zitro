@@ -1,0 +1,29 @@
+ZDX1	pt	28
+pteranodon	pteranodon
+pteranodon ingens	pteranodon
+pteranodon longiceps	pteranodon
+pteranodon occidentalis	pteranodon
+pteranodon sternbergi	pteranodon
+pterodactyl	pterodactylus
+pterodactylus	pterodactylus
+pterodactylus antiquus	pterodactylus
+pterodactylus brancai	pterodactylus
+pterodactylus bucklandii	dolicorhamphus
+pterodactylus daviesii	pterodactylus
+pterodactylus longicaudus	pterodactylus
+pterodactylus longicollum	pterodactylus
+pterodactylus macronyx	pterodactylus
+pterodactylus manselii	pterodactylus
+pterodactylus micronyx	pterodactylus
+pterodactylus pleydelli	pterodactylus
+pterodactylus rhamphastinus	pterodactylus
+pterodactylus velox	pterodactylus
+pterodaustro	pterodaustro
+pterodaustro guinazui	pterodaustro
+pteromonodactylus	rhamphorhynchus
+pterorhynchus	pterorhynchus
+pterorhynchus wellnhoferi	pterorhynchus
+pterospondylus	pterospondylus
+pterospondylus trielbae	pterospondylus
+ptychotherates	ptychotherates
+ptychotherates bucculentus	ptychotherates

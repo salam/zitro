@@ -1,0 +1,6 @@
+ZDS1	spiclypeus	Q24091046
+name	Spiclypeus
+group	0
+image	4550	103	117	d3309342	Zachi Evenor from Israel, CC BY 2.0
+source	Wikidata
+end

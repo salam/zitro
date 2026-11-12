@@ -1,0 +1,6 @@
+ZDS1	gobiceratops	Q2175586
+name	Gobiceratops
+group	0
+image	6010	141	117	2ffd8ce0	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

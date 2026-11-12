@@ -1,0 +1,7 @@
+ZDS1	llukalkan	Q106297191
+name	Llukalkan
+group	0
+image	5886	240	117	e85113ba	Samuel elias perazolii, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	arackar	Q105745562
+name	Arackar
+group	0
+image	2857	88	117	6b829b9a	SpinoDragon145, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	peloroplites	Q1256132
+name	Peloroplites
+group	0
+image	12715	240	117	12449c56	Jens Lallensack, CC BY-SA 4.0
+lived	104460000	98370000
+era	Kreide	Cretaceous
+source	Wikidata
+end

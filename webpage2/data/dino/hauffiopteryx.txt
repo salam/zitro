@@ -1,0 +1,10 @@
+ZDS1	hauffiopteryx	Q5682360
+name	Hauffiopteryx
+group	3
+image	3755	240	63	376ca9d3	Ghedoghedo, CC BY-SA 3.0
+length	193	193
+lived	182700000	181800000
+named	2008
+era	Jura	Jurassic
+source	Wikidata
+end

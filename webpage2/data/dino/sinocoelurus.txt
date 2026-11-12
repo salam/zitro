@@ -1,0 +1,6 @@
+ZDS1	sinocoelurus	Q871971
+name	Sinocoelurus
+group	0
+image	1835	97	117	92be4715	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

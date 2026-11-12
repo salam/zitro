@@ -1,0 +1,9 @@
+ZDS1	ogmodirus	Q7080135
+name	Ogmodirus
+group	3
+image	6598	240	88	81947acc	Williston & Moodie, CC BY-SA 4.0
+lived	94300000	89300000
+named	1913
+era	Kreide	Cretaceous
+source	Wikidata
+end

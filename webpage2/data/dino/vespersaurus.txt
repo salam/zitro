@@ -1,0 +1,7 @@
+ZDS1	vespersaurus	Q64836111
+name	Vespersaurus
+group	0
+image	5135	103	117	0e180417	CC BY 4.0
+named	2019
+source	Wikidata
+end

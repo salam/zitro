@@ -1,0 +1,9 @@
+ZDS1	dynamoterror	Q57194687
+name	Dynamoterror
+group	0
+image	4163	87	117	a7a0e453	CC BY-SA 4.0
+lived	83600000	72100000
+named	2018
+era	Kreide	Cretaceous
+source	Wikidata
+end

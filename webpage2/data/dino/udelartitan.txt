@@ -1,0 +1,7 @@
+ZDS1	udelartitan	Q125153642
+name	Udelartitan
+group	0
+image	3812	240	117	77969131	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

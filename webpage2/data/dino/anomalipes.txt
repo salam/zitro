@@ -1,0 +1,6 @@
+ZDS1	anomalipes	Q50878725
+name	Anomalipes
+group	0
+image	4717	109	117	9739b8df	CC BY-SA 4.0
+source	Wikidata
+end

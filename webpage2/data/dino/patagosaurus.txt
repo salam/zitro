@@ -1,0 +1,9 @@
+ZDS1	patagosaurus	Q132552
+name	Patagosaurus
+group	0
+image	2953	240	90	2b0f039a	Smokeybjb, CC BY-SA 3.0
+length	1800	1800
+lived	165000000	161000000
+era	Jura	Jurassic
+source	Wikidata
+end

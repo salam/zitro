@@ -1,0 +1,6 @@
+ZDS1	magnusavis	Q130476913
+name	Magnusavis
+group	1
+image	5101	162	117	f3500a3f	Clark et al, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	podokesaurus	Q21446516
+name	Podokesaurus
+group	0
+image	4616	240	117	8c97f652	FunkMonk, CC BY-SA 3.0
+length	90	90
+source	Wikidata
+end

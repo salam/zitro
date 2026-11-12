@@ -1,0 +1,7 @@
+ZDS1	yuanmousaurus	Q139201
+name	Yuanmousaurus
+group	0
+image	5269	240	117	3d765172	-
+length	1700	1700
+source	Wikidata
+end

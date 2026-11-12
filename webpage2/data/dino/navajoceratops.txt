@@ -1,0 +1,6 @@
+ZDS1	navajoceratops	Q96077708
+name	Navajoceratops
+group	0
+image	7137	240	117	6830cba0	CC BY 4.0
+source	Wikidata
+end

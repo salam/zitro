@@ -1,0 +1,7 @@
+ZDS1	lusonectes	Q3840891
+name	Lusonectes
+group	3
+image	5190	102	117	682d1a42	Adam S. Smith, Ricardo Araujo, and Octavio Mateus, CC BY 2.0
+named	2012
+source	Wikidata
+end

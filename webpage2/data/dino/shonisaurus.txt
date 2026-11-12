@@ -1,0 +1,9 @@
+ZDS1	shonisaurus	Q132554
+name	Shonisaurus
+group	3
+image	6712	176	117	b6857adf	CC BY-SA 2.0
+lived	237000000	227000000
+named	1976
+era	Trias	Triassic
+source	Wikidata
+end

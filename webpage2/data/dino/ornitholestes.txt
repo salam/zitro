@@ -1,0 +1,8 @@
+ZDS1	ornitholestes	Q14449
+name	Ornitholestes
+group	0
+image	4433	240	117	5de2b62b	PaleoNeolitic, CC BY-SA 4.0
+length	200	200
+named	1903
+source	Wikidata
+end

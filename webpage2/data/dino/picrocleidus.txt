@@ -1,0 +1,7 @@
+ZDS1	picrocleidus	Q9059430
+name	Picrocleidus
+group	3
+image	4621	93	117	01f0a546	-
+named	1909
+source	Wikidata
+end

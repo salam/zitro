@@ -1,0 +1,8 @@
+ZDS1	gannansaurus	Q13600078
+name	Gannansaurus
+group	0
+image	2444	124	117	58ae61fc	Gunnar Bivens, CC BY-SA 4.0
+lived	72000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

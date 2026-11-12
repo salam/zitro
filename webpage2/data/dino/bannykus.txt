@@ -1,0 +1,6 @@
+ZDS1	bannykus	Q56256254
+name	Bannykus
+group	0
+image	2758	121	117	e3f5cdec	Tomopteryx, CC BY-SA 4.0
+source	Wikidata
+end

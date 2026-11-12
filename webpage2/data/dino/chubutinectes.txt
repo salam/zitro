@@ -1,0 +1,7 @@
+ZDS1	chubutinectes	Q121354360
+name	Chubutinectes
+group	3
+image	2877	88	117	4054981b	Eongriel, CC BY 4.0
+named	2023
+source	Wikidata
+end

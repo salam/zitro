@@ -1,0 +1,7 @@
+ZDS1	matheronodon	Q42331382
+name	Matheronodon
+group	0
+image	5441	108	117	c549ffba	CC BY 4.0
+named	2017
+source	Wikidata
+end

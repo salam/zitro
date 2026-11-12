@@ -1,0 +1,7 @@
+ZDS1	arambourgiania	Q2317988
+name	Arambourgiania
+group	2
+image	5172	240	117	267f298b	Ghedoghedo, CC BY-SA 3.0
+named	1987
+source	Wikidata
+end

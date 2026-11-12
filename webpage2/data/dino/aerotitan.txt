@@ -1,0 +1,7 @@
+ZDS1	aerotitan	Q4688495
+name	Aerotitan
+group	2
+image	2743	107	117	857c6275	Connor Ashbridge, CC BY 4.0
+named	2012
+source	Wikidata
+end

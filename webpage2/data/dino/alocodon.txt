@@ -1,0 +1,6 @@
+ZDS1	alocodon	Q18602135
+name	Alocodon
+group	0
+image	2813	139	117	df59071c	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

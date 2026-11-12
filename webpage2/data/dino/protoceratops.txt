@@ -1,0 +1,16 @@
+ZDS1	protoceratops	Q14506
+name	Protoceratops
+group	0
+image	5826	240	117	511ff40c	PaleoNeolitic, CC BY 4.0
+length	180	200
+height	75	75
+egg	120	120
+lived	83500000	70600000
+named	1923
+era	Kreide	Cretaceous
+meaning	erstes Horngesicht	first horned face
+diet	Pflanzen	Plants
+found	Asien	Asia
+fun	Protoceratops-Fossilien haben vielleicht zur Sage vom Greif beigetragen, einem Fabeltier.	Protoceratops fossils may have helped inspire the legend of the griffin, a mythical creature.	Wikipedia (EN): Protoceratops
+source	Wikidata, Wikipedia
+end

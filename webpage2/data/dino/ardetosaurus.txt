@@ -1,0 +1,7 @@
+ZDS1	ardetosaurus	Q130466945
+name	Ardetosaurus
+group	0
+image	9001	240	117	f2087a24	Ole Zant, CC BY 4.0
+named	2024
+source	Wikidata
+end

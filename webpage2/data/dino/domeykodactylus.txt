@@ -1,0 +1,7 @@
+ZDS1	domeykodactylus	Q29565264
+name	Domeykodactylus
+group	2
+image	3299	102	117	eb600fcf	FunkMonk, CC BY-SA 3.0
+named	2000
+source	Wikidata
+end

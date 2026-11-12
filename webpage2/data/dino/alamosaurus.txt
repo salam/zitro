@@ -1,0 +1,8 @@
+ZDS1	alamosaurus	Q131583
+name	Alamosaurus
+group	0
+image	5133	164	117	24eeb97d	DiBgd at English Wikipedia, CC BY-SA 3.0
+length	2100	2100
+named	1922
+source	Wikidata
+end

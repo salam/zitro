@@ -1,0 +1,7 @@
+ZDS1	mythunga	Q2601308
+name	Mythunga
+group	2
+image	4860	121	117	9c84f58f	CC BY-SA 4.0
+named	2007
+source	Wikidata
+end

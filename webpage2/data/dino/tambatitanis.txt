@@ -1,0 +1,6 @@
+ZDS1	tambatitanis	Q17524002
+name	Tambatitanis
+group	0
+image	9835	240	117	95a32712	HARUO SAEGUSA, TADAHIRO IKEDA, CC BY 3.0
+source	Wikidata
+end

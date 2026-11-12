@@ -1,0 +1,6 @@
+ZDS1	arcusaurus	Q1868786
+name	Arcusaurus
+group	0
+image	3127	240	90	2ea914c2	Levi bernardo, CC BY-SA 3.0
+source	Wikidata
+end

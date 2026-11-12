@@ -1,0 +1,7 @@
+ZDS1	morturneria	Q21447726
+name	Morturneria
+group	3
+image	3388	240	73	c1e6321e	Connor Ashbridge, CC BY-SA 4.0
+named	1994
+source	Wikidata
+end

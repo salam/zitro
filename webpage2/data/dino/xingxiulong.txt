@@ -1,0 +1,6 @@
+ZDS1	xingxiulong	Q28805848
+name	Xingxiulong
+group	0
+image	9236	178	117	9b262a93	Ya-Ming Wang, Hai-Lu You & Tao Wang, CC BY-SA 4.0
+source	Wikidata
+end

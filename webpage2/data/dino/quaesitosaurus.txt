@@ -1,0 +1,7 @@
+ZDS1	quaesitosaurus	Q132546
+name	Quaesitosaurus
+group	0
+image	4040	143	117	2155ce3f	PaleoNeolitic, CC BY 4.0
+length	2300	2300
+source	Wikidata
+end

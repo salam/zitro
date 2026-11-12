@@ -1,0 +1,15 @@
+ZDX1	d_	14
+d. albertensis	dromaeosaurus
+d. antirrhopus	deinonychus
+d. armatus	dacentrurus
+d. bissektensis	dzharacursor
+d. eatoni	diabloceratops
+d. hansemanni	dicraeosaurus
+d. longus	diplodocus
+d. mirificus	deinocheirus
+d. schrani	dreadnoughtus
+d. sgiathanach	dearc
+d. weintraubi	dimorphodon
+d. wetherilli	dilophosaurus
+d. yingliangis	datai
+d.carnegii	diplodocus

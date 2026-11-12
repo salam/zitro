@@ -1,0 +1,10 @@
+ZDS1	irritator	Q131211
+name	Irritator
+group	0
+image	5110	240	117	c2c5e989	Fred Wierum, CC BY 3.0
+length	650	800
+height	200	200
+mass	1000000	1000000
+named	1996
+source	Wikidata
+end

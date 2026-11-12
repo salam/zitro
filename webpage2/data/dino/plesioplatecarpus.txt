@@ -1,0 +1,9 @@
+ZDS1	plesioplatecarpus	Q7204674
+name	Plesioplatecarpus
+group	3
+image	3808	240	117	bda29bbb	-
+lived	88000000	84000000
+named	2011
+era	Kreide	Cretaceous
+source	Wikidata
+end

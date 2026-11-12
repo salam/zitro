@@ -1,0 +1,6 @@
+ZDS1	brachyceratops	Q131602
+name	Brachyceratops
+group	0
+image	6595	240	117	2b2aff82	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

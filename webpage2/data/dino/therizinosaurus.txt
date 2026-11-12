@@ -1,0 +1,16 @@
+ZDS1	therizinosaurus	Q131264
+name	Therizinosaurus
+group	0
+image	3783	191	117	e90f7711	PaleoNeolitic, CC BY 4.0
+length	900	900
+height	400	500
+mass	9000000	9000000
+lived	69000000	66000000
+named	1954
+era	Kreide	Cretaceous
+meaning	Sensenechse	scythe lizard
+diet	wohl Pflanzen	Probably plants
+found	Wüste Gobi	Gobi Desert
+fun	Als Maleev Therizinosaurus 1954 beschrieb, dachte er, die riesigen Krallen dienten zum Ernten von Seetang.	When Maleev described Therizinosaurus in 1954, he thought its huge claws were used to harvest seaweed.	Wikipedia (EN): Therizinosaurus
+source	Wikidata, Wikipedia
+end

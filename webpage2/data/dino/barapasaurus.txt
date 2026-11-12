@@ -1,0 +1,10 @@
+ZDS1	barapasaurus	Q131644
+name	Barapasaurus
+group	0
+image	5753	240	117	1dc776bc	Dmitry Bogdanov, CC BY-SA 3.0
+length	1400	1400
+lived	196500000	183000000
+named	1975
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	platypterygius	Q134603
+name	Platypterygius
+group	3
+image	3792	149	117	3618fe70	Bogdanov, CC BY 2.5
+length	700	700
+lived	145000000	94300000
+named	1922
+era	Kreide	Cretaceous
+source	Wikidata
+end

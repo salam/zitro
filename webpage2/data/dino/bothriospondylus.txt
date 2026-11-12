@@ -1,0 +1,8 @@
+ZDS1	bothriospondylus	Q1810717
+name	Bothriospondylus
+group	0
+image	4444	109	117	f8c374f9	-
+lived	157000000	152200000
+era	Jura	Jurassic
+source	Wikidata
+end

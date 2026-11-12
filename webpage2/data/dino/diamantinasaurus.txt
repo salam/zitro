@@ -1,0 +1,8 @@
+ZDS1	diamantinasaurus	Q132881
+name	Diamantinasaurus
+group	0
+image	6627	240	117	2d33c418	CC BY 2.5
+lived	95000000	92900000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	shunosaurus	Q131404
+name	Shunosaurus
+group	0
+image	4102	240	117	be2c8e3f	Smokeybjb (Edits by User:Paleocolour), CC BY-SA 3.0
+length	950	1000
+mass	3000000	3000000
+named	1983
+source	Wikidata
+end

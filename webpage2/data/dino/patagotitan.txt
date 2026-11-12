@@ -1,0 +1,13 @@
+ZDS1	patagotitan	Q17103736
+name	Patagotitan
+group	0
+image	3494	240	117	ff886c89	UnexpectedDinoLesson, CC BY 4.0
+length	3750	3750
+named	2017
+era	Kreide	Cretaceous
+meaning	Titan aus Patagonien	titan from Patagonia
+diet	Pflanzen	Plants
+found	Patagonien (Argentinien)	Patagonia (Argentina)
+fun	Patagotitan ist eines der grössten bekannten Landtiere aller Zeiten.	Patagotitan is one of the largest known land animals of all time.	Wikipedia (DE): Patagotitan
+source	Wikidata, Wikipedia
+end

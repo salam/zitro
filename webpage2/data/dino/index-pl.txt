@@ -1,0 +1,80 @@
+ZDX1	pl	79
+plataleorhynchus	plataleorhynchus
+plataleorhynchus streptophorodon	plataleorhynchus
+platecarpus	platecarpus
+platecarpus tympaniticus	platecarpus
+plateosauravus	plateosauravus
+plateosauravus cullingworthi	plateosauravus
+plateosaurus	plateosaurus
+plateosaurus elizae	plateosaurus
+plateosaurus gracilis	plateosaurus
+plateosaurus longiceps	plateosaurus
+plateosaurus trossingensis	plateosaurus
+platyceratops	platyceratops
+platyceratops tatarinovi	platyceratops
+platypelta	platypelta
+platypterygius	platypterygius
+platypterygius australis	platypterygius
+platypterygius campylodon	platypterygius
+platypterygius platydactylus	platypterygius
+platypterygius sp.	platypterygius
+platytholus	platytholus
+platytholus clemensi	platytholus
+plesiopharos	plesiopharos
+plesiopharos moelensis	plesiopharos
+plesioplatecarpus	plesioplatecarpus
+plesioplatecarpus planifrons	plesioplatecarpus
+plesiopleurodon	plesiopleurodon
+plesiopleurodon wellesi	plesiopleurodon
+plesiopterys	plesiopterys
+plesiopterys wildi	plesiopterys
+plesiosaurus	plesiosaurus
+plesiosaurus bernardi	plesiosaurus
+plesiosaurus brachistospondylus	plesiosaurus
+plesiosaurus dolichodeirus	plesiosaurus
+plesiosaurus eleutheraxon	plesiosaurus
+plesiosaurus gurgitis	plesiosaurus
+plesiosaurus hawkinsi	plesiosaurus
+plesiosaurus holmesii	plesiosaurus
+plesiosaurus hoodii	plesiosaurus
+plesiosaurus indicus	plesiosaurus
+plesiosaurus limnophilus	plesiosaurus
+plesiosaurus macrocephalus	plesiosaurus
+plesiosaurus planus	plesiosaurus
+plesiosaurus portlandicus	plesiosaurus
+plesiosaurus rostratus	plesiosaurus
+plesiosaurus traversii	plesiosaurus
+plesiosaurus trochanterius	plesiosaurus
+plesiosaurus truncatus	plesiosaurus
+plesiotylosaurus	plesiotylosaurus
+pleurocoelus	pleurocoelus
+pleurocoelus valdensis	pleurocoelus
+pleuropeltis	struthiosaurus
+plioplatecarpus	plioplatecarpus
+plioplatecarpus marshi	plioplatecarpus
+pliosaurus	pliosaurus
+pliosaurus andrewsi	pliosaurus
+pliosaurus brachydeirus	pliosaurus
+pliosaurus brachyspondylus	pliosaurus
+pliosaurus carpenteri	pliosaurus
+pliosaurus chilensis	pliosaurus
+pliosaurus ferox	pliosaurus
+pliosaurus funkei	pliosaurus
+pliosaurus gamma	pliosaurus
+pliosaurus grandis	pliosaurus
+pliosaurus grossouvrei	pliosaurus
+pliosaurus kevani	pliosaurus
+pliosaurus macromerus	pliosaurus
+pliosaurus patagonicus	pliosaurus
+pliosaurus portentificus	pliosaurus
+pliosaurus portlandicus	pliosaurus
+pliosaurus rossicus	pliosaurus
+pliosaurus westburyensis	pliosaurus
+plotosaurus	plotosaurus
+plotosaurus bennisoni	plotosaurus
+plumadraco	plumadraco
+plumadraco bankoorum	plumadraco
+pluridens	pluridens
+pluridens calabaria	pluridens
+pluridens serpentis	pluridens
+pluridens walkeri	pluridens

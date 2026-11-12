@@ -1,0 +1,6 @@
+ZDS1	kakuru	Q18604641
+name	Kakuru
+group	0
+image	2463	83	117	7c68d71e	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

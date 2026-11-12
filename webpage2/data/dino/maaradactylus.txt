@@ -1,0 +1,7 @@
+ZDS1	maaradactylus	Q18176911
+name	Maaradactylus
+group	2
+image	3916	156	117	73b83a30	A. C. Tatarinov, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

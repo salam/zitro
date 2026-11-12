@@ -1,0 +1,32 @@
+ZDX1	na	31
+nagatitan	nagatitan
+nagatitan chaiyaphumensis	nagatitan
+nakonanectes	nakonanectes
+nakonanectes bradti	nakonanectes
+nankangia	nankangia
+nankangia jiangxiensis	nankangia
+nanningosaurus	nanningosaurus
+nanningosaurus dashiensis	nanningosaurus
+nannopterygius	nannopterygius
+nannopterygius enthekiodon	nannopterygius
+nanosaurus	nanosaurus
+nanosaurus agilis	nanosaurus
+nanotyrannus	nanotyrannus
+nanotyrannus lancensis	nanotyrannus
+nanotyrannus lethaeus	nanotyrannus
+nanshiungosaurus	nanshiungosaurus
+nanshiungosaurus bohlini	nanshiungosaurus
+nanshiungosaurus brevispinus	nanshiungosaurus
+nanuqsaurus	nanuqsaurus
+nanuqsaurus hoglundi	nanuqsaurus
+nanyangosaurus	nanyangosaurus
+nanyangosaurus zhugeii	nanyangosaurus
+narambuenatitan	narambuenatitan
+nasutoceratops	nasutoceratops
+nasutoceratops titusi	nasutoceratops
+natronasaurus	alcovasaurus
+navajoceratops	navajoceratops
+navajodactylus	navajodactylus
+navajodactylus boerei	navajodactylus
+navaornis	navaornis
+navaornis hestiae	navaornis

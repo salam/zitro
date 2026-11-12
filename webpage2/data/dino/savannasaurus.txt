@@ -1,0 +1,9 @@
+ZDS1	savannasaurus	Q27494215
+name	Savannasaurus
+group	0
+image	10939	240	117	c0563340	CC BY 4.0
+lived	93900000	92900000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

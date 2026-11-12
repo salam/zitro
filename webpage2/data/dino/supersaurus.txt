@@ -1,0 +1,9 @@
+ZDS1	supersaurus	Q131177
+name	Supersaurus
+group	0
+image	3608	240	117	b268c92e	-
+length	3400	3500
+mass	36300000	36300000
+named	1985
+source	Wikidata
+end

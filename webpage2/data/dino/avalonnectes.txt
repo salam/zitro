@@ -1,0 +1,9 @@
+ZDS1	avalonnectes	Q18558972
+name	Avalonnectes
+group	3
+image	5132	105	117	b7b9a658	CC BY 2.5
+lived	199600000	198000000
+named	2012
+era	Jura	Jurassic
+source	Wikidata
+end

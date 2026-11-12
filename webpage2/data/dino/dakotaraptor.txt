@@ -1,0 +1,7 @@
+ZDS1	dakotaraptor	Q21282866
+name	Dakotaraptor
+group	0
+image	8557	240	117	74f80ad4	Emily Willoughby, CC BY-SA 4.0
+named	2015
+source	Wikidata
+end

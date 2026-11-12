@@ -1,0 +1,7 @@
+ZDS1	comptonatus	Q127324591
+name	Comptonatus
+group	0
+image	3452	240	74	5bade2aa	TotalDino, CC BY 4.0
+named	2024
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	marmarospondylus	Q5999689
+name	Marmarospondylus
+group	0
+image	4451	240	117	60db1b94	Miracusaurs, CC BY-SA 4.0
+lived	168000000	166000000
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	chaoyangsaurus	Q133276
+name	Chaoyangsaurus
+group	0
+image	5669	240	117	0f105039	Nobu Tamura, CC BY 3.0
+length	110	110
+source	Wikidata
+end

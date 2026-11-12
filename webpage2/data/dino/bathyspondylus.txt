@@ -1,0 +1,7 @@
+ZDS1	bathyspondylus	Q4120085
+name	Bathyspondylus
+group	3
+image	4331	240	117	432107cb	Tawa99, CC BY-SA 4.0
+named	1982
+source	Wikidata
+end

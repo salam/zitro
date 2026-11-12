@@ -1,0 +1,6 @@
+ZDS1	ajnabia	Q101096375
+name	Ajnabia
+group	0
+image	5636	240	117	29308115	Connor Ashbridge, CC BY-SA 4.0
+source	Wikidata
+end

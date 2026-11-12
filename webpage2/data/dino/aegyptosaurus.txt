@@ -1,0 +1,8 @@
+ZDS1	aegyptosaurus	Q131577
+name	Aegyptosaurus
+group	0
+image	3008	179	117	29db8c7f	Levi Martinez-Reza, CC BY-SA 3.0
+length	1500	1500
+named	1932
+source	Wikidata
+end

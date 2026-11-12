@@ -1,0 +1,7 @@
+ZDS1	archaeonectrus	Q4785513
+name	Archaeonectrus
+group	3
+image	3715	172	117	5d9dcfd0	Nobu Tamura, CC BY-SA 4.0
+named	1964
+source	Wikidata
+end

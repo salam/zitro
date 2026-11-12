@@ -1,0 +1,6 @@
+ZDS1	orkoraptor	Q2101463
+name	Orkoraptor
+group	0
+image	4855	240	84	cdea2ea0	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

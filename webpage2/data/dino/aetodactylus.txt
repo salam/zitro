@@ -1,0 +1,7 @@
+ZDS1	aetodactylus	Q20672247
+name	Aetodactylus
+group	2
+image	5352	240	69	1af6a12f	A. O. Averianov, CC BY 4.0
+named	2010
+source	Wikidata
+end

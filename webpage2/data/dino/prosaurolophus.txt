@@ -1,0 +1,10 @@
+ZDS1	prosaurolophus	Q132191
+name	Prosaurolophus
+group	0
+image	8626	240	117	47f671a4	-
+length	760	760
+lived	75700000	74100000
+named	1916
+era	Kreide	Cretaceous
+source	Wikidata
+end

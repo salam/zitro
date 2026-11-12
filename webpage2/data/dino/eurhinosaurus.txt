@@ -1,0 +1,10 @@
+ZDS1	eurhinosaurus	Q1362694
+name	Eurhinosaurus
+group	3
+image	4664	240	117	12c6f3ba	Nobu Tamura, CC BY 2.5
+length	500	500
+lived	183000000	175000000
+named	1909
+era	Jura	Jurassic
+source	Wikidata
+end

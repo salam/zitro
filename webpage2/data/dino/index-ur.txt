@@ -1,0 +1,9 @@
+ZDX1	ur	8
+uragasaurus	uragasaurus
+uragasaurus kalasinensis	uragasaurus
+urbacodon	urbacodon
+urbacodon itemirensis	urbacodon
+urbacodon norelli	urbacodon
+uriash	uriash
+uriash kadici	uriash
+urvogel	archaeopteryx

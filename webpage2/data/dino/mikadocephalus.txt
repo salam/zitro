@@ -1,0 +1,7 @@
+ZDS1	mikadocephalus	Q6845573
+name	Mikadocephalus
+group	3
+lived	242000000	235000000
+era	Trias	Triassic
+source	Wikidata
+end

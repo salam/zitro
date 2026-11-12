@@ -1,0 +1,6 @@
+ZDS1	pitekunsaurus	Q973495
+name	Pitekunsaurus
+group	0
+image	7767	191	117	0bede59e	Ezequielvera, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	sanpasaurus	Q519430
+name	Sanpasaurus
+group	0
+image	3564	105	117	42fdc7d0	Ghedoghedo, CC BY-SA 4.0
+named	1944
+source	Wikidata
+end

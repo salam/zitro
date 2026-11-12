@@ -1,0 +1,6 @@
+ZDS1	stellasaurus	Q92442315
+name	Stellasaurus
+group	0
+image	4697	151	117	908a1b36	Andrew T. McDonald, CC BY 2.5
+source	Wikidata
+end

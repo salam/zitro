@@ -1,0 +1,6 @@
+ZDS1	tatisaurus	Q1955108
+name	Tatisaurus
+group	0
+image	4902	240	117	d9fe005a	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

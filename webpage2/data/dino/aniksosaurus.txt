@@ -1,0 +1,6 @@
+ZDS1	aniksosaurus	Q15723368
+name	Aniksosaurus
+group	0
+image	5450	174	117	4de2f0e0	CC BY 2.5
+source	Wikidata
+end

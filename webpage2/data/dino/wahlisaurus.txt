@@ -1,0 +1,9 @@
+ZDS1	wahlisaurus	Q27624084
+name	Wahlisaurus
+group	3
+image	2717	156	117	3af07db5	Nobu Tamura, CC BY-SA 4.0
+lived	201300000	199300000
+named	2016
+era	Jura	Jurassic
+source	Wikidata
+end

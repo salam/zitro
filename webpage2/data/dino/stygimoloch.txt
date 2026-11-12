@@ -1,0 +1,6 @@
+ZDS1	stygimoloch	Q131161
+name	Stygimoloch
+group	0
+image	5298	156	117	6fd52519	-
+source	Wikidata
+end

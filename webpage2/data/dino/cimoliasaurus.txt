@@ -1,0 +1,8 @@
+ZDS1	cimoliasaurus	Q5120155
+name	Cimoliasaurus
+group	3
+image	4575	89	117	553213dc	-
+length	760	760
+named	1851
+source	Wikidata
+end

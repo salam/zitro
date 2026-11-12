@@ -1,0 +1,10 @@
+ZDS1	elasmosaurus	Q131106
+name	Elasmosaurus
+group	3
+image	3820	240	117	82a640ea	DiBgd, CC BY-SA 4.0
+length	1400	1400
+lived	80500000	72100000
+named	1868
+era	Kreide	Cretaceous
+source	Wikidata
+end

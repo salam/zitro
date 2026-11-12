@@ -1,0 +1,7 @@
+ZDS1	targaryendraco	Q75820174
+name	Targaryendraco
+group	2
+image	4791	115	117	5bada67b	CC BY 3.0
+named	2019
+source	Wikidata
+end

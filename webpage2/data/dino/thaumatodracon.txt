@@ -1,0 +1,8 @@
+ZDS1	thaumatodracon	Q39050752
+name	Thaumatodracon
+group	3
+lived	199300000	190800000
+named	2017
+era	Jura	Jurassic
+source	Wikidata
+end

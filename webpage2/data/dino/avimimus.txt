@@ -1,0 +1,7 @@
+ZDS1	avimimus	Q131076
+name	Avimimus
+group	0
+image	2640	135	117	7a72b2a3	Matt Martyniuk, CC BY-SA 3.0
+length	150	150
+source	Wikidata
+end

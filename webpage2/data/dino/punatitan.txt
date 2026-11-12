@@ -1,0 +1,6 @@
+ZDS1	punatitan	Q100937008
+name	Punatitan
+group	0
+image	5186	240	74	c7c7e0e6	CC BY-SA 4.0
+source	Wikidata
+end

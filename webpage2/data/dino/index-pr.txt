@@ -1,0 +1,47 @@
+ZDX1	pr	46
+pradhania	pradhania
+pradhania gracilis	pradhania
+predator x	pliosaurus
+prenocephale	prenocephale
+prenocephale prenes	prenocephale
+preondactylus	preondactylus
+preondactylus apatomerus	preondactylus
+preondactylus buffarinii	preondactylus
+proa	proa
+proa valdearinnoensis	proa
+probactrosaurus	probactrosaurus
+probrachylophosaurus	probrachylophosaurus
+proceratosaurus	proceratosaurus
+proceratosaurus bradleyi	proceratosaurus
+procompsognathus	procompsognathus
+procompsognathus triassicus	procompsognathus
+prognathodon	prognathodon
+prognathodon cipactli	prognathodon
+prognathodon giganteus	prognathodon
+prognathodon kianda	prognathodon
+prognathodon saturator	prognathodon
+prognathodon solvayi	prognathodon
+prognathodon waiparaensis	prognathodon
+proornis	proornis
+proornis coreae	proornis
+propanoplosaurus	propanoplosaurus
+propanoplosaurus marylandicus	propanoplosaurus
+propterodactylus	propterodactylus
+propterodactylus frankerlae	propterodactylus
+prosaurolophus	prosaurolophus
+prosaurolophus blackfeetensis	prosaurolophus
+prosaurolophus maximus	prosaurolophus
+protarchaeopteryx	protarchaeopteryx
+protarchaeopteryx robusta	protarchaeopteryx
+protathlitis	protathlitis
+protathlitis cinctorrensis	protathlitis
+protoavis	protoavis
+protoavis texensis	protoavis
+protoceratops	protoceratops
+protoceratops andrewsi	protoceratops
+protoceratops hellenikorhinus	protoceratops
+protohadros	protohadros
+protohadros byrdi	protohadros
+protoichthyosaurus	protoichthyosaurus
+protopteryx	protopteryx
+protopteryx fengningensis	protopteryx

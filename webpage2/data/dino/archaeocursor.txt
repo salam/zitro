@@ -1,0 +1,7 @@
+ZDS1	archaeocursor	Q131480239
+name	Archaeocursor
+group	0
+image	8447	240	117	9779ef49	X. Yao, Q. Zhao, T. Ren, G. Wei & X. Xing, CC BY 4.0
+named	2024
+source	Wikidata
+end

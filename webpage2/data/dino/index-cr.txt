@@ -1,0 +1,41 @@
+ZDX1	cr	40
+craspedodon	craspedodon
+craspedodon lonzeensis	craspedodon
+crataeomus	struthiosaurus
+craterosaurus	craterosaurus
+craterosaurus pottonensis	craterosaurus
+cratoavis	cratoavis
+cratoavis cearensis	cratoavis
+cratonavis	cratonavis
+cratonopterus	cratonopterus
+cratonopterus huabei	cratonopterus
+cretornis	cretornis
+cretornis hlavaci	cretornis
+cretornis hlavatschi	cretornis
+crichtonsaurus	crichtonsaurus
+crichtonsaurus bohlini	crichtonsaurus
+criorhynchus	ornithocheirus
+criorhynchus mesembrinus	ornithocheirus
+cristatusaurus	cristatusaurus
+cristatusaurus lapparenti	cristatusaurus
+crittendenceratops	crittendenceratops
+crittendenceratops krzyzanowskii	crittendenceratops
+cruralispennia	cruralispennia
+cruralispennia multidonta	cruralispennia
+cruxicheiros	cruxicheiros
+cruxicheiros newmanorum	cruxicheiros
+cryodrakon	cryodrakon
+cryodrakon boreas	cryodrakon
+cryolophosaurus	cryolophosaurus
+cryolophosaurus ellioti	cryolophosaurus
+cryonectes	cryonectes
+cryonectes neustriacus	cryonectes
+cryopterygius	cryopterygius
+cryptocleidus	cryptoclidus
+cryptoclidus	cryptoclidus
+cryptoclidus eurymerus	cryptoclidus
+cryptoclidus oxoniensis	cryptoclidus
+cryptoclidus richardsoni	cryptoclidus
+cryptornis	cryptornis
+cryptosaurus	cryptosaurus
+cryptosaurus eumerus	cryptosaurus

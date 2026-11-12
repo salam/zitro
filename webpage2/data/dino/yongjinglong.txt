@@ -1,0 +1,6 @@
+ZDS1	yongjinglong	Q15690935
+name	Yongjinglong
+group	0
+image	4038	240	117	b16af082	Li-Guo Li,Da-Qing Li, Hai-Lu You, Peter Dodson, CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	utahceratops	Q134308
+name	Utahceratops
+group	0
+image	5634	144	117	b7bdbbd6	Nobu Tamura, CC BY-SA 3.0
+lived	76400000	75500000
+named	2010
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	pedopenna	Q220431
+name	Pedopenna
+group	0
+image	6207	240	117	2f170420	Miracusaurs, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

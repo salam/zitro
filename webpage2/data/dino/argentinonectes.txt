@@ -1,0 +1,7 @@
+ZDS1	argentinonectes	Q140179541
+name	Argentinonectes
+group	3
+image	2896	156	117	4b05ff45	Trexdraw, CC BY-SA 4.0
+named	2026
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	yizhousaurus	Q2471020
+name	Yizhousaurus
+group	0
+image	2994	90	117	2fd21fed	CC BY-SA 4.0
+source	Wikidata
+end

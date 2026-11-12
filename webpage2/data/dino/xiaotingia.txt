@@ -1,0 +1,6 @@
+ZDS1	xiaotingia	Q18604583
+name	Xiaotingia
+group	0
+image	3347	185	117	bab4303c	El fosilmaniaco, CC BY-SA 3.0
+source	Wikidata
+end

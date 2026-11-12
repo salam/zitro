@@ -1,0 +1,6 @@
+ZDS1	erythrovenator	Q102381502
+name	Erythrovenator
+group	0
+image	3259	240	70	08d01860	Maurissauro, CC BY-SA 4.0
+source	Wikidata
+end

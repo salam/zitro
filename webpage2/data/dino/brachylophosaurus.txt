@@ -1,0 +1,9 @@
+ZDS1	brachylophosaurus	Q29057493
+name	Brachylophosaurus
+group	0
+image	5425	240	117	b8e7e89f	Nobu Tamura, CC BY-SA 4.0
+length	700	1100
+mass	7000000	7000000
+named	1953
+source	Wikidata
+end

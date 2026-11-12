@@ -1,0 +1,6 @@
+ZDS1	lourinhanosaurus	Q18578547
+name	Lourinhanosaurus
+group	0
+image	6071	165	117	0df479ca	Cancelos, CC BY-SA 3.0
+source	Wikidata
+end

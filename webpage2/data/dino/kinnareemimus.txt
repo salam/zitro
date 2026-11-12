@@ -1,0 +1,6 @@
+ZDS1	kinnareemimus	Q389591
+name	Kinnareemimus
+group	0
+image	7620	240	117	48188986	CC BY-SA 4.0
+source	Wikidata
+end

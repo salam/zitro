@@ -1,0 +1,6 @@
+ZDS1	chebsaurus	Q2709342
+name	Chebsaurus
+group	0
+image	2262	127	117	634697d2	IJReid, CC BY 4.0
+source	Wikidata
+end

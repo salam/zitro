@@ -1,0 +1,6 @@
+ZDS1	huanhepterus	Q962878
+name	Huanhepterus
+group	2
+image	2580	107	117	8ea46833	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

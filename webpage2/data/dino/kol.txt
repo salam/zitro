@@ -1,0 +1,6 @@
+ZDS1	kol	Q921551
+name	Kol
+group	0
+image	5150	140	117	b3f31743	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

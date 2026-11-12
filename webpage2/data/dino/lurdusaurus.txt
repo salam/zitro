@@ -1,0 +1,10 @@
+ZDS1	lurdusaurus	Q548399
+name	Lurdusaurus
+group	0
+image	5577	240	117	4ae094c2	Ghedo, CC BY-SA 3.0
+length	900	900
+lived	121000000	112000000
+named	1999
+era	Kreide	Cretaceous
+source	Wikidata
+end

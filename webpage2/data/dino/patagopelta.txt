@@ -1,0 +1,7 @@
+ZDS1	patagopelta	Q115547839
+name	Patagopelta
+group	0
+image	8616	240	117	b68750ac	Gabriel Diaz Yanten (paleogdy), CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

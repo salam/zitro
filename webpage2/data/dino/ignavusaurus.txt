@@ -1,0 +1,7 @@
+ZDS1	ignavusaurus	Q93603
+name	Ignavusaurus
+group	0
+image	4414	240	77	0689c702	Danny Cicchetti, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

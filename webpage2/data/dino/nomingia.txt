@@ -1,0 +1,8 @@
+ZDS1	nomingia	Q134647
+name	Nomingia
+group	0
+image	4179	159	117	f805cabe	-
+length	160	160
+named	2000
+source	Wikidata
+end

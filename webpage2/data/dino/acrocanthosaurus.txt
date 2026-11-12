@@ -1,0 +1,14 @@
+ZDS1	acrocanthosaurus	Q131021
+name	Acrocanthosaurus
+group	0
+image	4548	240	117	018572bc	Petr Menshikov, CC BY-SA 4.0
+length	1150	1200
+lived	125000000	99600000
+named	1950
+era	Kreide	Cretaceous
+meaning	Hochstachel-Echse	high-spined lizard
+diet	Fleisch	Meat
+found	Nordamerika	North America
+fun	Acrocanthosaurus hatte hohe Stacheln auf den Wirbeln. Sie trugen wohl einen Muskelkamm.	Acrocanthosaurus had tall spines on its vertebrae. They probably held up a ridge of muscle.	Wikipedia (EN): Acrocanthosaurus
+source	Wikidata, Wikipedia
+end

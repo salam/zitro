@@ -1,0 +1,7 @@
+ZDS1	maip	Q111731074
+name	Maip
+group	0
+image	4496	103	117	4332adbb	CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

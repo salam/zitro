@@ -1,0 +1,8 @@
+ZDS1	macropterygius	Q18351328
+name	Macropterygius
+group	3
+image	3083	76	117	09eb7384	Ghedoghedo, CC BY-SA 4.0
+lived	150800000	145500000
+era	Jura	Jurassic
+source	Wikidata
+end

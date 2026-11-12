@@ -1,0 +1,11 @@
+ZDS1	rhamphorhynchus	Q132647
+name	Rhamphorhynchus
+group	2
+image	3176	145	117	976a7b7b	-
+length	126	126
+wingspan	181	181
+lived	150800000	148500000
+named	1846
+era	Jura	Jurassic
+source	Wikidata
+end

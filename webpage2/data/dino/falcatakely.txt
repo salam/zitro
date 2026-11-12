@@ -1,0 +1,6 @@
+ZDS1	falcatakely	Q102349764
+name	Falcatakely
+group	1
+image	4285	158	117	dbffa5eb	El fosilmaniaco, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	bonapartenykus	Q966510
+name	Bonapartenykus
+group	0
+image	5733	161	117	461af239	Abel G. Montes, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	tlatolophus	Q106805159
+name	Tlatolophus
+group	0
+image	6019	240	117	7f1cf758	Joaquin Eng Ponce, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	suuwassea	Q137243
+name	Suuwassea
+group	0
+image	5422	240	71	e0b28637	Sebastien Bertrand from Paris, France, CC BY 2.0
+source	Wikidata
+end

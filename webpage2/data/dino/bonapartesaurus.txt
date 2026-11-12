@@ -1,0 +1,6 @@
+ZDS1	bonapartesaurus	Q29941319
+name	Bonapartesaurus
+group	0
+image	4306	240	93	712e196f	Connor Ashbridge, CC BY-SA 4.0
+source	Wikidata
+end

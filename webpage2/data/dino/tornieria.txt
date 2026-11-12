@@ -1,0 +1,6 @@
+ZDS1	tornieria	Q1579853
+name	Tornieria
+group	0
+image	4055	240	117	3fb83082	-
+source	Wikidata
+end

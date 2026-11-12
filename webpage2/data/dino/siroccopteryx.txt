@@ -1,0 +1,7 @@
+ZDS1	siroccopteryx	Q950223
+name	Siroccopteryx
+group	2
+image	6039	240	117	37be032f	Kevmin, CC BY-SA 3.0
+named	1999
+source	Wikidata
+end

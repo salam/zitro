@@ -1,0 +1,9 @@
+ZDS1	corythosaurus	Q131078
+name	Corythosaurus
+group	0
+image	5060	240	117	2a0dcecd	Drawing by John Conway [1], CC BY-SA 3.0
+length	900	1000
+mass	3000000	3000000
+named	1914
+source	Wikidata
+end

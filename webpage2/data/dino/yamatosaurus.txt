@@ -1,0 +1,6 @@
+ZDS1	yamatosaurus	Q106632486
+name	Yamatosaurus
+group	0
+image	6074	176	117	8f65f539	Masato Hattori, CC BY 4.0
+source	Wikidata
+end

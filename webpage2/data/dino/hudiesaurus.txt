@@ -1,0 +1,6 @@
+ZDS1	hudiesaurus	Q1526313
+name	Hudiesaurus
+group	0
+image	5386	240	117	c7a59282	-
+source	Wikidata
+end

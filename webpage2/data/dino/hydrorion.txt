@@ -1,0 +1,7 @@
+ZDS1	hydrorion	Q16873529
+name	Hydrorion
+group	3
+image	4811	240	117	043bc9e4	Dmitry Bogdanov, CC BY 3.0
+named	2006
+source	Wikidata
+end

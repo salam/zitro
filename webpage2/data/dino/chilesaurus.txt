@@ -1,0 +1,6 @@
+ZDS1	chilesaurus	Q19836626
+name	Chilesaurus
+group	0
+image	4846	240	117	d603e78e	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

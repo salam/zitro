@@ -1,0 +1,7 @@
+ZDS1	uragasaurus	Q140464483
+name	Uragasaurus
+group	0
+image	3181	79	117	c5acbaa5	CC BY 4.0
+named	2026
+source	Wikidata
+end

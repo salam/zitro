@@ -1,0 +1,9 @@
+ZDS1	rajasaurus	Q31881
+name	Rajasaurus
+group	0
+image	3680	240	82	3b3bfe22	Paleocolour, CC BY-SA 3.0
+length	660	1050
+mass	1100000	1100000
+named	2003
+source	Wikidata
+end

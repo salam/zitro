@@ -1,0 +1,8 @@
+ZDS1	chupkaornis	Q60791749
+name	Chupkaornis
+group	1
+image	5286	169	117	cc3df3b0	CC BY 4.0
+length	70	80
+named	2017
+source	Wikidata
+end

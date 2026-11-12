@@ -1,0 +1,8 @@
+ZDS1	nanosaurus	Q1827215
+name	Nanosaurus
+group	0
+image	4239	240	65	056f6c5e	-
+lived	155000000	148000000
+era	Jura	Jurassic
+source	Wikidata
+end

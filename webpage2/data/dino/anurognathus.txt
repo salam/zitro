@@ -1,0 +1,9 @@
+ZDS1	anurognathus	Q131784
+name	Anurognathus
+group	2
+image	3507	117	117	5dfa1679	Dmitry Bogdanov, CC BY 3.0
+lived	150800000	148500000
+named	1923
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	tarchia	Q135304
+name	Tarchia
+group	0
+image	6722	171	117	221e7f7c	Ghedoghedo, CC BY-SA 3.0
+length	550	550
+named	1977
+source	Wikidata
+end

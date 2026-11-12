@@ -1,0 +1,7 @@
+ZDS1	polycotylus	Q1886121
+name	Polycotylus
+group	3
+image	2209	156	117	31ec21c5	Nobu Tamura, CC BY-SA 3.0
+named	1869
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	atsinganosaurus	Q132760
+name	Atsinganosaurus
+group	0
+image	2603	59	117	bfcc250c	CC BY 3.0
+source	Wikidata
+end

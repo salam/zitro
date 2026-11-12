@@ -1,0 +1,8 @@
+ZDS1	segisaurus	Q130738
+name	Segisaurus
+group	0
+image	5029	240	117	7bf3d157	Nobu Tamura, CC BY 2.5
+length	150	150
+named	1936
+source	Wikidata
+end

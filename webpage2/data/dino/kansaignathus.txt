@@ -1,0 +1,7 @@
+ZDS1	kansaignathus	Q107352115
+name	Kansaignathus
+group	0
+image	3637	164	117	79e26b30	FunkMonk, CC BY-SA 3.0
+named	2021
+source	Wikidata
+end

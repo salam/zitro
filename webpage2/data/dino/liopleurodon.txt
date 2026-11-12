@@ -1,0 +1,15 @@
+ZDS1	liopleurodon	Q287975
+name	Liopleurodon
+group	3
+image	5847	240	117	8eec8bb4	DiBgd, CC BY-SA 4.0
+length	600	600
+mass	1700000	1700000
+lived	166000000	155000000
+named	1873
+era	Jura	Jurassic
+meaning	Zähne mit glatten Seiten	smooth-sided teeth
+diet	Fleisch	Meat
+found	Europa	Europe
+fun	Ein Liopleurodon-Fund wird auf 6,39 m Länge geschätzt. Sein Schädel war 1,26 Meter lang.	One Liopleurodon specimen is estimated at 6.39 m long, with a skull 1.26 metres long.	Wikipedia (DE): Liopleurodon
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,11 @@
+ZDS1	kentrosaurus	Q131094
+name	Kentrosaurus
+group	0
+image	7239	165	117	fe3cfc44	LoKiLeCh, CC BY 3.0
+length	450	500
+mass	1000000	1000000
+lived	155700000	150800000
+named	1915
+era	Jura	Jurassic
+source	Wikidata
+end

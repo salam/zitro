@@ -1,0 +1,9 @@
+ZDS1	guizhouichthyosaurus	Q3281334
+name	Guizhouichthyosaurus
+group	3
+image	9488	240	117	4faad44b	Buernia, CC BY-SA 4.0
+lived	235000000	221000000
+named	2000
+era	Trias	Triassic
+source	Wikidata
+end

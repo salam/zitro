@@ -1,0 +1,6 @@
+ZDS1	arenysaurus	Q2303736
+name	Arenysaurus
+group	0
+image	6168	131	117	34fff36a	CC BY 2.5
+source	Wikidata
+end

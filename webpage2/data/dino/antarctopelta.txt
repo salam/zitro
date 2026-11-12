@@ -1,0 +1,8 @@
+ZDS1	antarctopelta	Q134176
+name	Antarctopelta
+group	0
+image	6156	240	117	03046cc1	Levi B. Martinez-Reza, CC BY-SA 3.0
+length	400	400
+named	2006
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	lessemsaurus	Q135039
+name	Lessemsaurus
+group	0
+lived	228000000	208500000
+named	1999
+era	Trias	Triassic
+source	Wikidata
+end

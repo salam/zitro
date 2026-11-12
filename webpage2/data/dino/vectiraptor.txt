@@ -1,0 +1,7 @@
+ZDS1	vectiraptor	Q110181348
+name	Vectiraptor
+group	0
+image	6758	136	117	236c9708	NickLongrich, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

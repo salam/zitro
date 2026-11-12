@@ -1,0 +1,7 @@
+ZDS1	alcione	Q50660755
+name	Alcione
+group	2
+image	3655	75	117	ebaf4a52	CC BY 4.0
+named	2018
+source	Wikidata
+end

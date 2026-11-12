@@ -1,0 +1,7 @@
+ZDS1	tatankaceratops	Q18915569
+name	Tatankaceratops
+group	0
+image	7122	177	117	7c286a24	NobuTamura palaeocritti, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

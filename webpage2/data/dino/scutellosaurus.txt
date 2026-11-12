@@ -1,0 +1,8 @@
+ZDS1	scutellosaurus	Q131646
+name	Scutellosaurus
+group	0
+image	5195	240	89	d2c4764a	Strange Biology, CC BY 2.0
+length	120	120
+named	1981
+source	Wikidata
+end

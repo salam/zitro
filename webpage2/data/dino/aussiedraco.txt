@@ -1,0 +1,7 @@
+ZDS1	aussiedraco	Q3193626
+name	Aussiedraco
+group	2
+image	4860	121	117	9c84f58f	CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

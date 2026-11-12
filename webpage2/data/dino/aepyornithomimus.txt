@@ -1,0 +1,8 @@
+ZDS1	aepyornithomimus	Q34308030
+name	Aepyornithomimus
+group	0
+image	8504	240	117	533c58e3	CC BY-SA 4.0
+lived	89300000	83500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

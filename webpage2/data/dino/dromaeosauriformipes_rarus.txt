@@ -1,0 +1,7 @@
+ZDS1	dromaeosauriformipes_rarus	Q142001342
+name	Dromaeosauriformipes rarus
+group	0
+image	5243	170	117	bbf1b9ff	CC BY 4.0
+named	2018
+source	Wikidata
+end

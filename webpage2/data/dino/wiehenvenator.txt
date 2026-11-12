@@ -1,0 +1,8 @@
+ZDS1	wiehenvenator	Q5226428
+name	Wiehenvenator
+group	0
+image	4547	240	117	be5a1645	Petr Menshikov, CC BY-SA 4.0
+lived	166000000	164000000
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	wunyelfia	Q104177969
+name	Wunyelfia
+group	3
+image	3221	240	117	d1046fb2	-
+named	2021
+source	Wikidata
+end

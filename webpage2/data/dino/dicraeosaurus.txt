@@ -1,0 +1,8 @@
+ZDS1	dicraeosaurus	Q131410
+name	Dicraeosaurus
+group	0
+image	4014	69	117	3bfd645f	sebastiankoeck, CC BY-SA 2.0
+length	2000	2000
+named	1914
+source	Wikidata
+end

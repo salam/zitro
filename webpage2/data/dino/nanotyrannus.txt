@@ -1,0 +1,8 @@
+ZDS1	nanotyrannus	Q131673
+name	Nanotyrannus
+group	0
+image	3164	156	117	9ed18c58	Nobu Tamura, CC BY-SA 4.0
+lived	68500000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

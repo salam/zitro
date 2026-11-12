@@ -227,7 +227,7 @@ Zitro can show much more than pictures. You don't choose a mode: just ask. Every
 
 When a result opens, small tabs at the buttons show what each one does: a microphone at Button A for a new question, a magnifier for zoom, lines of text for the written answer, arrows for next and back. On a timeline the arrows point left and right, the way the years run. After 3 seconds they disappear so you can enjoy the whole picture. Press Button B or C and they show up again for a moment.
 
-Proteins, anatomy, recipes, timelines and the detailed globe load their data from zitro.spot, so they need WiFi.
+Proteins, anatomy, recipes, timelines, dinosaur fact sheets and the detailed globe load their data from zitro.spot, so they need WiFi.
 
 #### Music on an endless band
 
@@ -373,9 +373,9 @@ Questions like "Was ist ein Magnet?" still bring a photo.
 
 #### Timelines with pictures
 
-Ask for a timeline: "Zeig mir den Zeitstrahl der Weltkriege" or "Show me a timeline of space exploration".
+Ask for a timeline: "Zeig mir den Zeitstrahl der Weltkriege" or "Show me a timeline of space exploration". "Zeig mir den Zeitstrahl der Geschichte des Lebens" or "Show me a timeline of the history of life" goes from the first cells, about 3.5 billion years ago, to us.
 
-Topics: world wars, space exploration, dinosaurs, Roman Empire, inventions, Swiss history, ancient Egypt, ancient Greece, Middle Ages, explorers, aviation, railways, computers, Moon missions, Mars missions, Olympic Games, medicine, scientists, composers, painters, Earth's history, Cold War, famous buildings, communication, cars.
+Topics: world wars, space exploration, dinosaurs, Roman Empire, inventions, Swiss history, ancient Egypt, ancient Greece, Middle Ages, explorers, aviation, railways, computers, Moon missions, Mars missions, Olympic Games, medicine, scientists, composers, painters, Earth's history, Cold War, famous buildings, communication, cars, the history of life.
 
 - **Button C:** next event. After the last one you're back at the answer.
 - **Button B:** previous event.
@@ -383,6 +383,24 @@ Topics: world wars, space exploration, dinosaurs, Roman Empire, inventions, Swis
 - **Button A:** new question.
 
 The big year runs while the band moves. A long empty stretch between two pictures means a long time. A small cut in the line at the top means even longer than it looks.
+
+#### Dinosaurs and other animals of the past
+
+Ask about one animal by name: "Erzähl mir vom T-Rex", "How big was a Brachiosaurus?" or "Tell me about Quetzalcoatlus". Zitro answers your question in words and shows a fact sheet. It works for dinosaurs, early birds like Archaeopteryx, flying saurians and sea reptiles of the dinosaur age. Pterosaurs and sea reptiles are no dinosaurs, and the sheet says so under the name ("Flugsaurier - kein Dinosaurier", "Meeresreptil - kein Dinosaurier"). General questions like "Warum starben die Dinosaurier aus?" get no sheet.
+
+The pages, in this order (a page without content is skipped):
+
+- **Picture**, with the name and where the picture comes from.
+- **Facts**: length, height, weight, speed, egg, when it lived, when it was named, what its name means, what it ate and where it was found. Only what a source tells us is shown, so many animals have just a few rows. Where sources disagree you see a range, and a speed always says "geschätzt" (estimated). Long lists continue on the next page.
+- **Size**: the animal drawn to scale next to a person of 1.70 m. If nobody knows its height, you see only a line for its length.
+- **Fun fact**: "Wusstest du?", with its source.
+
+- **Button C:** next page. After the last one you're back at the answer.
+- **Button B:** previous page.
+- **Tip the stick** to the right for the next page, to the left for the previous one.
+- **Button A:** new question.
+
+The fun facts, the speeds and the pictures of the lesser-known animals were chosen by Zitro's builder (an AI), and no person checked them. If Zitro has no fact sheet for an animal, it says so and shows the usual picture. Fact sheets load from zitro.spot, so they need WiFi.
 
 #### Organs, skeleton and cells
 

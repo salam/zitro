@@ -1,0 +1,6 @@
+ZDS1	simurghia	Q51569646
+name	Simurghia
+group	2
+image	3292	83	117	e141a459	CC BY-SA 4.0
+source	Wikidata
+end

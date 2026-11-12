@@ -1,0 +1,6 @@
+ZDS1	camarillasaurus	Q135841
+name	Camarillasaurus
+group	0
+image	6257	157	117	b980b744	Barbara Sanchez-Hernandez and Michael J. Benton, CC BY 2.0
+source	Wikidata
+end

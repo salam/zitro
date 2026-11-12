@@ -1,0 +1,6 @@
+ZDS1	saltriosaurus	Q658283
+name	Saltriosaurus
+group	0
+image	5026	240	84	1dd4b65d	CC BY 4.0
+source	Wikidata
+end

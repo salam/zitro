@@ -1,0 +1,10 @@
+ZDS1	secernosaurus	Q134692
+name	Secernosaurus
+group	0
+image	5009	240	117	1b033655	Connor Ashbridge, CC BY-SA 4.0
+length	300	300
+lived	85000000	66000000
+named	1979
+era	Kreide	Cretaceous
+source	Wikidata
+end

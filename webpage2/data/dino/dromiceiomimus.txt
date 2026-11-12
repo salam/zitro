@@ -1,0 +1,10 @@
+ZDS1	dromiceiomimus	Q1144395
+name	Dromiceiomimus
+group	0
+image	3185	156	117	9650975d	Petr Serapionov, CC BY-SA 4.0
+length	350	350
+lived	73500000	68500000
+named	1972
+era	Kreide	Cretaceous
+source	Wikidata
+end

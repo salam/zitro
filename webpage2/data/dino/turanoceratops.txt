@@ -1,0 +1,7 @@
+ZDS1	turanoceratops	Q134820
+name	Turanoceratops
+group	0
+image	4245	150	117	23e94eda	FunkMonk, CC BY-SA 3.0
+named	1989
+source	Wikidata
+end

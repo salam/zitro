@@ -1,0 +1,12 @@
+ZDX1	om	11
+omeisaurus	omeisaurus
+omeisaurus changshouensis	omeisaurus
+omeisaurus fuxiensis	omeisaurus
+omeisaurus jiaoi	omeisaurus
+omeisaurus junghsiensis	omeisaurus
+omeisaurus luoquanensis	omeisaurus
+omeisaurus maoianus	omeisaurus
+omeisaurus puxiani	omeisaurus
+omeisaurus tianfuensis	omeisaurus
+omphalosaurus	omphalosaurus
+omphalosaurus nevadanus	omphalosaurus

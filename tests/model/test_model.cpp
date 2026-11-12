@@ -33,6 +33,7 @@ static void testRefs() {
   CHECK(parseModelRef("molecule:sodium lauryl sulfate", r));
   CHECK(parseModelRef("globe:Matterhorn", r));
   CHECK(strcmp(r.kind, "globe") == 0);
+  CHECK(parseModelRef("dino:Tyrannosaurus", r) && strcmp(r.kind, "dino") == 0);
   const char* bad[] = {"", "molecule:", "sphere:x", ":x", "caffeine", "molecule:a\nb"};
   for (const char* s : bad) {
     strcpy(r.kind, "molecule");

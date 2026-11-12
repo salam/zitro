@@ -1,0 +1,7 @@
+ZDS1	caulkicephalus	Q2569047
+name	Caulkicephalus
+group	2
+image	4507	156	117	ee7fe935	Nobu Tamura, CC BY 3.0
+named	2005
+source	Wikidata
+end

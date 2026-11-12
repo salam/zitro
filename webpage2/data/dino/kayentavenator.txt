@@ -1,0 +1,6 @@
+ZDS1	kayentavenator	Q20672195
+name	Kayentavenator
+group	0
+image	4108	240	117	ca9551b0	IJReid, CC BY 4.0
+source	Wikidata
+end

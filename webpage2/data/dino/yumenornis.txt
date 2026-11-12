@@ -1,0 +1,6 @@
+ZDS1	yumenornis	Q15096847
+name	Yumenornis
+group	1
+image	4344	117	117	5877d01c	CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	panguraptor	Q18325158
+name	Panguraptor
+group	0
+image	3675	114	117	66907695	IJReid, CC BY-SA 4.0
+lived	201000000	196000000
+named	2014
+era	Jura	Jurassic
+source	Wikidata
+end

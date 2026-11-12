@@ -1,0 +1,6 @@
+ZDS1	orthomerus	Q1577291
+name	Orthomerus
+group	0
+image	7208	156	117	6b68e2a1	-
+source	Wikidata
+end

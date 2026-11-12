@@ -1,0 +1,7 @@
+ZDS1	jianchangnathus	Q2464965
+name	Jianchangnathus
+group	2
+image	6373	240	117	5790f520	Jonathan Chen, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

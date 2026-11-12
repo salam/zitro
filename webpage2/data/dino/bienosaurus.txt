@@ -1,0 +1,7 @@
+ZDS1	bienosaurus	Q142105
+name	Bienosaurus
+group	0
+image	3834	70	117	cf4d2234	CC BY 4.0
+named	2001
+source	Wikidata
+end

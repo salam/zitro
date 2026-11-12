@@ -1,0 +1,7 @@
+ZDS1	vectaerovenator	Q24048659
+name	Vectaerovenator
+group	0
+image	4715	240	117	cbd10fae	Cameron Spahn, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

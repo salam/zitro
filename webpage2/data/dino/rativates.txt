@@ -1,0 +1,9 @@
+ZDS1	rativates	Q26970933
+name	Rativates
+group	0
+image	3368	178	117	215b62ad	Tomopteryx, CC BY-SA 4.0
+lived	77000000	75000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

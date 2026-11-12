@@ -1,0 +1,6 @@
+ZDS1	atacamatitan	Q138074
+name	Atacamatitan
+group	0
+image	4630	93	117	1d02189a	CC BY-SA 4.0
+source	Wikidata
+end

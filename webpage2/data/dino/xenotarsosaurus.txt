@@ -1,0 +1,6 @@
+ZDS1	xenotarsosaurus	Q135103
+name	Xenotarsosaurus
+group	0
+image	2092	58	117	7c7a9fb1	Rafael Delcourt, CC BY 4.0
+source	Wikidata
+end

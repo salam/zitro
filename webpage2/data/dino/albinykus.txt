@@ -1,0 +1,6 @@
+ZDS1	albinykus	Q237288
+name	Albinykus
+group	0
+image	3689	240	117	e0813e10	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

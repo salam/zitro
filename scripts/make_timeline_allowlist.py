@@ -3,8 +3,8 @@
 # Every event is named by its English Wikipedia title, which Wikidata resolves to one item. A wrong
 # title comes back missing, so it can't silently become a different thing.
 #   wiki:   English Wikipedia title of the event
-#   expect: the year a person expects. Only a cross-check: the date shown always comes from Wikidata,
-#           and if the two disagree the event is rejected.
+#   expect: the year a person expects. Only a cross-check: the date shown always comes from Wikidata
+#           (or from wikipedia_date), and if the two disagree the event is rejected.
 #   prop:   optional: the one Wikidata date property to use for this event, where the default order
 #           would pick a different moment of it (a treaty's coming into force instead of its signing)
 #   image:  exact Wikimedia Commons file name, or None for no picture. Hand-chosen and looked at.
@@ -13,6 +13,13 @@
 #   tag:    what the picture shows. War and conflict topics (sensitive) allow only safe_tags.
 #   fit:    optional. "cover" fills the band and crops; "contain" shows the whole picture.
 #           By default maps, flags, portraits, documents and artworks are shown whole.
+#   wikipedia_date: optional, only where Wikidata has no date: {"lang", "title", "revid", "sentence", "year"}.
+#           The sentence must stand in that revision and state |year|; such a date is always circa.
+# Per topic, all optional:
+#   min_precision: the coarsest Wikidata precision accepted (default 9, a year; 3 a million years;
+#           1 a hundred million years)
+#   coarse_circa: True marks a date "ca." where Wikidata knows it less exactly than the device writes it
+#   title_de, title_en: the timeline's title, instead of the subject item's labels
 {
     "safe_tags": ["portrait", "map", "vehicle", "flag", "building", "document", "nature", "artifact"],
     "topics": [
@@ -345,6 +352,50 @@
                 {"wiki": "Mini", "expect": 1959, "image": "Morris Mini-Minor 1959 (621 AOK).jpg", "tag": "vehicle"},
                 {"wiki": "Toyota Prius", "expect": 1997, "image": "2023 Toyota Prius Z HEV.jpg", "tag": "vehicle"},
                 {"wiki": "Tesla Roadster (first generation)", "expect": 2006, "image": "Tesla Roadster 2011 in Hobart, Tasmania.jpg", "tag": "vehicle"},
+            ],
+        },
+        {
+            "id": 'life_history',
+            "subject": 'Life',
+            "title_de": 'Geschichte des Lebens',
+            "title_en": 'History of life',
+            "min_precision": 1,
+            "coarse_circa": True,
+            "events": [
+                {"wiki": "Last universal common ancestor", "expect": -3500000000, "fit": "contain", "image": "Phylogenetic tree of life LUCA.svg", "tag": "diagram",
+                 "wikipedia_date": {"lang": "en", "title": "Last universal common ancestor", "revid": 1384284490, "year": -3500000000,
+                                    "sentence": "Most studies suggest that the LUCA existed by 3.5 billion years ago, and possibly as early as 4.3 billion years ago or earlier."}},
+                {"wiki": "Stromatolite", "expect": -3450000000, "image": "Stromatolites in Sharkbay.jpg", "tag": "nature",
+                 "wikipedia_date": {"lang": "de", "title": "Stromatolith", "revid": 270699052, "year": -3450000000,
+                                    "sentence": "3,45 Milliarden Jahre alt ist die Warrawoona-Serie, gefunden bei dem Ort North Pole im Pilbara-Gebiet in Western Australia."}},
+                {"wiki": "Great Oxidation Event", "expect": -2450000000, "image": "BIF Banded Iron Formation.jpg", "tag": "nature"},
+                {"wiki": "Ediacaran biota", "expect": -571000000, "image": "DickinsoniaCostata.jpg", "tag": "fossil",
+                 "wikipedia_date": {"lang": "de", "title": "Ediacara-Fauna", "revid": 270946613, "year": -571000000,
+                                    "sentence": "Funde von Vertretern der Gattung Charnia aus der neufundl\u00e4ndischen Drook-Formation sind aber noch deutlich \u00e4lter und erreichen etwa 579, nach neueren Datierungen 2016 nur 571 Millionen Jahre Alter."}},
+                {"wiki": "Cambrian explosion", "expect": -543000000, "fit": "contain", "image": "20191203 Anomalocaris canadensis.png", "tag": "animal"},
+                {"wiki": "Fish", "expect": -530000000, "image": "Haikouichthys NT.jpg", "tag": "animal"},
+                {"wiki": "Cooksonia", "expect": -432000000, "image": "Cooksonia pertoni.png", "tag": "plant",
+                 "wikipedia_date": {"lang": "en", "title": "Cooksonia", "revid": 1384379239, "year": -432000000,
+                                    "sentence": "In 2018, the sporophyte of a new species, Cooksonia barrandei, was described, from about 432 million years ago."}},
+                {"wiki": "Insect", "expect": -400000000, "image": "Meganeura P1060074.jpg", "tag": "animal"},
+                {"wiki": "Tiktaalik", "expect": -375000000, "image": "Tiktaalik roseae life restor.jpg", "tag": "animal",
+                 "wikipedia_date": {"lang": "en", "title": "Tiktaalik", "revid": 1379611537, "year": -375000000,
+                                    "sentence": "Tiktaalik lived approximately 375 million years ago."}},
+                {"wiki": "Dimetrodon", "expect": -295000000, "image": "Dimetrodon grandis 3D Model Reconstruction.png", "tag": "animal"},
+                {"wiki": "Dinosaur", "expect": -233230000, "fit": "contain", "image": "Eoraptor resto. 01.png", "tag": "animal"},
+                {"wiki": "Morganucodon", "expect": -205000000, "image": "Morganucodon.jpg", "tag": "animal",
+                 "wikipedia_date": {"lang": "en", "title": "Morganucodon", "revid": 1381091062, "year": -205000000,
+                                    "sentence": "It first appeared about 205 million years ago."}},
+                {"wiki": "Archaeopteryx", "expect": -150800000, "image": "Berlin Archaeopteryx.jpg", "tag": "fossil"},
+                {"wiki": "Flowering plant", "expect": -140000000, "image": "Sweetbay Magnolia Magnolia virginiana Flower Closeup 2242px.jpg", "tag": "plant",
+                 "wikipedia_date": {"lang": "de", "title": "Bedecktsamer", "revid": 271957323, "year": -140000000,
+                                    "sentence": "Als Fossilien sind Bedecktsamer seit dem \u00dcbergang von Oberjura zur Unterkreide bekannt, das hei\u00dft seit 160 bis 140 Millionen Jahren."}},
+                {"wiki": "Cretaceous\u2013Paleogene extinction event", "expect": -66000000, "image": "Impact event.jpg", "tag": "artwork"},
+                {"wiki": "Purgatorius", "expect": -66000000, "image": "Purgatorius BW.jpg", "tag": "animal"},
+                {"wiki": "Australopithecus", "expect": -4500000, "image": "Lucy Warsaw.jpg", "tag": "reconstruction"},
+                {"wiki": "Homo habilis", "expect": -2100000, "fit": "contain", "image": "KNM ER 1813 (H. habilis).png", "tag": "fossil"},
+                {"wiki": "Homo erectus", "expect": -1900000, "fit": "contain", "image": "Homo erectus skull - Naturmuseum Freiburg - DSC06767.jpg", "tag": "fossil"},
+                {"wiki": "Homo sapiens", "expect": -200000, "fit": "contain", "image": "Jebel Irhoud 1. Homo Sapiens.jpg", "tag": "fossil"},
             ],
         },
     ],

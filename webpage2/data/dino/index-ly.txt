@@ -1,0 +1,5 @@
+ZDX1	ly	4
+lycorhinus	lycorhinus
+lycorhinus angustidens	lycorhinus
+lythronax	lythronax
+lythronax argestes	lythronax

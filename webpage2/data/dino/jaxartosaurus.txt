@@ -1,0 +1,7 @@
+ZDS1	jaxartosaurus	Q134818
+name	Jaxartosaurus
+group	0
+image	5532	152	117	e8a8ac19	-
+length	900	900
+source	Wikidata
+end

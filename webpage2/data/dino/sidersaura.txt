@@ -1,0 +1,7 @@
+ZDS1	sidersaura	Q124099993
+name	Sidersaura
+group	0
+image	2828	240	69	fdfe7491	-
+named	2024
+source	Wikidata
+end

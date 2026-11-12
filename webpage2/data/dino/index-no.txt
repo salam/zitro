@@ -1,0 +1,31 @@
+ZDX1	no	30
+noasaurus	noasaurus
+noasaurus leali	noasaurus
+nodocephalosaurus	nodocephalosaurus
+nodocephalosaurus kirtlandensis	nodocephalosaurus
+nodosaurus	nodosaurus
+nodosaurus textilis	nodosaurus
+noguerornis	noguerornis
+noguerornis gonzalei	noguerornis
+nomingia	nomingia
+nomingia gobiensis	nomingia
+nopcsaspondylus	nopcsaspondylus
+nopcsaspondylus alarconensis	nopcsaspondylus
+noripterus	noripterus
+noripterus complicidens	noripterus
+noripterus parvus	noripterus
+normannognathus	normannognathus
+normannognathus wellnhoferi	normannognathus
+notatesseraeraptor	notatesseraeraptor
+notatesseraeraptor frickensis	notatesseraeraptor
+nothronychus	nothronychus
+nothronychus graffami	nothronychus
+nothronychus mckinleyi	nothronychus
+notoceratops	notoceratops
+notoceratops bonarelli	notoceratops
+notoceratops bonarellii	notoceratops
+notocolossus	notocolossus
+notocolossus gonzalezparejasi	notocolossus
+notohypshilophodon	notohypsilophodon
+notohypsilophodon	notohypsilophodon
+notohypsilophodon comodorensis	notohypsilophodon

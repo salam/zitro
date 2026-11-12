@@ -1,0 +1,6 @@
+ZDS1	skorpiovenator	Q18510901
+name	Skorpiovenator
+group	0
+image	4332	240	86	63bc03b0	Paleocolour, CC BY-SA 4.0
+source	Wikidata
+end

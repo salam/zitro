@@ -1,0 +1,7 @@
+ZDS1	buitreraptor	Q133137
+name	Buitreraptor
+group	0
+image	4251	240	117	f0c6e22c	TotalDino, CC BY-SA 4.0
+length	130	130
+source	Wikidata
+end

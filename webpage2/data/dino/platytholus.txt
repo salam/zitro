@@ -1,0 +1,7 @@
+ZDS1	platytholus	Q117708125
+name	Platytholus
+group	0
+image	2803	240	88	948e6672	SlvrHwk, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

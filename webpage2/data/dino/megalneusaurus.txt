@@ -1,0 +1,9 @@
+ZDS1	megalneusaurus	Q1911639
+name	Megalneusaurus
+group	3
+image	1925	84	117	54bbcc4c	-
+lived	156200000	152000000
+named	1898
+era	Jura	Jurassic
+source	Wikidata
+end

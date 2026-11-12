@@ -1,0 +1,14 @@
+ZDS1	utahraptor	Q131193
+name	Utahraptor
+group	0
+image	4077	240	117	56eda734	Fred Wierum, CC BY-SA 4.0
+length	550	700
+lived	139000000	134600000
+named	1993
+era	Kreide	Cretaceous
+meaning	Räuber aus Utah	Utah's predator
+diet	Fleisch	Meat
+found	Utah (USA)	Utah (USA)
+fun	Utahraptor war schätzungsweise 7 Meter lang, der grösste bekannte Dromaeosaurier.	Utahraptor was an estimated 7 metres long, the largest known dromaeosaur.	Wikipedia (DE): Utahraptor
+source	Wikidata, Wikipedia
+end

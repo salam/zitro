@@ -1,0 +1,31 @@
+ZDX1	be	30
+becklespinax	becklespinax
+beg	beg
+beg tse	beg
+beipiaopterus	beipiaopterus
+beipiaopterus chenianus	beipiaopterus
+beipiaosaurus	beipiaosaurus
+beipiaosaurus inexpectus	beipiaosaurus
+beishanlong	beishanlong
+beishanlong grandis	beishanlong
+bellubrunnus	bellubrunnus
+bellubrunnus rothgaengeri	bellubrunnus
+bellusaurus	bellusaurus
+bellusaurus sui	bellusaurus
+bennettazhia	bennettazhia
+bennettazhia oregonensis	bennettazhia
+bentiabasaurus	bentiabasaurus
+bentiabasaurus jacobsi	bentiabasaurus
+berberosaurus	berberosaurus
+berberosaurus liassicus	berberosaurus
+bergamodactylus	bergamodactylus
+bergamodactylus wildi	bergamodactylus
+berliner exemplar	archaeopteryx
+berliner exemplar des archaeopteryx	archaeopteryx
+berthasaura	berthasaura
+berthasaura leopoldinae	berthasaura
+besanosaurus	besanosaurus
+besanosaurus leptorhynchus	besanosaurus
+besanosaurus leptorhyncus	besanosaurus
+betasuchus	betasuchus
+betasuchus bredai	betasuchus

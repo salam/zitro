@@ -1,0 +1,7 @@
+ZDS1	bistahieversor	Q132622
+name	Bistahieversor
+group	0
+image	5004	240	117	37e4ae5c	Nobu Tamura, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

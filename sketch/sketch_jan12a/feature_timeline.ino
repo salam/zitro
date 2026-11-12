@@ -1,6 +1,7 @@
 // Timelines: a band along a time axis with the year big, a short label and a picture.
-// Dates and names come from Wikidata, pictures from a checked list. All of it is prepared by
+// Dates and names come from Wikidata (a few dates from a quoted Wikipedia sentence), pictures from a checked list. All of it is prepared by
 // scripts/make_timeline_data.py and fetched as two files. See edu_feature.h and docs/features/timeline.md.
+#include "dino_core.h"  // dinoCreditLicence: the same credit fallback as the dinosaur sheet's footer
 #include "timeline_core.h"
 
 static const unsigned long TIMELINE_TOTAL_MS = 30000;  // This feature's limit instead of EDU_LOOKUP_DEADLINE_MS
@@ -18,10 +19,6 @@ static const int TIMELINE_YEAR_SMALL_H = 23;  // The same for FreeSansBold12pt
 static const int TIMELINE_LABEL_MAX_W = WIDTH - 8;
 static const int TIMELINE_GAP_TEXT_MIN = 110;  // Below this the time between two events is too short to write in
 static const int TIMELINE_COUNTER_W = 34;
-// Tip the right side down (clockwise, seen from the screen) for the next event. The axis through the
-// screen is the one axis that reads the same in both landscape positions. NOT tried on the stick
-// yet: if tipping right goes back, flip this sign.
-static const float TIMELINE_TILT_SIGN = -1.0f;
 
 struct TimelineSlot {
   M5Canvas* canvas;
@@ -317,7 +314,7 @@ static void timelineDrawAxis(M5Canvas& c) {
 // The year stays in its place and runs while the band moves: that's the feeling for time
 static void timelineDrawYear(M5Canvas& c) {
   int exact = -1;
-  const int32_t year = timelineYearAt(*timelineData, timelinePosition, exact);
+  const int64_t year = timelineYearAt(*timelineData, timelinePosition, exact);
   char big[40], small[24];
   if (exact >= 0) {
     const TimelineEvent& e = timelineData->events[exact];
@@ -354,8 +351,23 @@ static void timelineDrawFooter(M5Canvas& c) {
     timelineFooterEvent = timelineCurrent;
     const TimelineEvent& e = timelineData->events[timelineCurrent];
     const bool credit = e.hasImage && e.credit[0];
-    modelLabel = credit ? e.credit : timelineTitle();
-    modelSourceName = credit ? "" : "Wikidata";  // A credit needs the room; the line is too short for both
+    if (credit) {
+      // Too wide for the line: the licence alone, rather than the maker cut off before it (credits.html has all).
+      // Measured in the font eduDrawFooter will pick: DejaVu9 for ASCII, the 12 pt font for anything else
+      bool ascii = true;
+      for (const char* p = e.credit; *p; p++) ascii = ascii && (uint8_t)*p < 0x80;
+      if (ascii) {
+        c.setFont(&fonts::DejaVu9);
+      } else {
+        c.setFreeFont(FontManager::getFont12pt());
+      }
+      c.setTextSize(1);
+      modelLabel = c.textWidth(e.credit) > WIDTH - TIMELINE_COUNTER_W - 6 ? dinoCreditLicence(e.credit) : e.credit;
+    } else {
+      modelLabel = timelineTitle();
+    }
+    // A credit needs the room; the line is too short for both. Otherwise it names where the date came from
+    modelSourceName = credit ? "" : (e.fromWikipedia ? "Wikipedia" : "Wikidata");
   }
   eduDrawFooter(c, TIMELINE_COUNTER_W);
   char counter[12];

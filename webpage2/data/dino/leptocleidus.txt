@@ -1,0 +1,8 @@
+ZDS1	leptocleidus	Q41154953
+name	Leptocleidus
+group	3
+image	3519	188	117	60e59db7	Nobu Tamura, CC BY 3.0
+length	300	300
+named	1922
+source	Wikidata
+end

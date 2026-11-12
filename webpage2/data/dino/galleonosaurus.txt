@@ -1,0 +1,7 @@
+ZDS1	galleonosaurus	Q62029371
+name	Galleonosaurus
+group	0
+image	5273	105	117	cf3f8606	CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

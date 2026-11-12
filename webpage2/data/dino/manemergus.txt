@@ -1,0 +1,7 @@
+ZDS1	manemergus	Q22342784
+name	Manemergus
+group	3
+image	8013	240	117	17892f33	Ghedoghedo, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

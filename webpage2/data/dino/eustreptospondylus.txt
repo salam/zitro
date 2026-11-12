@@ -1,0 +1,7 @@
+ZDS1	eustreptospondylus	Q131213
+name	Eustreptospondylus
+group	0
+image	10624	240	117	c4a5e66a	Ballista, CC BY-SA 3.0
+length	700	700
+source	Wikidata
+end

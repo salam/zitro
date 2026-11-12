@@ -1,0 +1,6 @@
+ZDS1	hydralmosaurus	Q4179638
+name	Hydralmosaurus
+group	3
+image	2981	240	75	6a821f66	Nobu Tamura, CC BY 2.5
+source	Wikidata
+end

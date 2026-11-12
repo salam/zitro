@@ -1,0 +1,7 @@
+ZDS1	condorraptor	Q2415707
+name	Condorraptor
+group	0
+image	3469	148	117	d2959ae1	FunkMonk, CC BY-SA 3.0
+named	2005
+source	Wikidata
+end

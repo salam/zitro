@@ -1,0 +1,6 @@
+ZDX1	gn	5
+gnathomortis	gnathomortis
+gnathosaurus	gnathosaurus
+gnathosaurus macrurus	gnathosaurus
+gnathosaurus subulatus	gnathosaurus
+gnathovorax	gnathovorax

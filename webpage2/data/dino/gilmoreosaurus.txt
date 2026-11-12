@@ -1,0 +1,7 @@
+ZDS1	gilmoreosaurus	Q134637
+name	Gilmoreosaurus
+group	0
+length	600	600
+named	1979
+source	Wikidata
+end

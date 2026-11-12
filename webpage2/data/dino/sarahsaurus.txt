@@ -1,0 +1,6 @@
+ZDS1	sarahsaurus	Q135107
+name	Sarahsaurus
+group	0
+image	5356	118	117	2033844e	T.B. Rowe; H.-D. Sues; R.R. Reisz, CC BY 3.0
+source	Wikidata
+end

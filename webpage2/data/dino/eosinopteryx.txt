@@ -1,0 +1,6 @@
+ZDS1	eosinopteryx	Q3561744
+name	Eosinopteryx
+group	1
+image	3547	169	117	19e8c811	El fosilmaniaco, CC BY-SA 3.0
+source	Wikidata
+end

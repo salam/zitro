@@ -1,0 +1,8 @@
+ZDS1	vegasaurus	Q21127348
+name	Vegasaurus
+group	3
+image	2888	240	50	c00538e0	Connor Ashbridge, CC BY-SA 4.0
+length	650	650
+named	2015
+source	Wikidata
+end

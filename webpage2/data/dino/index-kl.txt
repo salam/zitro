@@ -1,0 +1,5 @@
+ZDX1	kl	4
+klamelisaurus	klamelisaurus
+klamelisaurus gobiensis	klamelisaurus
+klobiodon	klobiodon
+klobiodon rochei	klobiodon

@@ -1,0 +1,7 @@
+ZDS1	sinovenator	Q133048
+name	Sinovenator
+group	0
+image	6035	156	117	156b2a17	*Yaco*, CC BY 2.0
+length	100	100
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	petrodactyle	Q120670929
+name	Petrodactyle
+group	2
+image	3327	117	117	c42d4cf0	Connor Ashbridge, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

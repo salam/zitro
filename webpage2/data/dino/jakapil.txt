@@ -1,0 +1,7 @@
+ZDS1	jakapil	Q113494797
+name	Jakapil
+group	0
+image	9879	240	117	6b83b772	CC BY 4.0
+named	2022
+source	Wikidata
+end

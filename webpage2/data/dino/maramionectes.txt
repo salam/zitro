@@ -1,0 +1,7 @@
+ZDS1	maramionectes	Q125300718
+name	Maramionectes
+group	3
+image	2594	169	117	bcbac3bd	-
+named	2024
+source	Wikidata
+end

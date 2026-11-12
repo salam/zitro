@@ -1,0 +1,6 @@
+ZDS1	gravisaurus	Q15723408
+name	Gravisaurus
+group	0
+image	5759	162	117	6b14f02c	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

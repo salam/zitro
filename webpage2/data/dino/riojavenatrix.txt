@@ -1,0 +1,7 @@
+ZDS1	riojavenatrix	Q124613493
+name	Riojavenatrix
+group	0
+image	3422	240	80	d912f7af	TotalDino, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

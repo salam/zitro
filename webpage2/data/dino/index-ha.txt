@@ -1,0 +1,54 @@
+ZDX1	ha	53
+hadrosaurus	hadrosaurus
+hadrosaurus foulkii	hadrosaurus
+haeuptlingssaurier	futalognkosaurus
+hagryphus	hagryphus
+hagryphus giganteus	hagryphus
+hainosaurus	hainosaurus
+hainosaurus bernardi	hainosaurus
+hainosaurus pembinensis	hainosaurus
+halisaurus	halisaurus
+halisaurus arambourgi	halisaurus
+halisaurus auriculatus	halisaurus
+halisaurus coellensis	halisaurus
+halisaurus hebae	halisaurus
+halisaurus platyspondylus	halisaurus
+halisaurus ponpetelegans	halisaurus
+haliskia	haliskia
+haliskia peterseni	haliskia
+halszkaraptor	halszkaraptor
+halszkaraptor escuilliei	halszkaraptor
+halticosaurus	liliensternus
+hamipterus	hamipterus
+hamipterus tianshanensis	hamipterus
+hamititan	hamititan
+hamititan xinjiangensis	hamititan
+hanssuesia	hanssuesia
+hanssuesia sternbergi	hanssuesia
+haolong	haolong
+haolong dongi	haolong
+haplacanthosaurus	haplocanthosaurus
+haplocanthosaurus	haplocanthosaurus
+haplocanthosaurus delfsi	haplocanthosaurus
+haplocanthosaurus priscus	haplocanthosaurus
+haplocheirus	haplocheirus
+haplocheirus sollers	haplocheirus
+harenadraco	harenadraco
+harenadraco prima	harenadraco
+harpactognathus	harpactognathus
+harpactognathus gentryii	harpactognathus
+harpymimidae	harpymimus
+harpymimus	harpymimus
+harpymimus okladnikovi	harpymimus
+hasenzahnsaurier	incisivosaurus
+hastanectes	hastanectes
+hastanectes valdensis	hastanectes
+hatzegopteryx	hatzegopteryx
+hatzegopteryx thambema	hatzegopteryx
+hauffiopteryx	hauffiopteryx
+hauffiopteryx typicus	hauffiopteryx
+hauffiosaurus	hauffiosaurus
+hauffiosaurus longirostris	hauffiosaurus
+hauffiosaurus tomistomimus	hauffiosaurus
+hauffiosaurus zanoni	hauffiosaurus
+haya	haya

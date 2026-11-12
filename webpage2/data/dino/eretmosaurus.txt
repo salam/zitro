@@ -1,0 +1,7 @@
+ZDS1	eretmosaurus	Q3731394
+name	Eretmosaurus
+group	3
+image	7947	240	117	f162460b	J. Dinkel, CC BY-SA 2.5
+named	1874
+source	Wikidata
+end

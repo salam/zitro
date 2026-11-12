@@ -1,0 +1,7 @@
+ZDS1	tricleidus	Q3079606
+name	Tricleidus
+group	3
+image	6783	157	117	def78135	-
+named	1909
+source	Wikidata
+end

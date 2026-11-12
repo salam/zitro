@@ -1,0 +1,6 @@
+ZDS1	grendelius	Q27989454
+name	Grendelius
+group	3
+image	3597	146	117	ee191056	Dmitry Bogdanov, CC BY 3.0
+source	Wikidata
+end

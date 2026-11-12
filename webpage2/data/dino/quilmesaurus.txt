@@ -1,0 +1,9 @@
+ZDS1	quilmesaurus	Q141626
+name	Quilmesaurus
+group	0
+image	3816	240	83	c605f27e	Paleocolour, CC BY-SA 4.0
+lived	75000000	66000000
+named	2001
+era	Kreide	Cretaceous
+source	Wikidata
+end

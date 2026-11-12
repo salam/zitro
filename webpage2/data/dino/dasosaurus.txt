@@ -1,0 +1,7 @@
+ZDS1	dasosaurus	Q138208958
+name	Dasosaurus
+group	0
+image	3551	240	117	73b2e04d	TotalDino, CC BY 4.0
+named	2026
+source	Wikidata
+end

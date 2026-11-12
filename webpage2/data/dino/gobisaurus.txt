@@ -1,0 +1,8 @@
+ZDS1	gobisaurus	Q134952
+name	Gobisaurus
+group	0
+image	5333	240	117	53dcb8e4	Greygirlbeast, CC BY-SA 3.0
+length	500	500
+named	2001
+source	Wikidata
+end

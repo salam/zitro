@@ -1,0 +1,6 @@
+ZDS1	jormungandr	Q124482582
+name	Jormungandr
+group	3
+image	2713	240	42	c1acacf9	Di (they-them), CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	gargantuavis	Q20672151
+name	Gargantuavis
+group	1
+image	4263	156	117	a8b4f210	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

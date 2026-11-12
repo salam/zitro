@@ -1,0 +1,8 @@
+ZDS1	plotosaurus	Q140375
+name	Plotosaurus
+group	3
+image	4249	240	117	e6bfebc6	Dmitry Bogdanov, CC BY 3.0
+length	900	900
+named	1951
+source	Wikidata
+end

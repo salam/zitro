@@ -1,0 +1,6 @@
+ZDS1	kulceratops	Q138613
+name	Kulceratops
+group	0
+image	7545	240	117	41be7c86	IJReid, CC BY 4.0
+source	Wikidata
+end

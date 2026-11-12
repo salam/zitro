@@ -1,0 +1,6 @@
+ZDS1	animantarx	Q132966
+name	Animantarx
+group	0
+image	5595	240	83	77cfe25b	Connor Ashbridge, CC BY-SA 4.0
+source	Wikidata
+end

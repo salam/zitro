@@ -178,6 +178,9 @@ check(pairs($r) === ['cat|Katze'], 'collection.anki21 wins over anki2: ' . show(
 $r = parseApkg(fixture_apkg_view($dir . '/view.apkg'));
 check($r === 'unreadable', 'apkg whose notes is an endless view is refused: ' . show($r));
 
+$r = parseApkg(fixture_apkg_generated($dir . '/generated.apkg'));
+check($r === 'unreadable', 'apkg whose notes computes a column on read is refused: ' . show($r));
+
 $r = parseApkg(fixture_apkg_new($dir . '/new.apkg'));
 check($r === 'anki_new_format', 'apkg in the new format with its placeholder anki2: ' . show($r));
 

@@ -368,10 +368,14 @@ function voci_read_anki_notes(string $file): array {
         } catch (Exception $e) {
             // Older SQLite: nothing to switch off
         }
-        // An uploaded file: "notes" must be a plain table (a view could run any query), read in storage order
-        // with the cap inside SQLite, so no query in the file can keep the server busy
-        if ($db->querySingle("SELECT type FROM sqlite_master WHERE name = 'notes'") !== 'table') {
-            voci_fail('unreadable', 'anki_broken');
+        // An uploaded file: "notes" must be an ordinary table, read in storage order with the cap inside SQLite,
+        // so nothing in the file computes while it is read: no view (any query), no virtual table, no generated
+        // column (an expression per row)
+        $schema = $db->querySingle("SELECT sql FROM sqlite_master WHERE name = 'notes' AND type = 'table'");
+        if (!is_string($schema) || stripos(ltrim($schema), 'CREATE TABLE') !== 0) voci_fail('unreadable', 'anki_broken');
+        $columns = $db->query('PRAGMA table_xinfo(notes)');
+        while (($column = $columns->fetchArray(SQLITE3_ASSOC)) !== false) {
+            if ((int)($column['hidden'] ?? 0) !== 0) voci_fail('unreadable', 'anki_broken');
         }
         $result = $db->query('SELECT flds FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
         while (($note = $result->fetchArray(SQLITE3_NUM)) !== false) {

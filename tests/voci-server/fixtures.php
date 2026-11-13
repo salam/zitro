@@ -48,6 +48,23 @@ function fixture_apkg_view(string $path): string {
     return $path;
 }
 
+// A crafted package whose notes table computes its field on every read (a generated column).
+function fixture_apkg_generated(string $path): string {
+    @unlink($path);
+    $db = $path . '.gen.db';
+    @unlink($db);
+    $sql = new SQLite3($db);
+    $sql->exec("CREATE TABLE notes (id integer primary key, n integer, flds text GENERATED ALWAYS AS ('dog' || char(31) || 'Hund' || n) VIRTUAL)");
+    $sql->exec("INSERT INTO notes (n) VALUES (5)");
+    $sql->close();
+    $zip = new ZipArchive();
+    $zip->open($path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+    $zip->addFile($db, 'collection.anki2');
+    $zip->close();
+    @unlink($db);
+    return $path;
+}
+
 // A new-format Anki export: zstd collection (only its magic here) and the placeholder anki2 Anki adds.
 function fixture_apkg_new(string $path): string {
     return fixture_apkg($path, ['collection.anki2' => [['This file requires a newer version of Anki.', '']]], ['collection.anki21b' => "\x28\xB5\x2F\xFDzstd"]);

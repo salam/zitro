@@ -15,6 +15,7 @@ const VOCI_MAX_UNZIPPED = 67108864;   // Bytes of the collection inside an Anki 
 const VOCI_MAX_NOTES = 20000;         // Notes read from an Anki package before giving up
 const VOCI_NEW_DIRS_PER_DAY = 20;     // New sticks per IP hash and day
 const VOCI_WRITES_PER_HOUR = 120;     // Changes per stick and hour
+const VOCI_PARSES_PER_HOUR = 120;     // Files read (previews) per IP hash and hour: reading costs the server time
 const VOCI_KEEP_DAYS = 365;           // Lists go after this long without a fetch by the stick or a change
 const VOCI_CODE_PATTERN = '/^[A-Z2-7]{26}$/D';
 const VOCI_ID_PATTERN = '/^[0-9a-f]{8}$/D';
@@ -55,6 +56,7 @@ const VOCI_TEXTS = [
         'book_not_found' => 'Dieses Buch gibt es nicht mehr. Lade die Seite neu.',
         'rate_new' => 'Von diesem Internetanschluss aus wurden heute schon viele Sticks eingerichtet. Versuch es morgen wieder.',
         'rate_writes' => 'Das waren sehr viele Änderungen in kurzer Zeit. Warte eine Stunde und versuch es dann nochmal.',
+        'rate_parse' => 'Das waren sehr viele Dateien in kurzer Zeit. Warte eine Stunde und versuch es dann nochmal.',
         'quota_lists' => 'Auf diesem Stick sind schon 100 Listen. Lösche Listen, die ihr nicht mehr braucht, und speichere die neue dann nochmal.',
         'quota_bytes' => 'Der Platz für diesen Stick ist voll. Lösche Listen, die ihr nicht mehr braucht, und speichere die neue dann nochmal.',
         'warn_empty' => 'Weggelassen, weil eine Seite leer ist: %s.',
@@ -83,6 +85,7 @@ const VOCI_TEXTS = [
         'book_not_found' => 'This book doesn\'t exist any more. Reload the page.',
         'rate_new' => 'Many sticks were already set up from this internet connection today. Please try again tomorrow.',
         'rate_writes' => 'That was a lot of changes in a short time. Wait an hour, then try again.',
+        'rate_parse' => 'That was a lot of files in a short time. Wait an hour, then try again.',
         'quota_lists' => 'This stick already has 100 lists. Delete lists you don\'t need any more, then save the new one again.',
         'quota_bytes' => 'The space for this stick is full. Delete lists you don\'t need any more, then save the new one again.',
         'warn_empty' => 'Left out because one side is empty: %s.',
@@ -655,17 +658,28 @@ function voci_count_write(string $dir, int $now): void {
 
 // New stick folders per day and IP. The IP is kept only as a salted hash, files older than two days go.
 function voci_count_new_dir(string $data, string $ip, int $now): void {
+    voci_count_ip($data, $ip, $now, gmdate('Ymd', $now), VOCI_NEW_DIRS_PER_DAY, 'rate_new');
+}
+
+// Files read for a preview, per hour and IP: the only request that costs the server real work before any limit
+// on a stick's folder applies.
+function voci_count_parse(string $data, string $ip, int $now, int $limit = VOCI_PARSES_PER_HOUR): void {
+    voci_count_ip($data, $ip, $now, 'p' . gmdate('YmdH', $now), $limit, 'rate_parse');
+}
+
+// One counter per period and IP hash in voci-data/_rate; refuses when it has reached the limit.
+function voci_count_ip(string $data, string $ip, int $now, string $period, int $limit, string $message): void {
     $rate = $data . '/_rate';
     if (!is_dir($rate)) @mkdir($rate, 0700, true);
     foreach (glob($rate . '/*') ?: [] as $file) {
         if (@filemtime($file) < $now - 2 * 86400) @unlink($file);
     }
-    $file = $rate . '/' . gmdate('Ymd', $now) . '-' . substr(hash_hmac('sha256', $ip, voci_salt($data)), 0, 32);
+    $file = $rate . '/' . $period . '-' . substr(hash_hmac('sha256', $ip, voci_salt($data)), 0, 32);
     $handle = fopen($file, 'c+');
-    if (!$handle || !flock($handle, LOCK_EX)) throw new RuntimeException('cannot count new folders');
+    if (!$handle || !flock($handle, LOCK_EX)) throw new RuntimeException('cannot count requests');
     try {
         $count = (int)stream_get_contents($handle);
-        if ($count >= VOCI_NEW_DIRS_PER_DAY) voci_fail('rate_limited', 'rate_new');
+        if ($count >= $limit) voci_fail('rate_limited', $message);
         ftruncate($handle, 0);
         rewind($handle);
         fwrite($handle, (string)($count + 1));

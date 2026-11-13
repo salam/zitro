@@ -20,7 +20,9 @@ Logic in `sketch/sketch_jan12a/vocab_core.h` (tests: `tests/vocab/run.sh`), the 
 - The server reads the file, the page shows a preview (count, first rows, warnings, book and name taken from the file
   name, columns swappable), and only then saves it.
 - Limits: 5 MB per upload, 500 entries per list, 120 characters per side, 100 lists and 1 MB per code. New codes: at
-  most 20 per IP per day (the IP is kept only as a salted hash). Lists that no stick fetched and nobody changed for a
+  most 20 per IP per day; file previews: at most 120 per IP per hour (the IP is kept only as a salted hash).
+  Anki packages are read only from an ordinary `notes` table (no view, virtual table or generated column), at most
+  20000 notes. Lists that no stick fetched and nobody changed for a
   year are deleted. Parents can delete everything at any time.
 - Lists are never shared between families. Public sources: none found that Zitro may offer (Quizlet has no open API,
   AnkiWeb decks state no licence, publishers sell their own packages). Parents can upload exports of their own sets.

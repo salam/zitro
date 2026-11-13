@@ -332,5 +332,24 @@ check(is_dir($seenOnly), 'one the stick fetched a month ago stays');
 check(is_dir($fresh), 'one written ten days ago stays');
 check(is_dir($data . '/_rate') && is_file($data . '/_salt'), 'the rate folder and salt stay');
 
+// ---------- Previews per IP and hour ----------
+
+$rateData = $dir . '/rate-data';
+@mkdir($rateData, 0700, true);
+$parseError = function (string $ip, int $at) use ($rateData) {
+    try {
+        voci_count_parse($rateData, $ip, $at, 2);
+        return null;
+    } catch (VociError $e) {
+        return $e->errorCode;
+    }
+};
+$hour = 1794600000;
+check($parseError('192.0.2.1', $hour) === null && $parseError('192.0.2.1', $hour) === null, 'two previews within the limit');
+check($parseError('192.0.2.1', $hour) === 'rate_limited', 'the third preview in the hour is refused');
+check($parseError('192.0.2.9', $hour) === null, 'another connection still may');
+check($parseError('192.0.2.1', $hour + 3600) === null, 'the next hour starts again');
+check(!str_contains(implode(' ', glob($rateData . '/_rate/*')), '192.0.2'), 'the IP is not in the counter file names');
+
 echo "voci lib: $checks checks, $failures failed\n";
 exit($failures ? 1 : 0);

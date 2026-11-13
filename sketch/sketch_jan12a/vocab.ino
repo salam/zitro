@@ -699,9 +699,11 @@ static void vocabDrawEnd() {
   vocabCentered(c, String(vocabRightFirst) + vt(" von ", " of ") + String(vocabRoundSize), 46, TFT_WHITE);
   c.setFreeFont(FontManager::getFont12pt());
   const int wrong = vocabWrongNow.size();
-  String line = wrong == 0 ? String(vt("Alle richtig!", "All right!"))
-                           : String(wrong) + (wrong == 1 ? vt(" Wort üben wir nochmal", " word to practise again")
-                                                         : vt(" Wörter üben wir nochmal", " words to practise again"));
+  // "Fast!" and "not sure" count neither way, so "all right" only when every card was
+  String line = wrong > 0 ? String(wrong) + (wrong == 1 ? vt(" Wort üben wir nochmal", " word to practise again")
+                                                        : vt(" Wörter üben wir nochmal", " words to practise again"))
+                : vocabRightFirst == (int)vocabRoundSize ? String(vt("Alle richtig!", "All right!"))
+                                                         : String(vt("Gut gemacht!", "Well done!"));
   vocabCentered(c, line, 76, CITRUS);
   vocabPressRow(c, vt("Drück", "Press"), vt("für die nächste Runde", "for the next round"), 106);
   vocabTabs(c, HINT_OK, HINT_MENU, HINT_NONE);
@@ -1097,8 +1099,12 @@ bool vocabStart(const String& request) {
   p.begin("settings", true);
   vocabGerman = p.getString("language", "DE") != "EN";
   p.end();
+  // The trainer replaces the last result, picture included, like the tour: nothing of it may come back after
+  // "Stop" by turning the stick, nor be printed or saved for deep sleep
   modelViewEnd();
   hasModel = false;
+  hasImage = false;
+  currentImageUrl = "";
   currentDisplayMode = SHOW_TEXT;
   vocabOn = true;
   vocabSheetPending = false;

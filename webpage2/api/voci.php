@@ -101,6 +101,7 @@ try {
             echo $list;
             exit;
         case 'parse':
+            voci_count_parse($data, $ip, $now);
             voci_reply(200, voci_parse_upload());
         case 'wipe':
             voci_reply(200, voci_wipe($data, $code));

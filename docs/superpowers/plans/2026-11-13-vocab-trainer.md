@@ -164,7 +164,7 @@ Error codes: `bad_code`, `no_file`, `too_big`, `too_many`, `anki_new_format`, `u
   in-page confirmation. German, English when `navigator.language` doesn't start with `de`. Styles from `../styles.css`
   plus a small inline block; script tag `voci.js?v=1.0.0`.
 - [ ] **Step 2:** Run `php -S`, open `/voci/#<test code>`, upload the 15 Young World test files, check counts
-  (YW2: 31 32 29 33 33, YW3: 37 36 37 38 37, YW4: 40 x5).
+  (YW2: 31 32 30 33 33, YW3: 37 36 37 38 37, YW4: 40 x5).
 - [ ] **Step 3: Commit.**
 
 ### Task 5: Firmware plumbing

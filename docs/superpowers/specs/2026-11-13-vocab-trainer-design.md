@@ -142,16 +142,19 @@ Parsing (in `voci_lib.php`, pure functions, tested with PHP CLI)
 - Delimited text (`.csv`, `.tsv`, `.txt`): delimiter by count on the first lines: tab, then semicolon, then
   comma; quoted fields per RFC 4180. First two non-empty columns. A header row is dropped when both cells match
   known labels (en, english, englisch, de, deutsch, german, term, definition, word, wort, front, back, vorderseite,
-  rückseite, case-insensitive).
+  rückseite, case-insensitive) that mean different things, so a real entry "word,Wort" stays. A header naming the
+  languages decides the columns ("Deutsch,Englisch" swaps them).
 - Quizlet text export: term and definition separated by tab (default) or comma, cards by newline (default) or
   semicolon. Covered by the delimited-text rule; a semicolon-separated single line with tabs inside is split
   into cards.
 - Anki text export: lines starting with `#` are headers (`#separator:tab|comma|semicolon|pipe`, `#html:true`);
   then like delimited text. With `#html:true`, tags are stripped and entities decoded.
-- Anki package (`.apkg`, `.colpkg`): zip; reads `collection.anki21`, else `collection.anki2` (SQLite), table
-  `notes`, field `flds` split on `\x1f`, first two fields, HTML stripped, `[sound:...]` removed. Only
-  `collection.anki21b` present (new zstd format): error telling the parent to export again with "Support older
-  Anki versions" ticked (Anki's own wording; German UI: "Ältere Anki-Versionen unterstützen").
+- Anki package (`.apkg`, `.colpkg`): zip; reads `collection.anki21` if present. Otherwise a
+  `collection.anki21b` means the new zstd format, even with a `collection.anki2` beside it (new exports add one
+  that only says "please update Anki"): error telling the parent to export again with "Support older Anki
+  versions" ticked (German UI: "Ältere Anki-Versionen unterstützen"). Only then `collection.anki2`. SQLite table
+  `notes`, field `flds` split on `\x1f`, first two fields, HTML stripped, `[sound:...]` removed. (Corrected by the
+  server builder, 2026-11-13.)
 - Which column is which: the column with more German signals (ä ö ü ß, capitalised nouns, frequent German
   words) is the base. Default when unsure: first column trained language, second German. `swapped` tells the
   page; the parent can swap in the preview.

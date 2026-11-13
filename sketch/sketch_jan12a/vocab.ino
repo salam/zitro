@@ -9,7 +9,7 @@
 
 static const char* const VOCAB_API_DEFAULT = "https://zitro.spot/api/voci.php";
 static const char* const VOCAB_PAGE_URL = "https://zitro.spot/voci/#";
-static const size_t VOCAB_BODY_LIMIT = 64 * 1024;
+static const size_t VOCAB_BODY_LIMIT = 192 * 1024;  // PSRAM; a list at the server's limits (500 x 120 characters) fits
 static const unsigned long VOCAB_FETCH_MS = 10000;
 static const int VOCAB_SPELL_RATE = 16000;
 static const int VOCAB_SPELL_SECONDS = 15;

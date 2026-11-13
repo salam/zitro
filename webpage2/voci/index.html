@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="robots" content="noindex">
+    <meta name="referrer" content="no-referrer">
+    <title>Wörterlisten · Zitro</title>
+    <meta name="description" content="Word lists for Zitro's vocabulary trainer: upload your child's school vocabulary to your stick.">
+    <meta name="theme-color" content="#f4efe6">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Instrument+Sans:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css?v=1.1.8">
+    <style>
+        /* zitro.spot/voci: word lists per stick. Site palette and buttons from styles.css. */
+        [hidden] { display: none !important; }
+        :root { --danger: #b3361f; --danger-soft: #f8e1da; }
+
+        .voci-header { gap: 12px; }
+        .voci-header .wordmark { font-size: 1.2rem; white-space: nowrap; }
+        .voci-stick {
+            font: 600 0.85rem/1 var(--font-body);
+            padding: 8px 12px;
+            border-radius: var(--radius-pill);
+            background: var(--paper-deep);
+            color: var(--ink-soft);
+            white-space: nowrap;
+        }
+
+        .voci {
+            max-width: 680px;
+            margin: 0 auto;
+            padding-block: 28px 64px;
+            padding-left: max(16px, env(safe-area-inset-left, 0px));
+            padding-right: max(16px, env(safe-area-inset-right, 0px));
+        }
+        .voci h1 { font-size: clamp(2.1rem, 9vw, 2.8rem); margin-bottom: 8px; }
+        .voci h2 { font-size: 1.3rem; }
+        .voci-lead { color: var(--ink-soft); margin-bottom: 22px; }
+        .voci-section { margin-top: 28px; }
+        .voci-section > h2 { margin-bottom: 12px; }
+
+        .voci-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-soft);
+        }
+        .voci-card.is-current { border: 2px solid var(--citrus); padding: 15px; }
+        .voci-book-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px 12px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .voci-book-head h2 { overflow-wrap: anywhere; }
+        .voci-badge {
+            font: 600 0.82rem/1 var(--font-body);
+            padding: 7px 11px;
+            border-radius: var(--radius-pill);
+            background: var(--citrus-soft);
+            color: #7a5b00;
+            white-space: nowrap;
+        }
+        .voci-units { display: flex; flex-wrap: wrap; gap: 8px; }
+        .voci-unit {
+            font: 500 0.95rem/1.2 var(--font-body);
+            color: var(--ink);
+            padding: 8px 13px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--line);
+            background: var(--paper);
+            cursor: pointer;
+        }
+        .voci-unit .voci-count { color: var(--ink-soft); }
+        .voci-unit[aria-expanded="true"] { border-color: var(--ink); background: var(--card); }
+
+        .voci-actions {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: var(--paper);
+        }
+        .voci-actions p { margin-bottom: 10px; font-size: 0.95rem; overflow-wrap: anywhere; }
+
+        .voci-drop {
+            border: 2px dashed rgba(43, 39, 33, 0.25);
+            border-radius: var(--radius-md);
+            padding: 26px 16px 20px;
+            text-align: center;
+            background: rgba(251, 248, 241, 0.6);
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .voci-drop.is-over { border-color: var(--citrus); background: var(--citrus-soft); }
+        .voci-drop .voci-note { margin-top: 14px; }
+        .voci-file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+        .voci-note { font-size: 0.9rem; color: var(--ink-soft); }
+        .voci-mono { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-soft); overflow-wrap: anywhere; }
+        .voci-found { font-family: var(--font-display); font-size: 1.35rem; margin: 2px 0 8px; }
+        .voci-box { border-radius: 14px; padding: 11px 14px; font-size: 0.92rem; margin: 10px 0; }
+        .voci-box ul { padding-left: 18px; }
+        .voci-warn { background: var(--citrus-soft); }
+        .voci-error { background: var(--danger-soft); color: #7d2412; }
+        .voci-ok { background: var(--leaf-soft); color: var(--leaf-deep); }
+
+        .voci-table { width: 100%; border-collapse: collapse; margin: 12px 0 4px; font-size: 0.95rem; table-layout: fixed; }
+        .voci-table th {
+            text-align: left;
+            font: 500 0.75rem/1.2 var(--font-mono);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            padding: 6px 8px;
+            border-bottom: 1px solid var(--line);
+        }
+        .voci-table td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; overflow-wrap: anywhere; }
+        .voci-table td.voci-more { color: var(--ink-soft); font-size: 0.88rem; border-bottom: 0; }
+
+        .voci-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .voci-fields label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; }
+        .voci-fields input {
+            width: 100%;
+            font: 1rem var(--font-body);
+            padding: 11px 14px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--paper);
+            color: var(--ink);
+        }
+        .voci-fields input:focus { outline: none; border-color: var(--citrus); box-shadow: 0 0 0 3px var(--citrus-soft); }
+
+        .voci-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+        .voci-row:first-child { margin-top: 0; }
+        .voci .btn-small { padding: 9px 16px; }
+        .voci .btn-primary:disabled, .voci .btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+        .btn-danger { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #962c18; }
+        .btn-danger-line { background: transparent; color: var(--danger); border-color: rgba(179, 54, 31, 0.4); }
+        .btn-danger-line:hover { background: var(--danger-soft); }
+        .voci button:focus-visible, .voci a:focus-visible, .voci-drop:focus-within {
+            outline: 3px solid var(--citrus-deep);
+            outline-offset: 2px;
+        }
+
+        .voci-privacy { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
+        .voci-privacy p { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 14px; }
+
+        .voci-steps { padding-left: 22px; margin: 10px 0 14px; }
+        .voci-steps li { margin-bottom: 6px; }
+
+        @media (max-width: 460px) {
+            .voci-fields { grid-template-columns: 1fr; }
+            .voci-header .wordmark { font-size: 1.05rem; }
+            .voci-stick { padding: 7px 10px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner voci-header">
+            <a class="wordmark" href="../index.html" aria-label="zitro.spot">zitro<span class="wordmark-dot">.</span><span class="wordmark-tld">spot/voci</span></a>
+            <span class="voci-stick" id="stick" hidden></span>
+        </div>
+    </header>
+
+    <main class="voci" id="app">
+        <h1>Wörterlisten</h1>
+        <noscript><p>Diese Seite braucht JavaScript. / This page needs JavaScript.</p></noscript>
+    </main>
+
+    <script src="voci.js?v=1.0.0"></script>
+</body>
+</html>

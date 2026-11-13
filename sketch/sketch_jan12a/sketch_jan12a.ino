@@ -490,6 +490,18 @@ void guideTick();
 void guideStop(bool markDone);
 void guideRenderStep();
 void guideOnHeard(const String& question);
+bool vocabActive();
+bool vocabStart(const String& request);
+void vocabTick();
+void vocabStop();
+void vocabRedraw();
+void vocabSerial(const String& line);
+bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
+                       String& text, String& error);
+bool speakTextStyled(const String &text, const char* instructions);
+extern bool vocabSheetPending;
+void vocabSheetDone();
+int vocabPrintSheet(PrinterInfo& printer);
 void guideDecorateScreen(M5Canvas& c);
 void guideDecorateProgress(M5Canvas& c);
 void guideDrawViewHints(M5Canvas& c);
@@ -2410,8 +2422,9 @@ bool restoreImageFromFlash() {
 }
 
 void saveStateToPreferences() {
-  // Deep sleep ends the tour; none of its content may come back as a result after the wake
+  // Deep sleep ends the tour and the trainer; none of their content may come back as a result after the wake
   if (guideActive()) guideStop(false);
+  if (vocabActive()) vocabStop();
 
   Serial.println("\n========== SAVING STATE ==========");
 
@@ -2954,6 +2967,10 @@ void redrawPreviousResult() {
     guideRenderStep();
     return;
   }
+  if (vocabActive()) {
+    vocabRedraw();
+    return;
+  }
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
     if (currentDisplayMode == SHOW_IMAGE && hasImage && imageBuffer) {
       displayImage(currentImageUrl.length() == 0);
@@ -3058,9 +3075,9 @@ bool recordAudio(bool &cancelled) {
   return true;
 }
 
-void createWavHeader(uint8_t* header, int dataSize) {
+void createWavHeaderRate(uint8_t* header, int dataSize, int sampleRate) {
   int fileSize = dataSize + 36;
-  int byteRate = activeSampleRate * 1 * 16 / 8;
+  int byteRate = sampleRate * 1 * 16 / 8;
   int blockAlign = 1 * 16 / 8;
 
   memcpy(header, "RIFF", 4);
@@ -3073,10 +3090,10 @@ void createWavHeader(uint8_t* header, int dataSize) {
   header[16] = 16; header[17] = 0; header[18] = 0; header[19] = 0;
   header[20] = 1; header[21] = 0;
   header[22] = 1; header[23] = 0;
-  header[24] = activeSampleRate & 0xFF;
-  header[25] = (activeSampleRate >> 8) & 0xFF;
-  header[26] = (activeSampleRate >> 16) & 0xFF;
-  header[27] = (activeSampleRate >> 24) & 0xFF;
+  header[24] = sampleRate & 0xFF;
+  header[25] = (sampleRate >> 8) & 0xFF;
+  header[26] = (sampleRate >> 16) & 0xFF;
+  header[27] = (sampleRate >> 24) & 0xFF;
   header[28] = byteRate & 0xFF;
   header[29] = (byteRate >> 8) & 0xFF;
   header[30] = (byteRate >> 16) & 0xFF;
@@ -3090,13 +3107,19 @@ void createWavHeader(uint8_t* header, int dataSize) {
   header[43] = (dataSize >> 24) & 0xFF;
 }
 
-String transcribeAudio() {
+void createWavHeader(uint8_t* header, int dataSize) { createWavHeaderRate(header, dataSize, activeSampleRate); }
+
+// Sends recorded samples to speech-to-text. language ("en", "de") and prompt are optional (nullptr: not sent).
+// Returns false with a short error ("Timeout", "No transcription", ...) when there is no transcript.
+bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
+                       String& text, String& error) {
   Serial.println("\n========== TRANSCRIBING ==========");
   
   AudioEndpoint ep = audioEndpoint();
   if (!ep.available) {
     Serial.println("ERROR: No speech key configured");
-    return "No speech key";
+    error = "No speech key";
+    return false;
   }
 
   WiFiClientSecure client;
@@ -3106,13 +3129,14 @@ String transcribeAudio() {
   Serial.println("Connecting to " + ep.host + "...");
   if (!client.connect(ep.host.c_str(), 443)) {
     Serial.println("ERROR: Connection failed!");
-    return "Connection failed";
+    error = "Connection failed";
+    return false;
   }
   Serial.println("Connected");
 
-  int audioDataSize = activeRecordSamples * sizeof(int16_t);
+  int audioDataSize = count * sizeof(int16_t);
   uint8_t wavHeader[44];
-  createWavHeader(wavHeader, audioDataSize);
+  createWavHeaderRate(wavHeader, audioDataSize, sampleRate);
 
   String boundary = "----ESP32Boundary";
   
@@ -3123,6 +3147,16 @@ String transcribeAudio() {
   String bodyEnd = "\r\n--" + boundary + "\r\n";
   bodyEnd += "Content-Disposition: form-data; name=\"model\"\r\n\r\n";
   bodyEnd += STT_MODEL "\r\n";
+  if (language && language[0]) {
+    bodyEnd += "--" + boundary + "\r\n";
+    bodyEnd += "Content-Disposition: form-data; name=\"language\"\r\n\r\n";
+    bodyEnd += String(language) + "\r\n";
+  }
+  if (prompt && prompt[0]) {
+    bodyEnd += "--" + boundary + "\r\n";
+    bodyEnd += "Content-Disposition: form-data; name=\"prompt\"\r\n\r\n";
+    bodyEnd += String(prompt) + "\r\n";
+  }
   bodyEnd += "--" + boundary + "--\r\n";
 
   int contentLength = bodyStart.length() + 44 + audioDataSize + bodyEnd.length();
@@ -3141,7 +3175,7 @@ String transcribeAudio() {
   client.write(wavHeader, 44);
   
   int chunkSize = 4096;
-  uint8_t* ptr = (uint8_t*)audioBuffer;
+  const uint8_t* ptr = (const uint8_t*)samples;
   int remaining = audioDataSize;
   int sent = 0;
   while (remaining > 0) {
@@ -3164,7 +3198,8 @@ String transcribeAudio() {
     if (millis() - timeout > 60000) {
       Serial.println("ERROR: Timeout waiting for response!");
       client.stop();
-      return "Timeout";
+      error = "Timeout";
+      return false;
     }
     delay(100);
   }
@@ -3185,24 +3220,34 @@ String transcribeAudio() {
   int jsonStart = response.indexOf('{');
   if (jsonStart < 0) {
     Serial.println("ERROR: No JSON in transcription response!");
-    return "No transcription";
+    error = "No transcription";
+    return false;
   }
   JsonDocument doc;
   if (deserializeJson(doc, response.substring(jsonStart))) {
     Serial.println("ERROR: Parse error!");
-    return "Parse error";
+    error = "Parse error";
+    return false;
   }
   if (!doc["error"].isNull()) {
     Serial.println("ERROR: " + String(doc["error"]["message"] | "transcription error"));
-    return "No transcription";
+    error = "No transcription";
+    return false;
   }
   String result = doc["text"] | "";
   result.trim();
 
   Serial.println("Transcription: " + result);
   Serial.println("==================================\n");
-  
-  return result;
+
+  text = result;
+  return true;
+}
+
+String transcribeAudio() {
+  String text, error;
+  if (!transcribeSamples(audioBuffer, activeRecordSamples, activeSampleRate, nullptr, nullptr, text, error)) return error;
+  return text;
 }
 
 // Normalize string for comparison: lowercase and remove punctuation/spaces
@@ -3364,6 +3409,7 @@ void discoverPrinters() {
 #define HINT_EARLIER 17  // triangle to the left on any edge: earlier on a timeline
 #define HINT_LATER   18  // triangle to the right on any edge: later on a timeline
 #define HINT_MENU    19  // three dots: the tour's menu
+#define HINT_DONTKNOW 20  // question mark: "I don't know", show the solution (vocabulary trainer)
 #define PRINT_HINT_NEXT   HINT_NEXT    // Button C: next printer
 #define PRINT_HINT_CANCEL HINT_CANCEL  // Button B: cancel
 #define PRINT_HINT_PRINT  HINT_OK      // Button A: print
@@ -3551,6 +3597,11 @@ void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = 
       if (sideEdge) canvas.fillCircle(cx, cy + i * 6, 2, symbolColor);
       else canvas.fillCircle(cx + i * 6, cy, 2, symbolColor);
     }
+  } else if (kind == HINT_DONTKNOW) {
+    canvas.setFont(&fonts::DejaVu12);
+    canvas.setTextColor(symbolColor);
+    canvas.setTextDatum(MC_DATUM);
+    canvas.drawString("?", cx, cy + 1);
   } else if (kind == HINT_LATER) {
     canvas.fillTriangle(cx - 3, cy - 5, cx - 3, cy + 5, cx + 3, cy, symbolColor);
   } else if (kind == HINT_EARLIER) {
@@ -4407,6 +4458,11 @@ bool getPrinterCapabilities(PrinterInfo& printer, String& supportedFormats) {
 }
 
 bool printImage() {
+  // The vocabulary sheet has no picture: the trainer's list is the page
+  if (vocabSheetPending) {
+    if (printerCount == 0 || selectedPrinterIndex >= printerCount) return false;
+    return vocabPrintSheet(discoveredPrinters[selectedPrinterIndex]) == PRINT_COMPOSE_OK;
+  }
   if (!hasImage || imageBuffer == nullptr || imageBufferSize == 0) {
     Serial.println("No image to print");
     return false;
@@ -4946,7 +5002,7 @@ GPTResponse askGPT(const String &question) {
   if (dateTimeContext.length() > 0) {
     systemPrompt += dateTimeContext + " ";
   }
-  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false, \"is_tour\": false }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. Will der Nutzer wissen, was Zitro alles kann, oder die Tour sehen ('Was kannst du?', 'Zeig mir die Tour', 'What can you do?', 'Show me the tour' und aehnlich), setze is_tour auf true und answer auf 'Ich zeige es dir!' oder 'Let me show you!'. Nie is_tour bei WLAN, Einrichtung oder 'onboarding'. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false, \"is_tour\": false, \"vocab\": \"\" }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. Will der Nutzer wissen, was Zitro alles kann, oder die Tour sehen ('Was kannst du?', 'Zeig mir die Tour', 'What can you do?', 'Show me the tour' und aehnlich), setze is_tour auf true und answer auf 'Ich zeige es dir!' oder 'Let me show you!'. Nie is_tour bei WLAN, Einrichtung oder 'onboarding'. VOKABELN: 'vocab' bleibt normalerweise leer. Will das Kind Woerter, Voci, Woertli oder Vokabeln ueben, lernen, abfragen, buchstabieren oder ein Voci-Blatt drucken (z.B. 'Unit 3 Englisch ueben', 'Young World 4 Unit 2 buchstabieren', 'Druck mir die Voci von Unit 1'), setze vocab auf 'practice|<Buch>|<Unit>', 'spell|<Buch>|<Unit>' oder 'print|<Buch>|<Unit>', Buch und Unit so wie gesagt, leer wenn nicht genannt (z.B. 'practice||Unit 3'). Will jemand Woerterlisten hochladen oder fragt, wie Listen auf Zitro kommen, setze vocab auf 'upload'. Nenne dabei nie selbst Woerter oder Uebersetzungen; answer ist nur eine kurze Bestaetigung wie 'Los gehts!'. Eine einzelne Frage wie 'Was heisst Hund auf Englisch?' ist eine normale Antwort mit leerem vocab. Wenn vocab gesetzt ist, sind model, create_image und is_wolfram leer bzw. false. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
   for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
     if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
   }
@@ -7864,7 +7920,8 @@ void replayLastAudio() {
   Serial.println("=====================================\n");
 }
 
-bool speakText(const String &text) {
+// Reads text aloud. instructions: how gpt-4o-mini-tts should speak (nullptr: the usual friendly voice for a child)
+bool speakTextStyled(const String &text, const char* instructions) {
   modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
   Serial.println("\n========== TEXT-TO-SPEECH ==========");
   Serial.println("Text: " + text);
@@ -7890,7 +7947,9 @@ bool speakText(const String &text) {
   // gpt-4o-mini-tts takes speaking-style instructions instead of a speed parameter
   String jsonBody = "{\"model\":\"" TTS_MODEL "\",\"input\":\""
     + escapeJson(text)
-    + "\",\"voice\":\"nova\",\"instructions\":\"Speak slightly slowly and clearly, warm and friendly, for a child.\",\"response_format\":\"pcm\"}";
+    + "\",\"voice\":\"nova\",\"instructions\":\""
+    + escapeJson(instructions ? instructions : "Speak slightly slowly and clearly, warm and friendly, for a child.")
+    + "\",\"response_format\":\"pcm\"}";
 
   // Send HTTP POST request
   Serial.println("TTS: Sending request...");
@@ -8066,6 +8125,8 @@ M5.Speaker.begin();
   Serial.println("====================================\n");
   return true;
 }
+
+bool speakText(const String &text) { return speakTextStyled(text, nullptr); }
 
 void setup() {
   Serial.begin(115200);
@@ -8847,6 +8908,12 @@ void handleVoiceQuery(bool playAudio) {
     return;
   }
 
+  // Vocabulary: the trainer, the printed sheet or the QR code for uploading lists
+  if (gptResponse.vocab.length() > 0 && !guideActive()) {
+    Serial.println("Vocabulary requested: " + gptResponse.vocab);
+    if (vocabStart(gptResponse.vocab)) return;
+  }
+
   // Handle timer commands
   if (gptResponse.setTimer && gptResponse.timerMinutes > 0) {
     Serial.printf("Timer requested: %d min, label: %s\n", gptResponse.timerMinutes, gptResponse.timerLabel.c_str());
@@ -9038,7 +9105,7 @@ void loop() {
   // Detect button press edge (not pressed -> pressed).
   // Not counted in the timer and printer lists (Button C is "next" there, so three quick
   // presses must not open the settings) or while a timer alert is up.
-  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive();
+  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive();
   if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
     unsigned long now = millis();
 
@@ -9149,6 +9216,7 @@ void loop() {
         drawScreen(MAIN_QUESTION);
       }
       if (guideActive()) guideRenderStep();
+      if (vocabActive()) vocabRedraw();
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
@@ -9217,6 +9285,13 @@ void loop() {
   // The guided tour takes every button until it ends
   if (guideActive()) {
     guideTick();
+    delay(20);
+    return;
+  }
+
+  // So does the vocabulary trainer
+  if (vocabActive()) {
+    vocabTick();
     delay(20);
     return;
   }
@@ -9497,8 +9572,10 @@ void loop() {
 
       delay(3000);
 
-      // Return to image display
-      if (hasImage) {
+      // Return to the trainer or the image display
+      if (vocabSheetPending) {
+        vocabSheetDone();
+      } else if (hasImage) {
         displayImage(currentImageUrl.length() == 0);
       } else {
         drawScreen(response);
@@ -9515,8 +9592,10 @@ void loop() {
       inPrinterSelectionMode = false;
       Serial.println("Printer selection cancelled");
 
-      // Return to image display
-      if (hasImage && currentDisplayMode == SHOW_IMAGE) {
+      // Return to the trainer or the image display
+      if (vocabSheetPending) {
+        vocabSheetDone();
+      } else if (hasImage && currentDisplayMode == SHOW_IMAGE) {
         displayImage(currentImageUrl.length() == 0);
       } else {
         drawScreen(response);

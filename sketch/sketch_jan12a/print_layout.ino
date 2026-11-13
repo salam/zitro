@@ -72,6 +72,7 @@ void printMenuNext() {
 
 // Button A: next step. Returns true when the page should print now.
 bool printMenuConfirm() {
+  if (printMenuStep == PRINT_STEP_PRINTER && vocabSheetPending) return true;  // The sheet is always A4: no size list
   if (printMenuStep == PRINT_STEP_PRINTER) {
     printMenuStep = PRINT_STEP_SIZE;
     return false;

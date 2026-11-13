@@ -188,6 +188,8 @@ Page `webpage2/voci/index.html` (+ `voci.js`, site `styles.css`)
   normalization (or contain it); if not, the current book; if there is no current book and several books have
   the unit, the book chooser; one match opens directly.
 - Nothing found: a screen "Keine Liste «Unit 7» gefunden" with the QR hint. No lists at all: the QR screen.
+- No unit said ("Voci üben"): the list practised last, if it still exists; otherwise a chooser with the lists of
+  the current book (or of all books). The chooser works like the book chooser (my call, builder check).
 
 ### 6.4 Answer field and prompt
 
@@ -245,10 +247,17 @@ Checking spoken answers (deterministic first)
 - Solutions: the list side split at ",", ";" and " / ". A slash between two single words inside a phrase gives
   one variant per word ("to the left/right of" → "to the left of", "to the right of"). Each variant, and the
   whole side, is a solution.
+- Before comparing, British and American spellings (colour/color, maths/math, grey/gray, ...) and numbers
+  (2/two) are folded to one form, and spaces and hyphens are ignored ("time table" sounds like "timetable").
+  None of this can turn one word into a different word.
 - Right if the answer equals a solution, or equals it with a leading article ("a", "an", "the") added or
   removed, or (for entries with "…") the answer starts with the part before "…" and ends with the part after
   it, with at least one word in between.
-- Only if that fails and the entry contains "…" or has three or more words: one AI call with JSON mode asks
+- Close (my call after the builder check, 2026-11-13): a miss of one or two words that sounds like the
+  solution (same rough sound key: gym/Jim, tie/Thai, ship/sheep) shows "Fast!" with the solution, spoken. It
+  is neither counted right nor stored as wrong, because the recognition can't tell such words apart; a real
+  mistake of that kind (ship for sheep) is shown but not praised.
+- Only if that fails and the entry contains "…", ends with ". ? !" (a sentence) or has three or more words: one AI call with JSON mode asks
   whether the child's sentence says the same thing as the list sentence. The shown solution stays the list's.
   If the AI call fails, the answer counts as wrong but the screen says "Ich bin nicht sicher" instead of "Noch
   nicht" and does not store it as wrong.

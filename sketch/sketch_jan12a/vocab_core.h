@@ -224,9 +224,93 @@ static inline std::vector<std::string> vocabSolutions(const char* side) {
   return out;
 }
 
+static inline std::string vocabNoSpacesLetters(const std::string& s) {
+  std::string out;
+  for (char c : s)
+    if (c >= 'a' && c <= 'z') out += c;
+  return out;
+}
+
 // ---------- Checking an answer ----------
 
-enum VocabVerdict { VOCAB_RIGHT, VOCAB_WRONG, VOCAB_ASK_AI };
+// RIGHT, WRONG, ASK_AI (a sentence: the AI decides), or CLOSE: a short answer that sounds like the solution but is
+// written differently ("Jim" for "gym", "two" for "to"). CLOSE is neither praised nor stored as wrong, because the
+// speech recognition can't tell such words apart.
+enum VocabVerdict { VOCAB_RIGHT, VOCAB_WRONG, VOCAB_ASK_AI, VOCAB_CLOSE };
+
+// One spelling for words that British and American English write differently, and words for numbers, so that
+// neither the recognition's spelling nor digits make an answer wrong. Never maps one word to a different word.
+static inline std::string vocabCanonWord(const std::string& w) {
+  static const char* const SAME[][2] = {
+      {"colour", "color"},       {"colours", "colors"},     {"colourful", "colorful"}, {"favourite", "favorite"},
+      {"favourites", "favorites"}, {"grey", "gray"},        {"centre", "center"},      {"theatre", "theater"},
+      {"metre", "meter"},        {"metres", "meters"},      {"litre", "liter"},        {"neighbour", "neighbor"},
+      {"neighbours", "neighbors"}, {"behaviour", "behavior"}, {"honour", "honor"},     {"humour", "humor"},
+      {"harbour", "harbor"},     {"flavour", "flavor"},     {"maths", "math"},         {"mum", "mom"},
+      {"mummy", "mommy"},        {"programme", "program"},  {"jewellery", "jewelry"},  {"pyjamas", "pajamas"},
+      {"aeroplane", "airplane"}, {"tyre", "tire"},          {"cheque", "check"},       {"travelled", "traveled"},
+      {"travelling", "traveling"}, {"cancelled", "canceled"}, {"organise", "organize"}, {"realise", "realize"},
+      {"apologise", "apologize"}, {"recognise", "recognize"}, {"practise", "practice"}, {"defence", "defense"},
+      {"licence", "license"},    {"catalogue", "catalog"},  {"dialogue", "dialog"},    {"plough", "plow"},
+      {"doughnut", "donut"},     {"moustache", "mustache"}, {"okay", "ok"},
+      {"0", "zero"},  {"1", "one"},  {"2", "two"},  {"3", "three"},  {"4", "four"},  {"5", "five"},  {"6", "six"},
+      {"7", "seven"}, {"8", "eight"}, {"9", "nine"}, {"10", "ten"},  {"11", "eleven"}, {"12", "twelve"},
+      {"13", "thirteen"}, {"14", "fourteen"}, {"15", "fifteen"}, {"16", "sixteen"}, {"17", "seventeen"},
+      {"18", "eighteen"}, {"19", "nineteen"}, {"20", "twenty"}, {"30", "thirty"}, {"40", "forty"}, {"50", "fifty"},
+      {"100", "one hundred"}};
+  for (auto& p : SAME)
+    if (w == p[0]) return p[1];
+  return w;
+}
+
+static inline std::string vocabCanon(const std::string& normalized) {
+  std::string out, tok;
+  for (size_t i = 0; i <= normalized.size(); i++) {
+    if (i == normalized.size() || normalized[i] == ' ') {
+      if (!tok.empty()) {
+        if (!out.empty()) out += ' ';
+        out += vocabCanonWord(tok);
+      }
+      tok.clear();
+    } else {
+      tok += normalized[i];
+    }
+  }
+  return out;
+}
+
+// A rough English sound key: consonants as they sound, vowels dropped after the first letter. Equal keys mean
+// "sounds alike" (gym/Jim, two/to/too, tie/Thai, sheep/ship). Only used to soften a miss, never to accept one.
+static inline std::string vocabSoundKey(const std::string& normalized) {
+  std::string w = vocabNoSpacesLetters(normalized);
+  std::string k;
+  auto vowel = [](char c) { return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y'; };
+  for (size_t i = 0; i < w.size(); i++) {
+    char c = w[i], n = i + 1 < w.size() ? w[i + 1] : 0;
+    std::string add;
+    if (i == 0 && ((c == 'k' && n == 'n') || (c == 'w' && n == 'r') || (c == 'g' && n == 'n'))) continue;
+    if (c == 'p' && n == 'h') { add = "f"; i++; }
+    else if (c == 's' && n == 'h') { add = "x"; i++; }
+    else if (c == 'c' && n == 'h') { add = "x"; i++; }
+    else if (c == 't' && n == 'h') { add = "t"; i++; }
+    else if (c == 'w' && n == 'h') { add = "w"; i++; }
+    else if (c == 'c' && n == 'k') { add = "k"; i++; }
+    else if (c == 'g' && n == 'h') { i++; continue; }
+    else if (c == 'd' && n == 'g') { add = "j"; i++; }
+    else if (c == 'c') add = (n == 'e' || n == 'i' || n == 'y') ? "s" : "k";
+    else if (c == 'g') add = (n == 'e' || n == 'i' || n == 'y') ? "j" : "k";
+    else if (c == 'q') add = "k";
+    else if (c == 'x') add = "ks";
+    else if (c == 'z') add = "s";
+    else if (c == 'v') add = "f";
+    else if (vowel(c)) { if (i == 0) add = "a"; else continue; }
+    else if (c == 'h' || c == 'w') { if (i + 1 < w.size() && vowel(n) && (i == 0 || !vowel(w[i - 1]))) add = std::string(1, c); else continue; }
+    else add = std::string(1, c);
+    for (char a : add)
+      if (k.empty() || k[k.size() - 1] != a) k += a;
+  }
+  return k;
+}
 
 static inline std::string vocabNoSpaces(const std::string& s) {
   std::string out;
@@ -243,7 +327,8 @@ static inline std::string vocabNoArticle(const std::string& s) {
 }
 
 // Same words, spaces aside ("time table" sounds like "timetable"), with or without a leading article
-static inline bool vocabSameAnswer(const std::string& a, const std::string& b) {
+static inline bool vocabSameAnswer(const std::string& a0, const std::string& b0) {
+  const std::string a = vocabCanon(a0), b = vocabCanon(b0);
   if (vocabNoSpaces(a) == vocabNoSpaces(b)) return true;
   return vocabNoSpaces(vocabNoArticle(a)) == vocabNoSpaces(vocabNoArticle(b));
 }
@@ -295,7 +380,14 @@ static inline VocabVerdict vocabCheck(const char* answer, const char* side) {
     if (vocabSameAnswer(a, s)) return VOCAB_RIGHT;
   for (auto& alt : vocabSplitTop(raw, ",;"))
     if (vocabFillsGap(a, alt)) return VOCAB_RIGHT;
-  return vocabIsSentence(raw) ? VOCAB_ASK_AI : VOCAB_WRONG;
+  if (vocabIsSentence(raw)) return VOCAB_ASK_AI;
+  // A short answer that sounds like a short solution: the recognition may have picked the other spelling
+  if (vocabWordCount(a) <= 2) {
+    const std::string ka = vocabSoundKey(vocabNoArticle(a));
+    for (auto& s : vocabSolutions(side))
+      if (vocabWordCount(s) <= 2 && !ka.empty() && ka == vocabSoundKey(vocabNoArticle(s))) return VOCAB_CLOSE;
+  }
+  return VOCAB_WRONG;
 }
 
 // ---------- Spelling ----------

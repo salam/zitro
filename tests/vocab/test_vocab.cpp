@@ -35,7 +35,7 @@ static int failures = 0, checks = 0;
   } while (0)
 
 static const char* verdictName(VocabVerdict v) {
-  return v == VOCAB_RIGHT ? "RIGHT" : v == VOCAB_WRONG ? "WRONG" : "ASK_AI";
+  return v == VOCAB_RIGHT ? "RIGHT" : v == VOCAB_WRONG ? "WRONG" : v == VOCAB_CLOSE ? "CLOSE" : "ASK_AI";
 }
 #define CHECK_VERDICT(answer, side, want) \
   CHECK_EQ(std::string(verdictName(vocabCheck(answer, side))), std::string(verdictName(want)))
@@ -97,10 +97,23 @@ static void testCheck() {
   CHECK_VERDICT("pupil", "a pupil", VOCAB_RIGHT);
   CHECK_VERDICT("I live in Zurich", "I live in ...", VOCAB_RIGHT);
   CHECK_VERDICT("", "pupil", VOCAB_WRONG);
-  CHECK_VERDICT("Schueler", "Sch\xC3\xBCler/-in", VOCAB_WRONG);
+  CHECK_VERDICT("Schueler", "Sch\xC3\xBCler/-in", VOCAB_CLOSE);  // the same word without the umlaut
   CHECK_VERDICT("Sch\xC3\xBCler", "Sch\xC3\xBCler/-in", VOCAB_RIGHT);
   CHECK_VERDICT("Sch\xC3\xBClerin", "Sch\xC3\xBCler/-in", VOCAB_RIGHT);
   CHECK_VERDICT("Schulklasse", "(Schul-)Klasse", VOCAB_RIGHT);
+  // British and American spellings, digits: never a different word
+  CHECK_VERDICT("color", "colour", VOCAB_RIGHT);
+  CHECK_VERDICT("my favorite food", "my favourite food", VOCAB_RIGHT);
+  CHECK_VERDICT("Maths.", "maths", VOCAB_RIGHT);
+  CHECK_VERDICT("math", "maths", VOCAB_RIGHT);
+  CHECK_VERDICT("2", "two", VOCAB_RIGHT);
+  // Sounds the same, written differently: neither right nor wrong
+  CHECK_VERDICT("Jim", "gym", VOCAB_CLOSE);
+  CHECK_VERDICT("Thai", "tie", VOCAB_CLOSE);
+  CHECK_VERDICT("ship", "sheep", VOCAB_CLOSE);
+  CHECK_VERDICT("shirt", "skirt", VOCAB_WRONG);
+  CHECK_VERDICT("story", "history", VOCAB_WRONG);
+  CHECK_VERDICT("a Jim", "gym", VOCAB_CLOSE);
   CHECK_VERDICT("Klasse", "(Schul-)Klasse", VOCAB_RIGHT);
 }
 

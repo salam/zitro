@@ -487,3 +487,29 @@ Design: `docs/superpowers/specs/2026-11-08-guided-tour-design.md`. Logic in `gui
 - No world wars in the tour's examples
 - Serial for tests: `guide` starts the tour, `guidekey a|b|c` presses a button, `guidetype <text>` stands in for the next recording
 
+---
+
+# Requirements for the Vocabulary Trainer
+
+Design: `docs/superpowers/specs/2026-11-13-vocab-trainer-design.md`. All requirements, the user guide part and the
+spike results: [docs/features/vocab.md](docs/features/vocab.md).
+
+## Decisions
+
+- Quizzes on the display are wanted since 2026-11-13: the vocabulary trainer first, a shop role-play with the words
+  ("Verkäuferlis") and quizzes on any topic later. This reverses "no quiz mode on the display" (2026-11-05).
+- Zitro ships no word lists. Parents upload their own to zitro.spot/voci, tied to the stick by a code shown as a QR
+  code. No account.
+
+## What changes for existing behaviour
+
+- In the trainer, Button A answers instead of asking a new question (like the tour); B opens the trainer's menu, C is
+  "I don't know". Holding B doesn't reset WiFi and three presses of C don't open the settings there.
+- Spelling records at 16 kHz for up to 15 s and stops after a pause, whatever the recording settings say. Normal
+  questions are unchanged.
+- `transcribeAudio()` and `speakText()` gained parameterised versions (`transcribeSamples()` with language and prompt,
+  `speakTextStyled()` with a speaking style); the old calls send exactly what they sent before.
+- The answer JSON has a new field `vocab`; the prompt has one more rule.
+- `eduHttpGetWithHeader()` sends one request header and accepts plain `http://` (for a test server).
+- New button tab `HINT_DONTKNOW` ("?").
+

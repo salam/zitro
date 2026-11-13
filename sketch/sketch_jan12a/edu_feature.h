@@ -57,5 +57,7 @@ extern bool modelIdleTurning;   // True when nothing is turned by hand: a view m
 String eduUrlEncode(const char* s);
 // GET into a buffer. True only for HTTP 200 with a complete body inside the deadline (a millis() value).
 bool eduHttpGet(const String& url, unsigned long deadline, char* buffer, size_t capacity, size_t& bodyLength);
+bool eduHttpGetWithHeader(const String& url, unsigned long deadline, char* buffer, size_t capacity,
+                          size_t& bodyLength, const char* headerName, const char* headerValue, const char* caCert);
 // Draws the bottom line: modelLabel and modelSourceName. reserveRight keeps room for a legend.
 void eduDrawFooter(M5Canvas& c, int reserveRight);

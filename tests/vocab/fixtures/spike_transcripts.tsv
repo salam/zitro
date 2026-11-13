@@ -1,0 +1,147 @@
+# Real gpt-transcribe output for spelled English words (macOS voices, 2026-11-13 spike).
+# transcript<TAB>letters<TAB>spoke a word (1) or only letters (0)
+C, H, T, T, S, T.	chttst	0
+C, H, E, E, S, E.	cheese	0
+C, H, W, S, E.	chwse	0
+C, H, W, E, S, E.	chwese	0
+K, I, T, C, H, E, N.	kitchen	0
+C, A, R, R, O, T.	carrot	0
+C, A, double R, O, T.	carrot	0
+C, A, W, R, O, T.	cawrot	0
+U, N, C, L, E.	uncle	0
+A, T, T, L, E.	attle	0
+A, P, P, L, E.	apple	0
+A, W, T, L, E.	awtle	0
+A, W, P, L, E.	awple	0
+S, O, C, K, S.	socks	0
+C, O, U, S, I, N.	cousin	0
+P, A, T, H, R, O, O, M.	pathroom	0
+B, A, T, H, R, O, O, M.	bathroom	0
+B, A, G, E, T, A, B, L, E.	bagetable	0
+V, A, G, A, T, A, B, L, E.	vagatable	0
+B, E, G, E, T, A, B, L, E.	begetable	0
+G, R, A, N, D, M, O, T, H, E, R.	grandmother	0
+A, T, T, I, C.	attic	0
+A, W, T, I, C.	awtic	0
+B、R、D、A、D。	brdad	0
+B、2、D、A、D。	bdad	0
+P, R, E, A, D.	pread	0
+B, R, E, A, D.	bread	0
+C, H, T, S, E.	chtse	0
+C, H, E, S, E.	chese	0
+K, I, C, H, E, N.	kichen	0
+A, T, L, E.	atle	0
+A, P, L, E.	aple	0
+C, A, R, O, T.	carot	0
+U, N, K, L, E.	unkle	0
+S. O. K. S.	soks	0
+C, U, S, I, N.	cusin	0
+B, A, G, T, A, P, L, E.	bagtaple	0
+V, A, G, T, A, B, L, E.	vagtable	0
+B, E, G, T, A, B, L, E.	begtable	0
+C. H. T. T. S. T.	chttst	0
+C. H. E. E. S. E.	cheese	0
+C. H. W. S. E.	chwse	0
+C. H. W. E. S. E.	chwese	0
+K. I. T. C. H. E. N.	kitchen	0
+C. A. R. R. O. T.	carrot	0
+C. A. W. R. O. T.	cawrot	0
+U. N. C. L. E.	uncle	0
+A. T. T. L. E.	attle	0
+A. W. T. L. E.	awtle	0
+A. W. P. L. E.	awple	0
+S. O. C. K. S.	socks	0
+C. O. U. S. I. N.	cousin	0
+P. A. T. H. R. O. O. M.	pathroom	0
+B. A. T. H. R. O. O. M.	bathroom	0
+B. T. G. T. A. P. L. T.	btgtaplt	0
+V. T. G. T. A. B. L. T.	vtgtablt	0
+B. T. G. T. A. B. L. E.	btgtable	0
+B. E. G. E. T. A. B. L. E.	begetable	0
+G. R. A. N. D. M. O. T. H. E. R..	grandmother	0
+A. T. T. I. C.	attic	0
+A. W. T. I. C.	awtic	0
+A. Double T. I. C.	attic	0
+P. R. T. A. T.	prtat	0
+P. R. T. A. D.	prtad	0
+B. R. E. A. D.	bread	0
+C. H. T. S. T.	chtst	0
+C. H. E. S. E.	chese	0
+K. I. C. H. E. N.	kichen	0
+A. T. L. T.	atlt	0
+A. T. L. E.	atle	0
+C. A. R. O. T.	carot	0
+U. N. K. L. E.	unkle	0
+C. U. S. I. N.	cusin	0
+B. A. G. T. A. P. L. E.	bagtaple	0
+B. A. G. T. A. B. L. E.	bagtable	0
+P.	p	0
+T.	t	0
+E.	e	0
+D.	d	0
+V.	v	0
+B.	b	0
+ची.		0
+G.	g	0
+Che.		1
+J.	j	0
+I.	i	0
+A.	a	0
+Why?	y	0
+Y.	y	0
+C, H, E, E, F, E.	cheefe	0
+C, H, W, F, E.	chwfe	0
+C, A, A, E, C.	caaec	0
+A, T, T, L, T.	attlt	0
+A, double P, L, E.	apple	0
+C, O, U, F, I, N.	coufin	0
+B, A, T, H, A, O, O, M.	bathaoom	0
+B, A, T, H, R, O, M.	bathrom	0
+V, E, G, E, T, A, B, L, E.	vegetable	0
+V, I, G, I, T, A, B, L, I.	vigitabli	0
+G, A, N, D, M, E, T, H, E, A.	gandmethea	0
+G, A, E, N, D, M, E, T, H, E, A.	gaendmethea	0
+G, A, N, D, M, O, T, H, E, R.	gandmother	0
+B, A, E, A, D.	baead	0
+B, A, E, D.	baed	0
+C, H, E, F, E.	chefe	0
+C, A, R, O, C.	caroc	0
+S, O, K, S.	soks	0
+C, U, F, I, N.	cufin	0
+V, E, G, C, A, B, L, E.	vegcable	0
+V, I, G, T, A, B, L, I.	vigtabli	0
+V, E, G, T, A, B, L, E.	vegtable	0
+C. H. E. E. F. E.	cheefe	0
+C. H. W. F. E.	chwfe	0
+C. A. A. O. C.	caaoc	0
+C. A. W. O. T.	cawot	0
+C. A. Double R. O. T.	carrot	0
+A. T. T. L. T.	attlt	0
+C. O. U. F. I. N.	coufin	0
+B. A. C. H. A. O. O. M.	bachaoom	0
+V. E. G. E. T. A. B. L. E.	vegetable	0
+G. A. N. D. M. O. T. H. E. R..	gandmother	0
+G. A. A. N. D. M. O. T. H. E. R.	gaandmother	0
+G. A. A. N. D. M. O. T. H. E. R..	gaandmother	0
+A. W. I. C.	awic	0
+B. A. E. A. D.	baead	0
+B. A. E. D.	baed	0
+C. H. E. F. E.	chefe	0
+A. E. L. E.	aele	0
+C. A. R. T.	cart	0
+C. A. A. T.	caat	0
+C. U. F. I. N.	cufin	0
+V. E. G. T. A. B. L. E.	vegtable	0
+Three.		1
+Hi.		1
+Hey.		1
+A. P. P. L. E.	apple	0
+V, A, J, A, T, A, B, L, E.	vajatable	0
+G. R. A. N. D. M. O. T. H. E. R.	grandmother	0
+P. R. E. A. D.	pread	0
+A. P. L. E.	aple	0
+V, E, J, T, A, B, L, E.	vejtable	0
+G, A, A, N, D, M, O, T, H, E, R.	gaandmother	0
+A, E, L, E.	aele	0
+A. Double P. L. E.	apple	0
+B. A. T. H. A. O. O. M.	bathaoom	0

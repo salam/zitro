@@ -175,6 +175,9 @@ check(is_array($r) && count($r['warnings']) === 1, 'apkg note with one field war
 $r = parseApkg(apkg('both.apkg', ['collection.anki21' => [['cat', 'Katze']], 'collection.anki2' => [['Please update', 'Bitte aktualisieren']]]));
 check(pairs($r) === ['cat|Katze'], 'collection.anki21 wins over anki2: ' . show($r));
 
+$r = parseApkg(fixture_apkg_view($dir . '/view.apkg'));
+check($r === 'unreadable', 'apkg whose notes is an endless view is refused: ' . show($r));
+
 $r = parseApkg(fixture_apkg_new($dir . '/new.apkg'));
 check($r === 'anki_new_format', 'apkg in the new format with its placeholder anki2: ' . show($r));
 

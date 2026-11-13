@@ -368,10 +368,14 @@ function voci_read_anki_notes(string $file): array {
         } catch (Exception $e) {
             // Older SQLite: nothing to switch off
         }
-        $result = $db->query('SELECT flds FROM notes ORDER BY id');
+        // An uploaded file: "notes" must be a plain table (a view could run any query), read in storage order
+        // with the cap inside SQLite, so no query in the file can keep the server busy
+        if ($db->querySingle("SELECT type FROM sqlite_master WHERE name = 'notes'") !== 'table') {
+            voci_fail('unreadable', 'anki_broken');
+        }
+        $result = $db->query('SELECT flds FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
         while (($note = $result->fetchArray(SQLITE3_NUM)) !== false) {
             $rows[] = ['cells' => explode("\x1f", (string)$note[0]), 'line' => count($rows) + 1, 'quoted' => true];
-            if (count($rows) > VOCI_MAX_NOTES) break;
         }
         $db->close();
     } catch (Exception $e) {

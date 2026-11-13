@@ -32,6 +32,22 @@ function fixture_apkg(string $path, array $collections, array $files = []): stri
     return $path;
 }
 
+// A crafted package whose "notes" is a view over a slow query instead of a table.
+function fixture_apkg_view(string $path): string {
+    @unlink($path);
+    $db = $path . '.view.db';
+    @unlink($db);
+    $sql = new SQLite3($db);
+    $sql->exec("CREATE VIEW notes AS WITH RECURSIVE n(i) AS (SELECT 1 UNION ALL SELECT i + 1 FROM n) SELECT i AS id, 'x' || char(31) || 'y' AS flds FROM n");
+    $sql->close();
+    $zip = new ZipArchive();
+    $zip->open($path, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+    $zip->addFile($db, 'collection.anki2');
+    $zip->close();
+    @unlink($db);
+    return $path;
+}
+
 // A new-format Anki export: zstd collection (only its magic here) and the placeholder anki2 Anki adds.
 function fixture_apkg_new(string $path): string {
     return fixture_apkg($path, ['collection.anki2' => [['This file requires a newer version of Anki.', '']]], ['collection.anki21b' => "\x28\xB5\x2F\xFDzstd"]);

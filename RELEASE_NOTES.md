@@ -1,5 +1,12 @@
 # Release Notes
 
+## Fri 13 Nov, 2026
+
+- **Practise your English words with Zitro**: upload your child's word lists on your phone with the QR code from the stick, then say "Unit 3 Englisch üben". Zitro asks, listens and says each word for you.
+- **Spell it**: say "buchstabieren" and watch the letter boxes fill. Zitro shows which letter is missing or different.
+- **On paper too**: print a word sheet to fill in, with a page of answers.
+- **Your lists stay yours**: no account, no e-mail. The lists belong to your stick's code only.
+
 ## Mon 9 Nov, 2026
 
 - **Any town, any time**: ask "Wie spät ist es in Knoxville?" and Zitro finds the place, even a small one, and turns the globe to it.

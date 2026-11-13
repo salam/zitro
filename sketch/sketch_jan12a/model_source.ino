@@ -19,17 +19,20 @@ String eduUrlEncode(const char* s) {
 
 // GET into buffer. True only for HTTP 200 with a complete body inside the deadline.
 bool eduHttpGet(const String& url, unsigned long deadline, char* buffer, size_t capacity, size_t& bodyLength) {
-  return eduHttpGetWithHeader(url, deadline, buffer, capacity, bodyLength, nullptr, nullptr);
+  return eduHttpGetWithHeader(url, deadline, buffer, capacity, bodyLength, nullptr, nullptr, nullptr);
 }
 
-// The same with one request header (headerName nullptr: none). Plain http:// works too, for a test server on the LAN.
+// The same with one request header (headerName nullptr: none). caCert: PEM roots the server's certificate must chain
+// to; give one whenever the header carries a secret (nullptr: not checked, as for the public lookups). Plain http://
+// works too, for a test server on the LAN.
 bool eduHttpGetWithHeader(const String& url, unsigned long deadline, char* buffer, size_t capacity,
-                          size_t& bodyLength, const char* headerName, const char* headerValue) {
+                          size_t& bodyLength, const char* headerName, const char* headerValue, const char* caCert) {
   bodyLength = 0;
   const long remaining = (long)(deadline - millis());
   if (remaining <= 500) return false;
   WiFiClientSecure client;
-  client.setInsecure();
+  if (caCert) client.setCACert(caCert);
+  else client.setInsecure();
   client.setHandshakeTimeout(max(1L, remaining / 1000));
   WiFiClient plainClient;
   HTTPClient http;

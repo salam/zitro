@@ -137,7 +137,9 @@ The project includes deployment scripts for building and uploading firmware to y
   - Timer list: show the next timer.
 
 ### Buttons on the M5Stack StickS3
-Zitro also runs on the StickS3. The installer can't put it there yet: build it from the source with `./verify.sh` and flash the StickS3 build. The StickS3 has a front button (A) and a side button (B). Its power button only switches the stick on and off, so Button B also takes over Button C's job:
+Zitro's firmware also runs on the StickS3, but the installer can't put it there yet. For developers: `./verify.sh` builds it into `sketch/sketch_jan12a/build/esp32s3/`. A StickS3 that already runs Zitro takes an update of the app alone, which keeps its WiFi and settings: `esptool --chip esp32s3 -p /dev/cu.usbmodem<…> write-flash 0x10000 sketch_jan12a.ino.bin`. A new StickS3 comes with M5Stack's own firmware and needs the whole image instead, which also clears its settings: `write-flash 0x0 sketch_jan12a.ino.merged.bin` (not tried yet).
+
+The StickS3 has a front button (A) and a side button (B). Its power button only switches the stick on and off, so Button B also takes over Button C's job:
 - Button A: the same as on the Plus2.
 - Button B, one click: what Button B does on the Plus2. It counts once the stick has made sure no second click follows, so it reacts a moment later.
 - Button B, double click: what one click on Button C does on the Plus2: scroll down, next page of a fact sheet or timeline, text or picture, next timer, next printer.

@@ -2,7 +2,7 @@
 
 ## Sat 14 Nov, 2026
 
-- **Zitro on the StickS3**: Zitro now runs on the M5Stack StickS3 too. Its side button does double duty: click once for Button B, twice for Button C, three times for the setup page.
+- **StickS3 on the way**: Zitro's firmware now runs on the M5Stack StickS3 too, and its side button does double duty: click once for Button B, twice for Button C, three times for the setup page. The installer can't put it on a StickS3 yet.
 
 ## Fri 13 Nov, 2026
 

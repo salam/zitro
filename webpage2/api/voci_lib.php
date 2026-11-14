@@ -14,6 +14,8 @@ const VOCI_MAX_BYTES = 1048576;       // Bytes of list files per stick
 const VOCI_MAX_UNZIPPED = 67108864;   // Bytes of the collection inside an Anki package
 const VOCI_MAX_NOTES = 20000;         // Notes read from an Anki package before giving up
 const VOCI_MAX_FIELD = 4096;          // Bytes read from one Anki field: a word with its markup fits many times
+const VOCI_TMP_PREFIX = 'voci-anki-'; // Collections extracted from packages, in the system's temp folder
+const VOCI_TMP_KEEP = 600;            // Seconds before such a file counts as left over and is deleted
 const VOCI_MAX_CELLS = 100;           // Cells kept from one row or note; only the first two filled columns count
 const VOCI_MAX_HEADERS = 20;          // Lines of Anki headers read (Anki writes each of its 11 kinds once)
 const VOCI_SCORE_BYTES = 1000;        // Bytes of a cell looked at for German signals; a side has at most 120 characters
@@ -133,6 +135,7 @@ function voci_fail(string $code, ?string $key = null, string|int ...$args): neve
 // An uploaded file as ['entries' => [['t', 'b'], ...], 'book', 'name', 'swapped', 'warnings'], t being the
 // trained language (English) and b German. Throws VociError with a message for parents.
 function voci_parse_file(string $path, string $filename): array {
+    voci_sweep_tmp(time());
     $size = @filesize($path);
     if ($size === false) voci_fail('no_file');
     if ($size > VOCI_MAX_UPLOAD) voci_fail('too_big');
@@ -399,7 +402,9 @@ function voci_read_zip(string $path): array {
             voci_fail('unreadable');
         }
         if ($sizes[$pick] > VOCI_MAX_UNZIPPED) voci_fail('unreadable', 'anki_broken');
-        $tmp = tempnam(sys_get_temp_dir(), 'voci');
+        $tmp = tempnam(sys_get_temp_dir(), VOCI_TMP_PREFIX);
+        // finally doesn't run after a fatal error such as running out of memory; a shutdown function does
+        register_shutdown_function('voci_remove_file', $tmp);
         $in = $zip->getStream($pick);
         $out = fopen($tmp, 'wb');
         $copied = ($in && $out) ? stream_copy_to_stream($in, $out, VOCI_MAX_UNZIPPED + 1) : false;
@@ -410,6 +415,17 @@ function voci_read_zip(string $path): array {
     } finally {
         $zip->close();
         if ($tmp !== null) @unlink($tmp);
+    }
+}
+
+function voci_remove_file(string $path): void {
+    if (is_file($path)) @unlink($path);
+}
+
+// Deletes collections extracted more than 10 minutes ago: left by a process that was killed outright.
+function voci_sweep_tmp(int $now): void {
+    foreach (glob(sys_get_temp_dir() . '/' . VOCI_TMP_PREFIX . '*') ?: [] as $file) {
+        if (is_file($file) && (int)@filemtime($file) < $now - VOCI_TMP_KEEP) @unlink($file);
     }
 }
 

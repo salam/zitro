@@ -371,6 +371,32 @@ check(pairs($r) === ['dog|Hund'], 'a word in 3 KB of markup is still read: ' . s
 $r = parseApkg(apkg('long-first.apkg', ['collection.anki2' => [[str_repeat('a', 6000), 'Hund'], ['cat', 'Katze']]]));
 check(pairs($r) === ['cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], '120'), 'the field after a 6 KB field is still read, so the card is too long, not one-sided: ' . show($r['warnings'] ?? $r));
 
+// The collection extracted from a package doesn't stay in the temp folder: not after a parse, not after one
+// that ran out of memory (a shutdown function removes it), and leftovers older than 10 minutes are swept
+$tmpDir = sys_get_temp_dir();
+$extracted = fn() => array_filter(glob($tmpDir . '/voci*') ?: [], 'is_file');
+$before = $extracted();
+parseApkg(apkg('tidy.apkg', ['collection.anki2' => [['dog', 'Hund']]]));
+check(array_diff($extracted(), $before) === [], 'a parsed package leaves nothing in the temp folder');
+$notes = [];
+for ($i = 0; $i < 501; $i++) $notes[] = [str_repeat('ä', 2048) . $i, str_repeat('<b>&amp;</b>', 400) . $i];
+$path = apkg('fatal.apkg', ['collection.anki2' => $notes]);
+$before = $extracted();
+$r = parsePathApart($path, '6M');  // Runs out of memory while reading the notes, after extracting
+$left = array_diff($extracted(), $before);
+check(is_string($r) && str_contains($r, 'Allowed memory size') && $left === [], 'a package parse that runs out of memory removes its extracted collection: ' . json_encode(array_values($left)) . ' ' . (is_string($r) ? substr($r, 0, 80) : cost($r)));
+foreach ($left as $file) @unlink($file);
+$stale = $tmpDir . '/voci-anki-stale' . getmypid();
+$fresh = $tmpDir . '/voci-anki-fresh' . getmypid();
+file_put_contents($stale, 'x');
+touch($stale, time() - 3600);
+file_put_contents($fresh, 'x');
+touch($fresh, time() - 60);
+parse('sweep.csv', "dog,Hund\n");
+check(!file_exists($stale) && file_exists($fresh), 'a parse sweeps extracted collections older than 10 minutes, not newer ones');
+@unlink($stale);
+@unlink($fresh);
+
 // The most the limits still let through: 500 rows of 100 cells of 100 characters, about 5 MB
 $wide = [];
 for ($row = 1; $row <= 500; $row++) {

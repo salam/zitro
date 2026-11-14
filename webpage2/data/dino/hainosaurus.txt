@@ -1,0 +1,9 @@
+ZDS1	hainosaurus	Q134269
+name	Hainosaurus
+group	3
+length	1220	1220
+lived	70600000	68000000
+named	1885
+era	Kreide	Cretaceous
+source	Wikidata
+end

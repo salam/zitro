@@ -1,0 +1,6 @@
+ZDS1	lukousaurus	Q18606658
+name	Lukousaurus
+group	0
+image	5421	167	117	1503c8ea	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

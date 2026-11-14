@@ -1,0 +1,6 @@
+ZDS1	wellnhoferia	Q138070
+name	Wellnhoferia
+group	1
+image	2925	89	117	f6eb111c	-
+source	Wikidata
+end

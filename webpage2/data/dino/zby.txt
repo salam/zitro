@@ -1,0 +1,6 @@
+ZDS1	zby	Q17125998
+name	Zby
+group	0
+image	3991	240	117	338bd3fa	Levi bernardo, CC BY-SA 3.0
+source	Wikidata
+end

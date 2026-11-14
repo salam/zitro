@@ -1,0 +1,6 @@
+ZDS1	ferenceratops	Q137722535
+name	Ferenceratops
+group	0
+image	4397	240	92	e308062e	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

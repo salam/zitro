@@ -1,0 +1,7 @@
+ZDS1	avaceratops	Q131576
+name	Avaceratops
+group	0
+image	8687	240	117	5d5d9109	-
+length	230	230
+source	Wikidata
+end

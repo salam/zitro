@@ -1,0 +1,8 @@
+ZDS1	algoasaurus	Q2361699
+name	Algoasaurus
+group	0
+image	5209	148	117	325ef1a2	-
+lived	163500000	100500000
+era	Jura bis Kreide	Jurassic to Cretaceous
+source	Wikidata
+end

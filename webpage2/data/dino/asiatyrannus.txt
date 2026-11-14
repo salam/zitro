@@ -1,0 +1,7 @@
+ZDS1	asiatyrannus	Q127826022
+name	Asiatyrannus
+group	0
+image	6014	109	117	c254b98e	W. Zheng, X. Jin, J. Xie & T. Du, CC BY 4.0
+named	2024
+source	Wikidata
+end

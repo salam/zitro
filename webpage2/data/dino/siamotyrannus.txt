@@ -1,0 +1,8 @@
+ZDS1	siamotyrannus	Q579201
+name	Siamotyrannus
+group	0
+image	4114	160	117	724e95de	-
+lived	145000000	125000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

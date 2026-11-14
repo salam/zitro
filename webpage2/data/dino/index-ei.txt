@@ -1,0 +1,5 @@
+ZDX1	ei	4
+eiectus	eiectus
+einiosaur	einiosaurus
+einiosaurus	einiosaurus
+einiosaurus procurvicornis	einiosaurus

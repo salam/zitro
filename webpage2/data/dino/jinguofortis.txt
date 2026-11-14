@@ -1,0 +1,6 @@
+ZDS1	jinguofortis	Q56751050
+name	Jinguofortis
+group	1
+image	10375	240	117	8cc85c05	Cathayornis, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	comahuesaurus	Q195084
+name	Comahuesaurus
+group	0
+image	3529	240	69	c266fe95	Slate Weasel, CC BY 4.0
+source	Wikidata
+end

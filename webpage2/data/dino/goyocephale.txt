@@ -1,0 +1,7 @@
+ZDS1	goyocephale	Q133079
+name	Goyocephale
+group	0
+image	3906	88	117	5b8a334a	Eduard Sola, CC BY-SA 3.0
+length	200	200
+source	Wikidata
+end

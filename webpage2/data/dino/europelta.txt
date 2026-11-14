@@ -1,0 +1,6 @@
+ZDS1	europelta	Q15272780
+name	Europelta
+group	0
+image	4688	176	117	8710e2a9	Turol Jones, CC BY 4.0
+source	Wikidata
+end

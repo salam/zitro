@@ -1,0 +1,6 @@
+ZDS1	jiuquanornis	Q16754002
+name	Jiuquanornis
+group	1
+image	3733	84	117	3a24a296	CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	laplatasaurus	Q135594
+name	Laplatasaurus
+group	0
+image	5240	240	117	efb9e7b3	Gunnar Bivens, CC BY-SA 4.0
+source	Wikidata
+end

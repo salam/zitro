@@ -1,0 +1,10 @@
+ZDX1	r_	9
+r. coheni	russellosaurus
+r. etchesi	rhamphorhynchus
+r. krausei	rapetosaurus
+r. lacustris	riojavenatrix
+r. milnerae	riparovenator
+r. muensteri	rhamphorhynchus
+r. narmadensis	rajasaurus
+r. peterhewsi	regaliceratops
+r. priscus	rhabdodon

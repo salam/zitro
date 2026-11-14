@@ -1,0 +1,3 @@
+ZDX1	eq	2
+equijubus	equijubus
+equijubus normani	equijubus

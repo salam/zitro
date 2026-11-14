@@ -1,0 +1,7 @@
+ZDS1	sanjuansaurus	Q18915930
+name	Sanjuansaurus
+group	0
+image	5354	182	117	8ffb5c2c	Ivan Sabrodski, CC BY 3.0
+named	2010
+source	Wikidata
+end

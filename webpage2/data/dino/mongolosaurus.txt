@@ -1,0 +1,8 @@
+ZDS1	mongolosaurus	Q135656
+name	Mongolosaurus
+group	0
+image	2700	71	117	39dca78d	Ghedoghedo, CC BY-SA 4.0
+lived	115000000	108000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

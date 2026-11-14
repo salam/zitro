@@ -1,0 +1,9 @@
+ZDS1	colymbosaurus	Q5150354
+name	Colymbosaurus
+group	3
+image	4410	240	93	e8888cf8	Connor Ashbridge, CC BY-SA 4.0
+lived	165000000	145000000
+named	1874
+era	Jura	Jurassic
+source	Wikidata
+end

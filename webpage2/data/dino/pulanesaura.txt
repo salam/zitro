@@ -1,0 +1,7 @@
+ZDS1	pulanesaura	Q20853534
+name	Pulanesaura
+group	0
+image	12277	240	117	7f711676	CC BY-SA 4.0
+named	2015
+source	Wikidata
+end

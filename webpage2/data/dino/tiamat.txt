@@ -1,0 +1,7 @@
+ZDS1	tiamat	Q125925010
+name	Tiamat
+group	0
+image	3571	240	117	4303a7d6	SlvrHwk, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

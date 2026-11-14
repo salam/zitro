@@ -1,0 +1,6 @@
+ZDS1	helioceratops	Q2087008
+name	Helioceratops
+group	0
+image	4573	157	117	01c905eb	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

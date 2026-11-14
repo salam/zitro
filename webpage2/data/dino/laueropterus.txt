@@ -1,0 +1,7 @@
+ZDS1	laueropterus	Q139741650
+name	Laueropterus
+group	2
+image	5073	154	117	6ea9f76f	D. W. E. Hone, CC BY 4.0
+named	2026
+source	Wikidata
+end

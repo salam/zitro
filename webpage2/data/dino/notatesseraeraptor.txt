@@ -1,0 +1,6 @@
+ZDS1	notatesseraeraptor	Q65194526
+name	Notatesseraeraptor
+group	0
+image	3395	188	117	d953d3ac	Petr Menshikov, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	blasisaurus	Q1705531
+name	Blasisaurus
+group	0
+image	8943	240	117	03bd1ccf	CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	yuzhoulong	Q115011290
+name	Yuzhoulong
+group	0
+image	5697	117	117	13ba0edc	SpinoDragon145, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

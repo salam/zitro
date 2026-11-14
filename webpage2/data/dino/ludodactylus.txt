@@ -1,0 +1,7 @@
+ZDS1	ludodactylus	Q2470634
+name	Ludodactylus
+group	2
+image	3389	152	117	1fafcab1	FunkMonk, CC BY-SA 3.0
+named	2003
+source	Wikidata
+end

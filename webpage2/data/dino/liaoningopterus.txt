@@ -1,0 +1,7 @@
+ZDS1	liaoningopterus	Q2734893
+name	Liaoningopterus
+group	2
+image	2605	124	117	5a6ba62f	Dmitry Bogdanov, CC BY-SA 3.0
+named	2003
+source	Wikidata
+end

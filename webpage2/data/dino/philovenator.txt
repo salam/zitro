@@ -1,0 +1,7 @@
+ZDS1	philovenator	Q2327593
+name	Philovenator
+group	0
+image	4305	82	117	c515388d	Eloy Manzanero, CC BY-SA 3.0
+named	2012
+source	Wikidata
+end

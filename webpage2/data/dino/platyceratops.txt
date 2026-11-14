@@ -1,0 +1,8 @@
+ZDS1	platyceratops	Q138134
+name	Platyceratops
+group	0
+image	5623	240	117	8cf380c2	Nobu Tamura, CC BY 3.0
+lived	75000000	72000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	latenivenatrix	Q35626945
+name	Latenivenatrix
+group	0
+image	4180	240	117	82d5f322	Fred Wierum, CC BY-SA 4.0
+source	Wikidata
+end

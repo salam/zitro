@@ -1,0 +1,8 @@
+ZDS1	nankangia	Q15245693
+name	Nankangia
+group	0
+image	3206	89	117	da1bea2d	Junchang Lu, Laiping Yi, Hui Zhong, Xuefang Wei, CC BY 2.5
+lived	72000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

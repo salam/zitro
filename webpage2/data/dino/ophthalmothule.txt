@@ -1,0 +1,7 @@
+ZDS1	ophthalmothule	Q89570051
+name	Ophthalmothule
+group	3
+image	4418	184	117	045e104d	Aubrey Jane Roberts, CC BY 4.0
+named	2020
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	qiupanykus	Q56603904
+name	Qiupanykus
+group	0
+image	1822	156	117	9809b9c6	CC BY-SA 4.0
+lived	72000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	choconsaurus	Q41508018
+name	Choconsaurus
+group	0
+lived	97000000	94000000
+named	2018
+era	Kreide	Cretaceous
+source	Wikidata
+end

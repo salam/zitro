@@ -1,0 +1,7 @@
+ZDS1	eiectus	Q110455806
+name	Eiectus
+group	3
+image	6635	240	75	0c7703a6	Tim Sackton, CC BY-SA 2.0
+named	2021
+source	Wikidata
+end

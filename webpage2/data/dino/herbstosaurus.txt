@@ -1,0 +1,7 @@
+ZDS1	herbstosaurus	Q311500
+name	Herbstosaurus
+group	2
+image	3349	89	117	581d2251	CC BY 4.0
+named	1975
+source	Wikidata
+end

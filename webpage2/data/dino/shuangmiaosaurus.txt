@@ -1,0 +1,6 @@
+ZDS1	shuangmiaosaurus	Q28554416
+name	Shuangmiaosaurus
+group	0
+image	5862	164	117	990954fb	Dlyj0604, CC BY-SA 4.0
+source	Wikidata
+end

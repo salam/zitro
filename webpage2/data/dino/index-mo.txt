@@ -1,0 +1,47 @@
+ZDX1	mo	46
+moanasaurus	moanasaurus
+moanasaurus mangahouangae	moanasaurus
+mochlodon	mochlodon
+mochlodon suessi	mochlodon
+mochlodon vorosi	mochlodon
+moganopterus	moganopterus
+moganopterus zhuiana	moganopterus
+mojoceratops	mojoceratops
+mojoceratops perifania	mojoceratops
+mongolosaurus	mongolosaurus
+mongolosaurus haplodon	mongolosaurus
+mongolostegus	mongolostegus
+mongolostegus exspectabilis	mongolostegus
+monoclonius	monoclonius
+monoclonius crassus	monoclonius
+monolophosaurus	monolophosaurus
+monolophosaurus jiangi	monolophosaurus
+mononychus olecranus	mononykus
+mononykus	mononykus
+mononykus olecranus	mononykus
+monquirasaurus	monquirasaurus
+montanazhdarcho	montanazhdarcho
+montanazhdarcho minor	montanazhdarcho
+montanoceratops	montanoceratops
+montanoceratops cerorhynchus	montanoceratops
+montanoolithus	montanoolithus
+morelladon	morelladon
+morenosaurus	morenosaurus
+morenosaurus stocki	morenosaurus
+morinosaurus	morinosaurus
+moros	moros
+moros intrepidus	moros
+morrosaurus	morrosaurus
+morrosaurus antarcticus	morrosaurus
+morturneria	morturneria
+morturneria seymourensis	morturneria
+mosaiceratops	mosaiceratops
+mosasaurus	mosasaurus
+mosasaurus beaugei	mosasaurus
+mosasaurus conodon	mosasaurus
+mosasaurus flemingi	mosasaurus
+mosasaurus hoffmanni	mosasaurus
+mosasaurus lemonnieri	mosasaurus
+mosasaurus missouriensis	mosasaurus
+mosasaurus mokoroa	mosasaurus
+mosasaurus prismaticus	mosasaurus

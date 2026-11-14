@@ -1,0 +1,8 @@
+ZDS1	diluvicursor	Q47233945
+name	Diluvicursor
+group	0
+image	4129	240	89	b32b1048	CC BY 4.0
+lived	113000000	112000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

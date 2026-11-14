@@ -1,0 +1,7 @@
+ZDS1	jidapterus	Q1014502
+name	Jidapterus
+group	2
+image	4813	108	117	1f64727e	Wen-Hao Wu, Chang-Fu Zhou, Brian Andres, CC BY 2.5
+named	2003
+source	Wikidata
+end

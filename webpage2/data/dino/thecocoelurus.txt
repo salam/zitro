@@ -1,0 +1,8 @@
+ZDS1	thecocoelurus	Q1826819
+name	Thecocoelurus
+group	0
+image	6898	240	117	ae21e088	-
+lived	129000000	125000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

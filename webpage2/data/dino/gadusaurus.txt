@@ -1,0 +1,7 @@
+ZDS1	gadusaurus	Q133803870
+name	Gadusaurus
+group	3
+image	4109	117	117	1a14b916	CC BY 4.0
+named	2025
+source	Wikidata
+end

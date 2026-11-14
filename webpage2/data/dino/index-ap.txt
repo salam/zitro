@@ -1,0 +1,19 @@
+ZDX1	ap	18
+apatoraptor	apatoraptor
+apatoraptor pennatus	apatoraptor
+apatorhamphus	apatorhamphus
+apatorhamphus gyrostega	apatorhamphus
+apatornis	apatornis
+apatornis celer	apatornis
+apatornis retustus	apatornis
+apatosaurus	apatosaurus
+apatosaurus ajax	apatosaurus
+apatosaurus excelsius	apatosaurus
+apatosaurus excelsus	apatosaurus
+apatosaurus louisae	apatosaurus
+apatosaurus minimus	apatosaurus
+aphrosaurus	aphrosaurus
+aphrosaurus furlongi	aphrosaurus
+appalachiosaurus	appalachiosaurus
+appalachiosaurus montgomeriensis	appalachiosaurus
+aptychodon	aptychodon

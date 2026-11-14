@@ -1,0 +1,6 @@
+ZDS1	stelladens	Q120176424
+name	Stelladens
+group	3
+image	5285	155	117	d7ad1e4d	Longrich et al, CC BY 4.0
+source	Wikidata
+end

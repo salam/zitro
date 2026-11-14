@@ -1,0 +1,6 @@
+ZDS1	carniadactylus	Q18585094
+name	Carniadactylus
+group	2
+image	4186	98	117	9d569592	F.M. Dalla Vecchia, CC BY-SA 3.0
+source	Wikidata
+end

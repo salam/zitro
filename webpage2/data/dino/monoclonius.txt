@@ -1,0 +1,8 @@
+ZDS1	monoclonius	Q131571
+name	Monoclonius
+group	0
+image	5024	240	94	7996f794	-
+lived	77000000	74800000
+era	Kreide	Cretaceous
+source	Wikidata
+end

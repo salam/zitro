@@ -1,0 +1,7 @@
+ZDS1	cratonopterus	Q123466322
+name	Cratonopterus
+group	2
+image	4046	88	117	48eca413	S. Jiang, J. Song, X. Zhang, X. Cheng & X. Wang, CC BY 4.0
+named	2023
+source	Wikidata
+end

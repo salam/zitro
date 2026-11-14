@@ -1,0 +1,17 @@
+ZDS1	carnotaurus	Q18510948
+name	Carnotaurus
+group	0
+image	4556	240	117	1b9c6d98	Fred Wierum, CC BY-SA 4.0
+length	800	800
+height	300	300
+mass	1350000	1350000
+speed	480	560
+lived	72000000	69000000
+named	1985
+era	Kreide	Cretaceous
+meaning	Fleisch fressender Stier	meat-eating bull
+diet	Fleisch	Meat
+found	Argentinien	Argentina
+fun	Carnotaurus hatte zwei dicke Hörner über den Augen. Kein anderer Raubdinosaurier hatte das.	Carnotaurus had two thick horns above its eyes. No other meat-eating dinosaur had them.	Wikipedia (EN): Carnotaurus
+source	Wikidata, Wikipedia
+end

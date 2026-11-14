@@ -1,0 +1,6 @@
+ZDS1	odontorhynchus	Q5030514
+name	Odontorhynchus
+group	2
+image	3922	114	117	faafc494	-
+source	Wikidata
+end

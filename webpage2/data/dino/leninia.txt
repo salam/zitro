@@ -1,0 +1,8 @@
+ZDS1	leninia	Q21447018
+name	Leninia
+group	3
+lived	119000000	113000000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

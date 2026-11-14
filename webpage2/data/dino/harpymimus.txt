@@ -1,0 +1,8 @@
+ZDS1	harpymimus	Q133152
+name	Harpymimus
+group	0
+image	4214	240	80	37aa9ca4	Steveoc 86, CC BY-SA 3.0
+length	200	200
+named	1984
+source	Wikidata
+end

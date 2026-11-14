@@ -1,0 +1,15 @@
+ZDX1	qu	14
+quaesitosaurus	quaesitosaurus
+quaesitosaurus orientalis	quaesitosaurus
+quasianosteosaurus	quasianosteosaurus
+quasianosteosaurus vikinghoegdai	quasianosteosaurus
+quetecsaurus	quetecsaurus
+quetecsaurus rusconii	quetecsaurus
+quetzalcoatlus	quetzalcoatlus
+quetzalcoatlus lawsoni	quetzalcoatlus
+quetzalcoatlus northropi	quetzalcoatlus
+quetzalcoatlus sp.	quetzalcoatlus
+quilmesaurus	quilmesaurus
+quilmesaurus curriei	quilmesaurus
+qunkasaura	qunkasaura
+qunkasaura pintiquiniestra	qunkasaura

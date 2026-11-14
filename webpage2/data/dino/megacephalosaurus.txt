@@ -1,0 +1,10 @@
+ZDS1	megacephalosaurus	Q12981281
+name	Megacephalosaurus
+group	3
+image	7866	240	117	218d4b8e	MCDinosaurhunter, CC BY-SA 3.0
+length	900	900
+lived	93900000	92900000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

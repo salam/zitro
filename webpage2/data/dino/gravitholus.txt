@@ -1,0 +1,7 @@
+ZDS1	gravitholus	Q134642
+name	Gravitholus
+group	0
+image	4011	110	117	40c6e811	CC BY 2.5
+named	1979
+source	Wikidata
+end

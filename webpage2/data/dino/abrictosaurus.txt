@@ -1,0 +1,7 @@
+ZDS1	abrictosaurus	Q18511066
+name	Abrictosaurus
+group	0
+image	4465	179	117	3adbc64d	-
+named	1975
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	sinornithosaurus	Q131267
+name	Sinornithosaurus
+group	0
+image	7036	192	117	0590fe1f	Laikayiu, CC BY-SA 3.0
+length	200	200
+lived	124600000	122000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

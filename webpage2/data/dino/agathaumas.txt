@@ -1,0 +1,7 @@
+ZDS1	agathaumas	Q131751
+name	Agathaumas
+group	0
+image	7271	168	117	03817d62	-
+named	1872
+source	Wikidata
+end

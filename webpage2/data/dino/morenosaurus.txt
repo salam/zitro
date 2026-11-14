@@ -1,0 +1,8 @@
+ZDS1	morenosaurus	Q6911404
+name	Morenosaurus
+group	3
+image	9089	240	117	72a60e5e	Jonathan Chen, CC BY-SA 4.0
+length	363	363
+named	1943
+source	Wikidata
+end

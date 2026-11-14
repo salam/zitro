@@ -1,0 +1,7 @@
+ZDS1	aratasaurus	Q97149323
+name	Aratasaurus
+group	0
+image	3615	102	117	88856be4	CC BY 4.0
+named	2020
+source	Wikidata
+end

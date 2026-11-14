@@ -1,0 +1,9 @@
+ZDS1	gobihadros	Q63203492
+name	Gobihadros
+group	0
+image	6713	169	117	1eea18b6	CC BY 2.5
+lived	100500000	83600000
+named	2019
+era	Kreide	Cretaceous
+source	Wikidata
+end

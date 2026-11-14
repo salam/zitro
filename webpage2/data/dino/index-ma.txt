@@ -1,0 +1,102 @@
+ZDX1	ma	101
+maaradactylus	maaradactylus
+maaradactylus kellneri	maaradactylus
+maaradactylus spielbergi	maaradactylus
+machairasaurus	machairasaurus
+machairasaurus leptonychus	machairasaurus
+machairoceratops	machairoceratops
+machairoceratops cronusi	machairoceratops
+macrocollum	macrocollum
+macrogryphosaurus	macrogryphosaurus
+macrogryphosaurus gondwanicus	macrogryphosaurus
+macrophalangia	chirostenotes
+macroplata	macroplata
+macroplata tenuiceps	macroplata
+macropterygius	macropterygius
+macrurosaurus	macrurosaurus
+magnapaulia	magnapaulia
+magnipterygius	magnipterygius
+magnipterygius huenei	magnipterygius
+magnirostris	magnirostris
+magnirostris dodsoni	magnirostris
+magnosaurus	magnosaurus
+magnosaurus nethercombensis	magnosaurus
+magnusavis	magnusavis
+magnusavis ekalakaensis	magnusavis
+magyarosaurus	magyarosaurus
+magyarosaurus dacus	magyarosaurus
+magyarosaurus hungaricus	magyarosaurus
+mahakala	mahakala
+mahakala omnogovae	mahakala
+maiasaura	maiasaura
+maiasaura peeblesorum	maiasaura
+maiasaurus	maiasaura
+maiaspondylus	maiaspondylus
+maip	maip
+maip macrothorax	maip
+majungasaurus	majungasaurus
+majungasaurus crenatissimus	majungasaurus
+majungatholus	majungasaurus
+makhaira	makhaira
+makhaira rossica	makhaira
+malarguesaurus	malarguesaurus
+malarguesaurus florenciae	malarguesaurus
+malawania	malawania
+malawisaurus	malawisaurus
+malawisaurus dixeyi	malawisaurus
+malefica	malefica
+malefica deckerti	malefica
+maleriraptor	maleriraptor
+maleriraptor kuttyi	maleriraptor
+mamenchisaurus	mamenchisaurus
+mamenchisaurus anyuensis	mamenchisaurus
+mamenchisaurus constructus	mamenchisaurus
+mamenchisaurus gongjianensis	mamenchisaurus
+mamenchisaurus guangyuanensis	mamenchisaurus
+mamenchisaurus hochuanensis	mamenchisaurus
+mamenchisaurus jingyanensis	mamenchisaurus
+mamenchisaurus sinocanadorum	mamenchisaurus
+mamenchisaurus youngi	mamenchisaurus
+mamenchisaurus yunnanensis	mamenchisaurus
+mandschurosaurus	mandschurosaurus
+manemergus	manemergus
+manemergus anguirostris	manemergus
+manidens	manidens
+manidens condorensis	manidens
+mansourasaurus	mansourasaurus
+mansourasaurus shahinae	mansourasaurus
+mantellisaurus	mantellisaurus
+mantellisaurus atherfieldensis	mantellisaurus
+mantellodon	mantellodon
+mapusaurus	mapusaurus
+mapusaurus roseae	mapusaurus
+maraapunisaurus	maraapunisaurus
+maraapunisaurus fragillimus	maraapunisaurus
+marambionectes	maramionectes
+marambionectes molinai	maramionectes
+maramionectes	maramionectes
+maresaurus	maresaurus
+maresaurus coccai	maresaurus
+marmarospondylus	marmarospondylus
+marmornectes	marmornectes
+marmornectes candrewi	marmornectes
+marshosaurus	marshosaurus
+marshosaurus bicentesimus	marshosaurus
+martharaptor	martharaptor
+martharaptor greenriverensis	martharaptor
+martinectes	martinectes
+martinectes bonneri	dolichorhynchops
+masiakasaurus	masiakasaurus
+masiakasaurus knopfleri	masiakasaurus
+massospondylus	massospondylus
+massospondylus carinatus	massospondylus
+massospondylus kaalae	massospondylus
+matheronodon	matheronodon
+matheronodon provincialis	matheronodon
+mauisaurus	mauisaurus
+mauisaurus gardneri	mauisaurus
+mauisaurus haastii	mauisaurus
+mauriciosaurus	mauriciosaurus
+mauriciosaurus fernandezi	mauriciosaurus
+maxakalisaurus	maxakalisaurus
+maxakalisaurus topai	maxakalisaurus

@@ -1,0 +1,9 @@
+ZDS1	nyctosaurus	Q133035
+name	Nyctosaurus
+group	2
+image	2287	102	117	74361eb0	Dmitry Bogdanov Crest fixed by FunkMonk, CC BY 3.0
+lived	85000000	84500000
+named	1876
+era	Kreide	Cretaceous
+source	Wikidata
+end

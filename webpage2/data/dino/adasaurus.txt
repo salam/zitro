@@ -1,0 +1,7 @@
+ZDS1	adasaurus	Q131769
+name	Adasaurus
+group	0
+image	4631	240	117	55974a36	PaleoNeolitic, CC BY-SA 4.0
+named	1977
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	sonidosaurus	Q569191
+name	Sonidosaurus
+group	0
+image	7910	156	117	b1455a96	Machairo, CC BY-SA 4.0
+length	900	900
+source	Wikidata
+end

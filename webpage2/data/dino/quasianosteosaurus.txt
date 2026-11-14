@@ -1,0 +1,8 @@
+ZDS1	quasianosteosaurus	Q6094110
+name	Quasianosteosaurus
+group	3
+lived	249000000	247200000
+named	2003
+era	Trias	Triassic
+source	Wikidata
+end

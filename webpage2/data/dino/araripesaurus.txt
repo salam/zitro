@@ -1,0 +1,7 @@
+ZDS1	araripesaurus	Q626336
+name	Araripesaurus
+group	2
+image	4996	129	117	2f896bc2	CC BY 4.0
+named	1971
+source	Wikidata
+end

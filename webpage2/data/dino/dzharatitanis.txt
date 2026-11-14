@@ -1,0 +1,7 @@
+ZDS1	dzharatitanis	Q105666662
+name	Dzharatitanis
+group	0
+image	7094	173	117	79ba34a8	-
+named	2021
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	lagenanectes	Q39050753
+name	Lagenanectes
+group	3
+image	7342	240	117	ca03e37f	Jahn J. Hornung, CC BY 4.0
+length	800	800
+lived	133100000	130700000
+named	2017
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	padillasaurus	Q20886620
+name	Padillasaurus
+group	0
+image	7558	240	117	38dafb7d	Dhescobarj, CC BY-SA 4.0
+source	Wikidata
+end

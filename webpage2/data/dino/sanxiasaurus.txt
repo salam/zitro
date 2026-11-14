@@ -1,0 +1,6 @@
+ZDS1	sanxiasaurus	Q73091032
+name	Sanxiasaurus
+group	0
+image	4531	240	117	477efe6f	Raingerr, CC BY-SA 4.0
+source	Wikidata
+end

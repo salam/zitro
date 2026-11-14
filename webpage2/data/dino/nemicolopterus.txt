@@ -1,0 +1,7 @@
+ZDS1	nemicolopterus	Q31650
+name	Nemicolopterus
+group	2
+image	10384	240	117	c2e443b1	Tim Evanson, CC BY-SA 2.0
+named	2008
+source	Wikidata
+end

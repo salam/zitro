@@ -1,0 +1,6 @@
+ZDS1	isaberrysaura	Q28791257
+name	Isaberrysaura
+group	0
+image	5732	142	117	5d920870	CC BY 4.0
+source	Wikidata
+end

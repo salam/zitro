@@ -1,0 +1,10 @@
+ZDS1	psittacosaurus	Q132672
+name	Psittacosaurus
+group	0
+image	3990	146	117	e110e77a	Rauantiques, CC BY-SA 4.0
+length	200	200
+lived	126000000	101000000
+named	1923
+era	Kreide	Cretaceous
+source	Wikidata
+end

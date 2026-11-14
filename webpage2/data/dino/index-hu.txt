@@ -1,0 +1,44 @@
+ZDX1	hu	43
+huabeisauridae	huabeisaurus
+huabeisaurus	huabeisaurus
+huabeisaurus allocotus	huabeisaurus
+huadanosaurus	huadanosaurus
+huadanosaurus sinensis	huadanosaurus
+hualianceratops	hualianceratops
+huallasaurus	huallasaurus
+huallasaurus australis	huallasaurus
+huanansaurus	huanansaurus
+huanansaurus ganzhouensis	huanansaurus
+huanghetitan	huanghetitan
+huanghetitan liujiaxiaensis	huanghetitan
+huanghetitan ruyangensis	huanghetitan
+huangshanlong	huangshanlong
+huangshanlong anhuiensis	huangshanlong
+huanhepterus	huanhepterus
+huanhepterus quingyangensis	huanhepterus
+huashanosaurus	huashanosaurus
+huashanosaurus qini	huashanosaurus
+huaxiadraco	huaxiadraco
+huaxiadraco corollatus	huaxiadraco
+huaxiaosaurus	huaxiaosaurus
+huaxiaosaurus aigahtens	huaxiaosaurus
+huaxiapterus	huaxiapterus
+huaxiapterus benxiensis	huaxiapterus
+huaxiapterus corollatus	huaxiadraco
+huaxiapterus jii	huaxiapterus
+huaxiazhoulong	huaxiazhoulong
+huaxiazhoulong shouwen	huaxiazhoulong
+huayangosaurus	huayangosaurus
+huayangosaurus taibaii	huayangosaurus
+huayracursor	huayracursor
+huayracursor jaguensis	huayracursor
+hudiesaurus	hudiesaurus
+hudiesaurus sinojapanorum	hudiesaurus
+hudsonelpidia	hudsonelpidia
+huehuecanauhtlus	huehuecanauhtlus
+huehuecanauhtlus tiquichensis	huehuecanauhtlus
+huinculsaurus	huinculsaurus
+hulsanpes	hulsanpes
+hulsanpes perlei	hulsanpes
+hungarosaurus	hungarosaurus
+hungarosaurus tormai	hungarosaurus

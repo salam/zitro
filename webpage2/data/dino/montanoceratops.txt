@@ -1,0 +1,8 @@
+ZDS1	montanoceratops	Q131781
+name	Montanoceratops
+group	0
+image	5449	240	117	bad07113	Nobu Tamura, CC BY-SA 3.0
+length	300	300
+named	1950
+source	Wikidata
+end

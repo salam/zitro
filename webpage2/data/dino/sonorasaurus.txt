@@ -1,0 +1,7 @@
+ZDS1	sonorasaurus	Q19683306
+name	Sonorasaurus
+group	0
+image	3166	175	117	10f73a2f	Dmitry Bogdanov, CC BY 3.0
+named	1998
+source	Wikidata
+end

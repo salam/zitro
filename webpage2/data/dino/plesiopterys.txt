@@ -1,0 +1,9 @@
+ZDS1	plesiopterys	Q7204675
+name	Plesiopterys
+group	3
+image	5983	191	117	e0e1f7b3	Ghedoghedo, CC BY-SA 3.0
+lived	183000000	182000000
+named	2004
+era	Jura	Jurassic
+source	Wikidata
+end

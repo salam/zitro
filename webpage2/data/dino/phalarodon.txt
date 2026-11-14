@@ -1,0 +1,10 @@
+ZDS1	phalarodon	Q7180274
+name	Phalarodon
+group	3
+image	4324	240	84	9022e5b3	DiBgd, CC BY-SA 4.0
+length	100	100
+lived	247200000	242000000
+named	1910
+era	Trias	Triassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	hamipterus	Q18596409
+name	Hamipterus
+group	2
+image	4691	180	117	28e1bd75	Jonathan Chen, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

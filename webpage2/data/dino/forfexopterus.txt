@@ -1,0 +1,9 @@
+ZDS1	forfexopterus	Q26995357
+name	Forfexopterus
+group	2
+image	4039	125	117	5c2f5fe9	Fossiladder13, CC BY-SA 4.0
+lived	121000000	119000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

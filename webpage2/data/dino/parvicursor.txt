@@ -1,0 +1,7 @@
+ZDS1	parvicursor	Q383329
+name	Parvicursor
+group	0
+image	3198	159	117	46a14e77	PaleoEquii, CC BY-SA 4.0
+named	1996
+source	Wikidata
+end

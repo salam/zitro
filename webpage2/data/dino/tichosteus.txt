@@ -1,0 +1,6 @@
+ZDS1	tichosteus	Q2113285
+name	Tichosteus
+group	0
+image	2695	116	117	18079b11	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

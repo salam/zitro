@@ -1,0 +1,6 @@
+ZDS1	daxiatitan	Q1654983
+name	Daxiatitan
+group	0
+image	2793	71	117	bc5a68e1	Tiouraren, CC BY-SA 3.0
+source	Wikidata
+end

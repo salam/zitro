@@ -1,0 +1,7 @@
+ZDS1	pneumatoraptor	Q506819
+name	Pneumatoraptor
+group	0
+image	4574	240	117	47515efc	CC BY 3.0
+named	2010
+source	Wikidata
+end

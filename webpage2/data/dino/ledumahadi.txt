@@ -1,0 +1,7 @@
+ZDS1	ledumahadi	Q56761776
+name	Ledumahadi
+group	0
+image	4783	240	117	d9d9573d	Nobu Tamura, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

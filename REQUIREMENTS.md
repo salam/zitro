@@ -354,6 +354,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **Night sky**: [docs/features/sky.md](docs/features/sky.md)
 - **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)
 - **Timelines with pictures**: [docs/features/timeline.md](docs/features/timeline.md)
+- **Dinosaur fact sheets** (picture, facts, size next to a 1.70 m person, fun fact): [docs/features/dino.md](docs/features/dino.md)
 - **Organs, skeleton and cells**: [docs/features/anatomy.md](docs/features/anatomy.md)
 - **Wolfram results**: [docs/features/wolfram.md](docs/features/wolfram.md)
 

@@ -1,0 +1,6 @@
+ZDS1	morinosaurus	Q2107254
+name	Morinosaurus
+group	0
+image	1964	99	117	d3a000e3	-
+source	Wikidata
+end

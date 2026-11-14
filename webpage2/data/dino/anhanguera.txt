@@ -1,0 +1,7 @@
+ZDS1	anhanguera	Q311712
+name	Anhanguera
+group	2
+image	3950	88	117	331dfaf0	Zach Tirrell from Plymouth, USA, CC BY-SA 2.0
+named	1985
+source	Wikidata
+end

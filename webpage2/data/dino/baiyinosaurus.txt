@@ -1,0 +1,7 @@
+ZDS1	baiyinosaurus	Q126965892
+name	Baiyinosaurus
+group	0
+image	4829	240	117	776b6bf1	SlvrHwk, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

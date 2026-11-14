@@ -1,0 +1,7 @@
+ZDS1	aptychodon	Q4782273
+name	Aptychodon
+group	3
+image	3212	106	117	d9ad59e5	-
+named	1855
+source	Wikidata
+end

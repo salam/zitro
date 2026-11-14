@@ -1,0 +1,6 @@
+ZDS1	dollodon	Q907896
+name	Dollodon
+group	0
+image	4430	77	117	44022979	-
+source	Wikidata
+end

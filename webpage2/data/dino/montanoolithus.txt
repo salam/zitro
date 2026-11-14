@@ -1,0 +1,7 @@
+ZDS1	montanoolithus	Q16919269
+name	Montanoolithus
+group	0
+lived	100500000	65000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

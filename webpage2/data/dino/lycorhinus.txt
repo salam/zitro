@@ -1,0 +1,7 @@
+ZDS1	lycorhinus	Q2018521
+name	Lycorhinus
+group	0
+image	4855	139	117	93ebdb2b	Paul C. Sereno, CC BY 3.0
+length	120	120
+source	Wikidata
+end

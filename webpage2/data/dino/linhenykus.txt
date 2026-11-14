@@ -1,0 +1,6 @@
+ZDS1	linhenykus	Q2265006
+name	Linhenykus
+group	0
+image	6211	181	117	8617b5a4	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

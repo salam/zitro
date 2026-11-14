@@ -1,0 +1,8 @@
+ZDS1	taurovenator	Q24716965
+name	Taurovenator
+group	0
+image	2602	88	117	1843667b	Cesar Diaz Frias, CC BY-SA 4.0
+lived	96000000	91000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

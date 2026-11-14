@@ -1,0 +1,6 @@
+ZDS1	delapparentia	Q1706554
+name	Delapparentia
+group	0
+image	7102	240	117	73c63ca9	Durbed, CC BY-SA 3.0
+source	Wikidata
+end

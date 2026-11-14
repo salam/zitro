@@ -1,0 +1,8 @@
+ZDS1	bergamodactylus	Q20668509
+name	Bergamodactylus
+group	2
+image	4190	170	117	e19b2911	Nobu Tamura, CC BY-SA 4.0
+lived	216000000	211000000
+era	Trias	Triassic
+source	Wikidata
+end

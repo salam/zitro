@@ -1,0 +1,6 @@
+ZDS1	lucianovenator	Q30116769
+name	Lucianovenator
+group	0
+image	3566	240	77	38d108ab	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

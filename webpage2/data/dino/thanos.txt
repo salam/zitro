@@ -1,0 +1,6 @@
+ZDS1	thanos	Q59575885
+name	Thanos
+group	0
+image	4862	240	117	9d084db5	Juan(-username-), CC BY-SA 4.0
+source	Wikidata
+end

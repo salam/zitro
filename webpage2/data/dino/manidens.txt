@@ -1,0 +1,8 @@
+ZDS1	manidens	Q1936116
+name	Manidens
+group	0
+image	5150	150	117	93faa481	Paul C. Sereno, CC BY 3.0
+lived	171000000	167000000
+era	Jura	Jurassic
+source	Wikidata
+end

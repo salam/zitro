@@ -1,0 +1,7 @@
+ZDS1	dorygnathus	Q134593
+name	Dorygnathus
+group	2
+image	3203	164	117	0b243e14	Dmitry Bogdanov, CC BY-SA 3.0
+named	1860
+source	Wikidata
+end

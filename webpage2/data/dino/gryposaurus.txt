@@ -1,0 +1,9 @@
+ZDS1	gryposaurus	Q385949
+name	Gryposaurus
+group	0
+image	4369	91	117	7ea8d000	Berkeley T. Compton, CC BY-SA 2.0
+length	1000	1000
+lived	83000000	74000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

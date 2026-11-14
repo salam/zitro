@@ -1,0 +1,7 @@
+ZDS1	caviramus	Q19887990
+name	Caviramus
+group	2
+image	4122	240	117	66a775f7	Skye McDavid, CC BY 4.0
+named	2006
+source	Wikidata
+end

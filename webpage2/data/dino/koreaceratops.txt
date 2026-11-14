@@ -1,0 +1,7 @@
+ZDS1	koreaceratops	Q134260
+name	Koreaceratops
+group	0
+image	4969	166	117	86e7b173	Jun-Hyeok Jang, CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

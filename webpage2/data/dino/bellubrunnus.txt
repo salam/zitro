@@ -1,0 +1,6 @@
+ZDS1	bellubrunnus	Q868510
+name	Bellubrunnus
+group	2
+image	3147	93	117	872cd7d5	CC BY 2.5
+source	Wikidata
+end

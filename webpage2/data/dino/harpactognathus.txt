@@ -1,0 +1,7 @@
+ZDS1	harpactognathus	Q3493313
+name	Harpactognathus
+group	2
+image	4365	240	117	de15201f	Definitely NOT Dilophosaurus, CC BY-SA 4.0
+named	2003
+source	Wikidata
+end

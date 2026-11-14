@@ -1,0 +1,6 @@
+ZDS1	protoavis	Q284477
+name	Protoavis
+group	1
+image	3421	148	117	b3dcb27f	-
+source	Wikidata
+end

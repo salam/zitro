@@ -1,0 +1,7 @@
+ZDS1	koleken	Q126012874
+name	Koleken
+group	0
+image	3971	240	78	fdac43a7	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

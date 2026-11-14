@@ -1,0 +1,6 @@
+ZDS1	ruyangosaurus	Q2575047
+name	Ruyangosaurus
+group	0
+image	5466	240	117	25637068	-
+source	Wikidata
+end

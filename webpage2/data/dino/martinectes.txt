@@ -1,0 +1,7 @@
+ZDS1	martinectes	Q123991308
+name	Martinectes
+group	3
+image	5341	240	117	9666d31d	MCDinosaurhunter, CC BY-SA 3.0
+named	2023
+source	Wikidata
+end

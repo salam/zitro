@@ -1,0 +1,7 @@
+ZDS1	plumadraco	Q139959572
+name	Plumadraco
+group	1
+image	8342	240	117	e0bb241e	A. D. Clark et al, CC BY 4.0
+named	2026
+source	Wikidata
+end

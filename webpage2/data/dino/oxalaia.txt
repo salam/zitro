@@ -1,0 +1,8 @@
+ZDS1	oxalaia	Q1930368
+name	Oxalaia
+group	0
+image	4501	183	117	1f8a432a	PaleoGeekSquared, CC BY-SA 4.0
+lived	100500000	93900000
+era	Kreide	Cretaceous
+source	Wikidata
+end

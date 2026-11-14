@@ -1,0 +1,7 @@
+ZDS1	mansourasaurus	Q47518933
+name	Mansourasaurus
+group	0
+image	4957	240	117	f6e828ae	Nobu Tamura, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

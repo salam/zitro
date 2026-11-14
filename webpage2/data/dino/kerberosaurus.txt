@@ -1,0 +1,6 @@
+ZDS1	kerberosaurus	Q2349869
+name	Kerberosaurus
+group	0
+image	4257	240	80	de65290c	Connor Ashbridge, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,11 @@
+ZDS1	nasutoceratops	Q18915149
+name	Nasutoceratops
+group	0
+image	6469	240	117	cbff4932	Nobu Tamura, CC BY-SA 4.0
+length	450	450
+mass	1500000	1500000
+lived	75900000	75500000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

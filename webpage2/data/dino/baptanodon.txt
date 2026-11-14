@@ -1,0 +1,6 @@
+ZDS1	baptanodon	Q55604865
+name	Baptanodon
+group	3
+image	3273	179	117	2c9c71af	-
+source	Wikidata
+end

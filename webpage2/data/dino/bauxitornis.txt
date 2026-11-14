@@ -1,0 +1,6 @@
+ZDS1	bauxitornis	Q4873618
+name	Bauxitornis
+group	1
+image	5984	240	117	ba569dbd	CC BY 3.0
+source	Wikidata
+end

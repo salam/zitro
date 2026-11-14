@@ -1,0 +1,7 @@
+ZDS1	kryptops	Q133124
+name	Kryptops
+group	0
+image	4640	240	117	87fa8d0d	Nobu Tamura, CC BY 3.0
+named	2008
+source	Wikidata
+end

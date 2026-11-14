@@ -1,0 +1,7 @@
+ZDS1	asiatosaurus	Q680860
+name	Asiatosaurus
+group	0
+image	5104	154	117	92addf1b	-
+named	1924
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	laosaurus	Q1657525
+name	Laosaurus
+group	0
+lived	154000000	152000000
+era	Jura	Jurassic
+source	Wikidata
+end

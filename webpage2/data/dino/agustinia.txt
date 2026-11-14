@@ -1,0 +1,7 @@
+ZDS1	agustinia	Q131756
+name	Agustinia
+group	0
+image	3092	240	60	12586b8e	-
+named	1999
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	talenkauen	Q220870
+name	Talenkauen
+group	0
+image	3761	174	117	79aa84dc	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

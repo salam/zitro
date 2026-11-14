@@ -1,0 +1,10 @@
+ZDS1	yunnanosaurus	Q427650
+name	Yunnanosaurus
+group	0
+image	5184	240	117	f2053358	ArthurWeasley~commonswiki, CC BY 2.5
+length	700	700
+lived	201000000	168000000
+named	1942
+era	Jura	Jurassic
+source	Wikidata
+end

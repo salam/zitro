@@ -1,0 +1,7 @@
+ZDS1	ctenochasma	Q600172
+name	Ctenochasma
+group	2
+image	5167	160	117	98e6873f	CC BY-SA 3.0
+named	1851
+source	Wikidata
+end

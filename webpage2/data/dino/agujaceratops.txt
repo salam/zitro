@@ -1,0 +1,6 @@
+ZDS1	agujaceratops	Q132534
+name	Agujaceratops
+group	0
+image	7160	240	117	d864a3ff	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	sulcavis	Q2811254
+name	Sulcavis
+group	1
+image	10815	240	117	f3fe52c4	Zhiheng Li, Zhonghe Zhou, Julia A. Clarke, CC BY 4.0
+lived	125000000	121000000
+named	2013
+era	Kreide	Cretaceous
+source	Wikidata
+end

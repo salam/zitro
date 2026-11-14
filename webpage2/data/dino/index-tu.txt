@@ -1,0 +1,19 @@
+ZDX1	tu	18
+tuarangisaurus	tuarangisaurus
+tuarangisaurus keyesi	tuarangisaurus
+tuebingosaurus	tuebingosaurus
+tuebingosaurus maierfritzorum	tuebingosaurus
+tuojiangosaurus	tuojiangosaurus
+tuojiangosaurus multispinus	tuojiangosaurus
+tupandactylus	tupandactylus
+tupandactylus imperator	tupandactylus
+tupandactylus navigans	tupandactylus
+tupuxuara	tupuxuara
+tupuxuara leonardi	tupuxuara
+tupuxuara leonardii	tupuxuara
+tupuxuara longicristatus	tupuxuara
+turanoceratops	turanoceratops
+turanoceratops tardabilis	turanoceratops
+turiasaurier	turiasaurus
+turiasaurus	turiasaurus
+turiasaurus riodevensis	turiasaurus

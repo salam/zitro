@@ -1,0 +1,7 @@
+ZDS1	miragaia	Q133109
+name	Miragaia
+group	0
+image	6911	240	117	0a42abee	Connor Ashbridge, CC BY-SA 4.0
+named	2009
+source	Wikidata
+end

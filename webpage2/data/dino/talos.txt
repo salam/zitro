@@ -1,0 +1,9 @@
+ZDS1	talos	Q133246
+name	Talos
+group	0
+image	4972	240	117	8dd044fe	Tom Parker:, CC BY 3.0
+length	200	200
+mass	38000	38000
+named	2011
+source	Wikidata
+end

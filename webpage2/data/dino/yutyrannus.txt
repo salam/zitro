@@ -1,0 +1,13 @@
+ZDS1	yutyrannus	Q131710
+name	Yutyrannus
+group	0
+image	3964	240	86	b9fec0b5	TotalDino, CC BY 4.0
+length	750	750
+named	2012
+era	Kreide	Cretaceous
+meaning	gefiederter Tyrann	feathered tyrant
+diet	Fleisch	Meat
+found	Nordostchina	northeastern China
+fun	Yutyrannus ist der grösste bekannte Dinosaurier, bei dem man Federn direkt nachweisen konnte.	Yutyrannus is the largest known dinosaur with direct evidence of feathers.	Wikipedia (EN): Yutyrannus
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,9 @@
+ZDS1	macrogryphosaurus	Q138604
+name	Macrogryphosaurus
+group	0
+image	4073	240	88	fa723d2e	Tomopteryx, CC BY-SA 4.0
+lived	93000000	89000000
+named	2007
+era	Kreide	Cretaceous
+source	Wikidata
+end

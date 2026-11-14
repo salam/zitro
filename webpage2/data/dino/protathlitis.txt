@@ -1,0 +1,7 @@
+ZDS1	protathlitis	Q118480866
+name	Protathlitis
+group	0
+image	2352	94	117	a75bfca9	Leoomas, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

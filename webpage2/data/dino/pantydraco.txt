@@ -1,0 +1,8 @@
+ZDS1	pantydraco	Q749100
+name	Pantydraco
+group	0
+image	4491	240	117	7458660b	Nobu Tamura, CC BY 3.0
+length	300	300
+named	2007
+source	Wikidata
+end

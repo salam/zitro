@@ -1,0 +1,8 @@
+ZDS1	anodontosaurus	Q4769855
+name	Anodontosaurus
+group	0
+image	4753	123	117	6cf32d87	Victoria M. Arbour, Philip J. Currie, CC BY 2.5
+lived	72800000	67000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

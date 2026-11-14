@@ -1,0 +1,6 @@
+ZDS1	junornis	Q41890571
+name	Junornis
+group	1
+image	3921	126	117	2c87b12d	CC BY 2.5
+source	Wikidata
+end

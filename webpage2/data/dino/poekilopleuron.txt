@@ -1,0 +1,9 @@
+ZDS1	poekilopleuron	Q1575294
+name	Poekilopleuron
+group	0
+image	4291	94	117	3ec85f2f	Ghedoghedo, CC BY-SA 3.0
+length	900	900
+lived	167700000	166100000
+era	Jura	Jurassic
+source	Wikidata
+end

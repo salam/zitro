@@ -1,0 +1,7 @@
+ZDS1	sankofa	Q16930745
+name	Sankofa
+group	0
+lived	100500000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

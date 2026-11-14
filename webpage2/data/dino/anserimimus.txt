@@ -1,0 +1,8 @@
+ZDS1	anserimimus	Q132481
+name	Anserimimus
+group	0
+image	7447	240	117	67891c35	Jordi Paya from Barcelona, Catalonia, CC BY-SA 2.0
+length	350	350
+named	1988
+source	Wikidata
+end

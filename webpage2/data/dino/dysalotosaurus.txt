@@ -1,0 +1,9 @@
+ZDS1	dysalotosaurus	Q136892
+name	Dysalotosaurus
+group	0
+image	9536	240	117	f176bf0a	Oh-Berlin.com, CC BY 2.0
+lived	152000000	151000000
+named	1919
+era	Jura	Jurassic
+source	Wikidata
+end

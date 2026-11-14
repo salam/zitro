@@ -1,0 +1,17 @@
+ZDS1	giganotosaurus	Q14438
+name	Giganotosaurus
+group	0
+image	5008	240	117	356c950a	-
+length	1250	1300
+height	550	550
+mass	13800000	13800000
+speed	500	500
+lived	98000000	97000000
+named	1995
+era	Kreide	Cretaceous
+meaning	Riesenechse des Südens	giant southern lizard
+diet	Fleisch	Meat
+found	Argentinien	Argentina
+fun	1993 fand der Automechaniker Rubén Carolini ein gut erhaltenes Skelett von Giganotosaurus.	In 1993, the car mechanic Rubén Carolini found a well-preserved skeleton of Giganotosaurus.	Wikipedia (DE): Giganotosaurus
+source	Wikidata, Wikipedia
+end

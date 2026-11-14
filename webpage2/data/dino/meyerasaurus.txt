@@ -1,0 +1,8 @@
+ZDS1	meyerasaurus	Q3496553
+name	Meyerasaurus
+group	3
+image	2643	84	117	33ac8515	CC BY-SA 3.0
+length	335	335
+named	2010
+source	Wikidata
+end

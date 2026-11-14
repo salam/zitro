@@ -1,0 +1,8 @@
+ZDS1	hypsilophodon	Q18510952
+name	Hypsilophodon
+group	0
+image	7204	240	117	767ce761	Ghedoghedo, CC BY-SA 3.0
+length	230	230
+named	1869
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	tristraguloolithus	Q7844201
+name	Tristraguloolithus
+group	0
+lived	83600000	77000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

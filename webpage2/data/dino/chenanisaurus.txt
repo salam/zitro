@@ -1,0 +1,8 @@
+ZDS1	chenanisaurus	Q29052716
+name	Chenanisaurus
+group	0
+image	3833	240	91	2e8a56cd	Paleocolour, CC BY-SA 4.0
+lived	68000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	hesperornithoides	Q3301304
+name	Hesperornithoides
+group	0
+image	1861	117	117	84ef6e5b	ARSDRACO, CC BY-SA 4.0
+source	Wikidata
+end

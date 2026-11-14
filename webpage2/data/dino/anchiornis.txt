@@ -1,0 +1,7 @@
+ZDS1	anchiornis	Q18511041
+name	Anchiornis
+group	0
+image	9505	169	117	fc40c56f	Nobu Tamura, CC BY 3.0
+named	2009
+source	Wikidata
+end

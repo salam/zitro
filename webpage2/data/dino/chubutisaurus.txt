@@ -1,0 +1,7 @@
+ZDS1	chubutisaurus	Q144415
+name	Chubutisaurus
+group	0
+image	3715	240	117	26d16355	Levi Martinez-Reza, CC BY-SA 3.0
+length	2300	2300
+source	Wikidata
+end

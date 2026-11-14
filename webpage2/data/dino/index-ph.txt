@@ -1,0 +1,21 @@
+ZDX1	ph	20
+phaedrolosaurus	phaedrolosaurus
+phaedrolosaurus ilikensis	phaedrolosaurus
+phalarodon	phalarodon
+phalarodon atavus	contectopalatus
+phalarodon fraasi	phalarodon
+phalarodon major	phalarodon
+phalarodon nordenskioeldii	phalarodon
+phantomosaurus	phantomosaurus
+phantomosaurus neubigi	phantomosaurus
+philovenator	philovenator
+philovenator curriei	philovenator
+phosphatodraco	phosphatodraco
+phosphatodraco mauritanicus	phosphatodraco
+phosphorosaurus	phosphorosaurus
+phosphorosaurus ortliebi	phosphorosaurus
+phosphorosaurus ponpetelegans	phosphorosaurus
+phuwiangosaurus	phuwiangosaurus
+phuwiangosaurus sirindhornae	phuwiangosaurus
+phuwiangvenator	phuwiangvenator
+phyllodon	phyllodon

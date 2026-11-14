@@ -1,0 +1,6 @@
+ZDS1	eousdryosaurus	Q18061165
+name	Eousdryosaurus
+group	0
+image	7914	185	117	63b5a72d	CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	abyssosaurus	Q367217
+name	Abyssosaurus
+group	3
+image	3701	240	60	32b329a0	Connor Ashbridge, CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

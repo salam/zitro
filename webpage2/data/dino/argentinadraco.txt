@@ -1,0 +1,8 @@
+ZDS1	argentinadraco	Q42649831
+name	Argentinadraco
+group	2
+image	6718	240	117	c8865c5c	Alexander W.A. Kellner & Jorge O. Calvo, CC BY 4.0
+lived	91000000	88000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

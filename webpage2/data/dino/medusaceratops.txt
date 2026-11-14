@@ -1,0 +1,6 @@
+ZDS1	medusaceratops	Q21447438
+name	Medusaceratops
+group	0
+image	5208	158	117	97bd1bc1	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

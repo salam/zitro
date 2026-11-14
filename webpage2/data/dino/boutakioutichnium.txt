@@ -1,0 +1,6 @@
+ZDS1	boutakioutichnium	Q20722380
+name	Boutakioutichnium
+group	0
+image	4688	80	117	ff8e0f8c	Jaouad Nouri, CC BY-SA 4.0
+source	Wikidata
+end

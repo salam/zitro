@@ -1,0 +1,7 @@
+ZDS1	fostoria	Q64392298
+name	Fostoria
+group	0
+image	9313	240	117	b2e4b666	CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

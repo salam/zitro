@@ -1,0 +1,8 @@
+ZDS1	patagonykus	Q1183500
+name	Patagonykus
+group	0
+image	3261	115	117	50d4255c	Kabacchi, CC BY 2.0
+lived	94000000	86000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

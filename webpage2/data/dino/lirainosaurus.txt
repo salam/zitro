@@ -1,0 +1,6 @@
+ZDS1	lirainosaurus	Q18607039
+name	Lirainosaurus
+group	0
+image	5277	140	117	c7f638f6	CC BY 2.0
+source	Wikidata
+end

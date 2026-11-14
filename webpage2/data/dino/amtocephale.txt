@@ -1,0 +1,6 @@
+ZDS1	amtocephale	Q377190
+name	Amtocephale
+group	0
+image	3208	123	117	923a676d	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

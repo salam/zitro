@@ -1,0 +1,6 @@
+ZDS1	angaturama	Q769239
+name	Angaturama
+group	0
+image	4961	176	117	0de0362f	Kabacchi, CC BY 2.0
+source	Wikidata
+end

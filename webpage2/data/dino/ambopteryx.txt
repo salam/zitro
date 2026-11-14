@@ -1,0 +1,7 @@
+ZDS1	ambopteryx	Q63637265
+name	Ambopteryx
+group	0
+image	4274	240	117	ba094fe8	Audrey.m.horn, CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

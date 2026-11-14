@@ -1,0 +1,6 @@
+ZDS1	tangvayosaurus	Q135226
+name	Tangvayosaurus
+group	0
+image	2890	66	117	9f5ddbbe	Pescov, CC BY-SA 3.0
+source	Wikidata
+end

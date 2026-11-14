@@ -1,0 +1,8 @@
+ZDS1	zalmoxes	Q132538
+name	Zalmoxes
+group	0
+image	3393	240	80	ddc19402	TotalDino, CC BY-SA 4.0
+length	250	300
+named	2003
+source	Wikidata
+end

@@ -1,0 +1,26 @@
+ZDX1	do	25
+dolichorhynchops	dolichorhynchops
+dolichorhynchops bonneri	dolichorhynchops
+dolichorhynchops herschelensis	dolichorhynchops
+dolichorhynchops osborni	dolichorhynchops
+dolichosuchus	dolichosuchus
+dolicorhamphus	dolicorhamphus
+dolicorhamphus bucklandii	dolicorhamphus
+dolicorhamphus depressirostris	dolicorhamphus
+dollodon	dollodon
+dollosaurus	dollosaurus
+dollosaurus lutugini	dollosaurus
+domeykodactylus	domeykodactylus
+domeykodactylus ceciliae	domeykodactylus
+dongyangosaurus	dongyangosaurus
+dongyangosaurus sinensis	dongyangosaurus
+doolysaurus	doolysaurus
+doolysaurus huhmini	doolysaurus
+doratorhynchus	doratorhynchus
+dornraptor	dornraptor
+dornraptor normani	dornraptor
+dorygnathus	dorygnathus
+dorygnathus banthensis	dorygnathus
+doryphorosaurus	kentrosaurus
+douzhanopterus	douzhanopterus
+douzhanopterus zhengi	douzhanopterus

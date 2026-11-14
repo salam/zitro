@@ -1,0 +1,11 @@
+ZDS1	edmontonia	Q245262
+name	Edmontonia
+group	0
+image	7452	130	117	47464d08	Kabacchi, CC BY 2.0
+length	400	660
+mass	3000000	3000000
+lived	76500000	69000000
+named	1928
+era	Kreide	Cretaceous
+source	Wikidata
+end

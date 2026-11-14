@@ -1,0 +1,6 @@
+ZDS1	minimocursor	Q120640987
+name	Minimocursor
+group	0
+image	5241	185	117	b7d6e34f	CC BY 4.0
+source	Wikidata
+end

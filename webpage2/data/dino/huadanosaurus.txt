@@ -1,0 +1,7 @@
+ZDS1	huadanosaurus	Q132734216
+name	Huadanosaurus
+group	0
+image	4680	240	117	77fd9e1c	Ddinodan, CC BY 4.0
+named	2025
+source	Wikidata
+end

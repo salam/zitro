@@ -1,0 +1,6 @@
+ZDS1	rinconsaurus	Q135538
+name	Rinconsaurus
+group	0
+image	3914	240	117	0937a0b2	Steveoc 86, CC BY-SA 3.0
+source	Wikidata
+end

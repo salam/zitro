@@ -1,0 +1,7 @@
+ZDS1	huallasaurus	Q111015270
+name	Huallasaurus
+group	0
+image	4607	240	92	9101164d	Connor Ashbridge, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

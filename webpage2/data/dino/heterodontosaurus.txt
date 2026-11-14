@@ -1,0 +1,7 @@
+ZDS1	heterodontosaurus	Q131188
+name	Heterodontosaurus
+group	0
+image	9408	240	117	cf62310b	Kyknoord from Cape Town, South Africa, CC BY 2.0
+length	120	120
+source	Wikidata
+end

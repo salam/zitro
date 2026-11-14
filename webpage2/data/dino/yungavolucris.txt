@@ -1,0 +1,8 @@
+ZDS1	yungavolucris	Q8061277
+name	Yungavolucris
+group	1
+image	2003	83	117	576e0e1e	Neil Pezzoni, CC BY 4.0
+lived	70600000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

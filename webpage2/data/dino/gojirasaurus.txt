@@ -1,0 +1,7 @@
+ZDS1	gojirasaurus	Q134199
+name	Gojirasaurus
+group	0
+image	4191	188	117	a66ca732	Nobu Tamura, CC BY 3.0
+named	1997
+source	Wikidata
+end

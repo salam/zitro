@@ -1,0 +1,7 @@
+ZDS1	camposipterus	Q13438683
+name	Camposipterus
+group	2
+image	4948	108	117	4128d988	CC BY 3.0
+named	2013
+source	Wikidata
+end

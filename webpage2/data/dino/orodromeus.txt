@@ -1,0 +1,8 @@
+ZDS1	orodromeus	Q134226
+name	Orodromeus
+group	0
+image	3216	240	94	b4caabc4	Tomopteryx, CC BY-SA 3.0
+length	200	200
+named	1988
+source	Wikidata
+end

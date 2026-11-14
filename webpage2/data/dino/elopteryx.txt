@@ -1,0 +1,6 @@
+ZDS1	elopteryx	Q17142719
+name	Elopteryx
+group	0
+image	9811	240	117	38117af1	-
+source	Wikidata
+end

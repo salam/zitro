@@ -1,0 +1,6 @@
+ZDS1	burianosaurus	Q11292856
+name	Burianosaurus
+group	0
+image	1904	71	117	2fe78543	Vladimir Socha (Meridas), CC BY-SA 3.0
+source	Wikidata
+end

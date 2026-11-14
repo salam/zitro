@@ -1,0 +1,7 @@
+ZDS1	alexandronectes	Q52984900
+name	Alexandronectes
+group	3
+image	2784	240	68	feebfbe8	Connor Ashbridge, CC BY-SA 4.0
+named	2016
+source	Wikidata
+end

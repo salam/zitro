@@ -1,0 +1,6 @@
+ZDS1	seitaad	Q2451962
+name	Seitaad
+group	0
+image	4686	240	87	03d3e565	Joseph J. W. Sertich, Mark A. Loewen, CC BY 2.5
+source	Wikidata
+end

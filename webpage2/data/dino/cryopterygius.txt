@@ -1,0 +1,8 @@
+ZDS1	cryopterygius	Q5190548
+name	Cryopterygius
+group	3
+image	5879	137	117	05a20307	Daniel Tyborowski, CC BY 2.0
+length	550	550
+named	2012
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	scanisaurus	Q7430040
+name	Scanisaurus
+group	3
+image	3016	151	117	a4a186fd	Ichthyovenator, CC BY-SA 4.0
+length	500	500
+lived	80500000	75000000
+named	1960
+era	Kreide	Cretaceous
+source	Wikidata
+end

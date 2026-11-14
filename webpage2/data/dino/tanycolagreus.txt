@@ -1,0 +1,9 @@
+ZDS1	tanycolagreus	Q1826774
+name	Tanycolagreus
+group	0
+image	3660	240	87	79a9e8c6	PaleoNeolitic, CC BY 4.0
+length	400	400
+mass	120000	120000
+named	2005
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	cerebavis	Q16858744
+name	Cerebavis
+group	1
+lived	122000000	97000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

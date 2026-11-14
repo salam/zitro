@@ -1,0 +1,9 @@
+ZDS1	dracovenator	Q60778
+name	Dracovenator
+group	0
+image	5374	240	117	c90867d4	Antonio Rares Mihaila, CC BY-SA 4.0
+lived	201000000	199000000
+named	2005
+era	Jura	Jurassic
+source	Wikidata
+end

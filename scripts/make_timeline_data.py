@@ -12,15 +12,16 @@ Run with a Python that has Pillow, from anywhere:
                                  after looking at the sheets: from then on a changed file is refused.
 
 What it guarantees, or else it leaves the event out:
-- A date comes from Wikidata (see date_of), and matches the person's expectation in the allow-list.
+- A date comes from Wikidata (see date_of), or, where Wikidata has none, from a sentence quoted from a
+  named Wikipedia revision (see wikipedia_date). It matches the person's expectation in the allow-list.
 - An image is exactly the one in the allow-list, pinned by SHA-1, and has a licence that allows use.
 - The label comes from Wikidata (short name if there is one) and fits the device's font range.
 
 Output per topic, read by sketch_jan12a/timeline_core.h:
     <id>.txt   UTF-8, tab-separated. First line: ZTL1, id, subject QID, title DE, title EN, event count,
                bundle bytes. Then one line per event: QID, year, end year or -, flags (1 circa, 2 the
-               year is a birth), label DE, label EN, image offset, image length, width, height,
-               FNV-1a of the image in hex, credit.
+               year is a birth, 4 the date is from Wikipedia), label DE, label EN, image offset, image
+               length, width, height, FNV-1a of the image in hex, credit.
                No image: offset, length, width, height are 0, hash and credit are -.
     <id>.jpgs  The event pictures, baseline JPEGs one after the other.
 Also credits.html (who made every picture, licence, link) and timeline_topics.h in the sketch.
@@ -37,6 +38,7 @@ import subprocess
 import sys
 import time
 import urllib.parse
+from decimal import Decimal
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT_DIR = os.path.join(ROOT, "webpage2", "data", "timeline")
@@ -46,6 +48,7 @@ PINS = os.path.join(ROOT, "scripts", "make_timeline_pins.py")
 USER_AGENT = "Zitro-timeline-builder/1.0 (+https://zitro.spot)"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
+WIKIPEDIA_API = "https://%s.wikipedia.org/w/api.php"
 
 # Order matters: the start of something is its place on a timeline, so a war's end date in P585
 # (World War I has one) doesn't move it.
@@ -53,6 +56,9 @@ DATE_PROPS = ["P580", "P585", "P571", "P575", "P619", "P606", "P1619", "P729", "
 END_PROP = "P582"
 CIRCA = "Q5727902"  # Qualifier P1480 "sourcing circumstances": circa
 MIN_PRECISION = 9  # Year. Deep time sets its own in the topic: millions of years
+YEAR_LIMIT = 5_000_000_000  # Years either side of year 0 that the device takes (a signed 64-bit year)
+COARSE_PRECISION = 3  # Wikidata precision 3 is a million years; anything coarser is a rough figure
+DEEP_TIME = 1_000_000  # From this many years back the device writes millions of years, before that a year
 
 IMAGE_W, IMAGE_H = 240, 96  # The picture band on screen; the device draws at exactly this size
 MAX_EVENTS = 20
@@ -178,8 +184,10 @@ def statements(entity, prop):
     return preferred or usable
 
 
-def date_of(entity, min_precision, props):
-    """The event's (year, end year or None, circa flag, property), or a reason why not."""
+def date_of(entity, min_precision, props, coarse_circa=False):
+    """The event's (year, end year or None, circa flag, property), or a reason why not.
+    coarse_circa marks a year as circa where Wikidata knows it less exactly than the device writes it:
+    to a million years in deep time, to the year after that."""
     for prop in props:
         claims = statements(entity, prop)
         if not claims:
@@ -197,12 +205,12 @@ def date_of(entity, min_precision, props):
         (year, precision), claim = values[0]
         if precision < min_precision:
             return "%s precision %d is too coarse" % (prop, precision)
-        if year == 0 or not -(2**31) < year < 2**31:
+        if year == 0 or abs(year) > YEAR_LIMIT:
             return "%s year %d doesn't fit" % (prop, year)
         circa = any(
             q.get("datavalue", {}).get("value", {}).get("id") == CIRCA
             for q in claim.get("qualifiers", {}).get("P1480", [])
-        )
+        ) or (coarse_circa and precision < (COARSE_PRECISION if year <= -DEEP_TIME else MIN_PRECISION))
         end = None
         end_years = set()
         for end_claim in statements(entity, END_PROP) if prop == "P580" else []:
@@ -213,6 +221,99 @@ def date_of(entity, min_precision, props):
             end = next(iter(end_years))
         return year, end, circa, prop
     return "no usable date"
+
+
+SCALES = {"billion": 10**9, "milliarde": 10**9, "milliarden": 10**9, "mrd": 10**9,
+          "million": 10**6, "millionen": 10**6, "mio": 10**6, "thousand": 10**3, "tausend": 10**3}
+NUMBER = re.compile(r"(\d+(?:[.,]\d+)*)(?:\s*(billion|milliarden?|mrd\.?|million(?:en)?|mio\.?|thousand|tausend)(?![a-z]))?",
+                    re.I)
+RANGE_WORDS = {"-", "\u2013", "\u2014", "to", "and", "or"}
+
+
+def wikitext_plain(text):
+    """Wikitext as the plain sentence a reader sees: no refs, templates or link markup."""
+    text = re.sub(r"<!--.*?-->", "", text, flags=re.S)
+    text = re.sub(r"<ref[^>]*/>|<ref[^>]*>.*?</ref>", "", text, flags=re.S | re.I)
+
+    def template(match):
+        parts = [p.strip() for p in match.group(1).split("|")]
+        if parts[0].lower() != "convert" or len(parts) < 3:
+            return ""
+        if len(parts) > 4 and parts[2] in RANGE_WORDS:
+            return "%s-%s %s" % (parts[1], parts[3], parts[4])
+        return "%s %s" % (parts[1], parts[2])
+
+    previous = None
+    while previous != text:  # innermost first
+        previous = text
+        text = re.sub(r"\{\{([^{}]*)\}\}", template, text)
+    text = re.sub(r"\[\[(?:[^\]|]*\|)?([^\]]*)\]\]", r"\1", text)
+    text = re.sub(r"<[^>]+>|'{2,}", "", text)
+    text = html.unescape(text)  # a non-breaking space then counts as a space below
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def numbers_in(sentence):
+    """Every value the sentence states, as whole numbers, each written number read one way only.
+    Before a scale word the separator is a decimal mark ("3.5 billion", "3,5 Milliarden"); without
+    one it separates thousands ("300,000", "300.000") and anything else is not a whole number."""
+    values = set()
+    for match in NUMBER.finditer(sentence):
+        digits, word = match.groups()
+        if word:
+            if len(re.findall(r"[.,]", digits)) > 1:
+                continue
+            reading, scale = digits.replace(",", "."), SCALES[word.lower().rstrip(".")]
+        elif re.fullmatch(r"\d{1,3}(?:[.,]\d{3})+", digits):
+            reading, scale = re.sub(r"[.,]", "", digits), 1
+        elif digits.isdigit():
+            reading, scale = digits, 1
+        else:
+            continue
+        value = Decimal(reading) * scale
+        if value == value.to_integral_value():
+            values.add(int(value))
+    return values
+
+
+def check_date_sentence(sentence, year, revision_plain):
+    """None if the sentence stands in the revision's text and states the year, otherwise why not."""
+    quoted = re.sub(r"\s+", " ", sentence).strip()
+    if not quoted or quoted not in re.sub(r"\s+", " ", revision_plain):
+        return "the sentence is not in that revision"
+    if abs(year) not in numbers_in(quoted):
+        return "the sentence has no number for %d" % abs(year)
+    return None
+
+
+def revision_plain(client, lang, title, revid):
+    """The plain text of one Wikipedia revision, or None if that revision is not of the page `title`."""
+    data = client.api(
+        WIKIPEDIA_API % lang,
+        {"action": "query", "prop": "revisions", "revids": str(revid), "rvprop": "content", "rvslots": "main",
+         "formatversion": "2"},
+    )
+    for page in data.get("query", {}).get("pages", []):
+        if page.get("title", "").replace("_", " ") != title.replace("_", " "):
+            return None
+        for revision in page.get("revisions", []):
+            content = revision.get("slots", {}).get("main", {}).get("content")
+            if content is not None:
+                return wikitext_plain(content)
+    return None
+
+
+def wikipedia_date(client, source):
+    """(year, circa) from a sentence quoted from a named Wikipedia revision, or a reason why not.
+    A year found this way is always circa: such a sentence says "about"."""
+    year = source["year"]
+    if year == 0 or abs(year) > YEAR_LIMIT:
+        return "year %d doesn't fit" % year
+    text = revision_plain(client, source["lang"], source["title"], source["revid"])
+    if text is None:
+        return "revision %d is not of the page %s:%s" % (source["revid"], source["lang"], source["title"])
+    problem = check_date_sentence(source["sentence"], year, text)
+    return problem or (year, True)
 
 
 def clean_label(text):
@@ -254,6 +355,24 @@ def strip_html(text):
     # Wiki leftovers in a name
     text = re.sub(r"^(\w+:)?User:", "", text)
     return re.sub(r"\s*\(\s*(Diskussion|talk)\s*\)", "", text).strip()
+
+
+# An e-mail address, with a label before it ("email:", "Contact: "), and the bare "( e-mail )" some makers write
+EMAIL = re.compile(r"(?:\b(?:e-?mail|contact)\s*:\s*)?[^\s()<>,;:@]+@[^\s()<>,;@]+|\(\s*e-?mail\s*\)", re.I)
+
+
+def without_emails(text):
+    """The maker's text for a public page: Commons' text with no e-mail address. Web addresses stay, and so
+    does everything else; the brackets and commas an address leaves behind go with it. A text with no address
+    comes back as it is."""
+    if not EMAIL.search(text or ""):
+        return text or ""
+    text = EMAIL.sub(" ", text)
+    text = re.sub(r"\(\s*[,;]\s*", "(", text)  # "(, site)" -> "(site)"
+    text = re.sub(r"\s*[,;]\s*\)", ")", text)  # "(Name, )" -> "(Name)"
+    text = re.sub(r"\(\s*\)", " ", text)
+    text = re.sub(r"\(\s+", "(", re.sub(r"\s+\)", ")", text))
+    return re.sub(r"\s+", " ", text).strip(" ,;")
 
 
 def commons_info(client, names):
@@ -325,8 +444,9 @@ def device_credit(file_info):
     return credit if len(credit.encode()) <= CREDIT_LIMIT else licence
 
 
-def prepare_image(data, fit):
-    """Exactly-sized baseline JPEG: RGB, no metadata, which is what TJpgDec on the device needs."""
+def prepare_image(data, fit, width=IMAGE_W, height=IMAGE_H):
+    """Exactly-sized baseline JPEG: RGB, no metadata, which is what TJpgDec on the device needs.
+    width and height give the target box: the timeline's picture band by default."""
     from PIL import Image
 
     Image.MAX_IMAGE_PIXELS = 40_000_000
@@ -337,17 +457,17 @@ def prepare_image(data, fit):
         backdrop = Image.new("RGBA", image.size, (255, 255, 255, 255))
         image = Image.alpha_composite(backdrop, image)
     image = image.convert("RGB")
-    width, height = image.size
+    src_w, src_h = image.size
     if fit == "cover":
-        scale = max(IMAGE_W / width, IMAGE_H / height)
-        size = (max(IMAGE_W, round(width * scale)), max(IMAGE_H, round(height * scale)))
+        scale = max(width / src_w, height / src_h)
+        size = (max(width, round(src_w * scale)), max(height, round(src_h * scale)))
         image = image.resize(size, Image.LANCZOS)
-        left = (size[0] - IMAGE_W) // 2
-        top = (size[1] - IMAGE_H) // 2
-        image = image.crop((left, top, left + IMAGE_W, top + IMAGE_H))
+        left = (size[0] - width) // 2
+        top = (size[1] - height) // 2
+        image = image.crop((left, top, left + width, top + height))
     else:
-        scale = min(IMAGE_W / width, IMAGE_H / height)
-        image = image.resize((max(1, round(width * scale)), max(1, round(height * scale))), Image.LANCZOS)
+        scale = min(width / src_w, height / src_h)
+        image = image.resize((max(1, round(src_w * scale)), max(1, round(src_h * scale))), Image.LANCZOS)
     out = io.BytesIO()
     image.save(out, "JPEG", quality=JPEG_QUALITY, optimize=False, progressive=False, subsampling="4:2:0")
     return out.getvalue(), image.size
@@ -398,13 +518,24 @@ def resolve_topic(client, topic, entities):
         if not entity:
             print("  REJECT %s: no Wikidata item for that Wikipedia title" % name)
             continue
-        date = date_of(entity, min_precision, [item["prop"]] if item.get("prop") else DATE_PROPS)
+        date = date_of(entity, min_precision, [item["prop"]] if item.get("prop") else DATE_PROPS,
+                       topic.get("coarse_circa", False))
+        if item.get("wikipedia_date"):
+            # Approved only where Wikidata has no date, and Wikidata gains dates over time
+            if not isinstance(date, str):
+                print("  REJECT %s (%s): Wikidata has a usable date (%d, %s), so no Wikipedia date"
+                      % (name, entity["id"], date[0], date[3]))
+                continue
+            date = wikipedia_date(client, item["wikipedia_date"])
+            if not isinstance(date, str):
+                date = (date[0], None, date[1], "wikipedia")
         if isinstance(date, str):
             print("  REJECT %s (%s): %s" % (name, entity["id"], date))
             continue
         year, end, circa, prop = date
         if year != item["expect"]:
-            print("  REJECT %s (%s): Wikidata says %d, expected %d" % (name, entity["id"], year, item["expect"]))
+            print("  REJECT %s (%s): %s says %d, expected %d"
+                  % (name, entity["id"], "Wikipedia" if prop == "wikipedia" else "Wikidata", year, item["expect"]))
             continue
         label_en = label_of(entity, "en")
         label_de = label_of(entity, "de")
@@ -450,6 +581,11 @@ def check_image(topic, item, file_info, pins, config):
     return None
 
 
+def event_flags(event):
+    """The flags field of an event line: 1 circa, 2 the year is a birth, 4 the date is from Wikipedia."""
+    return (1 if event["circa"] else 0) + (2 if event["prop"] == "P569" else 0) + (4 if event["prop"] == "wikipedia" else 0)
+
+
 def build_topic(client, topic, events, infos, pins, config):
     """Returns the .txt and .jpgs contents and the credit entries."""
     bundle = bytearray()
@@ -484,7 +620,7 @@ def build_topic(client, topic, events, infos, pins, config):
         lines.append(
             "\t".join(
                 [event["qid"], str(event["year"]), str(event["end"]) if event["end"] else "-",
-                 str((1 if event["circa"] else 0) + (2 if event["prop"] == "P569" else 0)),
+                 str(event_flags(event)),
                  field(event["de"]), field(event["en"]),
                  str(offset), str(length), str(width), str(height), digest, field(credit)]
             )
@@ -492,26 +628,33 @@ def build_topic(client, topic, events, infos, pins, config):
     return lines, bytes(bundle), credits
 
 
-def write_credits(all_credits):
+def credits_page(all_credits):
+    """credits.html: maker, licence and file link of every picture. The maker is Commons' text without e-mail
+    addresses, which this public page must not republish."""
     rows = []
-    for name in sorted({c[2] for c in all_credits if "personality" in c[3]["restrictions"]}):
-        print("  note: %s shows a person whose rights may also apply (Commons: personality)" % name)
     for topic_id, event, name, info, credit in all_credits:
         rows.append(
             "<tr><td>%s</td><td>%s</td><td><a href=\"%s\">%s</a></td><td>%s</td><td>%s</td><td>%s</td></tr>"
             % tuple(html.escape(str(x), quote=True) for x in
-                    (topic_id, event["en"], info["page"], name, info["artist"] or "-", info["licence"], "resized"))
+                    (topic_id, event["en"], info["page"], name, without_emails(info["artist"]) or "-",
+                     info["licence"], "resized"))
         )
-    page = (
+    return (
         "<!DOCTYPE html>\n<html lang=\"en\"><head><meta charset=\"utf-8\"><title>Zitro timeline picture credits</title>"
         "</head><body><h1>Zitro timeline picture credits</h1>"
         "<p>Pictures come from Wikimedia Commons under the licence shown; each was resized and may be cropped to fit "
-        "the screen. Dates and names come from Wikidata (CC0).</p>"
+        "the screen. Dates and names come from Wikidata (CC0), except a few dates of the history-of-life timeline, "
+        "which come from pinned sentences of Wikipedia articles (CC BY-SA 4.0).</p>"
         "<table border=\"1\" cellpadding=\"4\"><tr><th>Timeline</th><th>Event</th><th>File</th><th>Author</th>"
         "<th>Licence</th><th>Changes</th></tr>\n" + "\n".join(rows) + "\n</table></body></html>\n"
     )
+
+
+def write_credits(all_credits):
+    for name in sorted({c[2] for c in all_credits if "personality" in c[3]["restrictions"]}):
+        print("  note: %s shows a person whose rights may also apply (Commons: personality)" % name)
     with open(os.path.join(OUT_DIR, "credits.html"), "w", encoding="utf-8") as f:
-        f.write(page)
+        f.write(credits_page(all_credits))
 
 
 def write_topics_header(topic_ids):
@@ -633,9 +776,9 @@ def main():
             print("  SKIP topic %s: only %d events" % (topic["id"], len(events)))
             continue
         subject = entities.get(topic["subject"])
-        title_de = label_of(subject, "de") if subject else None
-        title_en = label_of(subject, "en") if subject else None
-        if not title_de or not title_en:
+        title_de = topic.get("title_de") or (label_of(subject, "de") if subject else None)
+        title_en = topic.get("title_en") or (label_of(subject, "en") if subject else None)
+        if not subject or not title_de or not title_en:
             print("  SKIP topic %s: no title from its subject item" % topic["id"])
             continue
         lines, bundle, credits = build_topic(client, topic, events, infos, pins, config)

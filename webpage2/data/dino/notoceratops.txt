@@ -1,0 +1,7 @@
+ZDS1	notoceratops	Q141611
+name	Notoceratops
+group	0
+image	3317	240	117	3f88b366	Ghedo, CC BY-SA 2.5
+named	1919
+source	Wikidata
+end

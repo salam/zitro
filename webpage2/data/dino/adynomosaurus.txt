@@ -1,0 +1,6 @@
+ZDS1	adynomosaurus	Q59490984
+name	Adynomosaurus
+group	0
+image	5383	240	117	5554e3ab	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

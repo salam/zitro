@@ -1,0 +1,7 @@
+ZDS1	tsaagan	Q133110
+name	Tsaagan
+group	0
+image	5607	156	117	4888535f	Carpenter, Kenneth, CC BY-SA 4.0
+named	2006
+source	Wikidata
+end

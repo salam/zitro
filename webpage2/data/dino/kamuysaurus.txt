@@ -1,0 +1,7 @@
+ZDS1	kamuysaurus	Q67170421
+name	Kamuysaurus
+group	0
+image	8115	154	117	444a855f	CC BY 4.0
+named	2019
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	viavenator	Q22811125
+name	Viavenator
+group	0
+image	4902	240	117	fefcc5e2	Paleocolour, CC BY-SA 4.0
+lived	86000000	83000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

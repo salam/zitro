@@ -1,0 +1,7 @@
+ZDS1	caudipteryx	Q131069
+name	Caudipteryx
+group	0
+length	100	100
+named	1998
+source	Wikidata
+end

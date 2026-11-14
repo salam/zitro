@@ -1,0 +1,8 @@
+ZDS1	niobrarasaurus	Q137591
+name	Niobrarasaurus
+group	0
+image	1762	50	117	04859c0d	Ghedoghedo, CC BY-SA 4.0
+lived	87000000	82000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	huaxiaosaurus	Q1939161
+name	Huaxiaosaurus
+group	0
+image	2782	69	117	7ca27568	Rolfmueller, CC BY-SA 3.0
+source	Wikidata
+end

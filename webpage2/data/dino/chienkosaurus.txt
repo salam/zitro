@@ -1,0 +1,7 @@
+ZDS1	chienkosaurus	Q3667794
+name	Chienkosaurus
+group	0
+image	4581	240	117	2d3b229b	Ghedoghedo, CC BY-SA 4.0
+named	1942
+source	Wikidata
+end

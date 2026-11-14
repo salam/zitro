@@ -1,0 +1,6 @@
+ZDS1	achillesaurus	Q132569
+name	Achillesaurus
+group	0
+image	3530	240	86	74b3f59b	Levi bernardo, CC BY-SA 3.0
+source	Wikidata
+end

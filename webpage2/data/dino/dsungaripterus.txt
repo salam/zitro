@@ -1,0 +1,10 @@
+ZDS1	dsungaripterus	Q132573
+name	Dsungaripterus
+group	2
+image	3167	100	117	96cf3e0f	H. Zell, CC BY-SA 3.0
+wingspan	350	350
+lived	145000000	100500000
+named	1964
+era	Kreide	Cretaceous
+source	Wikidata
+end

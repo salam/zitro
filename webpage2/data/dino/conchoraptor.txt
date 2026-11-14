@@ -1,0 +1,8 @@
+ZDS1	conchoraptor	Q132558
+name	Conchoraptor
+group	0
+image	3556	178	117	75a45a34	PaleoNeolitic, CC BY 4.0
+length	150	150
+named	1986
+source	Wikidata
+end

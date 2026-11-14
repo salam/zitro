@@ -1,0 +1,13 @@
+ZDS1	tarbosaurus	Q2491
+name	Tarbosaurus
+group	0
+image	3897	240	117	b93b7e19	GgfHghf, CC BY-SA 4.0
+length	1000	1000
+named	1955
+era	Kreide	Cretaceous
+meaning	furchterregende Echse	alarming lizard
+diet	Fleisch	Meat
+found	Mongolei und China	Mongolia and China
+fun	Im Verhältnis zur Körpergrösse hatte Tarbosaurus kleinere Arme als jeder andere Tyrannosaurier.	For its size, Tarbosaurus had smaller arms than any other tyrannosaurid.	Wikipedia (DE): Tarbosaurus
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,7 @@
+ZDS1	shri	Q117037494
+name	Shri
+group	0
+image	5383	240	117	d930266b	FunkMonk, CC BY-SA 3.0
+named	2021
+source	Wikidata
+end

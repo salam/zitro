@@ -1,0 +1,7 @@
+ZDS1	taleta	Q134604041
+name	Taleta
+group	0
+image	5026	240	117	c99db378	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

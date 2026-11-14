@@ -1,0 +1,7 @@
+ZDS1	boreopterus	Q311509
+name	Boreopterus
+group	2
+image	4718	157	117	5c3f8555	Dlyj0604, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

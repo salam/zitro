@@ -1,0 +1,15 @@
+ZDS1	argentinosaurus	Q130859
+name	Argentinosaurus
+group	0
+image	4212	240	117	c64873e6	Nobu Tamura, CC BY 3.0
+length	3500	3500
+height	2100	2100
+mass	73000000	100000000
+speed	72	72
+named	1993
+era	Kreide	Cretaceous
+meaning	Echse aus Argentinien	lizard from Argentina
+found	Neuquén (Argentinien)	Neuquén (Argentina)
+fun	Argentinosaurus war eines der grössten Landtiere: geschätzt über 35 m lang, etwa 73 Tonnen schwer.	Argentinosaurus was one of the largest land animals: estimated at over 35 metres and about 73 tonnes.	Wikipedia (DE): Argentinosaurus
+source	Wikidata, Wikipedia
+end

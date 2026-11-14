@@ -1,0 +1,10 @@
+ZDS1	trinacromerum	Q2715504
+name	Trinacromerum
+group	3
+image	4934	240	117	01cdf5b8	Nobu Tamura, CC BY 2.5
+length	300	300
+lived	100500000	66000000
+named	1888
+era	Kreide	Cretaceous
+source	Wikidata
+end

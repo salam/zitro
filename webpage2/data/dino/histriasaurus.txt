@@ -1,0 +1,6 @@
+ZDS1	histriasaurus	Q2154447
+name	Histriasaurus
+group	0
+image	2969	69	117	8690b67d	Carpenter, Kenneth, CC BY-SA 4.0
+source	Wikidata
+end

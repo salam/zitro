@@ -1,0 +1,8 @@
+ZDS1	yaguarasaurus	Q28546879
+name	Yaguarasaurus
+group	3
+image	4742	240	65	ecbae247	Columbianus, CC BY-SA 4.0
+length	500	500
+named	1994
+source	Wikidata
+end

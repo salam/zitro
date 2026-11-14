@@ -1,0 +1,4 @@
+ZDX1	ro	3
+rocasaurus	rocasaurus
+rocasaurus muniozi	rocasaurus
+romeosaurus	romeosaurus

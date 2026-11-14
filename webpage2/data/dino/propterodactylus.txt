@@ -1,0 +1,7 @@
+ZDS1	propterodactylus	Q127726607
+name	Propterodactylus
+group	2
+image	5938	177	117	aead7b26	Ghedoghedo, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

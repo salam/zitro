@@ -1,0 +1,7 @@
+ZDS1	abydosaurus	Q18511044
+name	Abydosaurus
+group	0
+image	4877	169	117	942e8da7	Nobu Tamura, CC BY-SA 3.0
+named	2010
+source	Wikidata
+end

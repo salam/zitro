@@ -1,0 +1,7 @@
+ZDS1	itemirus	Q2361675
+name	Itemirus
+group	0
+image	4630	99	117	c49b0277	Ghedoghedo, CC BY-SA 4.0
+named	1976
+source	Wikidata
+end

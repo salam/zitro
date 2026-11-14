@@ -1,0 +1,6 @@
+ZDS1	adamantisaurus	Q285364
+name	Adamantisaurus
+group	0
+image	4090	240	67	c018341b	Karkemish, CC BY-SA 3.0
+source	Wikidata
+end

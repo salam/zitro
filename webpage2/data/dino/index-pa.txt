@@ -1,0 +1,83 @@
+ZDX1	pa	82
+pachycephalosaurus	pachycephalosaurus
+pachycephalosaurus grangeri	pachycephalosaurus
+pachycephalosaurus spinifer	stygimoloch
+pachycephalosaurus wyomingensis	pachycephalosaurus
+pachycostasaurus	pachycostasaurus
+pachycostasaurus dawni	pachycostasaurus
+pachyrhinosaurus	pachyrhinosaurus
+pachyrhinosaurus canadensis	pachyrhinosaurus
+pachyrhinosaurus lakustai	pachyrhinosaurus
+pachyrhinosaurus perotorum	pachyrhinosaurus
+padillasaurus	padillasaurus
+pahasapasaurus	pahasapasaurus
+pahasapasaurus haasi	pahasapasaurus
+palmulasaurus	palmulasaurus
+palmulasaurus quadratus	palmulasaurus
+paludititan	paludititan
+paluxysaurus	paluxysaurus
+paluxysaurus jonesi	paluxysaurus
+pampadromaeus	pampadromaeus
+pampadromaeus barberenai	pampadromaeus
+pamparaptor	pamparaptor
+pamparaptor micros	pamparaptor
+panguraptor	panguraptor
+panguraptor lufengensis	panguraptor
+pannoniasaurus	pannoniasaurus
+pannoniasaurus inexpectatus	pannoniasaurus
+panoplosaurus	panoplosaurus
+panoplosaurus mirus	panoplosaurus
+panphagia	panphagia
+panphagia protos	panphagia
+pant y draco	pantydraco
+pantosaurus	pantosaurus
+pantosaurus striatus	pantosaurus
+pantydraco	pantydraco
+pantydraco caducus	pantydraco
+papageienechse	psittacosaurus
+papiliovenator	papiliovenator
+papiliovenator neimengguensis	papiliovenator
+parahesperornis	parahesperornis
+parahesperornis alexi	parahesperornis
+paralitherizinosaurus	paralitherizinosaurus
+paralitherizinosaurus japonicus	paralitherizinosaurus
+paralititan	paralititan
+paralititan stromeri	paralititan
+paranthodon	paranthodon
+paranthodon africanus	paranthodon
+parapengornis	parapengornis
+parapengornis eurycaudatus	parapengornis
+parapsicephalus	parapsicephalus
+parapsicephalus purdoni	parapsicephalus
+pararhabdodon	pararhabdodon
+pararhabdodon isonensis	pararhabdodon
+parasaurolophus	parasaurolophus
+parasaurolophus cyrtocristatus	parasaurolophus
+parasaurolophus tubicen	parasaurolophus
+parasaurolophus walkeri	parasaurolophus
+paraspheroolithus	paraspheroolithus
+paraxenisaurus	paraxenisaurus
+paraxenisaurus normalensis	paraxenisaurus
+parksosaurus	parksosaurus
+parksosaurus warrenae	parksosaurus
+paronychodon	paronychodon
+paronychodon caperatus	paronychodon
+paronychodon lacustris	paronychodon
+parvavis	parvavis
+parvavis chuxiongensis	parvavis
+parvicursor	parvicursor
+parvicursor remotus	parvicursor
+parvinatator	parvinatator
+patagonykus	patagonykus
+patagonykus puertai	patagonykus
+patagopelta	patagopelta
+patagopelta cristata	patagopelta
+patagopteryx	patagopteryx
+patagopteryx deferrariisi	patagopteryx
+patagopteryx deferrarisii	patagopteryx
+patagosaurus	patagosaurus
+patagosaurus fariasi	patagosaurus
+patagotitan	patagotitan
+patagotitan mayorum	patagotitan
+pawpawsaurus	pawpawsaurus
+pawpawsaurus campbelli	pawpawsaurus

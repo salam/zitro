@@ -1,0 +1,6 @@
+ZDS1	camelotia	Q29014894
+name	Camelotia
+group	0
+image	1748	38	117	aa7e0b02	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

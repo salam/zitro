@@ -1,0 +1,14 @@
+ZDS1	plateosaurus	Q131046
+name	Plateosaurus
+group	0
+image	6670	240	117	a3ee0a27	FunkMonk, CC BY-SA 3.0
+length	700	700
+lived	214000000	204000000
+named	1837
+era	Trias	Triassic
+meaning	wohl breite Echse	probably broad lizard
+diet	Pflanzen	Plants
+found	vor allem Mitteleuropa	Mainly Central Europe
+fun	Plateosaurus hat man an über 50 Orten gefunden, auch in Frick in der Schweiz.	Plateosaurus has been found in over 50 places, including Frick in Switzerland.	Wikipedia (EN): Plateosaurus
+source	Wikidata, Wikipedia
+end

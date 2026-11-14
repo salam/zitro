@@ -1,0 +1,6 @@
+ZDS1	zapsalis	Q2306005
+name	Zapsalis
+group	0
+image	3373	111	117	f31b89bc	Derek W. Larson, Philip J. Currie, CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	titanoceratops	Q134986
+name	Titanoceratops
+group	0
+image	5311	152	117	f5587528	-
+named	2011
+source	Wikidata
+end

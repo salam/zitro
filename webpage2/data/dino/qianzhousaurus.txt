@@ -1,0 +1,9 @@
+ZDS1	qianzhousaurus	Q16777007
+name	Qianzhousaurus
+group	0
+image	4266	240	117	dccd2455	PaleoGeekSquared, CC BY-SA 4.0
+lived	72000000	66000000
+named	2014
+era	Kreide	Cretaceous
+source	Wikidata
+end

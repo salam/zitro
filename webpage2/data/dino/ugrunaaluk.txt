@@ -1,0 +1,7 @@
+ZDS1	ugrunaaluk	Q21006710
+name	Ugrunaaluk
+group	0
+image	10297	240	117	aeaeec88	Rodney, CC BY 2.0
+named	2016
+source	Wikidata
+end

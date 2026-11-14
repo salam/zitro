@@ -1,0 +1,7 @@
+ZDS1	eoabelisaurus	Q135114
+name	Eoabelisaurus
+group	0
+image	7601	240	117	0c3aa440	Conty, CC BY-SA 3.0
+named	2012
+source	Wikidata
+end

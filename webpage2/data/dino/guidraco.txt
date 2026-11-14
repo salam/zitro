@@ -1,0 +1,7 @@
+ZDS1	guidraco	Q149725
+name	Guidraco
+group	2
+image	9919	240	117	24fea22a	Ghedoghedo, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	galveosaurus	Q2154760
+name	Galveosaurus
+group	0
+image	5797	240	117	d3c17bee	Ferrutxo, CC BY-SA 4.0
+lived	163500000	100500000
+era	Jura bis Kreide	Jurassic to Cretaceous
+source	Wikidata
+end

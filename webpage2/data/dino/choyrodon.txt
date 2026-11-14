@@ -1,0 +1,7 @@
+ZDS1	choyrodon	Q55949103
+name	Choyrodon
+group	0
+image	4660	96	117	48329921	Terry A. Gates, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

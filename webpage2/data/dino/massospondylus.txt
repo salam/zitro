@@ -1,0 +1,8 @@
+ZDS1	massospondylus	Q191339
+name	Massospondylus
+group	0
+image	3034	115	117	ed95d3b5	Nobu Tamura, CC BY 3.0
+length	400	400
+named	1854
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	hierosaurus	Q3785503
+name	Hierosaurus
+group	0
+image	2375	120	117	fe097ceb	Ghedoghedo, CC BY-SA 4.0
+lived	87000000	82000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

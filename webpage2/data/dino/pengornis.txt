@@ -1,0 +1,6 @@
+ZDS1	pengornis	Q14947755
+name	Pengornis
+group	1
+image	4647	140	117	19591f2a	Jonathan Chen, CC BY 4.0
+source	Wikidata
+end

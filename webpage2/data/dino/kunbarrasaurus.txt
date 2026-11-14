@@ -1,0 +1,7 @@
+ZDS1	kunbarrasaurus	Q21685996
+name	Kunbarrasaurus
+group	0
+image	5850	150	117	5d34f10c	-
+named	2015
+source	Wikidata
+end

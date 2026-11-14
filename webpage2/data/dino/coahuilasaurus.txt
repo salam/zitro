@@ -1,0 +1,7 @@
+ZDS1	coahuilasaurus	Q130215835
+name	Coahuilasaurus
+group	0
+image	4995	240	90	942c42b3	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

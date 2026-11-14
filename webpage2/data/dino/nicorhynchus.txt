@@ -1,0 +1,7 @@
+ZDS1	nicorhynchus	Q99753010
+name	Nicorhynchus
+group	2
+image	4577	91	117	41da6151	Borja Holgado and Rodrigo V. Pegas, CC BY 4.0
+named	2020
+source	Wikidata
+end

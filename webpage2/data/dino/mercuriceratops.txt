@@ -1,0 +1,6 @@
+ZDS1	mercuriceratops	Q16934814
+name	Mercuriceratops
+group	0
+image	7059	240	117	a4d0aa26	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

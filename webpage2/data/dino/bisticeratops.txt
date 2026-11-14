@@ -1,0 +1,7 @@
+ZDS1	bisticeratops	Q113534609
+name	Bisticeratops
+group	0
+image	5077	240	117	f08e16a1	Skye McDavid, CC BY 4.0
+named	2022
+source	Wikidata
+end

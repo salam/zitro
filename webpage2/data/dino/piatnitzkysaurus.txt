@@ -1,0 +1,10 @@
+ZDS1	piatnitzkysaurus	Q134195
+name	Piatnitzkysaurus
+group	0
+image	8323	240	117	a5544147	Nestor Galina from Comodoro Rivadavia, Argentina, CC BY 2.0
+length	420	420
+lived	166000000	164000000
+named	1979
+era	Jura	Jurassic
+source	Wikidata
+end

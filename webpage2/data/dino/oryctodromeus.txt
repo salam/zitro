@@ -1,0 +1,7 @@
+ZDS1	oryctodromeus	Q133146
+name	Oryctodromeus
+group	0
+image	7402	240	117	ab03371a	FunkMonk, CC BY-SA 3.0
+length	210	210
+source	Wikidata
+end

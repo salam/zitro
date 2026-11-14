@@ -1,0 +1,10 @@
+ZDS1	cryptoclidus	Q131153
+name	Cryptoclidus
+group	3
+image	2947	156	117	1f1ede09	Nobu Tamura, CC BY-SA 4.0
+length	800	800
+lived	166000000	145000000
+named	1892
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	eardasaurus	Q112128618
+name	Eardasaurus
+group	3
+image	6439	240	68	b30d9558	Ketchum, H.F. and Benson, R.B.J, CC BY 4.0
+named	2022
+source	Wikidata
+end

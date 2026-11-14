@@ -1,0 +1,7 @@
+ZDS1	eopolycotylus	Q2855209
+name	Eopolycotylus
+group	3
+image	4640	240	117	d9e2c733	Connor Ashbridge, CC BY-SA 4.0
+named	2007
+source	Wikidata
+end

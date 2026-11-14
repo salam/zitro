@@ -1,0 +1,7 @@
+ZDS1	magnipterygius	Q111167841
+name	Magnipterygius
+group	3
+image	3196	240	117	e38ac90b	-
+named	2022
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	ophthalmosaurus	Q131208
+name	Ophthalmosaurus
+group	3
+image	4220	240	117	3a338555	Nobu Tamura, CC BY 2.5
+length	600	600
+named	1874
+source	Wikidata
+end

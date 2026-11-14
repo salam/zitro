@@ -1,0 +1,8 @@
+ZDS1	limusaurus	Q132375
+name	Limusaurus
+group	0
+image	5117	240	117	fa6f4545	Nobu Tamura, CC BY 3.0
+lived	161000000	157000000
+era	Jura	Jurassic
+source	Wikidata
+end

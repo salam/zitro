@@ -1,0 +1,7 @@
+ZDS1	leptonectes	Q1014904
+name	Leptonectes
+group	3
+image	7314	240	117	f487be54	-
+named	1996
+source	Wikidata
+end

@@ -1,0 +1,29 @@
+ZDX1	yu	28
+yuanchuavis	yuanchuavis
+yuanmouraptor	yuanmouraptor
+yuanmouraptor jinshajiangensis	yuanmouraptor
+yuanmousaurus	yuanmousaurus
+yuanmousaurus jiangyiensis	yuanmousaurus
+yuanyanglong	yuanyanglong
+yuanyanglong bainian	yuanyanglong
+yueosaurus	yueosaurus
+yueosaurus tiantaiensis	yueosaurus
+yumenornis	yumenornis
+yunganglong	yunganglong
+yunganglong datongensis	yunganglong
+yungavolucris	yungavolucris
+yungavolucris brevipedalis	yungavolucris
+yunnanosaurus	yunnanosaurus
+yunnanosaurus huangi	yunnanosaurus
+yunnanosaurus robustus	yunnanosaurus
+yunnanosaurus youngi	yunnanosaurus
+yuornis	yuornis
+yuornis junchangi	yuornis
+yutyrannus	yutyrannus
+yutyrannus huali	yutyrannus
+yuxisaurus	yuxisaurus
+yuxisaurus kopchicki	yuxisaurus
+yuzhoulong	yuzhoulong
+yuzhoulong qurenensis	yuzhoulong
+yuzhoupliosaurus	yuzhoupliosaurus
+yuzhoupliosaurus chengjiangensis	yuzhoupliosaurus

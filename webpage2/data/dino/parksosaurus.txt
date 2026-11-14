@@ -1,0 +1,7 @@
+ZDS1	parksosaurus	Q134412
+name	Parksosaurus
+group	0
+image	5109	240	117	d0313f97	Steveoc 86, CC BY 2.5
+length	300	300
+source	Wikidata
+end

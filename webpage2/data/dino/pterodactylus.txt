@@ -1,0 +1,14 @@
+ZDS1	pterodactylus	Q309490
+name	Pterodactylus
+group	2
+image	4480	240	117	78f9e5ca	Matthew Martyniuk, CC BY-SA 4.0
+wingspan	104	104
+lived	150800000	148500000
+named	1815
+era	Jura	Jurassic
+meaning	Flügelfinger	wing finger
+diet	wohl kleine Fische, Tiere	Probably small fish, animals
+found	Bayern, Deutschland	Bavaria (Germany)
+fun	Pterodactylus war der erste Flugsaurier, der einen Namen bekam und als fliegendes Reptil erkannt wurde.	Pterodactylus was the first pterosaur to be named and recognised as a flying reptile.	Wikipedia (EN): Pterodactylus
+source	Wikidata, Wikipedia
+end

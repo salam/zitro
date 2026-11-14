@@ -1,0 +1,7 @@
+ZDS1	anzu	Q15966623
+name	Anzu
+group	0
+image	4514	240	117	851672bb	Fred Wierum, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

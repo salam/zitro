@@ -1,0 +1,6 @@
+ZDS1	chromogisaurus	Q878448
+name	Chromogisaurus
+group	0
+image	4242	240	77	658269dd	Maurissauro, CC BY-SA 4.0
+source	Wikidata
+end

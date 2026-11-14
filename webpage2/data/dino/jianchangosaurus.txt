@@ -1,0 +1,6 @@
+ZDS1	jianchangosaurus	Q18915959
+name	Jianchangosaurus
+group	0
+image	5284	147	117	19252675	CC BY 2.5
+source	Wikidata
+end

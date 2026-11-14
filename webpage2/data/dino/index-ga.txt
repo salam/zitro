@@ -1,0 +1,45 @@
+ZDX1	ga	44
+gadusaurus	gadusaurus
+gadusaurus aqualigneus	gadusaurus
+galeamopus	galeamopus
+galeamopus hayi	galeamopus
+galeamopus pabsti	galeamopus
+galgadraco	galgadraco
+galgadraco zephyrius	galgadraco
+gallardosaurus	gallardosaurus
+gallardosaurus iturraldei	gallardosaurus
+galleonosaurus	galleonosaurus
+galleonosaurus dorisae	galleonosaurus
+gallimimus	gallimimus
+gallimimus bullatus	gallimimus
+gallodactylus	gallodactylus
+galveosaurus	galveosaurus
+galvesaurus	galveosaurus
+gandititan	gandititan
+gannansaurus	gannansaurus
+gannansaurus sinensis	gannansaurus
+gansus	gansus
+gansus yumenensis	gansus
+gansus zheni	gansus
+ganzhousaurus	ganzhousaurus
+ganzhousaurus nankangensis	ganzhousaurus
+gargantuavis	gargantuavis
+gargantuavis philoinos	gargantuavis
+gargoyleosaurus	gargoyleosaurus
+gargoyleosaurus parkpinorum	gargoyleosaurus
+garudapterus	garudapterus
+garudapterus buffetauti	garudapterus
+garudimimidae	garudimimus
+garudimimus	garudimimus
+garudimimus brevipes	garudimimus
+garumbatitan	garumbatitan
+garumbatitan morellensis	garumbatitan
+gasosaurus	gasosaurus
+gasosaurus constructus	gasosaurus
+gasparinisaura	gasparinisaura
+gasparinisaura cincosaltensis	gasparinisaura
+gastonia	gastonia
+gastonia burgei	gastonia
+gastonia lorriemcwhinneyae	gastonia
+gavialimimus	gavialimimus
+gavialimimus almaghribensis	gavialimimus

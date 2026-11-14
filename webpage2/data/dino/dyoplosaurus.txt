@@ -1,0 +1,7 @@
+ZDS1	dyoplosaurus	Q1204948
+name	Dyoplosaurus
+group	0
+image	7223	240	117	48fb8820	Modified from Arbour et al. (in press), CC BY 2.5
+named	1924
+source	Wikidata
+end

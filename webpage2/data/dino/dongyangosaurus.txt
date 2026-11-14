@@ -1,0 +1,6 @@
+ZDS1	dongyangosaurus	Q1103610
+name	Dongyangosaurus
+group	0
+image	8186	176	117	87443b04	CC BY-SA 2.0
+source	Wikidata
+end

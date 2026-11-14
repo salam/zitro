@@ -1,0 +1,7 @@
+ZDS1	wulong	Q135072381
+name	Wulong
+group	0
+image	6201	178	117	dfcd2c00	CC BY 2.0
+named	2020
+source	Wikidata
+end

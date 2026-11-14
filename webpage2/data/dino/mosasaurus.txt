@@ -1,0 +1,13 @@
+ZDS1	mosasaurus	Q312131
+name	Mosasaurus
+group	3
+image	4051	240	117	c072a8dd	Nobu Tamura, CC BY-SA 4.0
+length	1800	1800
+lived	82000000	65000000
+named	1822
+era	Kreide	Cretaceous
+meaning	Echse von der Maas	lizard of the Meuse River
+diet	Fische, Haie, Meeresreptilien	Fish, sharks, marine reptiles
+fun	Die ersten Mosasaurus-Fossilien fand man bei Maastricht. Man hielt sie erst für Krokodile oder Wale.	The first Mosasaurus fossils were found near Maastricht. They were first taken for crocodiles or whales.	Wikipedia (EN): Mosasaurus
+source	Wikidata, Wikipedia
+end

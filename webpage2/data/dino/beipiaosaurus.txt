@@ -1,0 +1,7 @@
+ZDS1	beipiaosaurus	Q131225
+name	Beipiaosaurus
+group	0
+image	5241	240	117	636cbc40	PaleoNeolitic, CC BY 4.0
+length	200	200
+source	Wikidata
+end

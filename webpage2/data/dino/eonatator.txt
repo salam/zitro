@@ -1,0 +1,10 @@
+ZDS1	eonatator	Q968575
+name	Eonatator
+group	3
+image	5153	143	117	d62f2605	Nobu Tamura, CC BY 3.0
+length	280	280
+lived	84000000	72100000
+named	2005
+era	Kreide	Cretaceous
+source	Wikidata
+end

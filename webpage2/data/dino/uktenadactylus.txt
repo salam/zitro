@@ -1,0 +1,6 @@
+ZDS1	uktenadactylus	Q2749174
+name	Uktenadactylus
+group	2
+image	4985	109	117	c40bce9c	Borja Holgado and Rodrigo V. Pegas, CC BY 4.0
+source	Wikidata
+end

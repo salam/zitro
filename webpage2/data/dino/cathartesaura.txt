@@ -1,0 +1,8 @@
+ZDS1	cathartesaura	Q135219
+name	Cathartesaura
+group	0
+image	3169	93	117	b88343f1	Gallina, Pablo A. & Apesteguia, Sebastian, CC BY 3.0
+lived	97000000	93000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

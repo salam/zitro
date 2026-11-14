@@ -1,0 +1,7 @@
+ZDS1	antetonitrus	Q772043
+name	Antetonitrus
+group	0
+image	5237	240	117	ace127af	PaleoEquii, CC BY-SA 4.0
+named	2003
+source	Wikidata
+end

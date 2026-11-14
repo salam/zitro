@@ -1,0 +1,6 @@
+ZDS1	anatosaurus	Q1812623
+name	Anatosaurus
+group	0
+image	6648	240	117	9ba36951	-
+source	Wikidata
+end

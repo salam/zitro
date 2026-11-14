@@ -1,0 +1,6 @@
+ZDS1	chucarosaurus	Q116621259
+name	Chucarosaurus
+group	0
+image	3896	240	117	75ef485a	SlvrHwk, CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	panphagia	Q1076760
+name	Panphagia
+group	0
+image	4379	240	64	66a07ebb	Ricardo N. Martinez, Oscar A. Alcober, CC BY 2.5
+source	Wikidata
+end

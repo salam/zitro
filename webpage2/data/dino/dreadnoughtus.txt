@@ -1,0 +1,8 @@
+ZDS1	dreadnoughtus	Q17581455
+name	Dreadnoughtus
+group	0
+image	3774	240	78	1bcb9f2a	Matthew Martyniuk, CC BY-SA 4.0
+length	2600	2600
+named	2014
+source	Wikidata
+end

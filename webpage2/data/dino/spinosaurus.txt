@@ -1,0 +1,16 @@
+ZDS1	spinosaurus	Q130966
+name	Spinosaurus
+group	0
+image	3648	178	117	c9814f34	Petr Menshikov, CC BY-SA 4.0
+length	1400	1400
+height	550	550
+mass	17000000	17000000
+lived	130030000	93500000
+named	1915
+era	Kreide	Cretaceous
+meaning	Dornechse	spine lizard
+diet	wohl Fisch	Probably fish
+found	Nordafrika	North Africa
+fun	Spinosaurus hatte mindestens 1,69 m lange Rückenstacheln. Mit Haut bildeten sie wohl ein Segel.	Spinosaurus had back spines at least 1.69 m long. With skin, they probably formed a sail.	Wikipedia (DE): Spinosaurus
+source	Wikidata, Wikipedia
+end

@@ -1,0 +1,7 @@
+ZDS1	falcarius	Q18604594
+name	Falcarius
+group	0
+image	4963	240	117	60b26a2f	Paul Fisk from Salt Lake City, UT, USA, CC BY-SA 2.0
+named	2005
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	callawayasaurus	Q2634949
+name	Callawayasaurus
+group	3
+image	5018	146	117	9c904409	Petruss, CC BY-SA 3.0
+length	800	800
+named	1999
+source	Wikidata
+end

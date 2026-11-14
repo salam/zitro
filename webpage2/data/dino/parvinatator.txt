@@ -1,0 +1,10 @@
+ZDS1	parvinatator	Q7141334
+name	Parvinatator
+group	3
+image	4625	240	117	51f221ae	Ghedoghedo, CC BY-SA 3.0
+length	100	100
+lived	251000000	235000000
+named	1995
+era	Trias	Triassic
+source	Wikidata
+end

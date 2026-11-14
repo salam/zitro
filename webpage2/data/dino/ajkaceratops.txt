@@ -1,0 +1,6 @@
+ZDS1	ajkaceratops	Q3607281
+name	Ajkaceratops
+group	0
+image	4814	240	117	b5dab1c8	Crizz30, CC BY-SA 4.0
+source	Wikidata
+end

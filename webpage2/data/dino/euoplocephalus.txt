@@ -1,0 +1,11 @@
+ZDS1	euoplocephalus	Q130885
+name	Euoplocephalus
+group	0
+image	5065	240	84	748b3051	Nobu Tamura, CC BY-SA 3.0
+length	550	700
+mass	2500000	2500000
+lived	76400000	75600000
+named	1910
+era	Kreide	Cretaceous
+source	Wikidata
+end

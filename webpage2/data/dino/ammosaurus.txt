@@ -1,0 +1,7 @@
+ZDS1	ammosaurus	Q133181
+name	Ammosaurus
+group	0
+image	3061	66	117	4dfed96a	-
+length	500	500
+source	Wikidata
+end

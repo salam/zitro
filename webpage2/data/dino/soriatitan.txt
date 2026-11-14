@@ -1,0 +1,6 @@
+ZDS1	soriatitan	Q38830623
+name	Soriatitan
+group	0
+image	3077	150	117	1bf875cd	CC BY-SA 3.0
+source	Wikidata
+end

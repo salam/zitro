@@ -1,0 +1,6 @@
+ZDS1	zhongyuansaurus	Q135722
+name	Zhongyuansaurus
+group	0
+image	7652	176	117	f4e1bc8c	-
+source	Wikidata
+end

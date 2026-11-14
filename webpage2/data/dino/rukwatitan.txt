@@ -1,0 +1,7 @@
+ZDS1	rukwatitan	Q18010327
+name	Rukwatitan
+group	0
+image	2817	62	117	08decf3b	-
+named	2014
+source	Wikidata
+end

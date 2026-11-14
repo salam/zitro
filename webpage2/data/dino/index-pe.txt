@@ -1,0 +1,43 @@
+ZDX1	pe	42
+pectinodon	pectinodon
+pectinodon bakkeri	pectinodon
+pedopenna	pedopenna
+pedopenna daohugouensis	pedopenna
+pegomastax	pegomastax
+pegomastax africana	pegomastax
+pegomastax africanus	pegomastax
+pelecanimimus	pelecanimimus
+pelecanimimus polydon	pelecanimimus
+pelecanimimus polyodon	pelecanimimus
+pellegrinisaurus	pellegrinisaurus
+pellegrinisaurus powelli	pellegrinisaurus
+peloneustes	peloneustes
+peloneustes aequalis	peloneustes
+peloneustes evansi	peloneustes
+peloneustes philarchus	peloneustes
+peloroplites	peloroplites
+peloroplites cedrimontanus	peloroplites
+pelorosaurus	pelorosaurus
+pelorosaurus becklesii	pelorosaurus
+pelorosaurus conybearei	pelorosaurus
+pelorosaurus conybeari	pelorosaurus
+pendraig	pendraig
+pengornis	pengornis
+pentaceratops	pentaceratops
+pentaceratops aquilonius	pentaceratops
+pentaceratops sternbergi	pentaceratops
+pentaceratops sternbergii	pentaceratops
+perijasaurus	perijasaurus
+perijasaurus lapaz	perijasaurus
+pervushovisaurus	pervushovisaurus
+pervushovisaurus bannovkensis	pervushovisaurus
+pessopteryx	pessopteryx
+peteinosaurus	peteinosaurus
+peteinosaurus zambelli	peteinosaurus
+peteinosaurus zambellii	peteinosaurus
+petrobrasaurus	petrobrasaurus
+petrobrasaurus puestohernandezi	petrobrasaurus
+petrodactyle	petrodactyle
+petrodactyle wellnhoferi	petrodactyle
+petrustitan	petrustitan
+petrustitan hungaricus	petrustitan

@@ -1,0 +1,11 @@
+ZDS1	futabasaurus	Q141642
+name	Futabasaurus
+group	3
+image	6496	128	117	f395d7ce	Joyofmuseums, CC BY-SA 4.0
+length	920	920
+mass	4000000	4000000
+lived	86300000	83600000
+named	2006
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	nanshiungosaurus	Q131747
+name	Nanshiungosaurus
+group	0
+image	5663	240	117	2227c723	PaleoNeolitic, CC BY 4.0
+length	440	440
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	crichtonsaurus	Q135561
+name	Crichtonsaurus
+group	0
+image	9021	176	117	b7c75644	-
+source	Wikidata
+end

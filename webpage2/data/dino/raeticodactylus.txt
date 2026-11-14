@@ -1,0 +1,7 @@
+ZDS1	raeticodactylus	Q20672146
+name	Raeticodactylus
+group	2
+image	7151	157	117	f1d4ef50	ABelov2014, CC BY-SA 3.0
+named	2008
+source	Wikidata
+end

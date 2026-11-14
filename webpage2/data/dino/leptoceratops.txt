@@ -1,0 +1,10 @@
+ZDS1	leptoceratops	Q131328
+name	Leptoceratops
+group	0
+image	4098	178	117	0c14ae29	Nobu Tamura, CC BY 3.0
+length	300	300
+lived	66800000	66000000
+named	1914
+era	Kreide	Cretaceous
+source	Wikidata
+end

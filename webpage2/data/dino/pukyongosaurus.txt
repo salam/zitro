@@ -1,0 +1,7 @@
+ZDS1	pukyongosaurus	Q1141543
+name	Pukyongosaurus
+group	0
+image	3712	77	117	cafcf39c	CC BY-SA 3.0
+named	2001
+source	Wikidata
+end

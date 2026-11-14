@@ -1,0 +1,7 @@
+ZDS1	ratchasimasaurus	Q18641809
+name	Ratchasimasaurus
+group	0
+image	7211	156	117	45867303	Pescov, CC BY-SA 4.0
+length	1000	1000
+source	Wikidata
+end

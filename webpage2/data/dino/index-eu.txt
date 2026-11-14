@@ -1,0 +1,33 @@
+ZDX1	eu	32
+eucamerotus	eucamerotus
+eucamerotus foxi	eucamerotus
+eucercosaurus	eucercosaurus
+eucnemesaurus	eucnemesaurus
+eucnemesaurus entaxonis	eucnemesaurus
+eucnemesaurus fortis	eucnemesaurus
+eudimorphodon	eudimorphodon
+eudimorphodon ranzii	eudimorphodon
+eudimorphodon rosenfeldi	eudimorphodon
+euhelopus	euhelopus
+euoplocephalus	euoplocephalus
+euoplocephalus tutus	euoplocephalus
+eurazhdarcho	eurazhdarcho
+eurazhdarcho langendorfensis	eurazhdarcho
+eurhinosaurus	eurhinosaurus
+eurhinosaurus longirostris	eurhinosaurus
+eurhinosaurus mistelgauensis	eurhinosaurus
+euronychodon	euronychodon
+euronychodon asiaticus	euronychodon
+euronychodon portucalensis	euronychodon
+europasaurus	europasaurus
+europasaurus holgeri	europasaurus
+europatitan	europatitan
+europatitan eastwoodi	europatitan
+europejara	europejara
+europejara olcadesorum	europejara
+europelta	europelta
+europelta carbonensis	europelta
+eurycleidus	eurycleidus
+eurycleidus arcuatus	eurycleidus
+eustreptospondylus	eustreptospondylus
+eustreptospondylus oxoniensis	eustreptospondylus

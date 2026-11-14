@@ -1,0 +1,7 @@
+ZDS1	altirhinus	Q131732
+name	Altirhinus
+group	0
+image	3989	184	117	883e706a	Conty, CC BY 3.0
+named	1998
+source	Wikidata
+end

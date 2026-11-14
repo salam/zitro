@@ -1,0 +1,9 @@
+ZDS1	fukuiraptor	Q132536
+name	Fukuiraptor
+group	0
+image	5112	156	117	f9ece67f	-
+length	420	420
+lived	127000000	115000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	ondogurvel	Q110964964
+name	Ondogurvel
+group	0
+image	3798	240	117	c5b461e0	BipedalSarcopterygian201.3, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	liliensternus	Q132620
+name	Liliensternus
+group	0
+length	500	500
+lived	228000000	201000000
+named	1934
+era	Trias	Triassic
+source	Wikidata
+end

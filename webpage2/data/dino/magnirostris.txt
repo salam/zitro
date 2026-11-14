@@ -1,0 +1,7 @@
+ZDS1	magnirostris	Q134395
+name	Magnirostris
+group	0
+lived	84000000	72000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

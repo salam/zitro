@@ -1,0 +1,6 @@
+ZDS1	therosaurus	Q14920057
+name	Therosaurus
+group	0
+image	5024	127	117	11b0a324	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

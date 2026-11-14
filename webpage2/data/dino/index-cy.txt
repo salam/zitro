@@ -1,0 +1,7 @@
+ZDX1	cy	6
+cycnorhamphus	cycnorhamphus
+cycnorhamphus suevicus	cycnorhamphus
+cymbospondylus	cymbospondylus
+cymbospondylus buchseri	cymbospondylus
+cymbospondylus natans	cymbospondylus
+cymbospondylus youngorum	cymbospondylus

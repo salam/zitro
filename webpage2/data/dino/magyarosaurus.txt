@@ -1,0 +1,10 @@
+ZDS1	magyarosaurus	Q132556
+name	Magyarosaurus
+group	0
+image	3425	159	117	d253df4e	Tommy from Arad, CC BY 2.0
+length	500	500
+lived	71000000	66000000
+named	1932
+era	Kreide	Cretaceous
+source	Wikidata
+end

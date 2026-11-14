@@ -1,0 +1,7 @@
+ZDS1	datousaurus	Q139919
+name	Datousaurus
+group	0
+length	1500	1500
+named	1984
+source	Wikidata
+end

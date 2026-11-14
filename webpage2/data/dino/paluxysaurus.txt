@@ -1,0 +1,6 @@
+ZDS1	paluxysaurus	Q310722
+name	Paluxysaurus
+group	0
+image	5051	240	117	c104760a	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

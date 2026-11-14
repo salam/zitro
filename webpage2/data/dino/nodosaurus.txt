@@ -1,0 +1,11 @@
+ZDS1	nodosaurus	Q134209
+name	Nodosaurus
+group	0
+image	5564	240	91	e6ce43fe	Conty, CC BY 3.0
+length	500	600
+mass	3500000	3500000
+lived	100500000	97000000
+named	1889
+era	Kreide	Cretaceous
+source	Wikidata
+end

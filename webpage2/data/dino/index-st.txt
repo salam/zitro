@@ -1,0 +1,56 @@
+ZDX1	st	55
+staurikosaurus	staurikosaurus
+staurikosaurus pricei	staurikosaurus
+stegoceras	stegoceras
+stegoceras edmontonense	stegoceras
+stegoceras validum	stegoceras
+stegopelta	stegopelta
+stegopelta landerensis	stegopelta
+stegosaurus	stegosaurus
+stegosaurus armatus	stegosaurus
+stegosaurus longispinus	stegosaurus
+stegosaurus sp.	stegosaurus
+stegosaurus stenops	stegosaurus
+stegosaurus sulcatus	stegosaurus
+stegosaurus ungulatus	stegosaurus
+stegouros	stegouros
+stegouros elengassen	stegouros
+stelladens	stelladens
+stelladens mysteriosus	stelladens
+stellasaurus	stellasaurus
+stellasaurus ancellae	stellasaurus
+stenonychosaurus	troodon
+stenopelix	stenopelix
+stenopelix valdensis	stenopelix
+stenopterygius	stenopterygius
+stenopterygius acutirostris	stenopterygius
+stenopterygius crassicostatus	stenopterygius
+stenopterygius quadriscissus	stenopterygius
+stenopterygius sp.	stenopterygius
+stenorhynchosaurus	stenorhynchosaurus
+stenorhynchosaurus munozi	stenorhynchosaurus
+stephanosaurus	stephanosaurus
+sthenarosaurus	sthenarosaurus
+sthenarosaurus dawkinsi	sthenarosaurus
+stokesosaurus	stokesosaurus
+stokesosaurus clevelandi	stokesosaurus
+stormbergia	stormbergia
+stormbergia dangershoeki	stormbergia
+stratesaurus	stratesaurus
+stratesaurus taylori	stratesaurus
+streptospondylus	streptospondylus
+streptospondylus altdorfensis	streptospondylus
+struthiomimus	struthiomimus
+struthiomimus altus	struthiomimus
+struthiosaurus	struthiosaurus
+struthiosaurus austriacus	struthiosaurus
+struthiosaurus languedocensis	struthiosaurus
+struthiosaurus transsylvanicus	struthiosaurus
+stygimoloch	stygimoloch
+stygimoloch spinifer	stygimoloch
+styracosaurus	styracosaurus
+styracosaurus albertensis	styracosaurus
+styracosaurus ovatus	styracosaurus
+styxosaurus	styxosaurus
+styxosaurus browni	styxosaurus
+styxosaurus snowii	styxosaurus

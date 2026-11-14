@@ -1,0 +1,10 @@
+ZDS1	thalattoarchon	Q2756895
+name	Thalattoarchon
+group	3
+image	3195	157	117	83e037ba	DiBgd, CC BY-SA 4.0
+length	860	860
+lived	247200000	242000000
+named	2013
+era	Trias	Triassic
+source	Wikidata
+end

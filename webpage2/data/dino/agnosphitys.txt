@@ -1,0 +1,6 @@
+ZDS1	agnosphitys	Q134614
+name	Agnosphitys
+group	0
+image	4786	240	77	fa2d5829	Karkemish, CC BY 3.0
+source	Wikidata
+end

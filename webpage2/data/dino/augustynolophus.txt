@@ -1,0 +1,7 @@
+ZDS1	augustynolophus	Q17340197
+name	Augustynolophus
+group	0
+image	6805	185	117	103f67fa	Albert Prieto-Marquez and Jonathan R. Wagner, CC BY 2.0
+named	2014
+source	Wikidata
+end

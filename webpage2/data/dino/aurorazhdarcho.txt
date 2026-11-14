@@ -1,0 +1,7 @@
+ZDS1	aurorazhdarcho	Q18584827
+name	Aurorazhdarcho
+group	2
+image	5716	143	117	763b03b7	Ghedoghedo, CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

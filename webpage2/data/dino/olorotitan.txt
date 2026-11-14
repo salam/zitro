@@ -1,0 +1,8 @@
+ZDS1	olorotitan	Q132470
+name	Olorotitan
+group	0
+image	4014	161	117	5577f8cb	Durbed, CC BY-SA 3.0
+lived	72000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

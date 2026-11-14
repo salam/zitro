@@ -1,0 +1,7 @@
+ZDS1	albadraco	Q76448859
+name	Albadraco
+group	2
+image	3322	120	117	e1100fea	Connor Ashbridge, CC BY 4.0
+named	2019
+source	Wikidata
+end

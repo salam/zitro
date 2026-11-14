@@ -1,0 +1,6 @@
+ZDS1	dromaeosauroides	Q1933219
+name	Dromaeosauroides
+group	0
+image	5075	240	117	661dce0a	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,32 @@
+ZDX1	au	31
+aublysodon	aublysodon
+aublysodon cf. mirandus	aublysodon
+aublysodon molnari	aublysodon
+aucasaurus	aucasaurus
+aucasaurus garridoi	aucasaurus
+augustynolophus	augustynolophus
+auroraceratops	auroraceratops
+auroraceratops rugosus	auroraceratops
+aurorazhdarcho	aurorazhdarcho
+aurorazhdarcho micronyx	aurorazhdarcho
+aurorazhdarcho primordius	aurorazhdarcho
+aurornis	aurornis
+aurornis xui	aurornis
+aussiedraco	aussiedraco
+aussiedraco molnari	aussiedraco
+australodocus	australodocus
+australotitan	australotitan
+australotitan cooperensis	australotitan
+australovenator	australovenator
+australovenator wintonensis	australovenator
+austriadactylus	austriadactylus
+austriadactylus cristatus	austriadactylus
+austrocheirus	austrocheirus
+austrocheirus isasii	austrocheirus
+austroposeidon	austroposeidon
+austroposeidon magnificus	austroposeidon
+austroraptor	austroraptor
+austroraptor cabazai	austroraptor
+austroraptors	austroraptor
+austrosaurus	austrosaurus
+austrosaurus mckillopi	austrosaurus

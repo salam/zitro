@@ -1,0 +1,7 @@
+ZDS1	vesperopterylus	Q41652027
+name	Vesperopterylus
+group	2
+image	3800	166	117	40c0fd2e	Paleo Miguel, CC BY-SA 4.0
+named	2017
+source	Wikidata
+end

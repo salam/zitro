@@ -1,0 +1,7 @@
+ZDS1	neuquenornis	Q5228399
+name	Neuquenornis
+group	1
+image	2505	78	117	90e52f50	CC BY 4.0
+named	1994
+source	Wikidata
+end

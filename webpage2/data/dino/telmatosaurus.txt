@@ -1,0 +1,8 @@
+ZDS1	telmatosaurus	Q133856
+name	Telmatosaurus
+group	0
+image	10651	240	117	1460c92e	-
+length	500	500
+named	1903
+source	Wikidata
+end

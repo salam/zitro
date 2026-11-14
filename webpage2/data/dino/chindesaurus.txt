@@ -1,0 +1,7 @@
+ZDS1	chindesaurus	Q132579
+name	Chindesaurus
+group	0
+image	4868	240	117	969d1a3c	-
+length	400	400
+source	Wikidata
+end

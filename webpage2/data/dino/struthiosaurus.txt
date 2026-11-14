@@ -1,0 +1,10 @@
+ZDS1	struthiosaurus	Q136920
+name	Struthiosaurus
+group	0
+image	5039	145	117	00b6279d	Ghedoghedo, CC BY-SA 3.0
+length	250	250
+lived	85000000	66000000
+named	1871
+era	Kreide	Cretaceous
+source	Wikidata
+end

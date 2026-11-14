@@ -1,0 +1,6 @@
+ZDS1	ahshislepelta	Q1705974
+name	Ahshislepelta
+group	0
+image	3619	142	117	6187867b	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

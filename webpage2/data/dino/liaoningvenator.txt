@@ -1,0 +1,6 @@
+ZDS1	liaoningvenator	Q30115163
+name	Liaoningvenator
+group	0
+image	4417	186	117	51395c60	Tomopteryx, CC BY-SA 4.0
+source	Wikidata
+end

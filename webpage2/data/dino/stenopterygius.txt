@@ -1,0 +1,7 @@
+ZDS1	stenopterygius	Q134608
+name	Stenopterygius
+group	3
+length	315	315
+named	1904
+source	Wikidata
+end

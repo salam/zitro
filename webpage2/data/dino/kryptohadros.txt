@@ -1,0 +1,7 @@
+ZDS1	kryptohadros	Q138537431
+name	Kryptohadros
+group	0
+image	4720	240	84	bcfea36c	Connor Ashbridge, CC BY 4.0
+named	2026
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	walgettosuchus	Q2706855
+name	Walgettosuchus
+group	0
+image	3795	159	117	1d0e9407	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

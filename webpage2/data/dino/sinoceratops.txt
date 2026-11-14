@@ -1,0 +1,6 @@
+ZDS1	sinoceratops	Q18915244
+name	Sinoceratops
+group	0
+image	11157	240	117	313adbae	ABelov2014, CC BY 3.0
+source	Wikidata
+end

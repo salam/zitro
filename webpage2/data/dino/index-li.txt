@@ -1,0 +1,51 @@
+ZDX1	li	50
+liaoceratops	liaoceratops
+liaoceratops yanzigouensis	liaoceratops
+liaodactylus	liaodactylus
+liaodactylus primus	liaodactylus
+liaoningopterus	liaoningopterus
+liaoningopterus gui	liaoningopterus
+liaoningosaurus	liaoningosaurus
+liaoningosaurus paradoxus	liaoningosaurus
+liaoningvenator	liaoningvenator
+liaoningvenator curriei	liaoningvenator
+liaoxiornis	liaoxiornis
+liaoxiornis delicatus	liaoxiornis
+liaoxipterus	liaoxipterus
+liaoxipterus brachyognathus	liaoxipterus
+libonectes	libonectes
+libonectes morgani	libonectes
+ligabuesaurus	ligabuesaurus
+ligabuesaurus leanzai	ligabuesaurus
+liliensternus	liliensternus
+liliensternus liliensterni	liliensternus
+limaysaurus	limaysaurus
+limnosaurus	telmatosaurus
+limnosaurus transsylvanicus	telmatosaurus
+limusaurus	limusaurus
+limusaurus inextricabilis	limusaurus
+lindwurmia	lindwurmia
+lindwurmia thiuda	lindwurmia
+lingwulong	lingwulong
+lingwulong shenqi	lingwulong
+lingyuanopterus	lingyuanopterus
+lingyuanopterus camposi	lingyuanopterus
+lingyuanosaurus	lingyuanosaurus
+lingyuanosaurus sihedangensis	lingyuanosaurus
+linhenykus	linhenykus
+linhenykus monodactylus	linhenykus
+linheraptor	linheraptor
+linheraptor exquisitus	linheraptor
+linhevenator	linhevenator
+linhevenator tani	linhevenator
+liodon	liodon
+liodon perlatus	liodon
+liopleurodon	liopleurodon
+liopleurodon ferox	liopleurodon
+liopleurodon pachydeirus	liopleurodon
+lirainosaurus	lirainosaurus
+lirainosaurus astibae	lirainosaurus
+lirainosaurus astibiae	lirainosaurus
+lithosteornis	ornithocheirus
+liubangosaurus	liubangosaurus
+liubangosaurus hei	liubangosaurus

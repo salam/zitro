@@ -1,0 +1,6 @@
+ZDS1	mirusavis	Q80008743
+name	Mirusavis
+group	1
+image	10709	240	117	615ade35	CC BY 4.0
+source	Wikidata
+end

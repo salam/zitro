@@ -1,0 +1,6 @@
+ZDS1	gobivenator	Q15632468
+name	Gobivenator
+group	0
+image	4266	240	117	2f7f204a	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

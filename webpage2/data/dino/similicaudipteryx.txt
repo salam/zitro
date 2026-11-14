@@ -1,0 +1,6 @@
+ZDS1	similicaudipteryx	Q132745
+name	Similicaudipteryx
+group	0
+image	5020	164	117	237ac001	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	tsogtopteryx	Q136308309
+name	Tsogtopteryx
+group	2
+image	6036	171	117	2aa311d7	CC BY 4.0
+source	Wikidata
+end

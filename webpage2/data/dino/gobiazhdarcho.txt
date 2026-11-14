@@ -1,0 +1,7 @@
+ZDS1	gobiazhdarcho	Q136308105
+name	Gobiazhdarcho
+group	2
+image	6691	179	117	3af69945	CC BY 4.0
+named	2025
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	zaraapelta	Q18435455
+name	Zaraapelta
+group	0
+lived	75000000	71000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

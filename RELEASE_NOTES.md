@@ -7,6 +7,12 @@
 - **On paper too**: print a word sheet to fill in, with a page of answers.
 - **Your lists stay yours**: no account, no e-mail. The lists belong to your stick's code only.
 
+## Thu 12 Nov, 2026
+
+- **Meet any dinosaur**: ask "Erzähl mir vom T-Rex" and flip through a picture, the facts, a size comparison with a person and a fun fact. It works for flying saurians and sea reptiles too, and Zitro tells you when they weren't dinosaurs.
+- **Honest numbers**: every fact on a fact sheet comes from Wikidata or Wikipedia. Where sources disagree you see a range, and speeds say "estimated". If Zitro has no fact sheet for an animal, it says so.
+- **From the first cells to you**: ask "Zeig mir den Zeitstrahl der Geschichte des Lebens" and travel 3.5 billion years, past the first fish, the dinosaurs and Lucy, all the way to us.
+
 ## Mon 9 Nov, 2026
 
 - **Any town, any time**: ask "Wie spät ist es in Knoxville?" and Zitro finds the place, even a small one, and turns the globe to it.

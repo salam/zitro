@@ -23,6 +23,7 @@
 static const float TIMELINE_CARD_SPACE = 240.0f;   // One picture fills the screen
 static const float TIMELINE_GAP_TYPICAL = 120.0f;  // The usual distance between two events
 static const float TIMELINE_GAP_MIN = 24.0f;       // Events close in time stay apart
+static const int64_t TIMELINE_YEAR_LIMIT = 5000000000LL;  // Years the files may hold, both ways
 static const float TIMELINE_GAP_MAX = 720.0f;      // A longer time is shortened, and marked as a break
 static const float TIMELINE_EXACT_PX = TIMELINE_CARD_SPACE / 2;  // While its picture fills the screen, the year is the event's
 
@@ -35,13 +36,18 @@ static const float TIMELINE_EASE = 6.0f;
 static const float TIMELINE_TILT_DEADZONE_DPS = 15.0f;
 static const float TIMELINE_TILT_STEP_DEG = 20.0f;
 static const float TIMELINE_TILT_REST_S = 0.3f;
+// Tip the right side down (clockwise, seen from the screen) for the next event. The axis through the
+// screen is the one axis that reads the same in both landscape positions. NOT tried on the stick
+// yet: if tipping right goes back, flip this sign. The guide and the dinosaur fact sheet use it too.
+static const float TIMELINE_TILT_SIGN = -1.0f;
 
 struct TimelineEvent {
   const char* qid;
-  int32_t year;     // Negative is BC. Never 0
-  int32_t endYear;  // 0: no end
+  int64_t year;     // Negative is BC. Never 0
+  int64_t endYear;  // 0: no end
   bool circa;
   bool born;  // The year is this person's birth
+  bool fromWikipedia;  // The date comes from a Wikipedia sentence, not from Wikidata
   const char* labelDe;
   const char* labelEn;
   const char* credit;  // Empty: nothing to show on screen
@@ -60,7 +66,7 @@ struct Timeline {
   uint32_t bundleSize;
   int eventCount;
   float pxPerYear;
-  int32_t tickYears;
+  int64_t tickYears;
   TimelineEvent events[TIMELINE_MAX_EVENTS];
 };
 
@@ -167,7 +173,7 @@ inline bool timelineParse(char* text, size_t textLen, size_t capacity, const cha
   out.bundleSize = (uint32_t)bundle;
 
   lineStart = nl + 1;
-  int32_t previousYear = INT32_MIN;
+  int64_t previousYear = INT64_MIN;
   for (int i = 0; i < (int)count; i++) {
     nl = strchr(lineStart, '\n');
     if (!nl) return false;  // Cut off: a timeline with a missing end looks finished, so refuse it
@@ -176,11 +182,12 @@ inline bool timelineParse(char* text, size_t textLen, size_t capacity, const cha
     TimelineEvent& e = out.events[i];
     int64_t year, endYear = 0, offset, length, w, h;
     if (fields[0][0] != 'Q' || !timelineValidText(fields[0], 16, false)) return false;
-    if (!timelineParseInt(fields[1], INT32_MIN + 1, INT32_MAX, year) || year == 0) return false;
+    if (!timelineParseInt(fields[1], -TIMELINE_YEAR_LIMIT, TIMELINE_YEAR_LIMIT, year) || year == 0) return false;
     if (strcmp(fields[2], "-") != 0) {
-      if (!timelineParseInt(fields[2], INT32_MIN + 1, INT32_MAX, endYear) || endYear <= year) return false;
+      if (!timelineParseInt(fields[2], -TIMELINE_YEAR_LIMIT, TIMELINE_YEAR_LIMIT, endYear) || endYear <= year) return false;
     }
-    if (fields[3][0] < '0' || fields[3][0] > '3' || fields[3][1] != 0) return false;  // Bit 0 circa, bit 1 born
+    // Bit 0 circa, bit 1 born, bit 2 the date is from Wikipedia
+    if (fields[3][0] < '0' || fields[3][0] > '7' || fields[3][1] != 0) return false;
     if (!timelineValidText(fields[4], TIMELINE_LABEL_LIMIT, false)) return false;
     if (!timelineValidText(fields[5], TIMELINE_LABEL_LIMIT, false)) return false;
     if (!timelineParseInt(fields[6], 0, TIMELINE_BUNDLE_LIMIT, offset)) return false;
@@ -188,12 +195,13 @@ inline bool timelineParse(char* text, size_t textLen, size_t capacity, const cha
     if (!timelineParseInt(fields[8], 0, TIMELINE_IMAGE_W, w)) return false;
     if (!timelineParseInt(fields[9], 0, TIMELINE_IMAGE_H, h)) return false;
     if (year < previousYear) return false;  // The band can only run one way
-    previousYear = (int32_t)year;
+    previousYear = year;
     e.qid = fields[0];
-    e.year = (int32_t)year;
-    e.endYear = (int32_t)endYear;
+    e.year = year;
+    e.endYear = endYear;
     e.circa = (fields[3][0] - '0') & 1;
     e.born = (fields[3][0] - '0') & 2;
+    e.fromWikipedia = (fields[3][0] - '0') & 4;
     e.labelDe = fields[4];
     e.labelEn = fields[5];
     e.credit = "";
@@ -245,15 +253,15 @@ inline int timelineCheckImages(Timeline& t, const uint8_t* bundle, size_t have) 
   return kept;
 }
 
-inline int32_t timelineNiceStep(float wanted) {
+inline int64_t timelineNiceStep(float wanted) {
   int64_t base = 1;
-  while (base < 2000000000LL / 10) {
-    if ((float)base >= wanted) return (int32_t)base;
-    if ((float)(base * 2) >= wanted) return (int32_t)(base * 2);
-    if ((float)(base * 5) >= wanted) return (int32_t)(base * 5);
+  while (base < TIMELINE_YEAR_LIMIT) {
+    if ((float)base >= wanted) return base;
+    if ((float)(base * 2) >= wanted) return base * 2;
+    if ((float)(base * 5) >= wanted) return base * 5;
     base *= 10;
   }
-  return 1000000000;
+  return TIMELINE_YEAR_LIMIT;
 }
 
 // Where each event sits on the band. Time runs at one scale for the whole timeline, set by the
@@ -330,7 +338,7 @@ inline float timelineGapPxPerYear(const Timeline& t, int event) {
 // The year under a band position. Sets exactEvent to the event if the position is on it, else -1.
 // Across the gap between two pictures the year runs evenly from one event's year to the next;
 // it's never 0, there was no year 0.
-inline int32_t timelineYearAt(const Timeline& t, float position, int& exactEvent) {
+inline int64_t timelineYearAt(const Timeline& t, float position, int& exactEvent) {
   exactEvent = -1;
   if (t.eventCount == 0) return 1;
   const int near = timelineNearest(t, position);
@@ -352,7 +360,7 @@ inline int32_t timelineYearAt(const Timeline& t, float position, int& exactEvent
   const TimelineEvent& b = t.events[i + 1];
   const double f = (position - a.bandX - TIMELINE_CARD_SPACE / 2) / (b.bandX - a.bandX - TIMELINE_CARD_SPACE);
   const double y = (double)a.year + f * ((double)b.year - (double)a.year);
-  int32_t rounded = (int32_t)floor(y + 0.5);
+  int64_t rounded = (int64_t)floor(y + 0.5);
   if (rounded == 0) rounded = y < 0 ? -1 : 1;
   return rounded;
 }
@@ -390,34 +398,61 @@ inline int timelineTiltUpdate(TimelineTilt& s, float dps, float dt) {
 }
 
 // Deep time: 66, or 7,2 in German and 7.2 in English below ten million.
-inline void timelineFormatMillions(int32_t year, bool english, char* out, size_t size) {
+inline void timelineFormatMillions(int64_t year, bool english, char* out, size_t size) {
   const double millions = fabs((double)year) / 1000000.0;
   if (millions >= 10) {
-    snprintf(out, size, "%ld", (long)floor(millions + 0.5));
+    snprintf(out, size, "%lld", (long long)floor(millions + 0.5));
     return;
   }
-  const long tenths = (long)floor(millions * 10 + 0.5);
-  snprintf(out, size, "%ld%c%ld", tenths / 10, english ? '.' : ',', tenths % 10);
+  const long long tenths = (long long)floor(millions * 10 + 0.5);
+  snprintf(out, size, "%lld%c%lld", tenths / 10, english ? '.' : ',', tenths % 10);
 }
 
-static const int32_t TIMELINE_DEEP_TIME = -1000000;
+// From a billion years: 3,5 in German and 3.5 in English, up to two decimals, trailing zeros trimmed.
+inline void timelineFormatBillions(int64_t year, bool english, char* out, size_t size) {
+  const long long hundredths = (long long)floor(fabs((double)year) / 10000000.0 + 0.5);
+  const long long whole = hundredths / 100, frac = hundredths % 100;
+  const char point = english ? '.' : ',';
+  if (frac == 0) {
+    snprintf(out, size, "%lld", whole);
+  } else if (frac % 10 == 0) {
+    snprintf(out, size, "%lld%c%lld", whole, point, frac / 10);
+  } else {
+    snprintf(out, size, "%lld%c%02lld", whole, point, frac);
+  }
+}
+
+static const int64_t TIMELINE_DEEP_TIME = -1000000;
+static const int64_t TIMELINE_BILLION = 1000000000LL;
 
 // The year as text: big is the number, small what it means ("v. Chr.", "Mio. Jahre her", "geb.").
 // Dates always come from the file; this only writes them down.
-inline void timelineFormatYear(int32_t year, int32_t endYear, bool circa, bool born, bool english, char* big,
+inline void timelineFormatYear(int64_t year, int64_t endYear, bool circa, bool born, bool english, char* big,
                                size_t bigSize, char* small, size_t smallSize) {
   char first[16], second[16];
   const char* prefix = circa ? (english ? "c. " : "ca. ") : "";
   small[0] = 0;
   if (year <= TIMELINE_DEEP_TIME) {
-    timelineFormatMillions(year, english, first, sizeof(first));
+    const bool billions = year <= -TIMELINE_BILLION;  // The end follows the start's unit
+    auto write = [&](int64_t y, char* o, size_t n) {
+      if (billions) {
+        timelineFormatBillions(y, english, o, n);
+      } else {
+        timelineFormatMillions(y, english, o, n);
+      }
+    };
+    write(year, first, sizeof(first));
     if (endYear != 0 && endYear <= TIMELINE_DEEP_TIME) {
-      timelineFormatMillions(endYear, english, second, sizeof(second));
+      write(endYear, second, sizeof(second));
       snprintf(big, bigSize, "%s%s-%s", prefix, first, second);
     } else {
       snprintf(big, bigSize, "%s%s", prefix, first);
     }
-    snprintf(small, smallSize, "%s", english ? "million years ago" : "Mio. Jahre her");
+    if (billions) {
+      snprintf(small, smallSize, "%s", english ? "billion years ago" : "Mrd. Jahre her");
+    } else {
+      snprintf(small, smallSize, "%s", english ? "million years ago" : "Mio. Jahre her");
+    }
     return;
   }
   const char* bc = english ? "BC" : "v. Chr.";
@@ -451,14 +486,20 @@ inline void timelineFormatYear(int32_t year, int32_t endYear, bool circa, bool b
   }
 }
 
-// The time between two events as text: "21 Jahre", "1 Jahr", "2 Mio. Jahre"
-inline void timelineFormatSpan(int32_t fromYear, int32_t toYear, bool english, char* out, size_t size) {
+// The time between two events as text: "21 Jahre", "1 Jahr", "2 Mio. Jahre", "1,05 Mrd. Jahre"
+inline void timelineFormatSpan(int64_t fromYear, int64_t toYear, bool english, char* out, size_t size) {
   // Going from BC to AD skips the year 0 that never was
   double years = (double)toYear - (double)fromYear;
   if (fromYear < 0 && toYear > 0) years -= 1;
+  if (years >= (double)TIMELINE_BILLION) {
+    char number[16];
+    timelineFormatBillions((int64_t)years, english, number, sizeof(number));
+    snprintf(out, size, english ? "%s billion years" : "%s Mrd. Jahre", number);
+    return;
+  }
   if (years >= 1000000.0) {
     char number[16];
-    timelineFormatMillions((int32_t)-years, english, number, sizeof(number));
+    timelineFormatMillions((int64_t)years, english, number, sizeof(number));
     snprintf(out, size, english ? "%s million years" : "%s Mio. Jahre", number);
     return;
   }

@@ -1,0 +1,7 @@
+ZDS1	dianchungosaurus	Q1827257
+name	Dianchungosaurus
+group	0
+lived	195500000	189600000
+era	Jura	Jurassic
+source	Wikidata
+end

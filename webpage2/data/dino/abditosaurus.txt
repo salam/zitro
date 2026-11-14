@@ -1,0 +1,7 @@
+ZDS1	abditosaurus	Q110852461
+name	Abditosaurus
+group	0
+image	6346	167	117	e17c54bb	SpinoDragon145, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

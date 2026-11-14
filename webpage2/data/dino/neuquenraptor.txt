@@ -1,0 +1,7 @@
+ZDS1	neuquenraptor	Q136436
+name	Neuquenraptor
+group	0
+image	3963	240	117	3cb6f96d	PaleoGeekSquared, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	ponerosteus	Q888982
+name	Ponerosteus
+group	0
+image	2486	88	117	cc2e2aab	Meridas (Vladimir Socha), CC BY-SA 4.0
+source	Wikidata
+end

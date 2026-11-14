@@ -1,0 +1,9 @@
+ZDS1	coloradisaurus	Q2300979
+name	Coloradisaurus
+group	0
+length	400	400
+lived	227000000	213000000
+named	1978
+era	Trias	Triassic
+source	Wikidata
+end

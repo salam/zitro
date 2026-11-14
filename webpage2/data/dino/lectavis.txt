@@ -1,0 +1,6 @@
+ZDS1	lectavis	Q6387897
+name	Lectavis
+group	1
+image	3463	117	117	5bf5b6e4	TinyLongwing, CC BY-SA 4.0
+source	Wikidata
+end

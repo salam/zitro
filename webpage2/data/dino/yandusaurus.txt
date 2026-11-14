@@ -1,0 +1,7 @@
+ZDS1	yandusaurus	Q980959
+name	Yandusaurus
+group	0
+image	8471	176	117	3bb60c7e	Zhangzhugang, CC BY 4.0
+length	300	300
+source	Wikidata
+end

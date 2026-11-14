@@ -1,0 +1,7 @@
+ZDS1	navajodactylus	Q2388969
+name	Navajodactylus
+group	2
+image	3119	137	117	6c80c1b1	Jfstudiospaleoart, CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

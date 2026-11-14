@@ -1,0 +1,6 @@
+ZDS1	fylax	Q107088395
+name	Fylax
+group	0
+image	4543	89	117	8527088a	CC BY 4.0
+source	Wikidata
+end

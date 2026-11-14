@@ -1,0 +1,10 @@
+ZDS1	concavenator	Q131715
+name	Concavenator
+group	0
+image	4624	240	117	5ed91b0a	Mario Lanzas, CC BY-SA 4.0
+length	500	600
+lived	129400000	125450000
+named	2010
+era	Kreide	Cretaceous
+source	Wikidata
+end

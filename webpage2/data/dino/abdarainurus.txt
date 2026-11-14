@@ -1,0 +1,7 @@
+ZDS1	abdarainurus	Q84847744
+name	Abdarainurus
+group	0
+image	4670	240	117	ac161c28	Skye M, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

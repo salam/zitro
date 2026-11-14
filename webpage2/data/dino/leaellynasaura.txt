@@ -1,0 +1,8 @@
+ZDS1	leaellynasaura	Q131179
+name	Leaellynasaura
+group	0
+image	3701	240	75	53b2f406	Danny Cicchetti, CC BY-SA 3.0
+length	200	200
+named	1989
+source	Wikidata
+end

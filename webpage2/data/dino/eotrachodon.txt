@@ -1,0 +1,8 @@
+ZDS1	eotrachodon	Q22067785
+name	Eotrachodon
+group	0
+image	4371	87	117	9a75a063	CC BY 4.0
+lived	86000000	83600000
+era	Kreide	Cretaceous
+source	Wikidata
+end

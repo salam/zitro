@@ -1,0 +1,7 @@
+ZDS1	protarchaeopteryx	Q131778
+name	Protarchaeopteryx
+group	1
+image	6842	240	117	bee9a695	Jaime A. Headden, CC BY 3.0
+length	200	200
+source	Wikidata
+end

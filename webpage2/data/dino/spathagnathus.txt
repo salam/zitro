@@ -1,0 +1,7 @@
+ZDS1	spathagnathus	Q134722511
+name	Spathagnathus
+group	2
+image	3836	66	117	e23c3671	CC BY 4.0
+named	2025
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	suchosaurus	Q3472673
+name	Suchosaurus
+group	0
+image	3924	108	117	b9af52ee	-
+source	Wikidata
+end

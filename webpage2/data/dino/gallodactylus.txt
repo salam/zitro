@@ -1,0 +1,7 @@
+ZDS1	gallodactylus	Q2679472
+name	Gallodactylus
+group	2
+image	3930	146	117	39940b00	-
+named	1976
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	cetarthrosaurus	Q5065631
+name	Cetarthrosaurus
+group	3
+image	7501	177	117	5f934212	CC BY 2.5
+source	Wikidata
+end

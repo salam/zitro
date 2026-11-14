@@ -1,0 +1,9 @@
+ZDS1	ichthyotitan	Q125509005
+name	Ichthyotitan
+group	3
+image	4479	98	117	e53314f1	CC BY 4.0
+lived	208500000	201300000
+named	2024
+era	Trias	Triassic
+source	Wikidata
+end

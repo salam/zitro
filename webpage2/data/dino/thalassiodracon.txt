@@ -1,0 +1,10 @@
+ZDS1	thalassiodracon	Q3985451
+name	Thalassiodracon
+group	3
+image	4599	240	117	65b6a3b8	Nobu Tamura, CC BY 2.5
+length	200	200
+lived	201600000	196500000
+named	1996
+era	Jura	Jurassic
+source	Wikidata
+end

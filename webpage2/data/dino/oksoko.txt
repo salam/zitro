@@ -1,0 +1,6 @@
+ZDS1	oksoko	Q28219834
+name	Oksoko
+group	0
+image	3869	150	117	c24c0448	Ddinodan, CC BY 4.0
+source	Wikidata
+end

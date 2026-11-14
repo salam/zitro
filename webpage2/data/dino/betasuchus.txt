@@ -1,0 +1,6 @@
+ZDS1	betasuchus	Q311481
+name	Betasuchus
+group	0
+image	1990	59	117	0e9aded5	-
+source	Wikidata
+end

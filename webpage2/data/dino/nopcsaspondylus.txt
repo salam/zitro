@@ -1,0 +1,6 @@
+ZDS1	nopcsaspondylus	Q2102851
+name	Nopcsaspondylus
+group	0
+image	5556	183	117	59658db0	-
+source	Wikidata
+end

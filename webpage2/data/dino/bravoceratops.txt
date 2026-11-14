@@ -1,0 +1,6 @@
+ZDS1	bravoceratops	Q13410268
+name	Bravoceratops
+group	0
+image	6409	240	117	7d0f2871	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

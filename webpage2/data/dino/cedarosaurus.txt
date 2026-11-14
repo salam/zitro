@@ -1,0 +1,6 @@
+ZDS1	cedarosaurus	Q134639
+name	Cedarosaurus
+group	0
+image	3280	240	117	fbfb1a58	-
+source	Wikidata
+end

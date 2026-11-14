@@ -1,0 +1,6 @@
+ZDS1	kangnasaurus	Q633747
+name	Kangnasaurus
+group	0
+image	2391	59	117	5ee2602d	Nkansahrexford, CC BY 3.0
+source	Wikidata
+end

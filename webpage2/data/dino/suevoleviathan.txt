@@ -1,0 +1,10 @@
+ZDS1	suevoleviathan	Q7634418
+name	Suevoleviathan
+group	3
+image	4005	240	69	b388e445	Ghedoghedo, CC BY-SA 3.0
+length	400	400
+lived	183000000	182000000
+named	1998
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDX1	fa	8
+fabrosaurus	fabrosaurus
+falcarius	falcarius
+falcarius suarezarum	falcarius
+falcarius utahensis	falcarius
+falcatakely	falcatakely
+falcatakely forsterae	falcatakely
+faxinalipterus	faxinalipterus
+faxinalipterus minimus	faxinalipterus

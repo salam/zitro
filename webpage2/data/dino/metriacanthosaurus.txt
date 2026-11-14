@@ -1,0 +1,9 @@
+ZDS1	metriacanthosaurus	Q29057503
+name	Metriacanthosaurus
+group	0
+image	4426	162	117	d120710b	FunkMonk, CC BY-SA 3.0
+length	800	820
+mass	1000000	1000000
+named	1964
+source	Wikidata
+end

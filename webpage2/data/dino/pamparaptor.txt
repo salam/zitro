@@ -1,0 +1,6 @@
+ZDS1	pamparaptor	Q1704984
+name	Pamparaptor
+group	0
+image	6695	167	117	b427f99c	Eloy Manzanero, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	mononykus	Q131421
+name	Mononykus
+group	0
+image	7085	240	117	4d75f413	CC BY 2.0
+length	100	100
+source	Wikidata
+end

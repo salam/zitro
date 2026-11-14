@@ -1,0 +1,9 @@
+ZDS1	shastasaurus	Q2700110
+name	Shastasaurus
+group	3
+image	6946	188	117	5b59778e	CC BY 2.5
+lived	235000000	205600000
+named	1895
+era	Trias	Triassic
+source	Wikidata
+end

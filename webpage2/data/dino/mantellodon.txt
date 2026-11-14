@@ -1,0 +1,6 @@
+ZDS1	mantellodon	Q14813563
+name	Mantellodon
+group	0
+image	4160	76	117	8042c854	-
+source	Wikidata
+end

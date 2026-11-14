@@ -1,0 +1,81 @@
+ZDX1	ch	80
+chacaicosaurus	chacaicosaurus
+chadititan	chadititan
+chadititan calvoi	chadititan
+chakisaurus	chakisaurus
+chakisaurus nekul	chakisaurus
+changchengopterus	changchengopterus
+changchengopterus pani	changchengopterus
+changchengornis	changchengornis
+changchengornis hengdaoziensis	changchengornis
+changchunsaurus	changchunsaurus
+changchunsaurus parvus	changchunsaurus
+changmaornis	changmaornis
+changmaornis houi	changmaornis
+changmiania	changmiania
+changmiania liaoningensis	changmiania
+changyuraptor	changyuraptor
+changyuraptor yangi	changyuraptor
+changzuiornis	changzuiornis
+chaoyangopterus	chaoyangopterus
+chaoyangopterus zhangi	chaoyangopterus
+chaoyangosaurus	chaoyangsaurus
+chaoyangsauridae	chaoyangsaurus
+chaoyangsaurus	chaoyangsaurus
+chaoyangsaurus youngi	chaoyangsaurus
+chaoyoungosaurus	chaoyangsaurus
+charonosaurus	charonosaurus
+charonosaurus jiayinensis	charonosaurus
+chasmosaurus	chasmosaurus
+chasmosaurus belli	chasmosaurus
+chasmosaurus mariscalensis	chasmosaurus
+chasmosaurus russelli	chasmosaurus
+chassternbergia	edmontonia
+chebsaurus	chebsaurus
+chebsaurus algeriensis	chebsaurus
+chenanisaurus	chenanisaurus
+chenanisaurus barbaricus	chenanisaurus
+chialingosaurus	chialingosaurus
+chialingosaurus kuani	chialingosaurus
+chiappeavis	chiappeavis
+chiappeavis magnapremaxillo	chiappeavis
+chiayusaurus	chiayusaurus
+chiayusaurus asianensis	chiayusaurus
+chiayusaurus lacustris	chiayusaurus
+chienkosaurus	chienkosaurus
+chienkosaurus ceratosauroides	chienkosaurus
+chilantaisaurus	chilantaisaurus
+chilantaisaurus tashuikouensis	chilantaisaurus
+chilantaisaurus zhejiangensis	chilantaisaurus
+chilesaurus	chilesaurus
+chilesaurus diegosuarezi	chilesaurus
+chindesaurus	chindesaurus
+chindesaurus bryansmalli	chindesaurus
+chirostenotes	chirostenotes
+chirostenotes elegans	chirostenotes
+chirostenotes pergracillis	chirostenotes
+choconsaurus	choconsaurus
+choconsaurus baileywillisi	choconsaurus
+chondrosteosaurus	chondrosteosaurus
+chondrosteosaurus gigas	chondrosteosaurus
+choyrodon	choyrodon
+chromogisaurus	chromogisaurus
+chromogisaurus novasi	chromogisaurus
+chuandongocoelurus	chuandongocoelurus
+chuandongocoelurus primitivus	chuandongocoelurus
+chuanjiesaurus	chuanjiesaurus
+chuanjiesaurus anaensis	chuanjiesaurus
+chuanqilong	chuanqilong
+chuanqilong chaoyangensis	chuanqilong
+chubutinectes	chubutinectes
+chubutinectes carmeloi	chubutinectes
+chubutisaurus	chubutisaurus
+chubutisaurus insignis	chubutisaurus
+chucarosaurus	chucarosaurus
+chucarosaurus diripienda	chucarosaurus
+chungkingosaurus	chungkingosaurus
+chungkingosaurus jiangbeiensis	chungkingosaurus
+chupkaornis	chupkaornis
+chupkaornis keraorum	chupkaornis
+chuxiongosaurus	chuxiongosaurus
+chuxiongosaurus lufengensis	chuxiongosaurus

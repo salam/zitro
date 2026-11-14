@@ -1,0 +1,7 @@
+ZDS1	bambiraptor	Q134207
+name	Bambiraptor
+group	0
+image	3208	135	117	d5195c2f	Conty, CC BY-SA 4.0
+length	100	100
+source	Wikidata
+end

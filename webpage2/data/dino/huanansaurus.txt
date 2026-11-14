@@ -1,0 +1,9 @@
+ZDS1	huanansaurus	Q20640526
+name	Huanansaurus
+group	0
+image	6166	148	117	596d68cb	CC BY 4.0
+lived	72000000	66000000
+named	2015
+era	Kreide	Cretaceous
+source	Wikidata
+end

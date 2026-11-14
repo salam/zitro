@@ -1,0 +1,6 @@
+ZDS1	cumnoria	Q899557
+name	Cumnoria
+group	0
+image	6676	159	117	0b03f81c	Ballista at English Wikipedia, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	yueosaurus	Q18915213
+name	Yueosaurus
+group	0
+image	7447	156	117	98ccfab4	Yumeto, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

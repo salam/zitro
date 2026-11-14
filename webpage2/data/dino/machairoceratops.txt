@@ -1,0 +1,7 @@
+ZDS1	machairoceratops	Q24091673
+name	Machairoceratops
+group	0
+image	3859	102	117	592b3568	CC BY 2.5
+named	2016
+source	Wikidata
+end

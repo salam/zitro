@@ -1,0 +1,9 @@
+ZDS1	attenborosaurus	Q2702243
+name	Attenborosaurus
+group	3
+image	8338	240	117	2eac67f2	Ghedoghedo, CC BY-SA 3.0
+lived	196500000	189600000
+named	1993
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	furcatoceratops	Q120763258
+name	Furcatoceratops
+group	0
+image	5829	156	117	d9383193	Eight heads serpent, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

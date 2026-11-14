@@ -1,0 +1,7 @@
+ZDS1	pterorhynchus	Q2326932
+name	Pterorhynchus
+group	2
+image	3003	147	117	454210e0	Jaime A. Headden, CC BY 3.0
+named	2002
+source	Wikidata
+end

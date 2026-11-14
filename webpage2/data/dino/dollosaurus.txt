@@ -1,0 +1,6 @@
+ZDS1	dollosaurus	Q20925375
+name	Dollosaurus
+group	3
+image	1884	106	117	41fb5d56	Ichthyovenator, CC BY-SA 4.0
+source	Wikidata
+end

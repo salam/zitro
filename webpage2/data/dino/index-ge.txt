@@ -1,0 +1,20 @@
+ZDX1	ge	19
+geminiraptor	geminiraptor
+geminiraptor suarezarum	falcarius
+genusaur	genusaurus
+genusaurus	genusaurus
+genusaurus sisteronis	genusaurus
+genusaurus sisterornis	genusaurus
+genyodectes	genyodectes
+genyodectes serus	genyodectes
+georgiasaurus	georgiasaurus
+georgiasaurus penzensis	georgiasaurus
+geosternbergia	geosternbergia
+geosternbergia maiseyi	geosternbergia
+geosternbergia sternbergi	pteranodon
+geranosaurus	geranosaurus
+geranosaurus atavus	geranosaurus
+germanodactylus	germanodactylus
+germanodactylus cristatus	germanodactylus
+germanodactylus rhamphastinus	germanodactylus
+gettyia	gettyia

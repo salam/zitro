@@ -1,0 +1,7 @@
+ZDS1	campylognathoides	Q139935
+name	Campylognathoides
+group	2
+image	4586	240	117	d6c95b18	-
+named	1928
+source	Wikidata
+end

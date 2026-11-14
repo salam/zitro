@@ -1,0 +1,6 @@
+ZDS1	tawa	Q22113739
+name	Tawa
+group	0
+image	3841	156	117	bf8d873a	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

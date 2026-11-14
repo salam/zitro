@@ -1,0 +1,10 @@
+ZDS1	garudimimus	Q131762
+name	Garudimimus
+group	0
+image	4352	240	117	fb0624bf	PaleoNeolitic, CC BY 4.0
+length	470	470
+lived	98000000	83000000
+named	1981
+era	Kreide	Cretaceous
+source	Wikidata
+end

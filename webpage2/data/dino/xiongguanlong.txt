@@ -1,0 +1,6 @@
+ZDS1	xiongguanlong	Q134320
+name	Xiongguanlong
+group	0
+image	3030	152	117	ab4fd352	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,9 @@
+ZDS1	fukuivenator	Q22927446
+name	Fukuivenator
+group	0
+image	4106	240	117	6bb31b5a	Petr Menshikov, CC BY-SA 4.0
+lived	127000000	115000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

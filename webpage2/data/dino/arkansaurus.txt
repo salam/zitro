@@ -1,0 +1,6 @@
+ZDS1	arkansaurus	Q3493465
+name	Arkansaurus
+group	0
+image	5414	240	117	afc2d6b5	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

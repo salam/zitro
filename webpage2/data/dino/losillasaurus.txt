@@ -1,0 +1,6 @@
+ZDS1	losillasaurus	Q210348
+name	Losillasaurus
+group	0
+image	3553	81	117	f1c59e9d	Joanbanjo, CC BY-SA 3.0
+source	Wikidata
+end

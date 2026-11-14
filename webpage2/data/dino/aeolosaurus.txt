@@ -1,0 +1,8 @@
+ZDS1	aeolosaurus	Q131766
+name	Aeolosaurus
+group	0
+image	5103	240	83	25572e0d	Karkemish, CC BY 3.0
+lived	72000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

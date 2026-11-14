@@ -1,0 +1,6 @@
+ZDS1	iuticosaurus	Q1656671
+name	Iuticosaurus
+group	0
+image	4154	118	117	e4544c08	-
+source	Wikidata
+end

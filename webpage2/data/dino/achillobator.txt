@@ -1,0 +1,10 @@
+ZDS1	achillobator	Q132445
+name	Achillobator
+group	0
+image	4535	240	117	043d9052	PaleoNeolitic, CC BY 4.0
+length	500	500
+lived	96000000	89000000
+named	1999
+era	Kreide	Cretaceous
+source	Wikidata
+end

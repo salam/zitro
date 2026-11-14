@@ -1,0 +1,6 @@
+ZDS1	gnathosaurus	Q18915891
+name	Gnathosaurus
+group	2
+image	3493	240	117	6ada88bc	Joerim, CC BY-SA 3.0
+source	Wikidata
+end

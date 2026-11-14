@@ -1,0 +1,7 @@
+ZDS1	huaxiazhoulong	Q131085603
+name	Huaxiazhoulong
+group	0
+image	4330	240	69	5f6f4810	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

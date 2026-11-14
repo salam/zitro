@@ -1,0 +1,6 @@
+ZDS1	lingyuanosaurus	Q62317240
+name	Lingyuanosaurus
+group	0
+image	4513	153	117	e3337f25	Xi Yao, Chun-Chi Liao, Corwin Sullivan & Xing Xu, CC BY 4.0
+source	Wikidata
+end

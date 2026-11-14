@@ -1,0 +1,10 @@
+ZDS1	dolichorhynchops	Q2452704
+name	Dolichorhynchops
+group	3
+image	5767	146	117	42d40f0a	Ryan Somma, CC BY-SA 2.0
+length	300	300
+lived	93500000	70600000
+named	1902
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,15 @@
+ZDS1	compsognathus	Q130880
+name	Compsognathus
+group	0
+image	3062	240	80	f3a1c9c2	TotalDino, CC BY 4.0
+length	65	65
+speed	640	640
+lived	150000000	150000000
+named	1859
+era	Jura	Jurassic
+meaning	zierlicher Kiefer	elegant jaw
+diet	Fleisch	Meat
+found	Europa	Europe
+fun	Compsognathus konnte etwa so gross wie ein Huhn werden.	Compsognathus could grow to about the size of a chicken.	Wikipedia (EN): Compsognathus
+source	Wikidata, Wikipedia
+end

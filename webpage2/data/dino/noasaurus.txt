@@ -1,0 +1,8 @@
+ZDS1	noasaurus	Q18511031
+name	Noasaurus
+group	0
+image	4592	138	117	f5feefa6	Jaime A. Headden, CC BY-SA 3.0
+length	100	100
+named	1980
+source	Wikidata
+end

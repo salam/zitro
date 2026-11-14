@@ -1,0 +1,60 @@
+ZDX1	ta	59
+tachiraptor	tachiraptor
+tachiraptor admirabilis	tachiraptor
+talarurus	talarurus
+talarurus plicatospineus	talarurus
+talenkauen	talenkauen
+talenkauen santacrucensis	talenkauen
+taleta	taleta
+taleta taleta	taleta
+talos	talos
+talos sampsoni	talos
+tamarro	tamarro
+tamarro insperatus	tamarro
+tambatitanis	tambatitanis
+tambatitanis amicitiae	tambatitanis
+tameryraptor	tameryraptor
+tameryraptor markgrafi	tameryraptor
+tangvayosaurus	tangvayosaurus
+tangvayosaurus hoffeti	tangvayosaurus
+tanius	tanius
+tanius sinensis	tanius
+taniwhasaurus	taniwhasaurus
+taniwhasaurus mikasaensis	taniwhasaurus
+taniwhasaurus oweni	taniwhasaurus
+tanycolagreus	tanycolagreus
+tanycolagreus topwilsoni	tanycolagreus
+tanzanian allosaurus	allosaurus
+tanzanian carchadorontosaurid	allosaurus
+tapejara	tapejara
+tapejara wellnhoferi	tapejara
+tapuiasaurus	tapuiasaurus
+tapuiasaurus macedoi	tapuiasaurus
+tarascosaurus	tarascosaurus
+tarascosaurus salluvicus	tarascosaurus
+tarbosaurus	tarbosaurus
+tarbosaurus bataar	tarbosaurus
+tarchia	tarchia
+tarchia gigantea	tarchia
+tarchia kielanae	tarchia
+tarchia teresae	tarchia
+tarchia tumanovae	tarchia
+targaryendraco	targaryendraco
+targaryendraco wiedenrothi	targaryendraco
+tastavinsaurus	tastavinsaurus
+tastavinsaurus sanzi	tastavinsaurus
+tatankaceratops	tatankaceratops
+tatankaceratops sacrisonorum	tatankaceratops
+tataouinea	tataouinea
+tataouinea hannibalis	tataouinea
+tatenectes	tatenectes
+tatenectes laramiensis	tatenectes
+tatisaurus	tatisaurus
+tatisaurus oehleri	tatisaurus
+taurovenator	taurovenator
+taurovenator violantei	taurovenator
+tawa	tawa
+tawa hallae	tawa
+tazoudasaurus	tazoudasaurus
+tazoudasaurus naimi	tazoudasaurus
+tazoudausaurus naimi	tazoudasaurus

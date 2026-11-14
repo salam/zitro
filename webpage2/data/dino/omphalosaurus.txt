@@ -1,0 +1,7 @@
+ZDS1	omphalosaurus	Q2908667
+name	Omphalosaurus
+group	3
+image	4365	240	117	c6a79056	Dmitry Bogdanov, CC BY 3.0
+named	1906
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	minmi	Q133007
+name	Minmi
+group	0
+image	5833	170	117	2a189f94	CC BY-SA 4.0
+length	300	300
+named	1980
+source	Wikidata
+end

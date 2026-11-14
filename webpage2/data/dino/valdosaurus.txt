@@ -1,0 +1,7 @@
+ZDS1	valdosaurus	Q1617586
+name	Valdosaurus
+group	0
+image	6060	240	117	c05d03cf	-
+length	300	300
+source	Wikidata
+end

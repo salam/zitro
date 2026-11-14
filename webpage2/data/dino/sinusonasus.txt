@@ -1,0 +1,6 @@
+ZDS1	sinusonasus	Q690483
+name	Sinusonasus
+group	0
+image	4917	184	117	c43baa40	Conty, CC BY 3.0
+source	Wikidata
+end

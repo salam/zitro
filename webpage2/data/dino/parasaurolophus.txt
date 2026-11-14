@@ -1,0 +1,15 @@
+ZDS1	parasaurolophus	Q203583
+name	Parasaurolophus
+group	0
+image	5343	240	117	1ce45836	Leandra Walters, Phil Senter, James H. Robins, CC BY 2.5
+length	900	1000
+mass	2500000	2500000
+lived	76500000	73000000
+named	1922
+era	Kreide	Cretaceous
+meaning	fast eine Kammechse	almost a crested lizard
+diet	Pflanzen	Plants
+found	Kanada und USA	Canada and USA
+fun	Parasaurolophus konnte mit seinem Kopfkamm vielleicht tiefe Töne erzeugen, um andere seiner Art zu warnen.	Parasaurolophus may have used its head crest to make low sounds to alert others of its kind.	Wikipedia (EN): Parasaurolophus
+source	Wikidata, Wikipedia
+end

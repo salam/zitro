@@ -1,0 +1,6 @@
+ZDS1	rhadinososaurus	Q3079242
+name	Rhadinososaurus
+group	0
+image	4506	168	117	69dc4624	Norbert Frotzler, CC BY 4.0
+source	Wikidata
+end

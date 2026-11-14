@@ -1,0 +1,14 @@
+ZDS1	maiasaura	Q132414
+name	Maiasaura
+group	0
+image	6282	240	117	dd8089b2	Nobu Tamura, CC BY 3.0
+length	900	900
+lived	86300000	70600000
+named	1979
+era	Kreide	Cretaceous
+meaning	Gute-Mutter-Echse	good mother lizard
+diet	Pflanzen	Plants
+found	Montana (USA)	Montana (USA)
+fun	Maiasaura heisst «Gute-Mutter-Echse». Die Eltern brachten Futter zum Nest.	Maiasaura means 'good mother lizard'. The adults brought food to the nest.	Wikipedia (EN): Maiasaura
+source	Wikidata, Wikipedia
+end

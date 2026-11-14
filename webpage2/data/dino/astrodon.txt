@@ -1,0 +1,6 @@
+ZDS1	astrodon	Q128194
+name	Astrodon
+group	0
+image	4754	240	117	445b4d2f	Dmitry Bogdanov, CC BY 3.0
+source	Wikidata
+end

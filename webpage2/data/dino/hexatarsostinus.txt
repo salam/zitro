@@ -1,0 +1,7 @@
+ZDS1	hexatarsostinus	Q5748939
+name	Hexatarsostinus
+group	3
+image	7806	240	117	9f314c6a	-
+named	1840
+source	Wikidata
+end

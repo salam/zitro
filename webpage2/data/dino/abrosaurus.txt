@@ -1,0 +1,7 @@
+ZDS1	abrosaurus	Q131604
+name	Abrosaurus
+group	0
+image	5319	172	117	b8025979	Levi B. Martinez-Reza, CC BY-SA 3.0
+named	1989
+source	Wikidata
+end

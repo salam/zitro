@@ -1,0 +1,16 @@
+ZDS1	pteranodon	Q245060
+name	Pteranodon
+group	2
+image	3763	240	117	ba7923da	TotalDino, CC BY 4.0
+height	200	200
+wingspan	700	700
+mass	93000	93000
+lived	88000000	80500000
+named	1876
+era	Kreide	Cretaceous
+meaning	zahnloser Flügel	toothless wing
+diet	Fisch	Fish
+found	Nordamerika	North America
+fun	Von keinem anderen Flugsaurier kennt man so viele Fossilien wie von Pteranodon: etwa 1200.	More fossils are known of Pteranodon than of any other pterosaur: about 1,200.	Wikipedia (EN): Pteranodon
+source	Wikidata, Wikipedia
+end

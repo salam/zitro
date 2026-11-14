@@ -1,0 +1,7 @@
+ZDS1	protoichthyosaurus	Q27989452
+name	Protoichthyosaurus
+group	3
+image	4211	240	117	71b6e740	Nobu Tamura, CC BY-SA 4.0
+named	1979
+source	Wikidata
+end

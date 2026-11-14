@@ -1,0 +1,7 @@
+ZDS1	propanoplosaurus	Q1931846
+name	Propanoplosaurus
+group	0
+image	5163	240	85	6df3c62f	Danny Cicchetti, CC BY-SA 3.0
+named	2011
+source	Wikidata
+end

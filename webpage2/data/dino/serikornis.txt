@@ -1,0 +1,9 @@
+ZDS1	serikornis	Q37789878
+name	Serikornis
+group	0
+image	6159	168	117	7b59a9b1	Emily Willoughby, CC BY-SA 4.0
+lived	165000000	162000000
+named	2017
+era	Jura	Jurassic
+source	Wikidata
+end

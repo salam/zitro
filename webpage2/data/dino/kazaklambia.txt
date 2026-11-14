@@ -1,0 +1,6 @@
+ZDS1	kazaklambia	Q17126088
+name	Kazaklambia
+group	0
+image	4152	240	117	6dad7a25	Ildarotyrannus, CC BY-SA 4.0
+source	Wikidata
+end

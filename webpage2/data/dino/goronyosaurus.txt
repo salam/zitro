@@ -1,0 +1,6 @@
+ZDS1	goronyosaurus	Q142060
+name	Goronyosaurus
+group	3
+image	7109	240	117	b2883cef	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

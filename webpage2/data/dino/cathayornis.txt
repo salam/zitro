@@ -1,0 +1,6 @@
+ZDS1	cathayornis	Q3700185
+name	Cathayornis
+group	1
+image	5092	240	117	5b0a4615	Ghedoghedo, CC BY-SA 3.0
+source	Wikidata
+end

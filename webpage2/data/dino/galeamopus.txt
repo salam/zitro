@@ -1,0 +1,8 @@
+ZDS1	galeamopus	Q19767736
+name	Galeamopus
+group	0
+image	12535	240	117	f01c4b16	Wikipedia Loves Art participant " The_Wookies ", CC BY 2.5
+lived	155000000	152900000
+era	Jura	Jurassic
+source	Wikidata
+end

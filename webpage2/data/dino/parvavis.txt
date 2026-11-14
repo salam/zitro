@@ -1,0 +1,6 @@
+ZDS1	parvavis	Q15880538
+name	Parvavis
+group	1
+image	5214	240	117	a758badf	Luxquine, CC BY-SA 4.0
+source	Wikidata
+end

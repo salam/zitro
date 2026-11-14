@@ -1,0 +1,17 @@
+ZDS1	velociraptor	Q14403
+name	Velociraptor
+group	0
+image	3768	183	117	3ade8aeb	Fred Wierum, CC BY-SA 4.0
+length	180	207
+height	50	50
+mass	15000	15000
+speed	389	389
+lived	75000000	71000000
+named	1924
+era	Kreide	Cretaceous
+meaning	schneller Räuber	swift robber
+diet	Fleisch	Meat
+found	Mongolei und China	Mongolia and China
+fun	In Wirklichkeit war Velociraptor etwa so gross wie ein Truthahn, viel kleiner als in Büchern und Filmen.	In reality, Velociraptor was about the size of a turkey, much smaller than in books and films.	Wikipedia (EN): Velociraptor
+source	Wikidata, Wikipedia
+end

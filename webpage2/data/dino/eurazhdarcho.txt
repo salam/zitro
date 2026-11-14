@@ -1,0 +1,7 @@
+ZDS1	eurazhdarcho	Q3935433
+name	Eurazhdarcho
+group	2
+image	4038	89	117	8787731c	CC BY 2.5
+named	2013
+source	Wikidata
+end

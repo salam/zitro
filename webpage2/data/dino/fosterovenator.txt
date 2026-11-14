@@ -1,0 +1,9 @@
+ZDS1	fosterovenator	Q18642358
+name	Fosterovenator
+group	0
+image	3387	240	80	d8f7c42c	Levi B. Martinez-Reza, CC BY-SA 3.0
+lived	155000000	147000000
+named	2014
+era	Jura	Jurassic
+source	Wikidata
+end

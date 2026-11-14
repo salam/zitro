@@ -1,0 +1,8 @@
+ZDS1	stephanosaurus	Q1291538
+name	Stephanosaurus
+group	0
+image	2684	82	117	13e564f8	-
+lived	76000000	75000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

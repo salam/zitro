@@ -1,0 +1,6 @@
+ZDS1	dolichosuchus	Q1235583
+name	Dolichosuchus
+group	0
+image	1425	34	117	61548648	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

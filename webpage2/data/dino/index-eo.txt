@@ -1,0 +1,44 @@
+ZDX1	eo	43
+eoabelisaurus	eoabelisaurus
+eoabelisaurus mefi	eoabelisaurus
+eoalulavis	eoalulavis
+eoalulavis hoyasi	eoalulavis
+eocarcharia	eocarcharia
+eocarcharia dinops	eocarcharia
+eoceratops	eoceratops
+eoconfuciusornis	eoconfuciusornis
+eoconfuciusornis zhengi	eoconfuciusornis
+eocursor	eocursor
+eocursor parvus	eocursor
+eoenantiornis	eoenantiornis
+eoenantiornis buhleri	eoenantiornis
+eogranivora	eogranivora
+eohadrosaurus	eolambia
+eolambia	eolambia
+eolambia caroljonesa	eolambia
+eonatator	eonatator
+eonatator sternbergi	eonatator
+eoneophron	eoneophron
+eoneophron infernalis	eoneophron
+eopengornis	eopengornis
+eopengornis martini	eopengornis
+eoplesiosaurus	eoplesiosaurus
+eoplesiosaurus antiquior	eoplesiosaurus
+eopolycotylus	eopolycotylus
+eopolycotylus rankini	eopolycotylus
+eopteranodon	eopteranodon
+eopteranodon lii	eopteranodon
+eopteranodon yixianensis	eopteranodon
+eoraptor	eoraptor
+eoraptor lunensis	eoraptor
+eosinopteryx	eosinopteryx
+eosinopteryx brevipenna	eosinopteryx
+eotephradactylus	eotephradactylus
+eotephradactylus mcintireae	eotephradactylus
+eotrachodon	eotrachodon
+eotriceratops	eotriceratops
+eotriceratops xerinsularis	eotriceratops
+eotyrannus	eotyrannus
+eotyrannus lengi	eotyrannus
+eousdryosaurus	eousdryosaurus
+eousdryosaurus nanohallucis	eousdryosaurus

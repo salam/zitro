@@ -1,0 +1,6 @@
+ZDS1	huashanosaurus	Q135979420
+name	Huashanosaurus
+group	0
+image	4521	240	117	c2163a41	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	plesiopleurodon	Q2697311
+name	Plesiopleurodon
+group	3
+image	3711	164	117	0f234d9a	Dmitry Bogdanov, CC BY 3.0
+named	1996
+source	Wikidata
+end

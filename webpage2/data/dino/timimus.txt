@@ -1,0 +1,6 @@
+ZDS1	timimus	Q135320
+name	Timimus
+group	0
+image	8147	188	117	691e7fe2	CC BY 2.5
+source	Wikidata
+end

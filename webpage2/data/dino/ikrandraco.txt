@@ -1,0 +1,7 @@
+ZDS1	ikrandraco	Q18121365
+name	Ikrandraco
+group	2
+image	4841	156	117	fcc7bbaa	Morosaurus millenii, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

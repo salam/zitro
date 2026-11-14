@@ -1,0 +1,6 @@
+ZDS1	jintasaurus	Q2444128
+name	Jintasaurus
+group	0
+image	5328	156	117	9a5ea7fe	SSR2000, CC BY-SA 3.0
+source	Wikidata
+end

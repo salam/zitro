@@ -1,0 +1,7 @@
+ZDS1	cycnorhamphus	Q2688563
+name	Cycnorhamphus
+group	2
+image	6008	133	117	33f8ee00	Haplochromis, CC BY-SA 3.0
+named	1870
+source	Wikidata
+end

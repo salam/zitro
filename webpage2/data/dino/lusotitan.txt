@@ -1,0 +1,7 @@
+ZDS1	lusotitan	Q132526
+name	Lusotitan
+group	0
+image	7526	240	117	b12e2695	CC BY 4.0
+named	2003
+source	Wikidata
+end

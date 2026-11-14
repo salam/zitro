@@ -1,0 +1,9 @@
+ZDS1	athabascasaurus	Q4813180
+name	Athabascasaurus
+group	3
+image	10128	240	117	cdc27764	Roland Tanglao from Vancouver, Canada, CC BY 2.0
+lived	112600000	109000000
+named	2010
+era	Kreide	Cretaceous
+source	Wikidata
+end

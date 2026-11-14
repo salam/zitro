@@ -1,0 +1,6 @@
+ZDS1	leonerasaurus	Q135102
+name	Leonerasaurus
+group	0
+image	4966	240	117	a7e575d7	NobuTamura palaeocritti, CC BY-SA 3.0
+source	Wikidata
+end

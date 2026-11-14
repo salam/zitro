@@ -1,0 +1,6 @@
+ZDS1	liaoceratops	Q133133
+name	Liaoceratops
+group	0
+image	5451	240	117	c3cb9d90	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

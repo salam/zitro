@@ -1,0 +1,8 @@
+ZDS1	rinchenia	Q133177
+name	Rinchenia
+group	0
+image	2904	159	117	a29b4f62	PaleoNeolitic, CC BY 4.0
+length	250	250
+named	1997
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	diabloceratops	Q132291
+name	Diabloceratops
+group	0
+image	3551	90	117	edd50af2	Perry Quan from Oakville, Canada, CC BY-SA 2.0
+named	2010
+source	Wikidata
+end

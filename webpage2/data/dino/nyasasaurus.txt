@@ -1,0 +1,6 @@
+ZDS1	nyasasaurus	Q420283
+name	Nyasasaurus
+group	0
+image	2861	133	117	0c98ee89	KDS444, CC BY-SA 3.0
+source	Wikidata
+end

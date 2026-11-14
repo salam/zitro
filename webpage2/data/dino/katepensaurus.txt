@@ -1,0 +1,6 @@
+ZDS1	katepensaurus	Q15179026
+name	Katepensaurus
+group	0
+image	6140	148	117	0a78ad81	CC BY 4.0
+source	Wikidata
+end

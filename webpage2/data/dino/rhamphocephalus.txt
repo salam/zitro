@@ -1,0 +1,7 @@
+ZDS1	rhamphocephalus	Q762052
+name	Rhamphocephalus
+group	2
+image	3185	160	117	c3947e80	the paleobear from Lontananza, Loreto, Peru, CC BY 2.0
+named	1880
+source	Wikidata
+end

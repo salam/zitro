@@ -1,0 +1,4 @@
+ZDX1	od	3
+odontorhynchus	odontorhynchus
+odontorhynchus aculeatus	odontorhynchus
+odontorhynchus lonchiferus	odontorhynchus

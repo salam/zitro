@@ -1,0 +1,12 @@
+ZDX1	je	11
+jeholopterus	jeholopterus
+jeholopterus ninchengensis	jeholopterus
+jeholornis	jeholornis
+jeholornis curvipes	jeholornis
+jeholornis palmapenis	jeholornis
+jeholornis prima	jeholornis
+jeholornis primus	jeholornis
+jeholosaurus	jeholosaurus
+jeholosaurus shangyuanensis	jeholosaurus
+jeyawati	jeyawati
+jeyawati rugoculus	jeyawati

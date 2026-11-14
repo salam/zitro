@@ -1,0 +1,6 @@
+ZDS1	arstanosaurus	Q3623999
+name	Arstanosaurus
+group	0
+image	4368	159	117	b8992a82	Pavel Bochkov from Moscow, Russia, CC BY-SA 2.0
+source	Wikidata
+end

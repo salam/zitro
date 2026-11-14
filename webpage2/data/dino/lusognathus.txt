@@ -1,0 +1,7 @@
+ZDS1	lusognathus	Q122674894
+name	Lusognathus
+group	2
+image	4111	164	117	9a92f1d2	CC BY 4.0
+named	2023
+source	Wikidata
+end

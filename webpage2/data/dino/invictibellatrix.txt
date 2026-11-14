@@ -1,0 +1,7 @@
+ZDS1	invictibellatrix	Q141728276
+name	Invictibellatrix
+group	0
+image	6245	125	117	5ff633e5	Morrison et al, CC BY 4.0
+named	2026
+source	Wikidata
+end

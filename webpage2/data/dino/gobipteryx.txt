@@ -1,0 +1,7 @@
+ZDS1	gobipteryx	Q5575539
+name	Gobipteryx
+group	1
+image	2401	165	117	9a5547a1	Filet 123, CC BY-SA 4.0
+named	1974
+source	Wikidata
+end

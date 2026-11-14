@@ -1,0 +1,6 @@
+ZDS1	mirischia	Q135648
+name	Mirischia
+group	0
+image	5498	188	117	f1021c90	Ademar Pereira do Nascimento, CC BY-SA 3.0
+source	Wikidata
+end

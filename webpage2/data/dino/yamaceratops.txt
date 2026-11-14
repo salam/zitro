@@ -1,0 +1,6 @@
+ZDS1	yamaceratops	Q132517
+name	Yamaceratops
+group	0
+image	4744	127	117	034136c5	CC BY 4.0
+source	Wikidata
+end

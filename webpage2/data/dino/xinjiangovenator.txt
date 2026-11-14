@@ -1,0 +1,7 @@
+ZDS1	xinjiangovenator	Q609659
+name	Xinjiangovenator
+group	0
+image	3930	156	117	06e17df6	Ruruty25, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

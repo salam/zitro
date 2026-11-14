@@ -1,0 +1,7 @@
+ZDS1	dispersituberoolithus	Q5282587
+name	Dispersituberoolithus
+group	0
+lived	83600000	72100000
+era	Kreide	Cretaceous
+source	Wikidata
+end

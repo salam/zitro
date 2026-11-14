@@ -1,0 +1,8 @@
+ZDS1	coronosaurus	Q135802
+name	Coronosaurus
+group	0
+image	4745	151	117	b49a9398	Nobu Tamura, CC BY-SA 4.0
+length	500	500
+mass	2000000	2000000
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	sauroniops	Q115197
+name	Sauroniops
+group	0
+image	4611	111	117	218768b9	CC BY 2.0
+source	Wikidata
+end

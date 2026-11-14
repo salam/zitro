@@ -1,0 +1,6 @@
+ZDS1	ngwevu	Q66141920
+name	Ngwevu
+group	0
+image	3597	74	117	6c6c1073	CC BY 4.0
+source	Wikidata
+end

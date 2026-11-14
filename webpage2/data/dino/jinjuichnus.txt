@@ -1,0 +1,7 @@
+ZDS1	jinjuichnus	Q139677960
+name	Jinjuichnus
+group	2
+image	5167	166	117	c3171eb0	Jun Seung Yi in Jung et al, CC BY 4.0
+named	2026
+source	Wikidata
+end

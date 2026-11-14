@@ -1,0 +1,6 @@
+ZDS1	maleriraptor	Q134384590
+name	Maleriraptor
+group	0
+image	5410	240	83	f4790cfc	CC BY 4.0
+source	Wikidata
+end

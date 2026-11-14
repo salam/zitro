@@ -1,0 +1,7 @@
+ZDS1	ningchengopterus	Q2705369
+name	Ningchengopterus
+group	2
+image	7124	151	117	a7e61ef3	Nobu Tamura, CC BY 3.0
+named	2009
+source	Wikidata
+end

@@ -1,0 +1,16 @@
+ZDS1	baryonyx	Q131006
+name	Baryonyx
+group	0
+image	3897	240	84	81062270	CC BY-SA 3.0
+length	850	1000
+height	250	250
+mass	1900000	1900000
+lived	130000000	125000000
+named	1986
+era	Kreide	Cretaceous
+meaning	schwere Klaue	heavy claw
+diet	Fisch und Dinosaurier	Fish and dinosaurs
+found	England	England
+fun	In seinem Magen fand man Fischschuppen: Baryonyx ist der erste Raubdinosaurier, der nachweislich Fisch frass.	Fish scales were found in its stomach: Baryonyx was the first predatory dinosaur shown to eat fish.	Wikipedia (EN): Baryonyx
+source	Wikidata, Wikipedia
+end

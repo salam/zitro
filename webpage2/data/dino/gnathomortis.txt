@@ -1,0 +1,9 @@
+ZDS1	gnathomortis	Q99546444
+name	Gnathomortis
+group	3
+image	5705	240	117	db25e2a5	SpinoDragon145, CC BY-SA 4.0
+lived	80970000	79010000
+named	2020
+era	Kreide	Cretaceous
+source	Wikidata
+end

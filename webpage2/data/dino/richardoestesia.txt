@@ -1,0 +1,9 @@
+ZDS1	richardoestesia	Q2029022
+name	Richardoestesia
+group	0
+image	4186	123	117	f4a58a9a	Derek W. Larson, Philip J. Currie, CC BY 2.5
+lived	76500000	66000000
+named	1990
+era	Kreide	Cretaceous
+source	Wikidata
+end

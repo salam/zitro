@@ -1,0 +1,6 @@
+ZDS1	joaquinraptor	Q136358533
+name	Joaquinraptor
+group	0
+image	4771	240	117	0c02128c	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

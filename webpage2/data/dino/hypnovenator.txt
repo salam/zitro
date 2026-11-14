@@ -1,0 +1,7 @@
+ZDS1	hypnovenator	Q127801335
+name	Hypnovenator
+group	0
+image	4564	240	117	7bdd5bf8	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

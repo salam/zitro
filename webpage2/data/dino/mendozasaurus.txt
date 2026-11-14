@@ -1,0 +1,8 @@
+ZDS1	mendozasaurus	Q134799
+name	Mendozasaurus
+group	0
+image	4549	240	117	58d0d689	-
+lived	89000000	86000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

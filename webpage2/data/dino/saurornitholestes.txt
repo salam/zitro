@@ -1,0 +1,11 @@
+ZDS1	saurornitholestes	Q132174
+name	Saurornitholestes
+group	0
+length	180	180
+height	60	60
+mass	10000	10000
+lived	77000000	69000000
+named	1978
+era	Kreide	Cretaceous
+source	Wikidata
+end

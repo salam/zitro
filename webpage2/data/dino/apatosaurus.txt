@@ -1,0 +1,15 @@
+ZDS1	apatosaurus	Q14326
+name	Apatosaurus
+group	0
+image	5479	240	117	5e4f5595	Durbed, CC BY-SA 3.0
+length	2100	2600
+mass	22400000	35000000
+lived	152000000	151000000
+named	1877
+era	Jura	Jurassic
+meaning	trügerische Echse	deceptive lizard
+diet	Pflanzen	Plants
+found	USA	USA
+fun	Apatosaurus benutzte seinen Schwanz vielleicht wie eine Peitsche, um laute Geräusche zu machen.	Apatosaurus may have used its tail like a whip to make loud noises.	Wikipedia (EN): Apatosaurus
+source	Wikidata, Wikipedia
+end

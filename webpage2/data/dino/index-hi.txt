@@ -1,0 +1,10 @@
+ZDX1	hi	9
+hierosaurus	hierosaurus
+hierosaurus sternbergi	hierosaurus
+himalayasaurus	himalayasaurus
+himalayasaurus tibetensis	himalayasaurus
+himalayasaurus tibetewis	himalayasaurus
+hippodraco	hippodraco
+hippodraco scutodens	hippodraco
+histriasaurus	histriasaurus
+histriasaurus boscarollii	histriasaurus

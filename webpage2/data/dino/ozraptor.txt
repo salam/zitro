@@ -1,0 +1,6 @@
+ZDS1	ozraptor	Q2147651
+name	Ozraptor
+group	0
+image	2690	60	117	f68d429e	CC BY-SA 4.0
+source	Wikidata
+end

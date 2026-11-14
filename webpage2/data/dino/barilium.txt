@@ -1,0 +1,6 @@
+ZDS1	barilium	Q1932480
+name	Barilium
+group	0
+image	3043	110	117	9af562bd	-
+source	Wikidata
+end

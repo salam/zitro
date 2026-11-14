@@ -1,0 +1,6 @@
+ZDS1	paludititan	Q1930353
+name	Paludititan
+group	0
+image	3835	114	117	e5ea5bd0	CC BY 3.0
+source	Wikidata
+end

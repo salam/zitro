@@ -1,0 +1,8 @@
+ZDS1	youngoolithus	Q16889229
+name	Youngoolithus
+group	0
+image	6983	176	117	4b204a53	-
+lived	99600000	65000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

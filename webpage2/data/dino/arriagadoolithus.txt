@@ -1,0 +1,7 @@
+ZDS1	arriagadoolithus	Q24912390
+name	Arriagadoolithus
+group	0
+lived	84900000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

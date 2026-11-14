@@ -1,0 +1,6 @@
+ZDS1	dakotadon	Q955193
+name	Dakotadon
+group	0
+image	4662	102	117	00b4a9cd	Clint A Boyd, Darrin C Pagnac, CC BY 4.0
+source	Wikidata
+end

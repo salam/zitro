@@ -1,0 +1,6 @@
+ZDS1	jaklapallisaurus	Q1705592
+name	Jaklapallisaurus
+group	0
+image	6042	165	117	8dca0edd	Marcio L. Castro, CC BY 4.0
+source	Wikidata
+end

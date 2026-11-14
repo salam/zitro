@@ -1,0 +1,7 @@
+ZDS1	yinlong	Q132877
+name	Yinlong
+group	0
+image	5236	240	117	9ea04047	Nobu Tamura, CC BY 3.0
+length	120	120
+source	Wikidata
+end

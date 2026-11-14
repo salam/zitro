@@ -1,0 +1,7 @@
+ZDS1	urbacodon	Q1950821
+name	Urbacodon
+group	0
+image	3855	240	117	9963abc7	Ddinodan, CC BY 4.0
+length	100	100
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	duriavenator	Q2301622
+name	Duriavenator
+group	0
+image	4562	240	117	01051193	Nobu Tamura, CC BY-SA 3.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	haya	Q1655422
+name	Haya
+group	0
+image	5678	240	117	11cc58d3	Nobu Tamura, CC BY-SA 4.0
+source	Wikidata
+end

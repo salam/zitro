@@ -1,0 +1,6 @@
+ZDS1	archaeornithura	Q19859354
+name	Archaeornithura
+group	1
+image	7489	181	117	a087a10d	CC BY 4.0
+source	Wikidata
+end

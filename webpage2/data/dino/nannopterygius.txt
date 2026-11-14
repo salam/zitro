@@ -1,0 +1,7 @@
+ZDS1	nannopterygius	Q18580462
+name	Nannopterygius
+group	3
+length	250	250
+named	1922
+source	Wikidata
+end

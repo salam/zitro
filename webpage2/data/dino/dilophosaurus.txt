@@ -1,0 +1,15 @@
+ZDS1	dilophosaurus	Q271710
+name	Dilophosaurus
+group	0
+image	3557	240	84	38971da6	CC BY 2.5
+length	700	700
+mass	400000	400000
+lived	186000000	186000000
+named	1970
+era	Jura	Jurassic
+meaning	Zwei-Kamm-Echse	two-crested lizard
+diet	vielleicht Tiere und Fisch	Maybe animals and fish
+found	Nordamerika	North America
+fun	Im Film Jurassic Park spuckt Dilophosaurus Gift. Das ist erfunden, und der echte war grösser.	In Jurassic Park, Dilophosaurus spits venom. That is made up, and the real one was bigger.	Wikipedia (EN): Dilophosaurus
+source	Wikidata, Wikipedia
+end

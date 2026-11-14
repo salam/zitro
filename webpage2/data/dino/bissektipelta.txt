@@ -1,0 +1,7 @@
+ZDS1	bissektipelta	Q138923
+name	Bissektipelta
+group	0
+image	3654	240	59	3c1e79cd	-
+named	2004
+source	Wikidata
+end

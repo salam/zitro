@@ -1,0 +1,6 @@
+ZDS1	streptospondylus	Q1577418
+name	Streptospondylus
+group	0
+image	6332	240	117	663a58ac	Foolp, CC BY-SA 4.0
+source	Wikidata
+end

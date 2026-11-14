@@ -1,0 +1,7 @@
+ZDS1	longusunguis	Q15644509
+name	Longusunguis
+group	1
+image	7842	178	117	32c4b856	Zhiheng Li, Zhonghe Zhou, Julia A. Clarke, CC BY 4.0
+named	2014
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	gobititan	Q135319
+name	Gobititan
+group	0
+lived	129000000	125000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

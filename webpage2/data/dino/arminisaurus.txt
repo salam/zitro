@@ -1,0 +1,8 @@
+ZDS1	arminisaurus	Q42350370
+name	Arminisaurus
+group	3
+image	3002	172	117	9c12f3d5	Dinosven, CC BY-SA 4.0
+length	400	400
+named	2017
+source	Wikidata
+end

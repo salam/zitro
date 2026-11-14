@@ -1,0 +1,6 @@
+ZDS1	amurosaurus	Q133179
+name	Amurosaurus
+group	0
+image	5779	240	117	97d7d503	Connor Ashbridge, CC BY-SA 4.0
+source	Wikidata
+end

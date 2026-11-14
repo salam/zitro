@@ -1,0 +1,7 @@
+ZDS1	jiangxisaurus	Q18729819
+name	Jiangxisaurus
+group	0
+image	4162	187	117	e815ecfe	Danny Cicchetti, CC BY-SA 3.0
+named	2013
+source	Wikidata
+end

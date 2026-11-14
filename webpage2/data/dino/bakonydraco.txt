@@ -1,0 +1,6 @@
+ZDS1	bakonydraco	Q389177
+name	Bakonydraco
+group	2
+image	4148	92	117	3fcc5fec	CC BY 2.0
+source	Wikidata
+end

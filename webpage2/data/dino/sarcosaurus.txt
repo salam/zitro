@@ -1,0 +1,8 @@
+ZDS1	sarcosaurus	Q134634
+name	Sarcosaurus
+group	0
+image	3482	100	117	78019ccb	-
+length	300	300
+named	1921
+source	Wikidata
+end

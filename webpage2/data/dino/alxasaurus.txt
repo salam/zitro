@@ -1,0 +1,7 @@
+ZDS1	alxasaurus	Q311286
+name	Alxasaurus
+group	0
+image	4526	155	117	a2e913fd	Conty, CC BY 3.0
+named	1994
+source	Wikidata
+end

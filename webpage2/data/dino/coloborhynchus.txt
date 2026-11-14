@@ -1,0 +1,8 @@
+ZDS1	coloborhynchus	Q286251
+name	Coloborhynchus
+group	2
+image	5074	136	117	ccc800c1	CC BY 3.0
+wingspan	700	700
+named	1874
+source	Wikidata
+end

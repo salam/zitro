@@ -1,0 +1,9 @@
+ZDS1	ichthyovenator	Q2154884
+name	Ichthyovenator
+group	0
+image	6576	240	85	c210159a	CC BY-SA 2.0
+lived	125000000	113000000
+named	2012
+era	Kreide	Cretaceous
+source	Wikidata
+end

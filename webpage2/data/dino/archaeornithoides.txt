@@ -1,0 +1,6 @@
+ZDS1	archaeornithoides	Q780065
+name	Archaeornithoides
+group	0
+image	8702	240	117	1bd8bfbf	IJReid, CC BY 4.0
+source	Wikidata
+end

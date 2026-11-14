@@ -1,0 +1,7 @@
+ZDS1	cristatusaurus	Q134640
+name	Cristatusaurus
+group	0
+image	6077	240	92	fd7694f4	FunkMonk, CC BY-SA 3.0
+named	1998
+source	Wikidata
+end

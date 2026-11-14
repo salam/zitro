@@ -1,0 +1,6 @@
+ZDS1	lajasvenator	Q76508453
+name	Lajasvenator
+group	0
+image	4660	240	117	d5971306	Juan(-username-), CC BY-SA 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	bicharracosaurus	Q139386697
+name	Bicharracosaurus
+group	0
+image	2941	154	117	14c8a7d0	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

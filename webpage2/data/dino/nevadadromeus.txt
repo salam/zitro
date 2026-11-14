@@ -1,0 +1,7 @@
+ZDS1	nevadadromeus	Q114679155
+name	Nevadadromeus
+group	0
+image	5320	240	117	60ae7e2c	Raingerr, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

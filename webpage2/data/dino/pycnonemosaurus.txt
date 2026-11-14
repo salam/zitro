@@ -1,0 +1,6 @@
+ZDS1	pycnonemosaurus	Q139189
+name	Pycnonemosaurus
+group	0
+image	4061	240	89	897e39c4	Gunnar Bivens, CC BY-SA 4.0
+source	Wikidata
+end

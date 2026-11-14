@@ -1,0 +1,15 @@
+ZDS1	coelophysis	Q309392
+name	Coelophysis
+group	0
+image	4127	240	83	72370991	-
+length	200	300
+mass	20000	30000
+lived	216000000	196000000
+named	1889
+era	Trias bis Jura	Triassic to Jurassic
+meaning	hohle Form	hollow form
+diet	Fleisch	Meat
+found	Südwesten der USA	Southwestern USA
+fun	Ein Schädel von Coelophysis flog 1998 mit dem Space Shuttle Endeavour ins All.	In 1998, a Coelophysis skull flew into space on the Space Shuttle Endeavour.	Wikipedia (EN): Coelophysis
+source	Wikidata, Wikipedia
+end

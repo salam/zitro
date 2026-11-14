@@ -1,0 +1,8 @@
+ZDS1	achelousaurus	Q131592
+name	Achelousaurus
+group	0
+image	4314	117	117	078915e9	-
+length	600	600
+named	1995
+source	Wikidata
+end

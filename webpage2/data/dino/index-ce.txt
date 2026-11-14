@@ -1,0 +1,39 @@
+ZDX1	ce	38
+cearadactylus	cearadactylus
+cearadactylus atrox	cearadactylus
+cedarosaurus	cedarosaurus
+cedarosaurus weiskopfae	cedarosaurus
+cedarpelta	cedarpelta
+cedarpelta bilbeyhallorum	cedarpelta
+cedrorestes	cedrorestes
+cedrorestes crichtoni	cedrorestes
+centrosaurus	centrosaurus
+centrosaurus apertus	centrosaurus
+ceoptera	ceoptera
+ceoptera evansae	ceoptera
+cerasinops	cerasinops
+cerasinops hodgskissi	cerasinops
+ceratocaudia	ceratocaudia
+ceratonykus	ceratonykus
+ceratonykus oculatus	ceratonykus
+ceratops	ceratops
+ceratops montanus	ceratops
+ceratosaurus	ceratosaurus
+ceratosaurus dentisulcatus	ceratosaurus
+ceratosaurus magnicornis	ceratosaurus
+ceratosaurus meriani	ceratosaurus
+ceratosaurus nasicornis	ceratosaurus
+ceratosaurus roechlingi	ceratosaurus
+ceratosuchops	ceratosuchops
+ceratosuchops inferodios	ceratosuchops
+cerebavis	cerebavis
+cetarthrosaurus	cetarthrosaurus
+cetiosauriscus	cetiosauriscus
+cetiosauriscus stewarti	cetiosauriscus
+cetiosaurus	cetiosaurus
+cetiosaurus brachyurus	cetiosaurus
+cetiosaurus brevis	cetiosaurus
+cetiosaurus leedsi	cetiosaurus
+cetiosaurus medius	cetiosaurus
+cetiosaurus oxoniensis	cetiosaurus
+cetiosaurus philippsi	cetiosaurus

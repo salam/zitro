@@ -1,0 +1,7 @@
+ZDS1	sinocephale	Q108686046
+name	Sinocephale
+group	0
+image	4101	183	117	e02f0886	IJReid, CC BY 4.0
+named	2021
+source	Wikidata
+end

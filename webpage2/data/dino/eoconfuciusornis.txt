@@ -1,0 +1,6 @@
+ZDS1	eoconfuciusornis	Q18571784
+name	Eoconfuciusornis
+group	1
+image	10802	240	117	76e01509	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

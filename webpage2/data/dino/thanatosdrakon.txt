@@ -1,0 +1,7 @@
+ZDS1	thanatosdrakon	Q111593893
+name	Thanatosdrakon
+group	2
+image	2189	117	117	de733a14	Sauriazoicillus, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

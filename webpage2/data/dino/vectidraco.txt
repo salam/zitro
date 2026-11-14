@@ -1,0 +1,7 @@
+ZDS1	vectidraco	Q7731746
+name	Vectidraco
+group	2
+image	7450	178	117	5d9439dd	Darren Naish mail, Martin Simpson, Gareth Dyke, CC BY 2.5
+named	2013
+source	Wikidata
+end

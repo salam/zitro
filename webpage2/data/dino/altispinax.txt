@@ -1,0 +1,6 @@
+ZDS1	altispinax	Q134618
+name	Altispinax
+group	0
+image	3393	65	117	22537ce4	-
+source	Wikidata
+end

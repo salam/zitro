@@ -1,0 +1,9 @@
+ZDS1	mimodactylus	Q76852527
+name	Mimodactylus
+group	2
+image	5071	134	117	0028c834	CC BY 4.0
+lived	100500000	93900000
+named	2019
+era	Kreide	Cretaceous
+source	Wikidata
+end

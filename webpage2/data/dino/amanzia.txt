@@ -1,0 +1,6 @@
+ZDS1	amanzia	Q86426410
+name	Amanzia
+group	0
+image	4863	240	65	b5766733	CC BY 4.0
+source	Wikidata
+end

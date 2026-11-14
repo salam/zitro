@@ -1,0 +1,6 @@
+ZDS1	ischioceratops	Q21871534
+name	Ischioceratops
+group	0
+image	5868	163	117	bf5d47e8	CC BY 2.5
+source	Wikidata
+end

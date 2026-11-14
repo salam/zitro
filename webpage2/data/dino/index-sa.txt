@@ -1,0 +1,62 @@
+ZDX1	sa	61
+sachicasaurus	sachicasaurus
+sachicasaurus vitae	sachicasaurus
+sahaliyania	sahaliyania
+sahaliyania elunchunorum	sahaliyania
+saichania	saichania
+saichania chulsanensis	saichania
+saltasaurus	saltasaurus
+saltasaurus loricatus	saltasaurus
+saltillomimus	saltillomimus
+saltriosaurus	saltriosaurus
+saltriovenator	saltriovenator
+saltriovenator zanellai	saltriosaurus
+samrukia	samrukia
+samrukia nessovi	samrukia
+sanjuansaurus	sanjuansaurus
+sanjuansaurus gordilloi	sanjuansaurus
+sankofa	sankofa
+sanpasaurus	sanpasaurus
+sanpasaurus yaoi	sanpasaurus
+santanadactylus	santanadactylus
+santanadactylus brasilensis	santanadactylus
+santanadactylus spixi	santanadactylus
+santanaraptor	santanaraptor
+santanaraptor placidus	santanaraptor
+sanxiasaurus	sanxiasaurus
+sanxiasaurus modaoxiensis	sanxiasaurus
+sapeornis	sapeornis
+sapeornis chaoyangensis	sapeornis
+sarahsaurus	sarahsaurus
+sarahsaurus aurifontanalis	sarahsaurus
+saratovia	saratovia
+saratovia glickmani	saratovia
+sarcolestes	sarcolestes
+sarcolestes leedsi	sarcolestes
+sarcosaurus	sarcosaurus
+sarcosaurus woodi	sarcosaurus
+sarmientosaurus	sarmientosaurus
+sasayamagnomus	sasayamagnomus
+sasayamagnomus saegusai	sasayamagnomus
+saturnalia	saturnalia
+saturnalia tupiniquim	saturnalia
+saurolophus	saurolophus
+saurolophus angustirostris	saurolophus
+saurolophus osborni	saurolophus
+sauroniops	sauroniops
+sauroniops pachytholus	sauroniops
+sauropelta	sauropelta
+sauropelta edwardsorum	sauropelta
+saurophaganax	saurophaganax
+saurophaganax maximus	saurophaganax
+sauroposeidon	sauroposeidon
+sauroposeidon proteles	sauroposeidon
+saurornithoides	saurornithoides
+saurornithoides mongoliensis	saurornithoides
+saurornitholestes	saurornitholestes
+saurornitholestes langstoni	saurornitholestes
+saurornitholestes sullivani	saurornitholestes
+savannasaurus	savannasaurus
+savannasaurus elliottorum	savannasaurus
+sazavis	sazavis
+sazavis prisca	sazavis

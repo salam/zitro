@@ -1,0 +1,10 @@
+ZDS1	camarasaurus	Q14419
+name	Camarasaurus
+group	0
+image	7789	180	117	679e3555	Mario modesto, CC BY-SA 3.0
+length	2300	2300
+lived	155000000	145000000
+named	1877
+era	Jura	Jurassic
+source	Wikidata
+end

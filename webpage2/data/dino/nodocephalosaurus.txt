@@ -1,0 +1,6 @@
+ZDS1	nodocephalosaurus	Q135063
+name	Nodocephalosaurus
+group	0
+image	6666	109	117	3eaf4090	CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	vagaceratops	Q388417
+name	Vagaceratops
+group	0
+image	9696	179	117	90dad817	D. Gordon E. Robertson, CC BY-SA 3.0
+source	Wikidata
+end

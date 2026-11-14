@@ -1,0 +1,35 @@
+ZDX1	ci	34
+cimoliasaurus	cimoliasaurus
+cimoliasaurus australis	cimoliasaurus
+cimoliasaurus bernardi	cimoliasaurus
+cimoliasaurus brachistospondylus	cimoliasaurus
+cimoliasaurus cantabrigiensis	cimoliasaurus
+cimoliasaurus chilensis	cimoliasaurus
+cimoliasaurus constrictus	cimoliasaurus
+cimoliasaurus eurymerus	cimoliasaurus
+cimoliasaurus haasti	cimoliasaurus
+cimoliasaurus laramiensis	cimoliasaurus
+cimoliasaurus limnophilus	cimoliasaurus
+cimoliasaurus magnus	cimoliasaurus
+cimoliasaurus neocomiensis	cimoliasaurus
+cimoliasaurus oxoniensis	cimoliasaurus
+cimoliasaurus planus	cimoliasaurus
+cimoliasaurus plicatus	cimoliasaurus
+cimoliasaurus portlandicus	cimoliasaurus
+cimoliasaurus richardsoni	cimoliasaurus
+cimoliasaurus smithi	cimoliasaurus
+cimoliasaurus teplicensis	cimoliasaurus
+cimoliasaurus trochanterius	cimoliasaurus
+cimoliasaurus truncatus	cimoliasaurus
+cimoliasaurus valdensis	cimoliasaurus
+cimoliopterus	cimoliopterus
+cimoliopterus cuvieri	cimoliopterus
+cimoliopterus dunni	cimoliopterus
+cimoliornis	cimoliornis
+cionodon	cionodon
+cionodon arctatus	cionodon
+cionodon stenopsis	cionodon
+citipati	citipati
+citipati osmolskae	citipati
+citipes	citipes
+citipes elegans	citipes

@@ -1,0 +1,7 @@
+ZDS1	pampadromaeus	Q1705580
+name	Pampadromaeus
+group	0
+image	4345	240	75	d9a9e1a8	Maurissauro, CC BY-SA 4.0
+named	2011
+source	Wikidata
+end

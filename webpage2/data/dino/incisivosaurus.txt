@@ -1,0 +1,6 @@
+ZDS1	incisivosaurus	Q131932
+name	Incisivosaurus
+group	0
+image	6932	168	117	db458dfa	Conty, CC BY 3.0
+source	Wikidata
+end

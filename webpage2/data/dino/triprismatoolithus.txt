@@ -1,0 +1,7 @@
+ZDS1	triprismatoolithus	Q24913691
+name	Triprismatoolithus
+group	0
+lived	84000000	73000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

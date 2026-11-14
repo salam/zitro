@@ -1,0 +1,7 @@
+ZDS1	shenzhoupterus	Q19117655
+name	Shenzhoupterus
+group	2
+image	6679	176	117	06c9817e	-
+named	2008
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	zhongjianosaurus	Q29366656
+name	Zhongjianosaurus
+group	0
+image	3739	240	117	0a59c954	Midiaou Diallo, CC BY 3.0
+named	2017
+source	Wikidata
+end

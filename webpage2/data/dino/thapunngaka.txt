@@ -1,0 +1,7 @@
+ZDS1	thapunngaka	Q108032629
+name	Thapunngaka
+group	2
+image	4512	134	117	79a8bfe4	Sauriazoicillus, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

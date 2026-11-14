@@ -1,0 +1,7 @@
+ZDS1	trachodon	Q1060870
+name	Trachodon
+group	0
+image	4284	91	117	c5fcd632	-
+named	1856
+source	Wikidata
+end

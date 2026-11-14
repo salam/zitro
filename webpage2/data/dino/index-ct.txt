@@ -1,0 +1,7 @@
+ZDX1	ct	6
+ctenochasma	ctenochasma
+ctenochasma elegans	ctenochasma
+ctenochasma gracile	ctenochasma
+ctenochasma porocristata	ctenochasma
+ctenochasma roemeri	ctenochasma
+ctenochasma taqueti	ctenochasma

@@ -1,0 +1,7 @@
+ZDS1	sphaerotholus	Q134104
+name	Sphaerotholus
+group	0
+image	3521	107	117	1047f68e	CC BY 2.5
+named	2003
+source	Wikidata
+end

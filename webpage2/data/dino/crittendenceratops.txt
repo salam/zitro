@@ -1,0 +1,7 @@
+ZDS1	crittendenceratops	Q58179217
+name	Crittendenceratops
+group	0
+image	6530	240	117	496ee8d9	PaleoEquii, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

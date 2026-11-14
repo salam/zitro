@@ -1,0 +1,9 @@
+ZDS1	cedarpelta	Q135487
+name	Cedarpelta
+group	0
+image	4556	128	117	07687132	Jens Lallensack, CC BY-SA 4.0
+length	1000	1000
+lived	116000000	109000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	bohaiornis	Q4937994
+name	Bohaiornis
+group	1
+image	7213	240	117	13e89bad	Neil Pezzoni, CC BY 4.0
+named	2011
+source	Wikidata
+end

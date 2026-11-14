@@ -1,0 +1,10 @@
+ZDS1	prognathodon	Q134700
+name	Prognathodon
+group	3
+image	4112	240	63	5190e744	-
+length	1000	1000
+lived	83600000	66000000
+named	1889
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	appalachiosaurus	Q773996
+name	Appalachiosaurus
+group	0
+image	4788	240	117	d53c8d3c	FunkMonk, CC BY 3.0
+source	Wikidata
+end

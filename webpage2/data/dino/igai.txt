@@ -1,0 +1,7 @@
+ZDS1	igai	Q120785882
+name	Igai
+group	0
+image	3457	240	85	24c3c1e7	Connor Ashbridge, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

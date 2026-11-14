@@ -1,0 +1,6 @@
+ZDX1	ny	5
+nyasasaurus	nyasasaurus
+nyasasaurus parringtoni	nyasasaurus
+nyctodactylus	nyctosaurus
+nyctosaurus	nyctosaurus
+nyctosaurus gracilis	nyctosaurus

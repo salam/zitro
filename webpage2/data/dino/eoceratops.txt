@@ -1,0 +1,8 @@
+ZDS1	eoceratops	Q5834646
+name	Eoceratops
+group	0
+image	4950	172	117	4d4cf0cb	-
+lived	76500000	75000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

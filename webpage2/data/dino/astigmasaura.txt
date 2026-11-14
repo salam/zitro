@@ -1,0 +1,7 @@
+ZDS1	astigmasaura	Q134890097
+name	Astigmasaura
+group	0
+image	3166	240	57	fecf12c9	Connor Ashbridge, CC BY 4.0
+named	2025
+source	Wikidata
+end

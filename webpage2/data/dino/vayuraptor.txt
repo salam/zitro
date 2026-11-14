@@ -1,0 +1,7 @@
+ZDS1	vayuraptor	Q63981557
+name	Vayuraptor
+group	0
+image	7934	240	117	6d3a5765	CC BY 4.0
+named	2019
+source	Wikidata
+end

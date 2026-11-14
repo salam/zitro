@@ -1,0 +1,5 @@
+ZDX1	bl	4
+blasisaurus	blasisaurus
+blasisaurus canudoi	blasisaurus
+blikanasaurus	blikanasaurus
+blikanasaurus cromptoni	blikanasaurus

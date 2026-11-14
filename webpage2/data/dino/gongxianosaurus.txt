@@ -1,0 +1,7 @@
+ZDS1	gongxianosaurus	Q1710249
+name	Gongxianosaurus
+group	0
+lived	183000000	174000000
+era	Jura	Jurassic
+source	Wikidata
+end

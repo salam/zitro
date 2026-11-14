@@ -1,0 +1,10 @@
+ZDS1	eolambia	Q133066
+name	Eolambia
+group	0
+image	3953	240	117	3a7f787a	Audrey.m.horn, CC BY-SA 4.0
+length	600	600
+height	200	200
+mass	1000000	1000000
+named	1998
+source	Wikidata
+end

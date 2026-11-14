@@ -1,0 +1,10 @@
+ZDS1	jobaria	Q131398
+name	Jobaria
+group	0
+image	3699	81	117	350a0576	Matt Martyniuk (Dinoguy2), CC BY-SA 4.0
+length	2100	2100
+lived	167000000	161000000
+named	1999
+era	Jura	Jurassic
+source	Wikidata
+end

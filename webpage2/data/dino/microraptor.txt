@@ -1,0 +1,14 @@
+ZDS1	microraptor	Q310537
+name	Microraptor
+group	0
+image	4356	240	117	8fc07d65	Matt Martyniuk, CC BY 3.0
+length	80	80
+lived	125000000	120000000
+named	2000
+era	Kreide	Cretaceous
+meaning	kleiner Räuber	small robber
+diet	Fleisch	Meat
+found	Liaoning (China)	Liaoning (China)
+fun	Microraptor hatte lange Federn an Armen und Beinen, die vier Flügel bildeten.	Microraptor had long feathers on its arms and legs that formed four wings.	Wikipedia (DE): Microraptor
+source	Wikidata, Wikipedia
+end

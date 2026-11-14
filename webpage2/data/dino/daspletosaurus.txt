@@ -1,0 +1,9 @@
+ZDS1	daspletosaurus	Q18511071
+name	Daspletosaurus
+group	0
+image	4916	240	117	327841b7	Steveoc 86 at English Wikipedia, CC BY-SA 2.5
+length	900	900
+mass	2500000	2500000
+named	1970
+source	Wikidata
+end

@@ -1,0 +1,4 @@
+ZDX1	vu	3
+vulcanodon	vulcanodon
+vulcanodon karibaenis	vulcanodon
+vulcanodon karibaensis	vulcanodon

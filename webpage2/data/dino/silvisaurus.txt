@@ -1,0 +1,9 @@
+ZDS1	silvisaurus	Q133169
+name	Silvisaurus
+group	0
+image	11261	240	117	19862608	ABelov2014, CC BY-SA 3.0
+length	400	400
+lived	96000000	93500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

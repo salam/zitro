@@ -1,0 +1,9 @@
+ZDS1	hanssuesia	Q812762
+name	Hanssuesia
+group	0
+image	6010	170	117	ad18e0de	CC BY 2.5
+lived	77500000	75000000
+named	2003
+era	Kreide	Cretaceous
+source	Wikidata
+end

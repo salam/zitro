@@ -1,0 +1,10 @@
+ZDS1	cetiosaurus	Q14427
+name	Cetiosaurus
+group	0
+image	4541	240	117	7c79783f	Nobu Tamura, CC BY 3.0
+length	1800	1800
+lived	174100000	145000000
+named	1841
+era	Jura	Jurassic
+source	Wikidata
+end

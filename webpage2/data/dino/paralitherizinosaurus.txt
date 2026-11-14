@@ -1,0 +1,6 @@
+ZDS1	paralitherizinosaurus	Q111821206
+name	Paralitherizinosaurus
+group	0
+image	5308	171	117	3ff9a444	Masato Hattori (masahatto2.p2.bindsite.jp), CC BY 4.0
+source	Wikidata
+end

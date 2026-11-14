@@ -1,0 +1,7 @@
+ZDS1	raptorex	Q131717
+name	Raptorex
+group	0
+image	4286	156	117	2e934e96	CC BY-SA 2.0
+named	2009
+source	Wikidata
+end

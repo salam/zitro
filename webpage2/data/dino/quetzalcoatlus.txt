@@ -1,0 +1,15 @@
+ZDS1	quetzalcoatlus	Q131205
+name	Quetzalcoatlus
+group	2
+image	4253	92	117	d969c80d	Johnson Mortimer, CC BY 3.0
+height	490	490
+wingspan	1100	1100
+mass	250000	250000
+lived	68000000	66000000
+named	1975
+era	Kreide	Cretaceous
+diet	wohl kleine Tiere	Probably small animals
+found	Texas (USA)	Texas (USA)
+fun	Quetzalcoatlus war eines der grössten Tiere, die je fliegen konnten. Er ist nach dem Gott Quetzalcoatl benannt.	Quetzalcoatlus was one of the largest animals that could ever fly. It is named after the god Quetzalcoatl.	Wikipedia (DE): Quetzalcoatlus
+source	Wikidata, Wikipedia
+end

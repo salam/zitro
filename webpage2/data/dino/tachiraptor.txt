@@ -1,0 +1,7 @@
+ZDS1	tachiraptor	Q18204180
+name	Tachiraptor
+group	0
+image	4342	106	117	532c07da	CC BY 4.0
+named	2014
+source	Wikidata
+end

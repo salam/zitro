@@ -1,0 +1,7 @@
+ZDS1	nipponopterus	Q131210003
+name	Nipponopterus
+group	2
+image	2902	143	117	1ee90b2a	SlvrHwk, CC BY-SA 4.0
+named	2024
+source	Wikidata
+end

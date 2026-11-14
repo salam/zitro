@@ -1,0 +1,5 @@
+ZDX1	ir	4
+irisosaurus	irisosaurus
+irisosaurus yimenensis	irisosaurus
+irritator	irritator
+irritator challengeri	irritator

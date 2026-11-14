@@ -1,0 +1,7 @@
+ZDS1	scalamagnus	Q123991313
+name	Scalamagnus
+group	3
+image	3589	124	117	cd80dca4	SpinoDragon145, CC BY 4.0
+named	2023
+source	Wikidata
+end

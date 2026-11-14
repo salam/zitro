@@ -1,0 +1,7 @@
+ZDS1	kuru	Q192413
+name	Kuru
+group	0
+image	3437	240	69	e988442f	UnexpectedDinoLesson, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

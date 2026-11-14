@@ -1,0 +1,7 @@
+ZDS1	garudapterus	Q133657969
+name	Garudapterus
+group	2
+image	6001	240	117	9485ecc8	DinoThaiThai Chatchy, CC BY-SA 4.0
+named	2025
+source	Wikidata
+end

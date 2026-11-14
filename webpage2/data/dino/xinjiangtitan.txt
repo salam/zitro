@@ -1,0 +1,6 @@
+ZDS1	xinjiangtitan	Q15144358
+name	Xinjiangtitan
+group	0
+image	3072	240	79	3b4dc11b	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

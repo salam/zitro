@@ -1,0 +1,7 @@
+ZDS1	elrhazosaurus	Q2154452
+name	Elrhazosaurus
+group	0
+image	6060	240	117	c05d03cf	-
+named	2009
+source	Wikidata
+end

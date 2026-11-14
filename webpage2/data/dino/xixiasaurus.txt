@@ -1,0 +1,7 @@
+ZDS1	xixiasaurus	Q2417324
+name	Xixiasaurus
+group	0
+image	4695	93	117	017e6221	CC BY 4.0
+named	2010
+source	Wikidata
+end

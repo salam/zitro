@@ -1,0 +1,6 @@
+ZDS1	macrurosaurus	Q137246
+name	Macrurosaurus
+group	0
+image	7327	240	117	87eeb960	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

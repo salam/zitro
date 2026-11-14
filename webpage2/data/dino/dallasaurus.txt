@@ -1,0 +1,7 @@
+ZDS1	dallasaurus	Q2335300
+name	Dallasaurus
+group	3
+image	4361	240	117	aa5450c9	Conty, CC BY 3.0
+named	2005
+source	Wikidata
+end

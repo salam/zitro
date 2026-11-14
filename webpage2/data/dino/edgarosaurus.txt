@@ -1,0 +1,7 @@
+ZDS1	edgarosaurus	Q16746085
+name	Edgarosaurus
+group	3
+image	3331	169	117	78d599a0	Smokeybjb, CC BY-SA 3.0
+named	2002
+source	Wikidata
+end

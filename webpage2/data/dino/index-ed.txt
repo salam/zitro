@@ -1,0 +1,11 @@
+ZDX1	ed	10
+edgarosaurus	edgarosaurus
+edgarosaurus muddi	edgarosaurus
+edmontonia	edmontonia
+edmontonia australis	edmontonia
+edmontonia longiceps	edmontonia
+edmontonia rugosidens	edmontonia
+edmontosaurus	edmontosaurus
+edmontosaurus annectens	edmontosaurus
+edmontosaurus regalis	edmontosaurus
+edmontosaurus saskatchewanensis	edmontosaurus

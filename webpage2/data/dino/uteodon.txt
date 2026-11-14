@@ -1,0 +1,6 @@
+ZDS1	uteodon	Q19847335
+name	Uteodon
+group	0
+image	13850	240	117	c72c6482	-
+source	Wikidata
+end

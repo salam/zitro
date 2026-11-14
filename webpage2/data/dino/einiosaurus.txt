@@ -1,0 +1,11 @@
+ZDS1	einiosaurus	Q131601
+name	Einiosaurus
+group	0
+image	5915	240	117	11625ca6	Nobu Tamura, CC BY 3.0
+length	450	600
+mass	1300000	1300000
+lived	74500000	74000000
+named	1994
+era	Kreide	Cretaceous
+source	Wikidata
+end

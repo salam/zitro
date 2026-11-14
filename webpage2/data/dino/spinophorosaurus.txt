@@ -1,0 +1,6 @@
+ZDS1	spinophorosaurus	Q134312
+name	Spinophorosaurus
+group	0
+image	8830	179	117	965bcb45	CC BY 2.0
+source	Wikidata
+end

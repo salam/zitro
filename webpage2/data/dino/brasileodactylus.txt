@@ -1,0 +1,7 @@
+ZDS1	brasileodactylus	Q899129
+name	Brasileodactylus
+group	2
+image	3958	90	117	f9b16da8	CC BY 4.0
+named	1984
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	bayannurosaurus	Q51879459
+name	Bayannurosaurus
+group	0
+image	5401	240	117	a6f7e827	Raingerr, CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

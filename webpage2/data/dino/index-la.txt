@@ -1,0 +1,42 @@
+ZDX1	la	41
+labocania	labocania
+labocania aguillonae	labocania
+labocania anomala	labocania
+lacusovagus	lacusovagus
+lacusovagus magnificens	lacusovagus
+laevisuchus	laevisuchus
+laevisuchus indicus	laevisuchus
+lagenanectes	lagenanectes
+lagenanectes richterae	lagenanectes
+laiyangosaurus	laiyangosaurus
+lajasvenator	lajasvenator
+lake nyasa lizard	nyasasaurus
+lamaceratops	lamaceratops
+lamaceratops tereschenkoi	lamaceratops
+lambeosaurus	lambeosaurus
+lambeosaurus lambei	lambeosaurus
+lambeosaurus magnicristatus	lambeosaurus
+lambeosaurus paucidens	lambeosaurus
+lametasaurus	lametasaurus
+lametasaurus indicus	lametasaurus
+lamplughsaura	lamplughsaura
+lamplughsaura dharmaramensis	lamplughsaura
+lanzhousaurus	lanzhousaurus
+lanzhousaurus magnidens	lanzhousaurus
+laosaurus	laosaurus
+laosaurus celer	laosaurus
+laosaurus gracilis	laosaurus
+laosaurus minimus	laosaurus
+laplatasaurus	laplatasaurus
+lapparentosaurus	lapparentosaurus
+lapparentosaurus madagascariensis	lapparentosaurus
+laquintasaura	laquintasaura
+laquintasaura venezuelae	laquintasaura
+latenivenatrix	latenivenatrix
+latirhinus	latirhinus
+latirhinus uitstlani	latirhinus
+latoplatecarpus	latoplatecarpus
+laueropterus	laueropterus
+laueropterus vitriolus	laueropterus
+lavocatisaurus	lavocatisaurus
+lavocatisaurus agrioensis	lavocatisaurus

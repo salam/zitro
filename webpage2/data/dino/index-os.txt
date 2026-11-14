@@ -1,0 +1,4 @@
+ZDX1	os	3
+ostafrikasaurus	ostafrikasaurus
+ostromia	ostromia
+ostromia crassipes	ostromia

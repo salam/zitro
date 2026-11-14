@@ -1,0 +1,7 @@
+ZDS1	cryolophosaurus	Q18511006
+name	Cryolophosaurus
+group	0
+image	4067	89	117	13247047	-
+length	800	800
+source	Wikidata
+end

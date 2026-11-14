@@ -1,0 +1,7 @@
+ZDS1	yehuecauhceratops	Q28610332
+name	Yehuecauhceratops
+group	0
+image	5254	141	117	7b5a22e0	CC BY 4.0
+named	2017
+source	Wikidata
+end

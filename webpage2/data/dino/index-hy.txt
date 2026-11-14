@@ -1,0 +1,24 @@
+ZDX1	hy	23
+hydralmosaurus	hydralmosaurus
+hydralmosaurus serpentinus	hydralmosaurus
+hydrorion	hydrorion
+hydrorion brachypterygius	hydrorion
+hydrotherosaurus	hydrotherosaurus
+hydrotherosaurus alexandrae	hydrotherosaurus
+hylaeosaurus	hylaeosaurus
+hylaeosaurus armatus	hylaeosaurus
+hylaeosaurus oweni	hylaeosaurus
+hypacrosaurus	hypacrosaurus
+hypacrosaurus altispinus	hypacrosaurus
+hypacrosaurus stebingeri	hypacrosaurus
+hypnovenator	hypnovenator
+hypnovenator matsubaraetoheorum	hypnovenator
+hypselosaurus	hypselosaurus
+hypselosaurus priscus	hypselosaurus
+hypselospinus	hypselospinus
+hypselospinus fittoni	hypselospinus
+hypsibema	hypsibema
+hypsibema crassicauda	hypsibema
+hypsibema missouriensis	hypsibema
+hypsilophodon	hypsilophodon
+hypsilophodon foxii	hypsilophodon

@@ -1,0 +1,7 @@
+ZDS1	procompsognathus	Q131446
+name	Procompsognathus
+group	0
+image	4519	240	117	68d141f9	FunkMonk, CC BY-SA 3.0
+length	100	100
+source	Wikidata
+end

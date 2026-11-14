@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dino Factsheet Mock</title>
+<style>
+  body { margin:0; padding:24px 16px; background:#f4efe6; color:#2b2721; font-family:-apple-system,Segoe UI,Arial,sans-serif; }
+  h2 { margin:0 0 6px; } h3 { margin:22px 0 10px; } .subtitle { margin:0 0 18px; opacity:.8; max-width:760px; }
+</style></head><body>
+<p style="font-size:12px;opacity:.7;margin:0 0 14px;">Design mock for docs/superpowers/specs/2026-11-12-dinosaur-factsheet-design.md. Screens at 1.5x of the stick's 240x135. Fonts are approximate. Picture: ScottRobertAnselmo, CC BY-SA 3.0, from the existing dinosaurs timeline.</p>
+<style>
+  .fs-row { display:flex; flex-wrap:wrap; gap:18px; margin:0 0 26px; }
+  .fs-item { width:360px; max-width:100%; }
+  .fs-cap { font-size:13px; margin:0 0 6px; }
+  .fs-note { font-size:12px; opacity:.75; margin:6px 0 0; }
+  .fs-wrap { width:360px; height:203px; overflow:hidden; border-radius:6px; border:2px solid #4a453c; }
+  .scr { width:240px; height:135px; transform:scale(1.5); transform-origin:0 0; background:#000; color:#fff;
+         font-family:Arial,Helvetica,sans-serif; position:relative; overflow:hidden; }
+  .foot { position:absolute; left:4px; right:4px; bottom:2px; font-size:8px; color:#8d8d8d;
+          display:flex; justify-content:space-between; white-space:nowrap; }
+  .name { color:#f2b705; font-weight:bold; }
+  .k { color:#9a9a9a; }
+  .data { display:grid; grid-template-columns:auto 1fr; column-gap:8px; row-gap:2px; font-size:11px; align-items:baseline; }
+  .data b { font-size:12px; }
+  .band { position:absolute; left:0; right:0; bottom:12px; padding:2px 5px; background:rgba(0,0,0,.72); }
+  .p { position:absolute; background:#fff; }
+  .d { position:absolute; background:#f2b705; }
+  .r { position:absolute; background:#7a5f10; }
+  .t { position:absolute; font-size:9px; color:#ccc; }
+  .fun { position:absolute; left:10px; right:10px; top:30px; font-size:15px; line-height:1.3; font-weight:bold; }
+</style>
+
+<h2>Vier Seiten: Bild, Fakten, Grösse, Fun Fact</h2>
+<p class="subtitle">Die Reihenfolge ist frei, hier eine Möglichkeit. Alle Werte und Sätze stammen aus Wikipedia oder Wikidata, die Quelle steht unter jedem Beispiel.</p>
+
+<h3>Tyrannosaurus</h3>
+<div class="fs-row">
+  <div class="fs-item">
+    <p class="fs-cap">Bild</p>
+    <div class="fs-wrap"><div class="scr">
+      <img src="data:image/jpeg;base64,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" alt="" style="position:absolute;left:0;top:0;width:240px;height:123px;object-fit:cover;">
+      <div class="band"><span class="name" style="font-size:16px;">Tyrannosaurus</span></div>
+      <div class="foot"><span>ScottRobertAnselmo, CC BY-SA 3.0</span><span>1/4</span></div>
+    </div></div>
+  </div>
+  <div class="fs-item">
+    <p class="fs-cap">Fakten, jetzt mit Tempo</p>
+    <div class="fs-wrap"><div class="scr">
+      <div style="position:absolute;left:8px;top:4px;right:6px;">
+        <div class="name" style="font-size:15px;margin-bottom:3px;">Tyrannosaurus</div>
+        <div class="data">
+          <span class="k">Länge</span><b>12–13 m</b>
+          <span class="k">Höhe</span><b>3,6–4 m</b>
+          <span class="k">Gewicht</span><b>8,8 t</b>
+          <span class="k">Tempo</span><b>ca. 20–30 km/h, geschätzt</b>
+          <span class="k">Zeit</span><b>Kreide, vor 68–66 Mio. J.</b>
+          <span class="k">Benannt</span><b>1905</b>
+        </div>
+      </div>
+      <div class="foot"><span>Wikidata, Wikipedia</span><span>2/4</span></div>
+    </div></div>
+    <p class="fs-note">Tempo: de.wikipedia «etwa 20–30 km/h». Zur Eiergrösse gibt es keine Angabe, deshalb fehlt die Zeile.</p>
+  </div>
+  <div class="fs-item">
+    <p class="fs-cap">Grössenvergleich</p>
+    <div class="fs-wrap"><div class="scr">
+      <div class="name" style="position:absolute;left:8px;top:6px;font-size:14px;">So gross war er</div>
+      <div class="p" style="left:10px;bottom:30px;width:8px;height:20px;border-radius:3px;"></div>
+      <div class="p" style="left:10px;bottom:51px;width:8px;height:8px;border-radius:50%;"></div>
+      <div class="d" style="left:30px;bottom:30px;width:192px;height:58px;border-radius:3px;"></div>
+      <div class="r" style="left:222px;bottom:30px;width:14px;height:58px;border-radius:0 3px 3px 0;"></div>
+      <div style="position:absolute;left:30px;width:192px;bottom:50px;text-align:center;color:#000;font-size:17px;font-weight:bold;">12–13 m lang</div>
+      <div class="t" style="left:3px;bottom:17px;">Mensch</div>
+      <div class="foot"><span>Wikidata, Wikipedia</span><span>3/4</span></div>
+    </div></div>
+  </div>
+  <div class="fs-item">
+    <p class="fs-cap">Fun Fact</p>
+    <div class="fs-wrap"><div class="scr">
+      <div class="name" style="position:absolute;left:10px;top:7px;font-size:14px;">Wusstest du?</div>
+      <div class="fun">Tyrannosaurus hatte vermutlich den stärksten Biss aller Landtiere, die man kennt.</div>
+      <div class="foot"><span>Wikipedia (EN): Tyrannosaurus</span><span>4/4</span></div>
+    </div></div>
+    <p class="fs-note">en.wikipedia: «its estimated bite force being the largest among all terrestrial animals», übersetzt und gekürzt.</p>
+  </div>
+</div>
+
+<h3>Weitere echte Beispiele</h3>
+<div class="fs-row">
+  <div class="fs-item">
+    <p class="fs-cap">Fun Fact aus zwei Sätzen derselben Quelle</p>
+    <div class="fs-wrap"><div class="scr">
+      <div class="name" style="position:absolute;left:10px;top:7px;font-size:14px;">Wusstest du?</div>
+      <div class="fun" style="font-size:14px;">Maiasaura heisst «gute Mutter-Echse». Die Eltern brachten Futter zum Nest.</div>
+      <div class="foot"><span>Wikipedia (EN): Maiasaura</span><span>4/4</span></div>
+    </div></div>
+    <p class="fs-note">en.wikipedia: «Maiasaura means 'good mother lizard'» und «the adults brought food to the nest».</p>
+  </div>
+  <div class="fs-item">
+    <p class="fs-cap">Eine Faktenzeile mit Eiergrösse (Ausschnitt)</p>
+    <div class="fs-wrap"><div class="scr">
+      <div style="position:absolute;left:8px;top:8px;right:6px;">
+        <div class="name" style="font-size:16px;margin-bottom:8px;">Hypselosaurus</div>
+        <div class="data" style="font-size:13px;">
+          <span class="k">Ei</span><b style="font-size:15px;">ca. 30 cm lang</b>
+        </div>
+        <div style="margin-top:14px;font-size:10px;color:#666;">… weitere Zeilen, hier nicht geprüft</div>
+      </div>
+      <div class="foot"><span>Wikipedia (EN)</span><span>2/3</span></div>
+    </div></div>
+    <p class="fs-note">en.wikipedia: «The eggs are unusually large; measuring at around 1 ft in length.» Von 12 bekannten Arten hatte keine eine Eiergrösse im Artikel.</p>
+  </div>
+</div>
+
+</body></html>

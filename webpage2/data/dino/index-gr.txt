@@ -1,0 +1,22 @@
+ZDX1	gr	21
+graciliceratops	graciliceratops
+graciliceratops mongoliensis	graciliceratops
+graciliraptor	graciliraptor
+graciliraptor lujiatunensis	graciliraptor
+gravisaurus	gravisaurus
+gravitholus	gravitholus
+gravitholus albertae	gravitholus
+gremlin	gremlin
+gremlin slobodorum	gremlin
+grendelius	grendelius
+gretcheniao	gretcheniao
+gretcheniao sinensis	gretcheniao
+gronausaurus	gronausaurus
+gronausaurus wegneri	gronausaurus
+gryphoceratops	gryphoceratops
+gryphoceratops morrisoni	gryphoceratops
+gryposaurus	gryposaurus
+gryposaurus alsatei	gryposaurus
+gryposaurus latidens	gryposaurus
+gryposaurus monumentensis	gryposaurus
+gryposaurus notabilis	gryposaurus

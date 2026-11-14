@@ -1,0 +1,7 @@
+ZDS1	saltriovenator	Q60146997
+name	Saltriovenator
+group	0
+lived	199300000	197500000
+era	Jura	Jurassic
+source	Wikidata
+end

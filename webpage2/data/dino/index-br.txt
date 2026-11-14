@@ -1,0 +1,42 @@
+ZDX1	br	41
+brachauchenius	brachauchenius
+brachauchenius lucasi	brachauchenius
+brachiosaurier	brachiosaurus
+brachiosaurus	brachiosaurus
+brachiosaurus altithorax	brachiosaurus
+brachiosaurus atalaiensis	lusotitan
+brachiosaurus nougaredi	brachiosaurus
+brachyceratops	brachyceratops
+brachyceratops montanensis	brachyceratops
+brachylophosaurus	brachylophosaurus
+brachylophosaurus canadensis	brachylophosaurus
+brachypterygius	brachypterygius
+brachypterygius extremus	brachypterygius
+brachytrachelopan	brachytrachelopan
+brachytrachelopan mesai	brachytrachelopan
+brancasaurus	brancasaurus
+brancasaurus brancai	brancasaurus
+brasileodactylus	brasileodactylus
+brasileodactylus araripensis	brasileodactylus
+brasilotitan	brasilotitan
+brasilotitan nemophagus	brasilotitan
+bravasaurus	bravasaurus
+bravasaurus arreirosorum	bravasaurus
+bravasaurus arrierosorum	bravasaurus
+bravoceratops	bravoceratops
+bravoceratops polyphemus	bravoceratops
+breviceratops	breviceratops
+breviceratops kozlowskii	breviceratops
+brevirostruavis	brevirostruavis
+brevirostruavis macrohyoideus	brevirostruavis
+brighstoneus	brighstoneus
+brighstoneus simmondsi	brighstoneus
+brontosaurier	apatosaurus
+brontosaurus	brontosaurus
+brontosaurus excelsus	brontosaurus
+brontosaurus parvus	brontosaurus
+brontosaurus yahnahpin	brontosaurus
+brontotholus	brontotholus
+brontotholus harmoni	brontotholus
+bruhathkayosaurus	bruhathkayosaurus
+bruhathkayosaurus matleyi	bruhathkayosaurus

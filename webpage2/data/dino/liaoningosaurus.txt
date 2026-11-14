@@ -1,0 +1,6 @@
+ZDS1	liaoningosaurus	Q134236
+name	Liaoningosaurus
+group	0
+image	3333	62	117	4e66d820	Bjoertvedt, CC BY-SA 4.0
+source	Wikidata
+end

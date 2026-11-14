@@ -1,0 +1,6 @@
+ZDS1	drusilasaura	Q137363
+name	Drusilasaura
+group	0
+image	4206	240	117	56e46349	Miracusaurs, CC BY-SA 4.0
+source	Wikidata
+end

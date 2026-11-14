@@ -1,0 +1,7 @@
+ZDS1	isasicursor	Q77814552
+name	Isasicursor
+group	0
+image	4562	240	90	f25cd5d3	CC BY 3.0
+named	2019
+source	Wikidata
+end

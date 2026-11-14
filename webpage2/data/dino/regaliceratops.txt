@@ -1,0 +1,11 @@
+ZDS1	regaliceratops	Q20035817
+name	Regaliceratops
+group	0
+image	8589	240	117	62453e9b	CC BY-SA 4.0
+length	500	500
+mass	1500000	1500000
+lived	68500000	67500000
+named	2015
+era	Kreide	Cretaceous
+source	Wikidata
+end

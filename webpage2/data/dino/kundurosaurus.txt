@@ -1,0 +1,6 @@
+ZDS1	kundurosaurus	Q2663595
+name	Kundurosaurus
+group	0
+image	5750	151	117	619708c0	CC BY 2.5
+source	Wikidata
+end

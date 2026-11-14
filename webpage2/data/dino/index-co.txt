@@ -1,0 +1,65 @@
+ZDX1	co	64
+coahuilaceratops	coahuilaceratops
+coahuilaceratops magnacuerna	coahuilaceratops
+coahuilasaurus	coahuilasaurus
+coahuilasaurus lipani	coahuilasaurus
+coelophysis	coelophysis
+coelophysis bauri	coelophysis
+coelophysis kayentakatae	coelophysis
+coelophysis rhodesiensis	coelophysis
+coelosaurus	coelosaurus
+coelosaurus affinis	coelosaurus
+coelosaurus antiquus	coelosaurus
+coeluroides	coeluroides
+coeluroides largus	coeluroides
+coelurus	coelurus
+coelurus fragilis	coelurus
+colepiocephale	colepiocephale
+colepiocephale lambei	colepiocephale
+coloborhynchus	coloborhynchus
+coloborhynchus araripensis	coloborhynchus
+coloborhynchus clavirostris	coloborhynchus
+coloborhynchus fluviferox	nicorhynchus
+coloborhynchus spielbergi	maaradactylus
+coloradisaurus	coloradisaurus
+coloradisaurus brevis	coloradisaurus
+colymbosaurus	colymbosaurus
+colymbosaurus richardsoni	colymbosaurus
+colymbosaurus sclerodirus	colymbosaurus
+colymbosaurus trochanterius	colymbosaurus
+comahuesaurus	comahuesaurus
+comahuesaurus windhauseni	comahuesaurus
+compsognathus	compsognathus
+compsognathus longipes	compsognathus
+compsognathus prima	compsognathus
+compsosuchus	compsosuchus
+compsosuchus solus	compsosuchus
+comptonatus	comptonatus
+comptonatus chasei	comptonatus
+compys	procompsognathus
+concavenator	concavenator
+concavenator corcovatus	concavenator
+conchoraptor	conchoraptor
+conchoraptor gracilis	conchoraptor
+condorraptor	condorraptor
+condorraptor currumili	condorraptor
+confuciusornis	confuciusornis
+confuciusornis chuongzhous	confuciusornis
+confuciusornis chuonzhous	confuciusornis
+confuciusornis dui	confuciusornis
+confuciusornis feducciai	confuciusornis
+confuciusornis jianchangensis	confuciusornis
+confuciusornis sanctus	confuciusornis
+confuciusornis suniae	confuciusornis
+contectopalatus	contectopalatus
+contectopalatus atavus	contectopalatus
+convolosaurus	convolosaurus
+cooper	australotitan
+coronosaurus	coronosaurus
+coronosaurus brinkmani	coronosaurus
+corythoraptor	corythoraptor
+corythoraptor jacobsi	corythoraptor
+corythoraptors	corythoraptor
+corythosaurus	corythosaurus
+corythosaurus casuarius	corythosaurus
+corythosaurus intermedius	corythosaurus

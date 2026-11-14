@@ -1,0 +1,6 @@
+ZDS1	alaskacephale	Q132965
+name	Alaskacephale
+group	0
+image	3897	240	94	3795fb58	Connor Ashbridge, CC BY 4.0
+source	Wikidata
+end

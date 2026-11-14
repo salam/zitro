@@ -1,0 +1,30 @@
+ZDX1	ne	29
+nebulasaurus	nebulasaurus
+nebulasaurus taito	nebulasaurus
+nedoceratops	nedoceratops
+nedoceratops hatcheri	nedoceratops
+neimongosaurus	neimongosaurus
+neimongosaurus yangi	neimongosaurus
+nemegtomaia	nemegtomaia
+nemegtomaia barsboldi	nemegtomaia
+nemegtosaurus	nemegtosaurus
+nemegtosaurus mongoliensis	nemegtosaurus
+nemegtosaurus pach	nemegtosaurus
+nemegtosaurus pachi	nemegtosaurus
+nemicolopterus	nemicolopterus
+nemicolopterus crypticus	nemicolopterus
+neobohaiornis	neobohaiornis
+neobohaiornis lamadongensis	neobohaiornis
+neosodon	neosodon
+neovenator	neovenator
+neovenator salerii	neovenator
+neuquenornis	neuquenornis
+neuquenornis volans	neuquenornis
+neuquenraptor	neuquenraptor
+neuquenraptor argentinus	neuquenraptor
+neuquensaurus	neuquensaurus
+neuquensaurus australis	neuquensaurus
+neuquensaurus robustus	neuquensaurus
+nevadadromeus	nevadadromeus
+nevadadromeus schmitti	nevadadromeus
+newtonsaurus	newtonsaurus

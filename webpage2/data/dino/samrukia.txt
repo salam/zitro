@@ -1,0 +1,7 @@
+ZDS1	samrukia	Q18585134
+name	Samrukia
+group	2
+image	2586	240	61	9e6bfef9	Skye McDavid, CC BY 4.0
+named	2012
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	citipati	Q131735
+name	Citipati
+group	0
+image	6349	176	117	79ae1636	Ryan Somma, CC BY-SA 2.0
+length	210	210
+lived	84000000	75000000
+named	2001
+era	Kreide	Cretaceous
+source	Wikidata
+end

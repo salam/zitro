@@ -1,0 +1,7 @@
+ZDS1	imperobator	Q63135067
+name	Imperobator
+group	0
+image	2102	93	117	1d9fb81d	PaleoNeolitic, CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

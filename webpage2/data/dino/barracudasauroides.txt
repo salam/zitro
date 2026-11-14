@@ -1,0 +1,9 @@
+ZDS1	barracudasauroides	Q4863196
+name	Barracudasauroides
+group	3
+image	9668	240	117	6941fcd7	Didier Descouens, CC BY-SA 4.0
+lived	247200000	242000000
+named	2010
+era	Trias	Triassic
+source	Wikidata
+end

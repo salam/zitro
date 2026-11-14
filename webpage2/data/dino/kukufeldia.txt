@@ -1,0 +1,6 @@
+ZDS1	kukufeldia	Q1930345
+name	Kukufeldia
+group	0
+image	5707	240	117	528962d0	-
+source	Wikidata
+end

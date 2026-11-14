@@ -1,0 +1,7 @@
+ZDS1	douzhanopterus	Q28807315
+name	Douzhanopterus
+group	2
+image	5533	130	117	4052bf16	CC BY 4.0
+named	2017
+source	Wikidata
+end

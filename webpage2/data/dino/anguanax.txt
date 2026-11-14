@@ -1,0 +1,8 @@
+ZDS1	anguanax	Q21127228
+name	Anguanax
+group	3
+image	5670	146	117	2542007b	Cau, A. and Fanti, F, CC BY-SA 4.0
+length	400	400
+named	2016
+source	Wikidata
+end

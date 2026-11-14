@@ -1,0 +1,7 @@
+ZDS1	romeosaurus	Q12973079
+name	Romeosaurus
+group	3
+image	11000	240	117	1f33fc0d	Ghedoghedo, CC BY-SA 3.0
+named	2013
+source	Wikidata
+end

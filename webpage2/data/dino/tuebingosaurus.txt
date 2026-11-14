@@ -1,0 +1,7 @@
+ZDS1	tuebingosaurus	Q113859091
+name	Tuebingosaurus
+group	0
+image	4734	240	79	71d5b347	Omar Rafael Regalado Fernandez, Ingmar Werneburg, CC BY 4.0
+named	2022
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	eucercosaurus	Q18578561
+name	Eucercosaurus
+group	0
+image	7399	240	117	44b20fcd	-
+source	Wikidata
+end

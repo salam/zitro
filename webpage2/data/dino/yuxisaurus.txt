@@ -1,0 +1,7 @@
+ZDS1	yuxisaurus	Q109997024
+name	Yuxisaurus
+group	0
+image	9442	240	117	baa21124	CC BY 4.0
+named	2022
+source	Wikidata
+end

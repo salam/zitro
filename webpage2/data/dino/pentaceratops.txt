@@ -1,0 +1,9 @@
+ZDS1	pentaceratops	Q131253
+name	Pentaceratops
+group	0
+image	5054	181	117	c6a3af2a	-
+length	680	680
+lived	76000000	73000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

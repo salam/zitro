@@ -1,0 +1,6 @@
+ZDS1	parapengornis	Q41535857
+name	Parapengornis
+group	1
+image	2542	62	117	0b4aec53	Han Hu, Jingmai O'Connor, & Zhonghe Zhou, CC BY 4.0
+source	Wikidata
+end

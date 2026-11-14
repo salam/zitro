@@ -1,0 +1,6 @@
+ZDS1	azhdarcho	Q20672230
+name	Azhdarcho
+group	2
+image	4665	105	117	a5c861a1	CC BY 3.0
+source	Wikidata
+end

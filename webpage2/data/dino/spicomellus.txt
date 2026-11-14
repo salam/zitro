@@ -1,0 +1,7 @@
+ZDS1	spicomellus	Q108667860
+name	Spicomellus
+group	0
+image	4649	173	117	859f0f8a	Connor Ashbridge, CC BY 4.0
+named	2021
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	emiliasaura	Q130546572
+name	Emiliasaura
+group	0
+image	3794	240	85	5ba1c0b9	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

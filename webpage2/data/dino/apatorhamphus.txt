@@ -1,0 +1,7 @@
+ZDS1	apatorhamphus	Q84938181
+name	Apatorhamphus
+group	2
+image	5913	188	117	c6e73f65	CC BY 4.0
+named	2020
+source	Wikidata
+end

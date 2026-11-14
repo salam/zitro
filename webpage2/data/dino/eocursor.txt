@@ -1,0 +1,6 @@
+ZDS1	eocursor	Q133498
+name	Eocursor
+group	0
+image	4711	240	117	de7c2348	Nobu Tamura, CC BY 2.5
+source	Wikidata
+end

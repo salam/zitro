@@ -1,0 +1,7 @@
+ZDS1	arrhinoceratops	Q131595
+name	Arrhinoceratops
+group	0
+image	7252	156	117	48c34fe8	-
+length	600	600
+source	Wikidata
+end

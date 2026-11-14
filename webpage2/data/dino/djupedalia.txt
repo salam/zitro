@@ -1,0 +1,7 @@
+ZDS1	djupedalia	Q5285396
+name	Djupedalia
+group	3
+image	3311	240	47	93567e71	Connor Ashbridge, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

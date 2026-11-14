@@ -1,0 +1,6 @@
+ZDS1	limaysaurus	Q137252
+name	Limaysaurus
+group	0
+image	5815	167	117	cd314c77	FunkMonk, CC BY 3.0
+source	Wikidata
+end

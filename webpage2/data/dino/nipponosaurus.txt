@@ -1,0 +1,7 @@
+ZDS1	nipponosaurus	Q131753
+name	Nipponosaurus
+group	0
+image	8146	176	117	0716423a	Kabacchi, CC BY 2.0
+named	1936
+source	Wikidata
+end

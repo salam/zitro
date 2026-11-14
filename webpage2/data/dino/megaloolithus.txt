@@ -1,0 +1,8 @@
+ZDS1	megaloolithus	Q6808516
+name	Megaloolithus
+group	0
+image	7018	156	117	98873d26	Hectonichus, CC BY-SA 3.0
+lived	99600000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

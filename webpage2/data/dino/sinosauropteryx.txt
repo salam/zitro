@@ -1,0 +1,9 @@
+ZDS1	sinosauropteryx	Q131379
+name	Sinosauropteryx
+group	0
+image	3448	240	68	054de529	CC BY 4.0
+length	110	110
+lived	124600000	122000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

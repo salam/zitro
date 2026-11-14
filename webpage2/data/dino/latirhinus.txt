@@ -1,0 +1,7 @@
+ZDS1	latirhinus	Q194950
+name	Latirhinus
+group	0
+image	6694	156	117	5be04a65	urbanomafia, CC BY-SA 3.0
+named	2012
+source	Wikidata
+end

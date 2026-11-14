@@ -1,0 +1,9 @@
+ZDS1	marshosaurus	Q136872
+name	Marshosaurus
+group	0
+image	7172	240	117	64777140	CC BY-SA 3.0
+length	600	600
+lived	155000000	152000000
+era	Jura	Jurassic
+source	Wikidata
+end

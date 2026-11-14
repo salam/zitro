@@ -1,0 +1,9 @@
+ZDS1	nothronychus	Q131490
+name	Nothronychus
+group	0
+image	3701	176	117	8e24356d	PaleoNeolitic, CC BY 4.0
+length	530	530
+lived	92000000	91000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

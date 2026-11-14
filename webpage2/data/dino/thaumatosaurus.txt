@@ -1,0 +1,7 @@
+ZDS1	thaumatosaurus	Q24956349
+name	Thaumatosaurus
+group	3
+image	6379	155	117	c75d5cfc	-
+named	1841
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	huehuecanauhtlus	Q966478
+name	Huehuecanauhtlus
+group	0
+image	5873	240	117	abae5c4f	Karkemish, CC BY 3.0
+source	Wikidata
+end

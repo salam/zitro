@@ -1,0 +1,6 @@
+ZDS1	buriolestes	Q27825977
+name	Buriolestes
+group	0
+image	6912	176	117	471e618d	-
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	acantholipan	Q54851240
+name	Acantholipan
+group	0
+image	3786	240	82	666f3856	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

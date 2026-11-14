@@ -1,0 +1,7 @@
+ZDS1	cimoliornis	Q8346195
+name	Cimoliornis
+group	2
+image	2831	74	117	37c3d170	-
+named	1846
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	aublysodon	Q132625
+name	Aublysodon
+group	0
+image	6522	240	93	54e2f992	-
+named	1868
+source	Wikidata
+end

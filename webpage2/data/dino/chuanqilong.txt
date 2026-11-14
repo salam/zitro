@@ -1,0 +1,8 @@
+ZDS1	chuanqilong	Q17516418
+name	Chuanqilong
+group	0
+image	4855	123	117	9d8447ad	CC BY 2.5
+lived	125000000	112000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

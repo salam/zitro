@@ -1,0 +1,7 @@
+ZDS1	liaodactylus	Q28648889
+name	Liaodactylus
+group	2
+image	4474	114	117	5ceea268	CC BY 4.0
+named	2017
+source	Wikidata
+end

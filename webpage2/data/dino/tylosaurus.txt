@@ -1,0 +1,15 @@
+ZDS1	tylosaurus	Q131460
+name	Tylosaurus
+group	3
+image	3472	240	90	556b3e63	Nobu Tamura, CC BY-SA 4.0
+length	1400	1400
+mass	8000000	8400000
+lived	86500000	75000000
+named	1872
+era	Kreide	Cretaceous
+meaning	Knaufechse	knob lizard
+diet	Fleisch	Meat
+found	Nordamerika, Europa, Afrika	North America, Europe, Africa
+fun	Tylosaurus war nach Berechnungen im Sprint fast doppelt so schnell wie Mosasaurus.	By calculation, Tylosaurus was nearly twice as fast as Mosasaurus in a sprint.	Wikipedia (EN): Tylosaurus
+source	Wikidata, Wikipedia
+end

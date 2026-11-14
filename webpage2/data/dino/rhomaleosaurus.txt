@@ -1,0 +1,10 @@
+ZDS1	rhomaleosaurus	Q2462626
+name	Rhomaleosaurus
+group	3
+image	2565	83	117	e051deaf	Dmitry Bogdanov, CC BY 3.0
+length	700	700
+lived	183000000	175600000
+named	1874
+era	Jura	Jurassic
+source	Wikidata
+end

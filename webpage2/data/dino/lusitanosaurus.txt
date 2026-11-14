@@ -1,0 +1,6 @@
+ZDS1	lusitanosaurus	Q1826739
+name	Lusitanosaurus
+group	0
+image	4304	240	67	c6df1efe	Miracusaurs, CC BY-SA 4.0
+source	Wikidata
+end

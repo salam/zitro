@@ -1,0 +1,9 @@
+ZDX1	en	8
+enantiornis	enantiornis
+enantiornis leali	enantiornis
+enantiornis martini	enantiornis
+enantiornis walkeri	enantiornis
+enigmacursor	enigmacursor
+enigmacursor mollyborthwickae	enigmacursor
+enigmosaurus	enigmosaurus
+enigmosaurus mongoliensis	enigmosaurus

@@ -1,0 +1,9 @@
+ZDS1	sahaliyania	Q1999879
+name	Sahaliyania
+group	0
+image	5126	146	117	0d5af329	CC BY 2.0
+lived	68000000	66000000
+named	2008
+era	Kreide	Cretaceous
+source	Wikidata
+end

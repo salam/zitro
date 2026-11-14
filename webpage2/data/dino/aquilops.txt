@@ -1,0 +1,6 @@
+ZDS1	aquilops	Q18617035
+name	Aquilops
+group	0
+image	4043	91	117	dd5006d7	CC BY 2.5
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	deinodon	Q134788
+name	Deinodon
+group	0
+image	3773	122	117	446ad46d	-
+named	1856
+source	Wikidata
+end

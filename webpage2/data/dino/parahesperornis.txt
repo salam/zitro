@@ -1,0 +1,8 @@
+ZDS1	parahesperornis	Q7134759
+name	Parahesperornis
+group	1
+image	6915	240	117	f5db7828	Momotarou2012, CC BY-SA 3.0
+lived	85000000	82000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

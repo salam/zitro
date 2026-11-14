@@ -1,0 +1,6 @@
+ZDS1	nullotitan	Q77809704
+name	Nullotitan
+group	0
+image	4027	240	91	f9a7f521	CC BY 3.0
+source	Wikidata
+end

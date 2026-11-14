@@ -1,0 +1,8 @@
+ZDS1	nanyangosaurus	Q134000
+name	Nanyangosaurus
+group	0
+image	4583	137	117	296b526e	-
+lived	94000000	72000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

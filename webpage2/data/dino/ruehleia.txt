@@ -1,0 +1,8 @@
+ZDS1	ruehleia	Q1007433
+name	Ruehleia
+group	0
+image	8178	240	117	90a5c867	FunkMonk, CC BY-SA 3.0
+lived	216000000	203000000
+era	Trias	Triassic
+source	Wikidata
+end

@@ -1,0 +1,30 @@
+ZDX1	tr	29
+trachodon	trachodon
+trachodon cantabrigiensis	trachodon
+trachodon sp	trachodon
+transylvanosaurus	transylvanosaurus
+transylvanosaurus platycephalus	transylvanosaurus
+traskasaura	traskasaura
+traskasaura sandrae	traskasaura
+tratayenia	tratayenia
+trex	tyrannosaurus
+triceratops	triceratops
+triceratops horridus	triceratops
+triceratops prorsus	triceratops
+triceratopses	triceratops
+tricleidus	tricleidus
+tricleidus seeleyi	tricleidus
+trierarchuncus	trierarchuncus
+trierarchuncus prairiensis	trierarchuncus
+trigonosaurus	trigonosaurus
+trigonosaurus pricei	trigonosaurus
+trinacromerum	trinacromerum
+trinacromerum bentonianum	trinacromerum
+trinisaura	trinisaura
+trinisaura santamartaensis	trinisaura
+triprismatoolithus	triprismatoolithus
+tristraguloolithus	tristraguloolithus
+troodon	troodon
+troodon formosus	troodon
+tropeognathus	tropeognathus
+tropeognathus mesembrinus	ornithocheirus

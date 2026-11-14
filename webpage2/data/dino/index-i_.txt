@@ -1,0 +1,10 @@
+ZDX1	i_	9
+i. antarcticus	imperobator
+i. atherfieldensis	mantellisaurus
+i. bernissartensis	iguanodon
+i. challengeri	irritator
+i. colberti	isisaurus
+i. communis	ichthyosaurus
+i. laosensis	ichthyovenator
+i. severnensis	ichthyotitan
+i. smithi	iani

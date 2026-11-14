@@ -1,0 +1,8 @@
+ZDS1	zhejiangosaurus	Q135078
+name	Zhejiangosaurus
+group	0
+image	7944	176	117	e9f8d454	-
+lived	100500000	93900000
+era	Kreide	Cretaceous
+source	Wikidata
+end

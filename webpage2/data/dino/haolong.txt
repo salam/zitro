@@ -1,0 +1,7 @@
+ZDS1	haolong	Q138027020
+name	Haolong
+group	0
+image	5506	240	117	6732ec6f	MakairodonX, CC BY 4.0
+named	2026
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	szechuanosaurus	Q637535
+name	Szechuanosaurus
+group	0
+image	1943	95	117	32af0c11	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

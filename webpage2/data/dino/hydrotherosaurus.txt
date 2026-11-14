@@ -1,0 +1,8 @@
+ZDS1	hydrotherosaurus	Q10299036
+name	Hydrotherosaurus
+group	3
+image	3728	240	84	b97f9af3	Connor Ashbridge, CC BY-SA 4.0
+length	780	780
+named	1943
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	morelladon	Q21787543
+name	Morelladon
+group	0
+image	5091	132	117	6b4ef165	CC BY 2.5
+source	Wikidata
+end

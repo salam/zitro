@@ -1,0 +1,7 @@
+ZDS1	fukuisaurus	Q18560048
+name	Fukuisaurus
+group	0
+image	6363	175	117	d4b20825	Titomaurer, CC BY-SA 4.0
+length	470	470
+source	Wikidata
+end

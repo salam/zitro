@@ -1,0 +1,6 @@
+ZDS1	thecospondylus	Q870974
+name	Thecospondylus
+group	0
+image	7483	240	117	f3264493	-
+source	Wikidata
+end

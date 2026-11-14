@@ -1,0 +1,36 @@
+ZDX1	dr	35
+draconyx	draconyx
+draconyx loureiroi	draconyx
+dracoraptor	dracoraptor
+dracoraptor hanigani	dracoraptor
+dracorex	dracorex
+dracorex hogwartsia	dracorex
+dracovenator	dracovenator
+dracovenator regenti	dracovenator
+draigwenia	draigwenia
+draigwenia platystomus	draigwenia
+dravidosaurus	dravidosaurus
+dravidosaurus blanfordi	dravidosaurus
+dreadnoughtus	dreadnoughtus
+dreadnoughtus schrani	dreadnoughtus
+drepanodon	mosasaurus
+drinker	drinker
+drinker nisti	drinker
+dromaeosauriformipes rarus	dromaeosauriformipes_rarus
+dromaeosauroides	dromaeosauroides
+dromaeosauroides bornholmensis	dromaeosauroides
+dromaeosaurus	dromaeosaurus
+dromaeosaurus albertensis	dromaeosaurus
+dromiceiomimus	dromiceiomimus
+dromiceiomimus brevitertius	dromiceiomimus
+dromiceiomimus samueli	dromiceiomimus
+drusilasaura	drusilasaura
+drusilasaura deseadensis	drusilasaura
+dryosaurus	dryosaurus
+dryosaurus altus	dryosaurus
+dryosaurus elderae	dryosaurus
+dryosaurus grandis	dryosaurus
+dryptosauroides	dryptosauroides
+dryptosauroides grandis	dryptosauroides
+dryptosaurus	dryptosaurus
+dryptosaurus aquilunguis	dryptosaurus

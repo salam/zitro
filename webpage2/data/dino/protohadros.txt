@@ -1,0 +1,8 @@
+ZDS1	protohadros	Q1976657
+name	Protohadros
+group	0
+image	4853	169	117	f65e2524	Bubblesorg, CC BY 4.0
+length	600	600
+named	1998
+source	Wikidata
+end

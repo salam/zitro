@@ -1,0 +1,9 @@
+ZDS1	loricatosaurus	Q2675550
+name	Loricatosaurus
+group	0
+image	7534	240	117	54593048	Connor Ashbridge, CC BY-SA 4.0
+lived	164700000	161200000
+named	1911
+era	Jura	Jurassic
+source	Wikidata
+end

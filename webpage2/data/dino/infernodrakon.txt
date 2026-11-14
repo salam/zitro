@@ -1,0 +1,7 @@
+ZDS1	infernodrakon	Q132827067
+name	Infernodrakon
+group	2
+image	3173	154	117	eb424929	SlvrHwk, CC BY-SA 4.0
+named	2025
+source	Wikidata
+end

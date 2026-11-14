@@ -1,0 +1,6 @@
+ZDS1	nebulasaurus	Q13420712
+name	Nebulasaurus
+group	0
+image	8257	240	117	ceebb7d8	CC BY 2.0
+source	Wikidata
+end

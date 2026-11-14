@@ -1,0 +1,7 @@
+ZDS1	yimenosaurus	Q3083026
+name	Yimenosaurus
+group	0
+image	6354	137	117	089aeed4	CC BY-SA 4.0
+length	900	900
+source	Wikidata
+end

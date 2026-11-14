@@ -1,0 +1,34 @@
+ZDX1	ve	33
+vectaerovenator	vectaerovenator
+vectaerovenator inopinatus	vectaerovenator
+vectidraco	vectidraco
+vectidraco daisymorrisae	vectidraco
+vectidromeus	vectidromeus
+vectidromeus insularis	vectidromeus
+vectiraptor	vectiraptor
+vectisaurus	vectisaurus
+vectisaurus valdensis	vectisaurus
+vectocleidus	vectocleidus
+vectocleidus pastorum	vectocleidus
+vegasaurus	vegasaurus
+vegasaurus molyi	vegasaurus
+velafrons	velafrons
+velafrons coahuilensis	velafrons
+velocipes	velocipes
+velocipes guerichi	velocipes
+velociraptor	velociraptor
+velociraptor antirrhopus	deinonychus
+velociraptor mongoliensis	velociraptor
+velociraptor osmolskae	velociraptor
+velociraptors	velociraptor
+velocisaurus	velocisaurus
+velocisaurus unicus	velocisaurus
+venenosaurus	venenosaurus
+venenosaurus dicrocei	venenosaurus
+versperopterylus	vesperopterylus
+vesperopterylus	vesperopterylus
+vesperopterylus lamadongensis	vesperopterylus
+vespersaurus	vespersaurus
+vespersaurus paranaensis	vespersaurus
+veterupristisaurus	veterupristisaurus
+veterupristisaurus milneri	veterupristisaurus

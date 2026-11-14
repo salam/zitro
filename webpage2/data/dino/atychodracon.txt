@@ -1,0 +1,8 @@
+ZDS1	atychodracon	Q20313205
+name	Atychodracon
+group	3
+image	7175	240	117	d10e1649	-
+length	500	500
+named	2015
+source	Wikidata
+end

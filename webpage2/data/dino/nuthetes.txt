@@ -1,0 +1,7 @@
+ZDS1	nuthetes	Q957171
+name	Nuthetes
+group	0
+image	6513	240	117	c5fd48c0	-
+named	1854
+source	Wikidata
+end

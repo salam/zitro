@@ -1,0 +1,9 @@
+ZDS1	anningasaura	Q4769511
+name	Anningasaura
+group	3
+image	4283	172	117	8c156036	Ghedo, CC BY-SA 4.0
+lived	201300000	199600000
+named	2012
+era	Jura	Jurassic
+source	Wikidata
+end

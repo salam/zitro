@@ -1,0 +1,7 @@
+ZDS1	lexovisaurus	Q133863
+name	Lexovisaurus
+group	0
+image	3955	240	117	b7f25807	Levi bernardo, CC BY-SA 3.0
+named	1957
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	globidens	Q141401
+name	Globidens
+group	3
+image	4041	240	117	098f52b3	Dmitry Bogdanov, CC BY-SA 3.0
+length	600	600
+lived	84900000	66000000
+named	1912
+era	Kreide	Cretaceous
+source	Wikidata
+end

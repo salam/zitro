@@ -1,0 +1,6 @@
+ZDS1	quetecsaurus	Q15632851
+name	Quetecsaurus
+group	0
+image	4961	240	117	358f578f	Danny Cicchetti, CC BY-SA 3.0
+source	Wikidata
+end

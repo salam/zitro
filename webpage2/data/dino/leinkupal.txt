@@ -1,0 +1,6 @@
+ZDS1	leinkupal	Q16878707
+name	Leinkupal
+group	0
+image	4258	99	117	bba5286d	CC BY 2.5
+source	Wikidata
+end

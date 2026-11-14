@@ -1,0 +1,11 @@
+ZDS1	anchiceratops	Q131580
+name	Anchiceratops
+group	0
+image	5438	177	117	2c7b60f5	Nobu Tamura, CC BY 3.0
+length	430	600
+mass	1200000	1200000
+lived	72000000	71000000
+named	1914
+era	Kreide	Cretaceous
+source	Wikidata
+end

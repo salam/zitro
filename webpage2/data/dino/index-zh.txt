@@ -1,0 +1,19 @@
+ZDX1	zh	18
+zhanghenglong	zhanghenglong
+zhanghenglong yangchengensis	zhanghenglong
+zhejiangopterus	zhejiangopterus
+zhejiangopterus linhaiensis	zhejiangopterus
+zhejiangosaurus	zhejiangosaurus
+zhejiangosaurus lishuiensis	zhejiangosaurus
+zhenyuanopterus	zhenyuanopterus
+zhenyuanopterus longirostris	zhenyuanopterus
+zhongjianosaurus	zhongjianosaurus
+zhongjianosaurus yangi	zhongjianosaurus
+zhongyuansaurus	zhongyuansaurus
+zhongyuansaurus luoyangensis	zhongyuansaurus
+zhouornis	zhouornis
+zhouornis hani	zhouornis
+zhuchengceratops	zhuchengceratops
+zhuchengceratops inexpectus	zhuchengceratops
+zhuchengtyrannus	zhuchengtyrannus
+zhuchengtyrannus magnus	zhuchengtyrannus

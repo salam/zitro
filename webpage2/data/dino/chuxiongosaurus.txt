@@ -1,0 +1,7 @@
+ZDS1	chuxiongosaurus	Q584859
+name	Chuxiongosaurus
+group	0
+lived	203000000	191000000
+era	Trias bis Jura	Triassic to Jurassic
+source	Wikidata
+end

@@ -1,0 +1,24 @@
+ZDX1	sc	23
+scalamagnus	scalamagnus
+scalamagnus tropicensis	scalamagnus
+scanisaurus	scanisaurus
+scansoriopteryx	scansoriopteryx
+scaphognathus	scaphognathus
+scaphognathus crassirostris	scaphognathus
+scelidosauridae	scelidosaurus
+scelidosauridae (benton classification)	scelidosaurus
+scelidosaurus	scelidosaurus
+scelidosaurus harrisonii	scelidosaurus
+scharfzahn echse	carcharodontosaurus
+schreckensklaue	deinonychus
+schreckenskralle	deinonychus
+schreckliche kralle	deinonychus
+schwaebischer lindwurm	plateosaurus
+scipionyx	scipionyx
+scipionyx samniticus	scipionyx
+scolosaurus	scolosaurus
+scolosaurus cutleri	scolosaurus
+scolosaurus thronus	scolosaurus
+scrotum humanum	megalosaurus
+scutellosaurus	scutellosaurus
+scutellosaurus lawleri	scutellosaurus

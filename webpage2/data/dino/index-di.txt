@@ -1,0 +1,41 @@
+ZDX1	di	40
+diabloceratops	diabloceratops
+diabloceratops eatoni	diabloceratops
+diamantinasaurus	diamantinasaurus
+diamantinasaurus matildae	diamantinasaurus
+dianchungosaurus	dianchungosaurus
+dianchungosaurus lufengensis	dianchungosaurus
+diceratops	nedoceratops
+diceratops hatcheri	nedoceratops
+diceratus	nedoceratops
+diceratus hatcheri	nedoceratops
+dicraeosaurus	dicraeosaurus
+dicraeosaurus hansemanni	dicraeosaurus
+dicraeosaurus sattleri	dicraeosaurus
+dilong	dilong
+dilong paradoxus	dilong
+dilophosaur	dilophosaurus
+dilophosaurus	dilophosaurus
+dilophosaurus wetherilli	dilophosaurus
+diluvicursor	diluvicursor
+dimodosaurus	plateosaurus
+dimorphodon	dimorphodon
+dimorphodon banthensis	dimorphodon
+dimorphodon macronyx	dimorphodon
+dimorphodon weintraubi	dimorphodon
+dineobellator	dineobellator
+dineobellator notohesperus	dineobellator
+dinheirosaurus	dinheirosaurus
+dinheirosaurus lourinhanensis	dinheirosaurus
+diopecephalus	diopecephalus
+diplodocus	diplodocus
+diplodocus carnegii	diplodocus
+diplodocus hallorum	diplodocus
+diplodocus hayi	diplodocus
+diplodocus longus	diplodocus
+diplotomodon	diplotomodon
+diplotomodon horrificus	diplotomodon
+discosaurus	discosaurus
+dispersituberoolithus	dispersituberoolithus
+diuqin	diuqin
+diuqin lechiguanae	diuqin

@@ -1,0 +1,10 @@
+ZDS1	haplocanthosaurus	Q133453
+name	Haplocanthosaurus
+group	0
+image	3389	136	117	518f5f35	FunkMonk, CC BY-SA 3.0
+length	2150	2150
+lived	155000000	152000000
+named	1903
+era	Jura	Jurassic
+source	Wikidata
+end

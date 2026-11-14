@@ -1,0 +1,8 @@
+ZDS1	panoplosaurus	Q131652
+name	Panoplosaurus
+group	0
+image	6930	163	117	eb6cc721	-
+length	700	700
+named	1919
+source	Wikidata
+end

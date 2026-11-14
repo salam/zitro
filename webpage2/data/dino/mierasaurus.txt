@@ -1,0 +1,6 @@
+ZDS1	mierasaurus	Q42427954
+name	Mierasaurus
+group	0
+image	6242	118	117	d349c34b	CC BY 4.0
+source	Wikidata
+end

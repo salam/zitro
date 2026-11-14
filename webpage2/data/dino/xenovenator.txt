@@ -1,0 +1,7 @@
+ZDS1	xenovenator	Q137738132
+name	Xenovenator
+group	0
+image	4339	240	117	48b36cf3	TotalDino, CC BY 4.0
+named	2026
+source	Wikidata
+end

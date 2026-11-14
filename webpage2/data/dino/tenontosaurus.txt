@@ -1,0 +1,9 @@
+ZDS1	tenontosaurus	Q131103
+name	Tenontosaurus
+group	0
+image	5925	240	94	57ad8d70	Ryan Somma, CC BY-SA 2.0
+length	700	700
+lived	115000000	108000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

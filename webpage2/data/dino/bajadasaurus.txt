@@ -1,0 +1,7 @@
+ZDS1	bajadasaurus	Q61472492
+name	Bajadasaurus
+group	0
+image	5316	126	117	62a9446a	CC BY 4.0
+named	2019
+source	Wikidata
+end

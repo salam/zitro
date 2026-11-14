@@ -1,0 +1,10 @@
+ZDS1	scaphognathus	Q132544
+name	Scaphognathus
+group	2
+image	3384	172	117	b65655fd	Dmitry Bogdanov, CC BY-SA 3.0
+wingspan	90	90
+lived	155700000	150800000
+named	1861
+era	Jura	Jurassic
+source	Wikidata
+end

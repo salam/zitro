@@ -1,0 +1,7 @@
+ZDS1	malarguesaurus	Q134714
+name	Malarguesaurus
+group	0
+lived	91000000	88000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

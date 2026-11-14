@@ -1,0 +1,6 @@
+ZDS1	sazavis	Q7429396
+name	Sazavis
+group	1
+image	2385	88	117	7b1e59d3	Luxquine, CC BY-SA 4.0
+source	Wikidata
+end

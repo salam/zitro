@@ -1,0 +1,7 @@
+ZDS1	giraffatitan	Q14410
+name	Giraffatitan
+group	0
+length	2300	2300
+named	1988
+source	Wikidata
+end

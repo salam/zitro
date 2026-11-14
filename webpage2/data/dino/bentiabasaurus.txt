@@ -1,0 +1,6 @@
+ZDS1	bentiabasaurus	Q123413834
+name	Bentiabasaurus
+group	3
+image	9478	240	117	88ec59b6	Macrophyseter, CC BY-SA 4.0
+source	Wikidata
+end

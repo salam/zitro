@@ -1,0 +1,6 @@
+ZDS1	lamaceratops	Q138899
+name	Lamaceratops
+group	0
+image	6218	240	117	0764849b	PaleoNeolitic, CC BY 4.0
+source	Wikidata
+end

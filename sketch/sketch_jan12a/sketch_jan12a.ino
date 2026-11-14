@@ -36,6 +36,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "edu_feature.h"
 #include "button_rules.h"
 #include "clock_core.h"  // World clock: cities, time zones, the Sun (feature_worldclock.ino)
+#include "dino_core.h"   // Dinosaur fact sheets (feature_dino.ino); the main flow needs dinoMissLine
 #include "shake_core.h"  // What a shake can show besides a fact
 #include <SPIFFS.h>
 
@@ -8978,10 +8979,19 @@ void handleVoiceQuery(bool playAudio) {
   eduUnloadActive();
   ModelRef modelRef;
   bool musicLookupRan = false;
+  bool dinoLookupRan = false;
   if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
     drawScreen("Looking it up...");
     fetchModel(modelRef);
     musicLookupRan = strcmp(modelRef.kind, "music") == 0;
+    dinoLookupRan = strcmp(modelRef.kind, "dino") == 0;
+  }
+  // The AI answers before the lookup and never mentions the fact sheet. If none came, the answer says so:
+  // the AI's words stay, the line is added
+  if (dinoLookupRan && !hasModel) {
+    const String miss = dinoMissLine(!deviceLanguageIsGerman());
+    gptResponse.answer = gptResponse.answer.length() > 0 ? gptResponse.answer + " " + miss : miss;
+    response = wordWrap(gptResponse.answer, 25);
   }
   // The AI asked for a song but none is playing, whatever the reason (not found, a title too long to look up,
   // or a picture request that skipped the lookup): say so, instead of the AI's own words about the song

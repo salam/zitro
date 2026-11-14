@@ -1,0 +1,6 @@
+ZDS1	tazoudasaurus	Q139286
+name	Tazoudasaurus
+group	0
+image	5154	124	117	eb28a193	CC BY 2.5
+source	Wikidata
+end

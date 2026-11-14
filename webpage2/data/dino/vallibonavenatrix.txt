@@ -1,0 +1,8 @@
+ZDS1	vallibonavenatrix	Q66614821
+name	Vallibonavenatrix
+group	0
+lived	129400000	125000000
+named	2019
+era	Kreide	Cretaceous
+source	Wikidata
+end

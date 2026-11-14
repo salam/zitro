@@ -1,0 +1,10 @@
+ZDS1	eoraptor	Q130988
+name	Eoraptor
+group	0
+image	8795	240	117	3ca04d22	Kentaro Ohno, CC BY 2.0
+length	170	170
+lived	231000000	228000000
+named	1993
+era	Trias	Triassic
+source	Wikidata
+end

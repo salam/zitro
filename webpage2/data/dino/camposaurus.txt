@@ -1,0 +1,6 @@
+ZDS1	camposaurus	Q29057464
+name	Camposaurus
+group	0
+image	6463	240	83	272da190	Sterling J. Nesbitt and Martin D. Ezcurra, CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	dravidosaurus	Q135317
+name	Dravidosaurus
+group	0
+image	5184	108	117	db3eb804	Eocursor, CC BY-SA 4.0
+source	Wikidata
+end

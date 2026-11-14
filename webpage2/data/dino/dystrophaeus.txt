@@ -1,0 +1,6 @@
+ZDS1	dystrophaeus	Q1990928
+name	Dystrophaeus
+group	0
+image	2121	53	117	21687ff6	Ghedo at Italian Wikipedia, CC BY-SA 2.5
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	stenorhynchosaurus	Q23884920
+name	Stenorhynchosaurus
+group	3
+image	6077	156	117	4690a54c	Oliver Hampe, CC BY-SA 4.0
+named	2016
+source	Wikidata
+end

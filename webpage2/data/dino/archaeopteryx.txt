@@ -1,0 +1,13 @@
+ZDS1	archaeopteryx	Q100196
+name	Archaeopteryx
+group	1
+image	4162	168	117	8fbb5f50	Pedro Jose Salas Fontelles, CC BY-SA 3.0
+length	50	50
+lived	150800000	148500000
+named	1861
+era	Jura	Jurassic
+meaning	uralte Feder	ancient feather
+found	Süddeutschland	southern Germany
+fun	Archaeopteryx war etwa so gross wie ein Rabe. Man nennt ihn auch Urvogel.	Archaeopteryx was about the size of a raven. It is also called an early bird (Urvogel).	Wikipedia (DE): Archaeopteryx
+source	Wikidata, Wikipedia
+end

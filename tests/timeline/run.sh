@@ -3,6 +3,7 @@
 # Also decodes every prepared picture with the decoder the stick uses, if M5GFX is installed here.
 set -e
 cd "$(dirname "$0")"
+python3 -I test_make_timeline_data.py
 OUT="${TMPDIR:-/tmp}/zitro_timeline_test"
 c++ -std=c++17 -O1 -Wall -Wextra test_timeline.cpp -o "$OUT"
 "$OUT" ../../webpage2/data/timeline

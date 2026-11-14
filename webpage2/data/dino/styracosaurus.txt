@@ -1,0 +1,15 @@
+ZDS1	styracosaurus	Q14483
+name	Styracosaurus
+group	0
+image	6638	156	117	1d267974	Jakub Halun, CC BY-SA 3.0
+length	550	550
+height	165	165
+lived	75500000	75000000
+named	1913
+era	Kreide	Cretaceous
+meaning	Stachelechse	spiked lizard
+diet	wohl harte Pflanzen	Probably tough plants
+found	Nordamerika	North America
+fun	Styracosaurus hatte vier bis sechs lange Stacheln am Nackenschild und ein Nasenhorn, vielleicht bis zu 60 cm lang.	Styracosaurus had four to six long spikes on its neck frill and a nose horn that may have been up to 60 cm long.	Wikipedia (EN): Styracosaurus
+source	Wikidata, Wikipedia
+end

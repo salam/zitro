@@ -1,0 +1,6 @@
+ZDS1	astrophocaudia	Q247092
+name	Astrophocaudia
+group	0
+image	2337	152	117	34db07af	Levi B. Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

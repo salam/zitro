@@ -1,0 +1,7 @@
+ZDS1	gonkoken	Q119585708
+name	Gonkoken
+group	0
+image	4560	240	89	6f22fd87	Connor Ashbridge, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

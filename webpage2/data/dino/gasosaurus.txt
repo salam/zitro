@@ -1,0 +1,9 @@
+ZDS1	gasosaurus	Q131771
+name	Gasosaurus
+group	0
+image	3420	240	78	ec46ec0f	Paleocolour, CC BY-SA 4.0
+length	400	400
+lived	171600000	161200000
+era	Jura	Jurassic
+source	Wikidata
+end

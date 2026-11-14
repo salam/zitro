@@ -1,0 +1,10 @@
+ZDS1	thililua	Q16743868
+name	Thililua
+group	3
+image	3979	240	117	3115a30c	Nobu Tamura, CC BY 2.5
+length	600	600
+lived	93900000	89800000
+named	2003
+era	Kreide	Cretaceous
+source	Wikidata
+end

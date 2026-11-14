@@ -1,0 +1,7 @@
+ZDS1	sasayamagnomus	Q130222784
+name	Sasayamagnomus
+group	0
+image	5151	240	117	41b8a903	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

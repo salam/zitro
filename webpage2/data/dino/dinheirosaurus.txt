@@ -1,0 +1,6 @@
+ZDS1	dinheirosaurus	Q19898683
+name	Dinheirosaurus
+group	0
+image	9652	240	117	90cd5bbb	-
+source	Wikidata
+end

@@ -1,0 +1,8 @@
+ZDS1	dubreuillosaurus	Q910665
+name	Dubreuillosaurus
+group	0
+image	6813	240	117	8abdbe99	Nobu Tamura, CC BY 3.0
+lived	168000000	166000000
+era	Jura	Jurassic
+source	Wikidata
+end

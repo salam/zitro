@@ -1,0 +1,6 @@
+ZDS1	sarmientosaurus	Q23927079
+name	Sarmientosaurus
+group	0
+image	3499	69	117	7b7ef994	CC BY 2.5
+source	Wikidata
+end

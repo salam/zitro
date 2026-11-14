@@ -1,0 +1,8 @@
+ZDS1	wannanosaurus	Q133138
+name	Wannanosaurus
+group	0
+image	5255	240	117	dfe25d7a	Jack Mayer Wood, CC BY-SA 4.0
+lived	72100000	69000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

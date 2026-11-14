@@ -1,0 +1,7 @@
+ZDS1	sinornithoides	Q134725
+name	Sinornithoides
+group	0
+image	2731	117	117	af97fa1f	John Conway [1], CC BY-SA 3.0
+named	1993
+source	Wikidata
+end

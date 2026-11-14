@@ -1,0 +1,11 @@
+ZDS1	scolosaurus	Q7434319
+name	Scolosaurus
+group	0
+image	3639	240	72	7e2c013a	-
+length	500	600
+mass	1000000	1000000
+lived	84900000	70600000
+named	1928
+era	Kreide	Cretaceous
+source	Wikidata
+end

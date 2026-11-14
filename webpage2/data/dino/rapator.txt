@@ -1,0 +1,7 @@
+ZDS1	rapator	Q1577331
+name	Rapator
+group	0
+image	5239	240	117	ab4bcbdc	Jaime A. Headden, CC BY 3.0
+named	1932
+source	Wikidata
+end

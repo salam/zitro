@@ -1,0 +1,7 @@
+ZDS1	nichollssaura	Q28585664
+name	Nichollssaura
+group	3
+image	5473	240	117	4fc3e22e	Nobu Tamura, CC BY 3.0
+named	2009
+source	Wikidata
+end

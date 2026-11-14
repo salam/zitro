@@ -1,0 +1,8 @@
+ZDS1	ageroolithus	Q4692137
+name	Ageroolithus
+group	0
+lived	145000000	65000000
+named	1997
+era	Kreide	Cretaceous
+source	Wikidata
+end

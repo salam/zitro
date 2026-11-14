@@ -1,0 +1,8 @@
+ZDS1	baptornis	Q2701994
+name	Baptornis
+group	1
+image	3797	124	117	2094fdff	-
+lived	83500000	80500000
+era	Kreide	Cretaceous
+source	Wikidata
+end

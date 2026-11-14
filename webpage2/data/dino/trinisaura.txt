@@ -1,0 +1,6 @@
+ZDS1	trinisaura	Q18604618
+name	Trinisaura
+group	0
+image	3540	240	91	ed006402	Levi Martinez-Reza, CC BY-SA 3.0
+source	Wikidata
+end

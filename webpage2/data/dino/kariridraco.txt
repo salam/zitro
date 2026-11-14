@@ -1,0 +1,7 @@
+ZDS1	kariridraco	Q108551717
+name	Kariridraco
+group	2
+image	4814	167	117	7ab8fb31	Julia d'Oliveira, CC BY 4.0
+named	2021
+source	Wikidata
+end

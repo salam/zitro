@@ -1,0 +1,8 @@
+ZDS1	magnapaulia	Q3019517
+name	Magnapaulia
+group	0
+image	7047	240	117	e6825bb3	CC BY 3.0
+lived	73600000	73000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

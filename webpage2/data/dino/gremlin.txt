@@ -1,0 +1,7 @@
+ZDS1	gremlin	Q123478349
+name	Gremlin
+group	0
+image	6504	240	117	b73d38b6	Ddinodan, CC BY 4.0
+named	2023
+source	Wikidata
+end

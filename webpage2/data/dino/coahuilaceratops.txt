@@ -1,0 +1,8 @@
+ZDS1	coahuilaceratops	Q133122
+name	Coahuilaceratops
+group	0
+image	4860	145	117	4a564865	Gustavo Monroy-Becerril, CC BY 4.0
+lived	72500000	71400000
+era	Kreide	Cretaceous
+source	Wikidata
+end

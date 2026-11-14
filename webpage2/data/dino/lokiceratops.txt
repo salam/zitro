@@ -1,0 +1,7 @@
+ZDS1	lokiceratops	Q126740374
+name	Lokiceratops
+group	0
+image	5963	240	117	7a021fb7	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

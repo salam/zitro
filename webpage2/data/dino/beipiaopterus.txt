@@ -1,0 +1,7 @@
+ZDS1	beipiaopterus	Q18915220
+name	Beipiaopterus
+group	2
+image	2177	74	117	3eef3ac9	Jaime A. Headden, CC BY 3.0
+named	2003
+source	Wikidata
+end

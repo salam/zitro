@@ -1,0 +1,8 @@
+ZDS1	regnosaurus	Q140766
+name	Regnosaurus
+group	0
+image	7926	240	117	02b50914	-
+lived	137000000	121000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

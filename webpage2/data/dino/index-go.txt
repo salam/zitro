@@ -1,0 +1,37 @@
+ZDX1	go	36
+gobiazhdarcho	gobiazhdarcho
+gobiazhdarcho tsogtbaatari	gobiazhdarcho
+gobiceratops	gobiceratops
+gobiceratops minutus	gobiceratops
+gobihadros	gobihadros
+gobihadros mongoliensis	gobihadros
+gobipteryx	gobipteryx
+gobipteryx minuta	gobipteryx
+gobiraptor	gobiraptor
+gobisaurus	gobisaurus
+gobisaurus domoculus	gobisaurus
+gobititan	gobititan
+gobititan shenzhouensis	gobititan
+gobivenator	gobivenator
+gobivenator mongoliensis	gobivenator
+gojirasaurus	gojirasaurus
+gojirasaurus quayi	gojirasaurus
+gondwananectes	gondwananectes
+gondwananectes osvaldoi	gondwananectes
+gondwanatitan	gondwanatitan
+gondwanatitan faustoi	gondwanatitan
+gongbusaurus	gongbusaurus
+gongbusaurus shiyii	gongbusaurus
+gongpoquansaurus	gongpoquansaurus
+gongxianosaurus	gongxianosaurus
+gongxianosaurus shibeiensis	gongxianosaurus
+gonkoken	gonkoken
+gonkoken nanoi	gonkoken
+gordo	gorgosaurus
+gordosaurus	gorgosaurus
+gorgosaurus	gorgosaurus
+gorgosaurus lancensis	gorgosaurus
+gorgosaurus libratus	gorgosaurus
+goronyosaurus	goronyosaurus
+goyocephale	goyocephale
+goyocephale lattimorei	goyocephale

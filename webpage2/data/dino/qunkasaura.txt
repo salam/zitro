@@ -1,0 +1,7 @@
+ZDS1	qunkasaura	Q130234520
+name	Qunkasaura
+group	0
+image	3210	183	117	ea6949d7	Ddinodan, CC BY 4.0
+named	2024
+source	Wikidata
+end

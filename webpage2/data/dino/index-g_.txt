@@ -1,0 +1,14 @@
+ZDX1	g_	13
+g. alabamaensis	globidens
+g. brancai	giraffatitan
+g. bullatus	gallimimus
+g. carolinii	giganotosaurus
+g. cristatus	germanodactylus
+g. dakotensis	globidens
+g. libratus	gorgosaurus
+g. macrurus	gnathosaurus
+g. nanoi	gonkoken
+g. phosphaticus	globidens
+g. slobodorum	gremlin
+g. sternbergi	pteranodon
+g. subulatus	gnathosaurus

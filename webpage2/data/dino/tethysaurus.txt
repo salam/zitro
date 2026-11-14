@@ -1,0 +1,10 @@
+ZDS1	tethysaurus	Q28555176
+name	Tethysaurus
+group	3
+image	6784	240	117	bda61433	Ghedoghedo, CC BY-SA 4.0
+length	300	300
+lived	93000000	89000000
+named	2003
+era	Kreide	Cretaceous
+source	Wikidata
+end

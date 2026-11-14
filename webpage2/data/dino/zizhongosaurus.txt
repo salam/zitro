@@ -1,0 +1,6 @@
+ZDS1	zizhongosaurus	Q133148
+name	Zizhongosaurus
+group	0
+image	3004	156	117	a2ddb365	Ruruty25, CC BY-SA 4.0
+source	Wikidata
+end

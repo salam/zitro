@@ -1,0 +1,6 @@
+ZDS1	chialingosaurus	Q132494
+name	Chialingosaurus
+group	0
+image	6525	240	117	0184e480	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

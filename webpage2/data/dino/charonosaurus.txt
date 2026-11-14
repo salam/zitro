@@ -1,0 +1,6 @@
+ZDS1	charonosaurus	Q133031
+name	Charonosaurus
+group	0
+image	9907	240	117	ff53185f	Fernando Losada Rodriguez, CC BY-SA 4.0
+source	Wikidata
+end

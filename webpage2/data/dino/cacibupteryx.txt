@@ -1,0 +1,7 @@
+ZDS1	cacibupteryx	Q3232296
+name	Cacibupteryx
+group	2
+image	6763	181	117	35e437fb	CC BY 4.0
+named	2004
+source	Wikidata
+end

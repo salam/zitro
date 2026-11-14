@@ -1,0 +1,8 @@
+ZDS1	plesiotylosaurus	Q7204696
+name	Plesiotylosaurus
+group	3
+image	8973	240	117	6606b198	Jonathan Chen, CC BY-SA 4.0
+length	650	650
+named	1942
+source	Wikidata
+end

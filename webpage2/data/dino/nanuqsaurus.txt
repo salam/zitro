@@ -1,0 +1,7 @@
+ZDS1	nanuqsaurus	Q15933442
+name	Nanuqsaurus
+group	0
+image	5966	156	117	d181439b	Jonathan Cutrer, CC BY-SA 2.0
+named	2014
+source	Wikidata
+end

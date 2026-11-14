@@ -1,0 +1,9 @@
+ZDS1	euhelopus	Q132547
+name	Euhelopus
+group	0
+image	4285	240	117	06378739	DiBgd at English Wikipedia, CC BY-SA 3.0
+length	1000	1000
+lived	129000000	113000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

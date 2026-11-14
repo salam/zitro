@@ -1,0 +1,7 @@
+ZDS1	kelumapusaura	Q111015077
+name	Kelumapusaura
+group	0
+image	3788	137	117	2fc96146	Leonardo HerSan, CC BY-SA 4.0
+named	2022
+source	Wikidata
+end

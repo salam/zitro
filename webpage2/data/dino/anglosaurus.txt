@@ -1,0 +1,10 @@
+ZDS1	anglosaurus	Q4763802
+name	Anglosaurus
+group	3
+image	2512	117	117	f0efeccb	BoneSharpe, CC BY-SA 4.0
+length	400	400
+lived	94000000	66000000
+named	1964
+era	Kreide	Cretaceous
+source	Wikidata
+end

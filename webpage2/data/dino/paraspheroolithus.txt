@@ -1,0 +1,7 @@
+ZDS1	paraspheroolithus	Q24892465
+name	Paraspheroolithus
+group	0
+lived	99600000	65000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

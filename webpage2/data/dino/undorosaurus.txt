@@ -1,0 +1,9 @@
+ZDS1	undorosaurus	Q7884034
+name	Undorosaurus
+group	3
+image	5168	176	117	9b836773	Vadim Indeikin, CC BY-SA 3.0
+lived	150800000	145500000
+named	1999
+era	Jura	Jurassic
+source	Wikidata
+end

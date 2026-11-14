@@ -1,0 +1,7 @@
+ZDS1	khinjaria	Q124710857
+name	Khinjaria
+group	3
+length	800	800
+named	2024
+source	Wikidata
+end

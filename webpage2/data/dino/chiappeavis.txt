@@ -1,0 +1,6 @@
+ZDS1	chiappeavis	Q41340323
+name	Chiappeavis
+group	1
+image	3663	117	117	9d955c18	Luxquine, CC BY-SA 4.0
+source	Wikidata
+end

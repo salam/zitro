@@ -1,0 +1,9 @@
+ZDS1	arcticodactylus	Q20651334
+name	Arcticodactylus
+group	2
+image	3523	156	117	7cc1fab3	Caz41985, CC BY-SA 4.0
+lived	208000000	201000000
+named	2015
+era	Trias	Triassic
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	convolosaurus	Q62051118
+name	Convolosaurus
+group	0
+image	10426	240	117	624205b6	CC BY 2.5
+source	Wikidata
+end

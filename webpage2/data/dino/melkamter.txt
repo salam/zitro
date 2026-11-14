@@ -1,0 +1,7 @@
+ZDS1	melkamter	Q131422952
+name	Melkamter
+group	2
+image	4592	143	117	255290f8	CC BY 4.0
+named	2024
+source	Wikidata
+end

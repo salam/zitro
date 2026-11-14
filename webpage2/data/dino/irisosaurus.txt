@@ -1,0 +1,6 @@
+ZDS1	irisosaurus	Q96943141
+name	Irisosaurus
+group	0
+image	8455	240	117	2eb6fe4d	Peyre de Fabregues, C., Bi, S., Li, H. et al, CC BY-SA 4.0
+source	Wikidata
+end

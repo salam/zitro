@@ -1,0 +1,7 @@
+ZDS1	xingtianosaurus	Q63343504
+name	Xingtianosaurus
+group	0
+image	3653	99	117	30cfca77	CC BY-SA 4.0
+named	2019
+source	Wikidata
+end

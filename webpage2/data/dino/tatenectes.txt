@@ -1,0 +1,10 @@
+ZDS1	tatenectes	Q16832015
+name	Tatenectes
+group	3
+image	3507	240	117	10e7b3f5	Slate Weasel, CC BY 4.0
+length	300	300
+lived	164000000	157000000
+named	2003
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	chadititan	Q133061987
+name	Chadititan
+group	0
+image	4058	89	117	a8790134	F. L. Agnolin et al, CC BY 3.0
+source	Wikidata
+end

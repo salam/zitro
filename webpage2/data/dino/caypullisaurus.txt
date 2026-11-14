@@ -1,0 +1,9 @@
+ZDS1	caypullisaurus	Q16964188
+name	Caypullisaurus
+group	3
+length	500	500
+lived	145500000	140200000
+named	1997
+era	Kreide	Cretaceous
+source	Wikidata
+end

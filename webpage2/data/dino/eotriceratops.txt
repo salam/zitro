@@ -1,0 +1,6 @@
+ZDS1	eotriceratops	Q132611
+name	Eotriceratops
+group	0
+image	6225	240	117	5dc8a63b	Nobu Tamura, CC BY 3.0
+source	Wikidata
+end

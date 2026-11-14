@@ -1,0 +1,7 @@
+ZDS1	jeholopterus	Q2924821
+name	Jeholopterus
+group	2
+image	2079	88	117	816a1c32	Mike Hanson, CC BY-SA 2.5
+named	2002
+source	Wikidata
+end

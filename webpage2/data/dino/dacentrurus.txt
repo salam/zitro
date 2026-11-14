@@ -1,0 +1,8 @@
+ZDS1	dacentrurus	Q131760
+name	Dacentrurus
+group	0
+image	5133	240	93	5c2032f0	Connor Ashbridge, CC BY-SA 4.0
+length	600	600
+named	1875
+source	Wikidata
+end

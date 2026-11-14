@@ -1,0 +1,9 @@
+ZDS1	majungasaurus	Q18511009
+name	Majungasaurus
+group	0
+image	3317	240	81	e339df5b	Primeval Artist, CC BY-SA 4.0
+length	600	700
+mass	1100000	1100000
+named	1955
+source	Wikidata
+end

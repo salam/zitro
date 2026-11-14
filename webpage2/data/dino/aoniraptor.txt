@@ -1,0 +1,8 @@
+ZDS1	aoniraptor	Q24705122
+name	Aoniraptor
+group	0
+image	3724	240	81	2a3360aa	-
+lived	96000000	91000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	maraapunisaurus	Q57612918
+name	Maraapunisaurus
+group	0
+image	1690	49	117	3ca4a4f6	-
+source	Wikidata
+end

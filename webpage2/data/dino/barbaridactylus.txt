@@ -1,0 +1,7 @@
+ZDS1	barbaridactylus	Q54958163
+name	Barbaridactylus
+group	2
+image	3620	79	117	8a13f732	CC BY-SA 4.0
+named	2018
+source	Wikidata
+end

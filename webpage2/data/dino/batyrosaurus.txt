@@ -1,0 +1,6 @@
+ZDS1	batyrosaurus	Q3278364
+name	Batyrosaurus
+group	0
+image	3754	240	94	cb53bfce	Miracusaurs, CC BY-SA 4.0
+source	Wikidata
+end

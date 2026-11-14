@@ -1,0 +1,6 @@
+ZDS1	newtonsaurus	Q995536
+name	Newtonsaurus
+group	0
+image	8424	192	117	8fa2c890	-
+source	Wikidata
+end

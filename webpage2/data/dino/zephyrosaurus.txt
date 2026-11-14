@@ -1,0 +1,7 @@
+ZDS1	zephyrosaurus	Q18604596
+name	Zephyrosaurus
+group	0
+length	180	180
+named	1980
+source	Wikidata
+end

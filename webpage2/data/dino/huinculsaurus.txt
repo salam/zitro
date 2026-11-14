@@ -1,0 +1,9 @@
+ZDS1	huinculsaurus	Q84463821
+name	Huinculsaurus
+group	0
+image	2478	240	117	71229679	Levi bernardo, CC BY-SA 3.0
+lived	97000000	93000000
+named	2020
+era	Kreide	Cretaceous
+source	Wikidata
+end

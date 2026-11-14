@@ -1,0 +1,6 @@
+ZDS1	gansus	Q20672264
+name	Gansus
+group	1
+image	4153	123	117	4ce03670	CC BY-SA 4.0
+source	Wikidata
+end

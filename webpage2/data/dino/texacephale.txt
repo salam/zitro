@@ -1,0 +1,6 @@
+ZDS1	texacephale	Q19900502
+name	Texacephale
+group	0
+image	2863	86	117	17d6a552	NickLongrich, CC BY-SA 4.0
+source	Wikidata
+end

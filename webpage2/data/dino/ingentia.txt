@@ -1,0 +1,7 @@
+ZDS1	ingentia	Q55439490
+name	Ingentia
+group	0
+image	7322	240	84	80655938	-
+named	2018
+source	Wikidata
+end

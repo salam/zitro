@@ -1,0 +1,16 @@
+ZDS1	deinonychus	Q14405
+name	Deinonychus
+group	0
+image	4913	240	117	8342a0fe	Fred Wierum, CC BY-SA 4.0
+length	330	340
+height	87	87
+mass	60000	73000
+lived	115000000	108000000
+named	1969
+era	Kreide	Cretaceous
+meaning	schreckliche Klaue	terrible claw
+diet	Fleisch	Meat
+found	USA	USA
+fun	Studien über Deinonychus veränderten in den 1960ern das Bild der Dinosaurier.	Studies of Deinonychus in the late 1960s changed how scientists saw dinosaurs.	Wikipedia (DE): Deinonychus
+source	Wikidata, Wikipedia
+end

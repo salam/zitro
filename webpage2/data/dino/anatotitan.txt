@@ -1,0 +1,7 @@
+ZDS1	anatotitan	Q14510
+name	Anatotitan
+group	0
+image	6684	156	117	2f2e563c	Fritz Geller-Grimm, CC BY-SA 2.5
+named	1990
+source	Wikidata
+end

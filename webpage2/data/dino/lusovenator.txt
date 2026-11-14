@@ -1,0 +1,7 @@
+ZDS1	lusovenator	Q97149714
+name	Lusovenator
+group	0
+image	5491	240	117	8751a97a	Brugordinos, CC BY-SA 4.0
+named	2020
+source	Wikidata
+end

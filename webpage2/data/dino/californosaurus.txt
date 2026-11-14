@@ -1,0 +1,8 @@
+ZDS1	californosaurus	Q924246
+name	Californosaurus
+group	3
+image	3388	240	86	79ccb390	Nobu Tamura, CC BY 2.5
+length	300	300
+named	1934
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	changyuraptor	Q17363721
+name	Changyuraptor
+group	0
+image	4464	240	117	b40c7583	Emily Willoughby, CC BY-SA 4.0
+named	2014
+source	Wikidata
+end

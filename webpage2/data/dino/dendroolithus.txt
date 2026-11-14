@@ -1,0 +1,8 @@
+ZDS1	dendroolithus	Q5256772
+name	Dendroolithus
+group	0
+image	4159	162	117	2a5537ab	-
+lived	85800000	70600000
+era	Kreide	Cretaceous
+source	Wikidata
+end

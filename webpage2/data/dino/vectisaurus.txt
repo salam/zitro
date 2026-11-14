@@ -1,0 +1,6 @@
+ZDS1	vectisaurus	Q2407881
+name	Vectisaurus
+group	0
+image	9747	240	117	de069fa5	-
+source	Wikidata
+end

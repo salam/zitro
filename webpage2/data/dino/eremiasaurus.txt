@@ -1,0 +1,9 @@
+ZDS1	eremiasaurus	Q2919749
+name	Eremiasaurus
+group	3
+image	9113	240	117	6ddf6504	FunkMonk, CC BY-SA 3.0
+lived	70600000	66000000
+named	2012
+era	Kreide	Cretaceous
+source	Wikidata
+end

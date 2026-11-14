@@ -1,0 +1,7 @@
+ZDS1	maxakalisaurus	Q134814
+name	Maxakalisaurus
+group	0
+image	5727	187	117	e30d6b76	-
+length	1300	1300
+source	Wikidata
+end

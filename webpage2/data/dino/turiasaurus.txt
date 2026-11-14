@@ -1,0 +1,9 @@
+ZDS1	turiasaurus	Q133837
+name	Turiasaurus
+group	0
+image	3661	89	117	b873b352	Fernando, CC BY-SA 2.0
+lived	155000000	146000000
+named	2006
+era	Jura	Jurassic
+source	Wikidata
+end

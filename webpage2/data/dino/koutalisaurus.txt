@@ -1,0 +1,6 @@
+ZDS1	koutalisaurus	Q2953769
+name	Koutalisaurus
+group	0
+image	5778	240	117	4db2f3ea	CC BY 3.0
+source	Wikidata
+end

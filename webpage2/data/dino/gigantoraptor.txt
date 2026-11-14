@@ -1,0 +1,7 @@
+ZDS1	gigantoraptor	Q310496
+name	Gigantoraptor
+group	0
+image	4162	240	117	9a2177d9	PaleoNeolitic, CC BY 4.0
+length	800	800
+source	Wikidata
+end

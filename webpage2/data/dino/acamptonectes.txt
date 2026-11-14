@@ -1,0 +1,9 @@
+ZDS1	acamptonectes	Q146756
+name	Acamptonectes
+group	3
+image	2587	156	117	d368a2e8	Nobu Tamura, CC BY-SA 3.0
+lived	133000000	129000000
+named	2012
+era	Kreide	Cretaceous
+source	Wikidata
+end

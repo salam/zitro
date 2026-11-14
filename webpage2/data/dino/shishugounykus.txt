@@ -1,0 +1,7 @@
+ZDS1	shishugounykus	Q66438387
+name	Shishugounykus
+group	0
+image	4710	240	117	e4c2149f	Aijuan Shi, CC BY 4.0
+named	2019
+source	Wikidata
+end

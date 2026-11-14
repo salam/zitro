@@ -1,0 +1,7 @@
+ZDS1	mexidracon	Q131929780
+name	Mexidracon
+group	0
+image	4443	240	117	a8baf6ad	Ddinodan, CC BY 4.0
+named	2025
+source	Wikidata
+end

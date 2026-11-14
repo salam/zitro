@@ -1,0 +1,6 @@
+ZDS1	tastavinsaurus	Q136852
+name	Tastavinsaurus
+group	0
+image	2813	92	117	8a2c2e04	PePeEfe, CC BY-SA 4.0
+source	Wikidata
+end

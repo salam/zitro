@@ -1,0 +1,6 @@
+ZDS1	mojoceratops	Q21447690
+name	Mojoceratops
+group	0
+image	7233	240	117	b75badf4	NobuTamura, CC BY-SA 3.0
+source	Wikidata
+end

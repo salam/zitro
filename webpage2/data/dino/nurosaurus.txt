@@ -1,0 +1,6 @@
+ZDS1	nurosaurus	Q958225
+name	Nurosaurus
+group	0
+image	6955	175	117	1a550ee0	-
+source	Wikidata
+end

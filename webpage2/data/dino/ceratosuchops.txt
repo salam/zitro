@@ -1,0 +1,7 @@
+ZDS1	ceratosuchops	Q108742018
+name	Ceratosuchops
+group	0
+image	7373	154	117	03a86519	-
+named	2021
+source	Wikidata
+end

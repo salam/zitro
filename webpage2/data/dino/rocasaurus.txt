@@ -1,0 +1,6 @@
+ZDS1	rocasaurus	Q18601044
+name	Rocasaurus
+group	0
+image	6031	172	117	76c30bc2	Rodolfo A. Garcia and Leonardo Salgado, CC BY 2.0
+source	Wikidata
+end

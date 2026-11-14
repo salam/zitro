@@ -1,0 +1,7 @@
+ZDS1	iberodactylus	Q62519537
+name	Iberodactylus
+group	2
+image	4299	87	117	ec15fba2	CC BY 4.0
+named	2019
+source	Wikidata
+end

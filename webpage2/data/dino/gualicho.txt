@@ -1,0 +1,7 @@
+ZDS1	gualicho	Q25861337
+name	Gualicho
+group	0
+image	4238	240	93	baf907a2	CC BY-SA 3.0
+named	2016
+source	Wikidata
+end

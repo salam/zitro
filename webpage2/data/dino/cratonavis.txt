@@ -1,0 +1,7 @@
+ZDS1	cratonavis	Q115977757
+name	Cratonavis
+group	1
+image	10420	176	117	137d59ce	SpinoDragon145, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

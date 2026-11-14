@@ -1,0 +1,6 @@
+ZDS1	shanshanosaurus	Q6126872
+name	Shanshanosaurus
+group	0
+image	4589	240	84	30a5597c	Jaime A. Headden, CC BY-SA 3.0
+source	Wikidata
+end

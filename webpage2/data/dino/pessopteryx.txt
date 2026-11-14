@@ -1,0 +1,8 @@
+ZDS1	pessopteryx	Q22286107
+name	Pessopteryx
+group	3
+lived	251200000	242200000
+named	1910
+era	Trias	Triassic
+source	Wikidata
+end

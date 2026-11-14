@@ -1,0 +1,8 @@
+ZDS1	caseosaurus	Q548002
+name	Caseosaurus
+group	0
+image	5859	240	69	6251f10d	Matthew G. Baron and Megan E. Williams, CC BY 2.0
+lived	237000000	227000000
+era	Trias	Triassic
+source	Wikidata
+end

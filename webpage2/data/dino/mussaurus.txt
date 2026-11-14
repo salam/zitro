@@ -1,0 +1,8 @@
+ZDS1	mussaurus	Q132857
+name	Mussaurus
+group	0
+length	300	300
+lived	215000000	203000000
+era	Trias	Triassic
+source	Wikidata
+end

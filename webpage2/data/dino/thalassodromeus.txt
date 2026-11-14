@@ -1,0 +1,7 @@
+ZDS1	thalassodromeus	Q132575
+name	Thalassodromeus
+group	2
+image	6751	176	117	f53d6b6f	Kabacchi, CC BY 2.0
+named	2002
+source	Wikidata
+end

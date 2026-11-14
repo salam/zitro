@@ -1,0 +1,21 @@
+ZTL1	life_history	Q3	Geschichte des Lebens	History of life	20	111983
+Q849168	-3500000000	-	5	Urvorfahr	Last universal common ancestor	0	4423	176	96	18f5378e	Chiswick Chap, CC BY-SA 4.0
+Q176739	-3450000000	-	5	Stromatolith	Stromatolite	4423	9889	240	96	58d90d41	Paul Harrison, CC BY-SA 3.0
+Q837561	-2450000000	-	1	Große Sauerstoffkatastrophe	Great Oxygenation Event	14312	11050	240	96	7ffdfc99	-
+Q723846	-571000000	-	5	Ediacara-Fauna	Ediacaran biota	25362	11221	240	96	e953b40d	Verisimilus at English Wikipedia, CC BY 2.5
+Q32919	-543000000	-	0	Kambrische Explosion	Cambrian explosion	36583	3703	173	96	c907352f	Junnn11, CC BY-SA 4.0
+Q152	-530000000	-	1	Fisch	Fish	40286	4513	240	96	7d3414e0	CC BY-SA 3.0
+Q131986	-432000000	-	5	Cooksonia	Cooksonia	44799	5894	240	96	cc70d277	CC BY 3.0
+Q1390	-400000000	-	1	Insekten	Insect	50693	6048	240	96	fabd4cfd	Gunnar Ries Amphibol, CC BY-SA 3.0
+Q131481	-375000000	-	5	Tiktaalik	Tiktaalik	56741	6696	240	96	12bc65ff	-
+Q130869	-295000000	-272000000	0	Dimetrodon	Dimetrodon	63437	3778	240	96	0d6e5420	Max Bellomio, CC BY-SA 4.0
+Q430	-233230000	-	0	Dinosaurier	Dinosaur	67215	4957	171	96	fc8657ef	Conty, CC BY 3.0
+Q131813	-205000000	-	5	Morganucodon	Morganucodon	72172	4831	240	96	b23c4609	FunkMonk, CC BY-SA 3.0
+Q100196	-150800000	-148500000	0	Archaeopteryx	Archaeopteryx	77003	6899	240	96	20f6a1d4	CC BY-SA 4.0
+Q25314	-140000000	-	5	Bedecktsamer	Angiosperms	83902	6430	240	96	e1af2933	CC BY-SA 3.0
+Q55811	-66000000	-	1	Kreide-Paläogen-Massenaussterben	Cretaceous-Paleogene mass extinction	90332	3053	138	96	5a6c1661	-
+Q136654	-66000000	-63000000	0	Purgatorius	Purgatorius	93385	4934	240	96	7835e374	Nobu Tamura, CC BY 3.0
+Q103237	-4500000	-1977000	0	Australopithecus	Australopithecus	98319	4634	240	96	2e231c2a	Shalom, CC BY-SA 3.0
+Q101373	-2100000	-1440000	0	Homo habilis	Homo habilis	102953	3438	102	96	fd959878	CC BY 4.0
+Q101362	-1900000	-143000	0	Homo erectus	Homo erectus	106391	2620	89	96	432ece54	-
+Q15978631	-200000	-	1	Homo sapiens	Homo sapiens	109011	2972	145	96	fe1ae118	Ryan Somma from Occoquan, USA, CC BY-SA 2.0

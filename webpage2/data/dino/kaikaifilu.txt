@@ -1,0 +1,7 @@
+ZDS1	kaikaifilu	Q28432415
+name	Kaikaifilu
+group	3
+image	3983	240	117	a88c9282	Gasmasque, CC BY 4.0
+named	2017
+source	Wikidata
+end

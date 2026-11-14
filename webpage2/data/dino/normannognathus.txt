@@ -1,0 +1,7 @@
+ZDS1	normannognathus	Q20672388
+name	Normannognathus
+group	2
+image	3561	136	117	6b26d910	-
+named	1998
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	bashunosaurus	Q5721716
+name	Bashunosaurus
+group	0
+image	4193	240	117	532dba9f	-
+source	Wikidata
+end

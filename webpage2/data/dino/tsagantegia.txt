@@ -1,0 +1,8 @@
+ZDS1	tsagantegia	Q137444
+name	Tsagantegia
+group	0
+image	8768	240	117	15891270	PaleoNeolitic, CC BY-SA 4.0
+lived	97000000	83000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

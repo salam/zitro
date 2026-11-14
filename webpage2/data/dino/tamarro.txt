@@ -1,0 +1,6 @@
+ZDS1	tamarro	Q112190867
+name	Tamarro
+group	0
+image	3101	63	117	2cc49f71	CC BY 4.0
+source	Wikidata
+end

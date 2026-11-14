@@ -1,0 +1,9 @@
+ZDS1	tongtianlong	Q27826636
+name	Tongtianlong
+group	0
+image	4998	125	117	6b1571be	CC BY 4.0
+lived	72000000	66000000
+named	2016
+era	Kreide	Cretaceous
+source	Wikidata
+end

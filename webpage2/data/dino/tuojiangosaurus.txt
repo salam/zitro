@@ -1,0 +1,10 @@
+ZDS1	tuojiangosaurus	Q131098
+name	Tuojiangosaurus
+group	0
+image	4943	240	93	c4eeb198	Paleocolour, CC BY-SA 4.0
+length	650	700
+height	200	200
+mass	2800000	2800000
+named	1977
+source	Wikidata
+end

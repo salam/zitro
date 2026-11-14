@@ -1,0 +1,7 @@
+ZDS1	moganopterus	Q2908491
+name	Moganopterus
+group	2
+image	5911	240	117	6e0b98ed	PaleoEquii, CC BY-SA 4.0
+named	2012
+source	Wikidata
+end

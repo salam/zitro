@@ -1,0 +1,10 @@
+ZDS1	torvosaurus	Q131537
+name	Torvosaurus
+group	0
+image	6722	176	117	e71fe563	CC BY-SA 2.0
+length	1000	1000
+lived	153000000	148000000
+named	1979
+era	Jura	Jurassic
+source	Wikidata
+end

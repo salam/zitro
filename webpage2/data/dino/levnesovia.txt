@@ -1,0 +1,6 @@
+ZDS1	levnesovia	Q680935
+name	Levnesovia
+group	0
+image	8814	240	117	7f9f7ced	CC BY 4.0
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	cuspirostrisornis	Q5196241
+name	Cuspirostrisornis
+group	1
+image	5230	117	117	73e79149	TinyLongwing, CC BY-SA 4.0
+source	Wikidata
+end

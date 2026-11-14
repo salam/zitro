@@ -1,0 +1,6 @@
+ZDS1	paranthodon	Q135602
+name	Paranthodon
+group	0
+image	4637	134	117	9948aad1	FunkMonk, CC BY-SA 3.0
+source	Wikidata
+end

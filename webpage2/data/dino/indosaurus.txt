@@ -1,0 +1,8 @@
+ZDS1	indosaurus	Q135312
+name	Indosaurus
+group	0
+image	3812	111	117	3c02083c	Ghedoghedo, CC BY-SA 4.0
+lived	69000000	66000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

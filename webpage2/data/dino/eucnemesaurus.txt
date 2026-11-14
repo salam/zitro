@@ -1,0 +1,7 @@
+ZDS1	eucnemesaurus	Q133173
+name	Eucnemesaurus
+group	0
+image	1834	58	117	6fb12a1d	Ghedoghedo, CC BY-SA 4.0
+named	1920
+source	Wikidata
+end

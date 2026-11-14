@@ -1,0 +1,10 @@
+ZDS1	phosphorosaurus	Q21686494
+name	Phosphorosaurus
+group	3
+image	8418	240	117	e58f4dff	Jony Cooper, CC BY-SA 4.0
+length	300	300
+lived	72100000	66000000
+named	1889
+era	Kreide	Cretaceous
+source	Wikidata
+end

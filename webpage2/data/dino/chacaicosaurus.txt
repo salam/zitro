@@ -1,0 +1,7 @@
+ZDS1	chacaicosaurus	Q5066048
+name	Chacaicosaurus
+group	3
+image	3021	240	117	dad7ee74	Ghedoghedo, CC BY-SA 3.0
+named	1994
+source	Wikidata
+end

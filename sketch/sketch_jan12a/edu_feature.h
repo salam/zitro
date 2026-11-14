@@ -38,7 +38,7 @@ struct EduFeature {
 // One per kind. All are registered in feature_registry.ino.
 extern const EduFeature FEATURE_MOLECULE, FEATURE_MUSIC, FEATURE_GRAPH, FEATURE_RECIPE, FEATURE_GLOBE, FEATURE_PROTEIN,
     FEATURE_CRYSTAL, FEATURE_SKY, FEATURE_PHYSICS, FEATURE_SOLID, FEATURE_TIMELINE, FEATURE_ANATOMY, FEATURE_WOLFRAM,
-    FEATURE_CLOCK, FEATURE_ISS;
+    FEATURE_CLOCK, FEATURE_ISS, FEATURE_DINO;
 extern const EduFeature* const EDU_FEATURES[];
 extern const int EDU_FEATURE_COUNT;
 extern const EduFeature* activeFeature;

@@ -1,0 +1,7 @@
+ZDS1	kourisodon	Q3816676
+name	Kourisodon
+group	3
+image	6358	176	117	731af363	Roland Tanglao from Vancouver, Canada, CC BY 2.0
+named	2002
+source	Wikidata
+end

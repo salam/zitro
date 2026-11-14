@@ -1,0 +1,8 @@
+ZDS1	contectopalatus	Q16743635
+name	Contectopalatus
+group	3
+image	3038	121	117	c334f7d8	Dmitry Bogdanov, CC BY 3.0
+lived	247200000	235000000
+era	Trias	Triassic
+source	Wikidata
+end

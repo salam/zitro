@@ -1,0 +1,7 @@
+ZDS1	talarurus	Q131940
+name	Talarurus
+group	0
+image	5555	181	117	6ef818d4	PaleoNeolitic, CC BY-SA 4.0
+length	600	600
+source	Wikidata
+end

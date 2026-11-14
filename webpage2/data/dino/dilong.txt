@@ -1,0 +1,7 @@
+ZDS1	dilong	Q27439
+name	Dilong
+group	0
+image	10825	240	117	8bcbac96	Kabacchi, CC BY 2.0
+named	2004
+source	Wikidata
+end

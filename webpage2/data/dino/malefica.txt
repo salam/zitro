@@ -1,0 +1,7 @@
+ZDS1	malefica	Q115152776
+name	Malefica
+group	0
+image	3954	240	92	6d088423	TotalDino, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

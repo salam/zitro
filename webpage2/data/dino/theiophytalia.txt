@@ -1,0 +1,6 @@
+ZDS1	theiophytalia	Q1655417
+name	Theiophytalia
+group	0
+image	8162	240	117	cc6f1850	Anky-man, CC BY 3.0
+source	Wikidata
+end

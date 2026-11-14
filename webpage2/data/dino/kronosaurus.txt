@@ -1,0 +1,9 @@
+ZDS1	kronosaurus	Q131315
+name	Kronosaurus
+group	3
+image	6830	176	117	50f47a4f	Edward M Johnson, CC BY-SA 2.0
+length	1100	1100
+mass	12100000	12100000
+named	1924
+source	Wikidata
+end

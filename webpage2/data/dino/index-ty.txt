@@ -1,0 +1,22 @@
+ZDX1	ty	21
+tylocephale	tylocephale
+tylocephale gilmorei	tylocephale
+tylodorhynchus	tylodorhynchus
+tylodorhynchus rodriguesae	tylodorhynchus
+tylosaurus	tylosaurus
+tylosaurus kansasensis	tylosaurus
+tylosaurus nepaeolicus	tylosaurus
+tylosaurus proriger	tylosaurus
+tylosaurus rex	tylosaurus
+tylosteus	pachycephalosaurus
+tyrannomimus	tyrannomimus
+tyrannomimus fukuiensis	tyrannomimus
+tyrannosaurus	tyrannosaurus
+tyrannosaurus imperator	tyrannosaurus
+tyrannosaurus luanchuanensis	tyrannosaurus
+tyrannosaurus mcraeensis	tyrannosaurus
+tyrannosaurus regina	tyrannosaurus
+tyrannosaurus rex	tyrannosaurus
+tyrannosaurus torosus	tyrannosaurus
+tyrannotitan	tyrannotitan
+tyrannotitan chubutensis	tyrannotitan

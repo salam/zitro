@@ -1,0 +1,9 @@
+ZDS1	janenschia	Q133039
+name	Janenschia
+group	0
+image	10913	240	117	bd712304	FunkMonk, CC BY-SA 3.0
+length	2000	2000
+lived	155000000	145000000
+era	Jura	Jurassic
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	geminiraptor	Q1936000
+name	Geminiraptor
+group	0
+image	3529	77	117	85f05db5	CC BY 2.5
+source	Wikidata
+end

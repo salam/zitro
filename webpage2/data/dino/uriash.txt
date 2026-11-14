@@ -1,0 +1,7 @@
+ZDS1	uriash	Q132638672
+name	Uriash
+group	0
+image	3533	240	117	aeebc94b	Ddinodan, CC BY 4.0
+named	2025
+source	Wikidata
+end

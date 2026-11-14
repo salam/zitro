@@ -1,0 +1,10 @@
+ZDS1	platecarpus	Q134629
+name	Platecarpus
+group	3
+image	3729	240	62	5fd5b44c	Dmitry Bogdanov, CC BY 3.0
+length	430	430
+lived	84000000	81000000
+named	1869
+era	Kreide	Cretaceous
+source	Wikidata
+end

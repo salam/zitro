@@ -1,0 +1,7 @@
+ZDS1	aerosteon	Q132873
+name	Aerosteon
+group	0
+image	7174	148	117	0f0ea7b6	C. Abraczinskas, CC BY 2.5
+named	2008
+source	Wikidata
+end

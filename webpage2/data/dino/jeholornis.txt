@@ -1,0 +1,6 @@
+ZDS1	jeholornis	Q133956
+name	Jeholornis
+group	1
+image	3702	163	117	bc84f777	Matt Martyniuk, CC BY-SA 3.0
+source	Wikidata
+end

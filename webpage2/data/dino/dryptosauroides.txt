@@ -1,0 +1,6 @@
+ZDS1	dryptosauroides	Q135276
+name	Dryptosauroides
+group	0
+image	4100	121	117	33021adf	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

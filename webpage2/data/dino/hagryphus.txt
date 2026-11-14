@@ -1,0 +1,7 @@
+ZDS1	hagryphus	Q137257
+name	Hagryphus
+group	0
+image	4450	88	117	3bce68fe	-
+length	300	300
+source	Wikidata
+end

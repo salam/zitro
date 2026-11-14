@@ -1,0 +1,9 @@
+ZDS1	stegoceras	Q134191
+name	Stegoceras
+group	0
+image	9634	240	117	fcf48daa	Sebastian Bergmann from Siegburg, Germany, CC BY-SA 2.0
+length	240	240
+lived	77500000	74000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

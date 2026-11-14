@@ -1,0 +1,9 @@
+ZDS1	gyposaurus	Q1035969
+name	Gyposaurus
+group	0
+image	4017	240	117	c7973f41	Nesnad, CC BY-SA 3.0
+lived	196500000	189600000
+named	1911
+era	Jura	Jurassic
+source	Wikidata
+end

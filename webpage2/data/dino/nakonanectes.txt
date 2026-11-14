@@ -1,0 +1,8 @@
+ZDS1	nakonanectes	Q48835661
+name	Nakonanectes
+group	3
+image	4147	240	117	4276af6f	Connor Ashbridge, CC BY-SA 4.0
+length	560	560
+named	2017
+source	Wikidata
+end

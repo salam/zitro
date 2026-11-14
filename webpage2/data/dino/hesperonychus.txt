@@ -1,0 +1,9 @@
+ZDS1	hesperonychus	Q751087
+name	Hesperonychus
+group	0
+image	3261	131	117	37b9a15a	NickLongrich, CC BY-SA 4.0
+length	100	100
+mass	2000	2000
+named	2009
+source	Wikidata
+end

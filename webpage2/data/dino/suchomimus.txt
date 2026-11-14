@@ -1,0 +1,15 @@
+ZDS1	suchomimus	Q131202
+name	Suchomimus
+group	0
+image	4148	240	117	3a949c09	PaleoGeekSquared, CC BY-SA 4.0
+length	1100	1100
+mass	5200000	5200000
+lived	125000000	112000000
+named	1998
+era	Kreide	Cretaceous
+meaning	Krokodil-Nachahmer	crocodile mimic
+diet	Fisch	Fish
+found	Niger	Niger
+fun	Suchomimus war zehn bis elf Meter lang und lief auf zwei Beinen.	Suchomimus was ten to eleven metres long and walked on two legs.	Wikipedia (DE): Suchomimus
+source	Wikidata, Wikipedia
+end

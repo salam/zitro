@@ -1,0 +1,6 @@
+ZDS1	geranosaurus	Q1930184
+name	Geranosaurus
+group	0
+image	1838	65	117	fefd0500	Ghedoghedo, CC BY-SA 4.0
+source	Wikidata
+end

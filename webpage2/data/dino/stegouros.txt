@@ -1,0 +1,6 @@
+ZDS1	stegouros	Q109887670
+name	Stegouros
+group	0
+image	3290	95	117	fe63954f	Luis Enrique Perez Lopez, CC BY-SA 4.0
+source	Wikidata
+end

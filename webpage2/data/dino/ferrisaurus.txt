@@ -1,0 +1,7 @@
+ZDS1	ferrisaurus	Q73979036
+name	Ferrisaurus
+group	0
+image	4459	240	92	0e7295fc	CC BY 4.0
+named	2019
+source	Wikidata
+end

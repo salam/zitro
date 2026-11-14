@@ -1,0 +1,8 @@
+ZDS1	mauisaurus	Q2712887
+name	Mauisaurus
+group	3
+image	2816	240	77	1299f8d7	Nobu Tamura, CC BY 2.5
+length	800	800
+named	1874
+source	Wikidata
+end

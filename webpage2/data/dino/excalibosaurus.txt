@@ -1,0 +1,10 @@
+ZDS1	excalibosaurus	Q137451
+name	Excalibosaurus
+group	3
+image	3259	88	117	b0386609	-
+length	700	700
+lived	196500000	189600000
+named	1986
+era	Jura	Jurassic
+source	Wikidata
+end

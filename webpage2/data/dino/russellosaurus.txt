@@ -1,0 +1,7 @@
+ZDS1	russellosaurus	Q7381906
+name	Russellosaurus
+group	3
+image	6904	240	117	46077725	Ghedoghedo, CC BY-SA 4.0
+named	2005
+source	Wikidata
+end

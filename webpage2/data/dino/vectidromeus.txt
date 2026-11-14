@@ -1,0 +1,7 @@
+ZDS1	vectidromeus	Q122485311
+name	Vectidromeus
+group	0
+image	3604	240	85	25d3fc74	SlvrHwk, CC BY-SA 4.0
+named	2023
+source	Wikidata
+end

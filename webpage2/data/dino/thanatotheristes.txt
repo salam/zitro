@@ -1,0 +1,7 @@
+ZDS1	thanatotheristes	Q83546128
+name	Thanatotheristes
+group	0
+image	3957	240	93	6116aae0	-
+named	2020
+source	Wikidata
+end

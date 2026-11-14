@@ -1,0 +1,6 @@
+ZDS1	yanornis	Q19610155
+name	Yanornis
+group	1
+image	3678	69	117	6b932323	CC BY 2.5
+source	Wikidata
+end

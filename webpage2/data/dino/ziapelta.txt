@@ -1,0 +1,8 @@
+ZDS1	ziapelta	Q18123387
+name	Ziapelta
+group	0
+image	4752	101	117	08e095f4	CC BY 2.5
+lived	74500000	72600000
+era	Kreide	Cretaceous
+source	Wikidata
+end

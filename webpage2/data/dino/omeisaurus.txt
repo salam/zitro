@@ -1,0 +1,8 @@
+ZDS1	omeisaurus	Q131220
+name	Omeisaurus
+group	0
+image	5378	149	117	6239d2c8	FarleyKatz, CC BY-SA 4.0
+length	2000	2000
+named	1939
+source	Wikidata
+end

@@ -1,0 +1,10 @@
+ZDS1	himalayasaurus	Q28555767
+name	Himalayasaurus
+group	3
+image	2711	172	117	97675dfc	YellowPanda2001, CC BY-SA 4.0
+length	1500	1500
+lived	215560000	212000000
+named	1972
+era	Trias	Triassic
+source	Wikidata
+end

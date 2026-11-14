@@ -1,0 +1,8 @@
+ZDS1	opisthocoelicaudia	Q133088
+name	Opisthocoelicaudia
+group	0
+image	9304	240	90	4a4eaebd	Adrian Grycuk, CC BY-SA 3.0 pl
+length	1200	1200
+named	1977
+source	Wikidata
+end

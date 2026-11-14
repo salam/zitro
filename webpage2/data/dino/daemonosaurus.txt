@@ -1,0 +1,7 @@
+ZDS1	daemonosaurus	Q18604577
+name	Daemonosaurus
+group	0
+image	7339	240	117	4c358583	Jaime A. Headden, CC BY 3.0
+named	2011
+source	Wikidata
+end

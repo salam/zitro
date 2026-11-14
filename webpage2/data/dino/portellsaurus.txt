@@ -1,0 +1,6 @@
+ZDS1	portellsaurus	Q107449122
+name	Portellsaurus
+group	0
+image	6897	240	117	d6b1ab30	CC BY 4.0
+source	Wikidata
+end

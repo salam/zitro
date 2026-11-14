@@ -1,0 +1,16 @@
+ZDS1	triceratops	Q14384
+name	Triceratops
+group	0
+image	5231	240	117	1ad411a6	Connor Ashbridge, CC BY-SA 4.0
+length	900	900
+height	300	300
+mass	6000000	12000000
+lived	68000000	65000000
+named	1889
+era	Kreide	Cretaceous
+meaning	Dreihorngesicht	three-horned face
+diet	Pflanzen	Plants
+found	westliches Nordamerika	western North America
+fun	Triceratops war einer der letzten Dinosaurier ausser den Vögeln. Er lebte bis vor 66 Millionen Jahren.	Triceratops was one of the last dinosaurs other than birds. It lived until 66 million years ago.	Wikipedia (EN): Triceratops
+source	Wikidata, Wikipedia
+end

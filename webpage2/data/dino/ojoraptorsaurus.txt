@@ -1,0 +1,7 @@
+ZDS1	ojoraptorsaurus	Q1704992
+name	Ojoraptorsaurus
+group	0
+image	4955	240	117	7def74f3	Jaime A. Headden, CC BY 3.0
+named	2011
+source	Wikidata
+end

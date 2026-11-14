@@ -1,0 +1,7 @@
+ZDS1	juravenator	Q132891
+name	Juravenator
+group	0
+image	3390	82	117	d054d3dd	Ghedoghedo, CC BY-SA 3.0
+length	80	80
+source	Wikidata
+end

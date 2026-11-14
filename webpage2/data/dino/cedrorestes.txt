@@ -1,0 +1,6 @@
+ZDS1	cedrorestes	Q545013
+name	Cedrorestes
+group	0
+image	3374	95	117	fb05ebb5	CC BY 2.5
+source	Wikidata
+end

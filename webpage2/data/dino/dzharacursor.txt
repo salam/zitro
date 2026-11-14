@@ -1,0 +1,7 @@
+ZDS1	dzharacursor	Q48785254
+name	Dzharacursor
+group	0
+image	4678	240	117	d3aefdbf	Ddinodan, CC BY 4.0
+named	2025
+source	Wikidata
+end

@@ -1,0 +1,12 @@
+ZDX1	op	11
+opallionectes	opallionectes
+opallionectes andamookaensis	opallionectes
+ophthalmosaurus	ophthalmosaurus
+ophthalmosaurus cantabrigiensis	ophthalmosaurus
+ophthalmosaurus icenicus	ophthalmosaurus
+ophthalmosaurus pleydelli	ophthalmosaurus
+ophthalmosaurus sp.	ophthalmosaurus
+ophthalmothule	ophthalmothule
+ophthalmothule cryostea	ophthalmothule
+opisthocoelicaudia	opisthocoelicaudia
+oplosaurus	oplosaurus

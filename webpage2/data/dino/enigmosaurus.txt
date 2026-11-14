@@ -1,0 +1,7 @@
+ZDS1	enigmosaurus	Q134611
+name	Enigmosaurus
+group	0
+image	5227	240	117	b6b33be8	PaleoNeolitic, CC BY-SA 4.0
+named	1983
+source	Wikidata
+end

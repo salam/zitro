@@ -1,0 +1,7 @@
+ZDS1	phuwiangvenator	Q63981558
+name	Phuwiangvenator
+group	0
+image	3629	63	117	7dfa9396	CC BY 4.0
+named	2019
+source	Wikidata
+end

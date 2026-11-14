@@ -1,0 +1,9 @@
+ZDS1	probactrosaurus	Q133670
+name	Probactrosaurus
+group	0
+image	8345	176	117	42900f3f	CC BY-SA 2.0
+length	600	600
+lived	96000000	88000000
+era	Kreide	Cretaceous
+source	Wikidata
+end

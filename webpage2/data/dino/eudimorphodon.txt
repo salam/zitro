@@ -1,0 +1,7 @@
+ZDS1	eudimorphodon	Q132577
+name	Eudimorphodon
+group	2
+image	4382	156	117	a5b803b9	Nobu Tamura, CC BY-SA 4.0
+named	1973
+source	Wikidata
+end

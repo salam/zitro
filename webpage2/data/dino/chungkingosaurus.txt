@@ -1,0 +1,7 @@
+ZDS1	chungkingosaurus	Q138023
+name	Chungkingosaurus
+group	0
+image	7767	240	117	a2c5d871	Connor Ashbridge, CC BY-SA 4.0
+length	400	400
+source	Wikidata
+end

@@ -1,0 +1,6 @@
+ZDS1	epichirostenotes	Q936315
+name	Epichirostenotes
+group	0
+image	5736	240	117	45b6a6e7	Jaime A. Headden, CC BY 3.0
+source	Wikidata
+end

@@ -1,0 +1,7 @@
+ZDS1	indosuchus	Q135327
+name	Indosuchus
+group	0
+image	3626	240	87	9e51d9e4	FunkMonk, CC BY 3.0
+length	700	700
+source	Wikidata
+end

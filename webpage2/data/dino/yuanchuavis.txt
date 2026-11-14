@@ -1,0 +1,7 @@
+ZDS1	yuanchuavis	Q108598429
+name	Yuanchuavis
+group	1
+image	3739	170	117	c189bda7	Luxquine, CC BY-SA 4.0
+named	2021
+source	Wikidata
+end

@@ -1,0 +1,12 @@
+ZDS1	troodon	Q131043
+name	Troodon
+group	0
+image	8311	156	117	fa6fd86d	Elekes Andor, CC BY-SA 4.0
+lived	77500000	76500000
+named	1856
+era	Kreide	Cretaceous
+meaning	Wunden reissender Zahn	wounding tooth
+found	Nordamerika und Asien	North America and Asia
+fun	Troodon hatte ein recht grosses Gehirn und grosse Nasenöffnungen: Er konnte wohl gut riechen.	Troodon had a fairly large brain and large nostrils, a sign of a good sense of smell.	Wikipedia (DE): Troodon
+source	Wikidata, Wikipedia
+end

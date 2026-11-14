@@ -1,0 +1,6 @@
+ZDS1	owenodon	Q2028410
+name	Owenodon
+group	0
+image	12047	240	117	1f50a546	-
+source	Wikidata
+end

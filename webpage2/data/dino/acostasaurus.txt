@@ -1,0 +1,7 @@
+ZDS1	acostasaurus	Q55603154
+name	Acostasaurus
+group	3
+length	500	500
+named	2017
+source	Wikidata
+end

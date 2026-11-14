@@ -1,0 +1,10 @@
+ZDS1	alvarezsaurus	Q134182
+name	Alvarezsaurus
+group	0
+image	5020	240	117	06d7797c	Karkemish, CC BY 3.0
+length	200	200
+lived	86000000	83000000
+named	1991
+era	Kreide	Cretaceous
+source	Wikidata
+end

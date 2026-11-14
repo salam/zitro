@@ -1,0 +1,11 @@
+ZDS1	pachyrhinosaurus	Q131568
+name	Pachyrhinosaurus
+group	0
+image	5008	126	117	63d96397	James havens, CC BY-SA 3.0
+length	600	800
+mass	4000000	4000000
+lived	73500000	68500000
+named	1950
+era	Kreide	Cretaceous
+source	Wikidata
+end

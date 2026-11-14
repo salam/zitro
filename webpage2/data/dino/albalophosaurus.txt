@@ -1,0 +1,6 @@
+ZDS1	albalophosaurus	Q192389
+name	Albalophosaurus
+group	0
+image	4200	162	117	0910ef74	Levi Martinez-Reza, CC BY-SA 4.0
+source	Wikidata
+end

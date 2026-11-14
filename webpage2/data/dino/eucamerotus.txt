@@ -1,0 +1,6 @@
+ZDS1	eucamerotus	Q1872101
+name	Eucamerotus
+group	0
+image	3367	81	117	de61376e	Mike P. Taylor, CC BY 3.0
+source	Wikidata
+end

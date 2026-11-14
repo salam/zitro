@@ -1,0 +1,10 @@
+ZDS1	macroplata	Q132773
+name	Macroplata
+group	3
+image	4869	240	117	1ae590de	Nobu Tamura, CC BY 2.5
+length	450	450
+lived	199000000	195000000
+named	1930
+era	Jura	Jurassic
+source	Wikidata
+end

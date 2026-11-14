@@ -345,6 +345,10 @@ check(($r['entries'] ?? null) === 500 && cheap($r), '500 rows of 100 cells, 5 MB
 $r = parseApart('long-cell.csv', "dog,Hund\ncat," . str_repeat('x ', 2500000), '128M');
 check(($r['entries'] ?? null) === 1 && cheap($r), 'a 5 MB cell: left out, the other pair read within 32 MB and 2 s: ' . cost($r));
 
+// Quotes inside a long cell: whether one opens a quoted field is checked without copying the cell each time
+$r = parseApart('quotes.csv', 'a, ' . str_repeat('x', 2500000) . str_repeat('"', 2500000), '128M');
+check(($r['code'] ?? null) === 'no_entries' && cheap($r), 'a 2.5 MB cell followed by 2.5 million quotes: within 32 MB and 2 s: ' . cost($r));
+
 // Rows wider than 100 cells still read like before: empty cells at the end (a spreadsheet's used range), and
 // a quoted line break after the 100th cell still belongs to the row
 $r = parse('trailing.csv', "en,de" . str_repeat(',', 200) . "\ndog,Hund" . str_repeat(',', 200) . "\ncat,Katze" . str_repeat(',', 150) . "\n");

@@ -306,7 +306,7 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
             continue;
         }
         $c = $text[$i];
-        if ($c === '"' && !$cellQuoted && trim($cell) === '') {
+        if ($c === '"' && !$cellQuoted && voci_blank($cell)) {
             $cellQuoted = $rowQuoted = true;
             $cell = '';
             $i++;

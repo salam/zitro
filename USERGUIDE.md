@@ -105,6 +105,10 @@ The project includes deployment scripts for building and uploading firmware to y
 ./verify.sh           # Compile without uploading (quick syntax check)
 ```
 
+#### Which build is on the stick?
+
+Development builds show two small grey lines under the logo at power-on: the newest feature keywords, then the commit and the build time, for example `build, fast, sticks3, voci` and `#9b0a4+, 18:23` (`+` means the sketch had uncommitted changes). Serial prints the same as `Dev build: …`. This comes from a hook that `./verify.sh` installs into arduino-cli's ESP32 core, so it works for compiles by hand too; `scripts/install_build_hook.sh --uninstall` removes it. Release builds made with `installer/rebuild_installer.sh` show the logo alone.
+
 **Requirements:**
 
 - arduino-cli installed (`brew install arduino-cli` on macOS)

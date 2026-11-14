@@ -5,6 +5,10 @@
 
 set -e
 
+# Release firmware shows the logo alone: no development build info on the splash
+# (scripts/zitro_build_info.sh, run by a hook inside every compile on this Mac)
+export ZITRO_RELEASE=1
+
 # Wolfram answers need the AppID, which isn't in git
 if ! grep -q 'WOLFRAM_APPID "[A-Z0-9-]\{6,\}"' "$(dirname "$0")/../sketch/sketch_jan12a/local_secrets.h" 2>/dev/null; then
   echo "Error: sketch/sketch_jan12a/local_secrets.h with the Wolfram AppID is missing (see local_secrets.h.example)" >&2
@@ -29,6 +33,11 @@ echo "Step 1/6: Compiling firmware..."
 echo "--------------------------------"
 cd "$PROJECT_ROOT"
 ./verify.sh
+
+if ls sketch/sketch_jan12a/build/*/sketch/zitro_build_info.cpp >/dev/null 2>&1; then
+    echo "Error: the firmware has development build info on its splash; it must not ship." >&2
+    exit 1
+fi
 
 if [ ! -f ".build/sketch_jan12a.ino.merged.bin" ]; then
     echo "Error: Firmware binary not found after compilation!"

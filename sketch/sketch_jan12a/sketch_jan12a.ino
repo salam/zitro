@@ -7911,6 +7911,39 @@ M5.Speaker.begin();
 bool speakTextStyled(const String &text, const char* instructions) { return speakTextVoiced(text, instructions, "nova"); }
 bool speakText(const String &text) { return speakTextStyled(text, nullptr); }
 
+// Development builds: scripts/zitro_build_info.sh defines this at build time, so every session can
+// tell which firmware is on a shared stick: the newest feature keywords, then the commit ("+" for
+// uncommitted changes) and the build time, e.g. "build, fast, sticks3, voci\n#9b0a4+, 18:23".
+// Release builds (ZITRO_RELEASE=1) leave it out, and the weak symbol stays null.
+extern "C" const char zitroDevBuildInfo[] __attribute__((weak));
+
+// Two small grey lines under the splash logo, and the same on serial
+static void drawDevBuildInfo() {
+  if (zitroDevBuildInfo == nullptr) return;
+  char top[96];
+  strlcpy(top, zitroDevBuildInfo, sizeof(top));
+  char* bottom = strchr(top, '\n');
+  if (bottom) *bottom++ = '\0';
+  Serial.printf("Dev build: %s | %s\n", top, bottom ? bottom : "");
+
+  const lgfx::TextStyle style = M5.Display.getTextStyle();
+  const lgfx::IFont* font = M5.Display.getFont();
+  M5.Display.setFont(&fonts::Font0);  // 6x8 px: 40 characters across
+  M5.Display.setTextSize(1);
+  M5.Display.setTextColor(M5.Display.color888(150, 150, 150), TFT_BLACK);
+  M5.Display.setTextDatum(BC_DATUM);
+  const int x = M5.Display.width() / 2;
+  const int y = M5.Display.height() - 3;
+  if (bottom) {
+    M5.Display.drawString(top, x, y - 10);
+    M5.Display.drawString(bottom, x, y);
+  } else {
+    M5.Display.drawString(top, x, y);
+  }
+  M5.Display.setFont(font);
+  M5.Display.setTextStyle(style);
+}
+
 void setup() {
   Serial.begin(115200);
   // A wake from deep sleep goes straight on; on power-on a serial monitor gets a moment to catch up
@@ -7949,6 +7982,7 @@ void setup() {
   // Show launch logo
   M5.Display.fillScreen(TFT_BLACK);
   M5.Display.drawPng(logo_png, logo_png_len, 0, 0);
+  drawDevBuildInfo();
   // Jingle on power-on and restart only: a wake from deep sleep also passes through here,
   // and shouldn't make a sound the user didn't ask for.
   if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_UNDEFINED) {

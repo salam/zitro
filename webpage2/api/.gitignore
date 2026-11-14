@@ -1,2 +1,4 @@
 cache/*
 !cache/.htaccess
+voci-data/*
+!voci-data/.htaccess

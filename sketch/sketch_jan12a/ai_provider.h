@@ -64,7 +64,8 @@ struct GPTResponse {
   bool clearTimer;    // User wants to clear all timers
   bool isOnboarding;  // User wants to enter AP/setup mode
   bool isTour;  // User wants to see what Zitro can do: the guided tour
-  String model;       // What to look up as a 3D model: "<kind>:<query>", or empty. Last: filled by position elsewhere
+  String model;       // What to look up as a 3D model: "<kind>:<query>", or empty. Filled by name, not by position
+  String vocab;       // Vocabulary trainer request: "upload" or "<practice|spell|print>|<book>|<unit>", or empty
 };
 
 // Chat endpoint configuration for the selected provider

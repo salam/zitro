@@ -1,5 +1,12 @@
 # Release Notes
 
+## Fri 13 Nov, 2026
+
+- **Practise your English words with Zitro**: upload your child's word lists on your phone with the QR code from the stick, then say "Unit 3 Englisch üben". Zitro asks, listens and says each word for you.
+- **Spell it**: say "buchstabieren" and watch the letter boxes fill. Zitro shows which letter is missing or different.
+- **On paper too**: print a word sheet to fill in, with a page of answers.
+- **Your lists stay yours**: no account, no e-mail. The lists belong to your stick's code only.
+
 ## Thu 12 Nov, 2026
 
 - **Meet any dinosaur**: ask "Erzähl mir vom T-Rex" and flip through a picture, the facts, a size comparison with a person and a fun fact. It works for flying saurians and sea reptiles too, and Zitro tells you when they weren't dinosaurs.

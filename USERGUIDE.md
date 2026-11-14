@@ -182,6 +182,33 @@ Want to see it again? Ask "Was kannst du?" or "Show me the tour". "Start onboard
 
 During the tour, the tabs stay on the screen, three presses on the upper side button don't open the settings, and holding the lower button doesn't reset WiFi. It keeps the stick awake for 5 minutes after your last press. If the stick goes into deep sleep in the middle, the tour comes back the next time you switch it on.
 
+### Practising English words
+
+Your child can practise the English words from school with Zitro. Zitro brings no word lists of its own: you upload
+your child's lists, and they stay with your stick only.
+
+**Upload a list (parents).** Say "Wörterlisten hochladen". The stick shows a QR code: scan it with your phone. The page
+zitro.spot/voci opens for your stick. Upload the unit's word list: a CSV file (from Excel: save as CSV), a Quizlet
+text export or an Anki deck (in Anki, export with "Support older Anki versions" ticked). Check the preview, fix the
+book and name if needed ("Young World 3", "Unit 1") and save. Mark the book your child uses now as "aktuell". There's
+no account: the code in the QR code is the key, so don't share it. Lists that no stick uses for a year are deleted.
+
+**Practise (children).** Press M5 and say "Unit 1 Englisch üben" (or "Young World 4 Unit 2 üben"). Zitro shows a
+German word. Press M5 and say it in English. A green check means right, and Zitro says the word for you. Otherwise
+Zitro shows what it heard and the right word. "Fast!" means it sounded right but Zitro can't be sure, so it doesn't
+count. Don't know? Press the upper side button (?). After 10 words you see how many you knew; the ones you didn't come
+back first next time.
+
+**Spell.** Say "Unit 1 buchstabieren" or choose "Buchstabieren" in the menu. Spell the English word with English letter
+names, one by one: "tee, eye, em, ee". Say every letter, also when two are the same ("pee, pee", not "double p").
+The boxes fill with what Zitro heard: green is right, red is different, orange is missing.
+
+**Menu.** The lower side button opens it: go on, answer in German instead, spell or say the words, print a word sheet,
+or stop.
+
+**On paper.** "Voci-Blatt drucken" in the menu (or say "Druck mir die Voci von Unit 1") prints the unit as pages to fill
+in, then the same pages with the answers.
+
 ### Timers and reminders
 
 - Set timers by speaking naturally:

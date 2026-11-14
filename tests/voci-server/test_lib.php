@@ -331,6 +331,35 @@ check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million semicolon-separat
 $path = apkg('wide.apkg', ['collection.anki2' => [[str_repeat("a\x1f", 2600000) . 'a']]]);
 $r = parsePathApart($path, '128M');
 check(($r['entries'] ?? null) === 1 && cheap($r), 'an apkg note with 2.6 million fields: ' . cost($r));
+// Anki notes: reading stops at the 502nd note with anything in it, like rows of text (voci_add_row)
+$path = apkg('many-notes.apkg', ['collection.anki2' => (function () {
+    for ($i = 0; $i < 20000; $i++) yield array_fill(0, 100, 'ab');
+})()]);
+$r = parsePathApart($path, '128M');
+check(($r['code'] ?? null) === 'too_many' && cheap($r), '20,000 notes of 100 fields: too_many within 32 MB and 2 s: ' . cost($r));
+$apkgMessage = function (string $path): string {
+    try {
+        voci_parse_file($path, basename($path));
+        return '';
+    } catch (VociError $e) {
+        return $e->getMessage();
+    }
+};
+$notes = [['English', 'Deutsch']];
+for ($i = 1; $i <= 500; $i++) {
+    $notes[] = ["word$i", "Wort$i"];
+    if ($i % 100 === 0) $notes[] = ['', ' '];
+}
+$r = parseApkg(apkg('notes-500.apkg', ['collection.anki2' => $notes]));
+check(is_array($r) && count($r['entries']) === 500 && $r['entries'][499] === ['t' => 'word500', 'b' => 'Wort500'], 'a header note, 500 notes and blank notes between them are fine: ' . (is_array($r) ? count($r['entries']) : $r));
+$notes = array_map(fn($i) => ["word$i", "Wort$i"], range(1, 502));
+$m = $apkgMessage(apkg('notes-501.apkg', ['collection.anki2' => array_slice($notes, 0, 501)]));
+check(str_contains($m, '501 Einträge'), '501 notes still get their count: ' . $m);
+$m = $apkgMessage(apkg('notes-502.apkg', ['collection.anki2' => $notes]));
+check(str_contains($m, 'mehr als 500'), '502 notes: "mehr als 500": ' . $m);
+$r = parseApkg(apkg('blank-first.apkg', ['collection.anki2' => [['', ''], ['dog', 'Hund'], ['cat', '']]]));
+check(pairs($r) === ['dog|Hund'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Karte 3'), 'card numbers count blank notes: ' . show($r));
+
 // The most the limits still let through: 500 rows of 100 cells of 100 characters, about 5 MB
 $wide = [];
 for ($row = 1; $row <= 500; $row++) {

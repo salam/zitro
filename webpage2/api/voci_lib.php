@@ -412,9 +412,11 @@ function voci_read_zip(string $path): array {
     }
 }
 
-// The fields of every note in an Anki collection (SQLite), oldest note first.
+// The fields of the notes in an Anki collection (SQLite), oldest note first. Like rows of text (voci_add_row),
+// notes with nothing in them are left out and reading stops at the 502nd with something, before any is cleaned.
 function voci_read_anki_notes(string $file): array {
     $rows = [];
+    $read = 0;
     try {
         $db = new SQLite3($file, SQLITE3_OPEN_READONLY);
         $db->enableExceptions(true);
@@ -434,16 +436,19 @@ function voci_read_anki_notes(string $file): array {
         }
         $result = $db->query('SELECT flds FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
         while (($note = $result->fetchArray(SQLITE3_NUM)) !== false) {
+            $read++;
             // The first 100 fields; explode leaves the rest in one more, which is dropped
             $cells = explode("\x1f", (string)$note[0], VOCI_MAX_CELLS + 1);
             if (count($cells) > VOCI_MAX_CELLS) array_pop($cells);
-            $rows[] = ['cells' => $cells, 'line' => count($rows) + 1, 'quoted' => true];
+            voci_add_row($rows, $cells, $read, true);  // A card's number counts the empty notes too
         }
         $db->close();
+    } catch (VociError $e) {
+        throw $e;  // Too many notes, or not a collection we read
     } catch (Exception $e) {
         voci_fail('unreadable', 'anki_broken');
     }
-    if (count($rows) > VOCI_MAX_NOTES) voci_fail('too_many', null, count($rows));
+    if ($read > VOCI_MAX_NOTES) voci_fail('too_many', null, $read);
     return $rows;
 }
 

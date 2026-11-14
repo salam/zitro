@@ -1,8 +1,8 @@
 <?php
 // Fixture builders shared by test_lib.php and test_api.php. Everything here is made up for the tests.
 
-// An Anki package at $path: a zip with SQLite collections (entry name => notes, each a list of fields) and
-// plain files (entry name => bytes), like Anki's own exports.
+// An Anki package at $path: a zip with SQLite collections (entry name => notes, each a list of fields; any
+// iterable, so a generator can make many) and plain files (entry name => bytes), like Anki's own exports.
 function fixture_apkg(string $path, array $collections, array $files = []): string {
     @unlink($path);
     $zip = new ZipArchive();
@@ -14,6 +14,7 @@ function fixture_apkg(string $path, array $collections, array $files = []): stri
         $sql = new SQLite3($db);
         $sql->exec('CREATE TABLE notes (id integer primary key, guid text, mid integer, mod integer, usn integer, tags text, flds text, sfld text, csum integer, flags integer, data text)');
         $id = 1500000000000;
+        $sql->exec('BEGIN');
         foreach ($notes as $fields) {
             $st = $sql->prepare("INSERT INTO notes VALUES (:id, :g, 1, 0, 0, '', :f, '', 0, 0, '')");
             $st->bindValue(':id', $id, SQLITE3_INTEGER);
@@ -21,6 +22,7 @@ function fixture_apkg(string $path, array $collections, array $files = []): stri
             $st->bindValue(':f', implode("\x1f", $fields), SQLITE3_TEXT);
             $st->execute();
         }
+        $sql->exec('COMMIT');
         $sql->close();
         $zip->addFile($db, $entry);
         $dbs[] = $db;

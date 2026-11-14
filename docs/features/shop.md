@@ -105,6 +105,14 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
   count as not understood or wrong, never as right.
 - Computer voices and clean audio: children at the stick's microphone will do worse.
 
+## Prompt check (2026-11-14)
+
+The main prompt with the shop rule, 10 requests to `gpt-6-luna` (scratchpad script): the four requests to play
+started the game ("Lass uns Verkäuferlis spielen" gave `play|shop|`, "Ich will Bäckerei spielen, ich bin die Kundin"
+`play|bakery|guest`), and "Erinnere mich in 10 Minuten ans Einkaufen" (a timer), "Was heisst Bäckerei auf Englisch?",
+"Wie funktioniert eine Kasse?", "Was kostet ein Brot?", "Wann hat die Bäckerei offen?" and "Unit 3 Englisch üben"
+didn't. Other providers (Claude, Infomaniak, the Zitro relay) weren't tried.
+
 ## User guide
 
 **Playing shop.** Say "Lass uns Verkäuferlis spielen", "Ich will Bäckerei spielen" or "Ich kaufe ein". Pick the place

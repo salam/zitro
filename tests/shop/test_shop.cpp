@@ -290,6 +290,10 @@ static void testLooksAndRequest() {
   CHECK(shopParseRequest("play||", r));
   CHECK(!r.hasPlace && !r.hasRole);
   CHECK(shopParseRequest("play", r));
+  CHECK(shopParseRequest("play|||", r));  // as the chat model wrote it for "Let's play shop" (2026-11-14)
+  CHECK(!r.hasPlace && !r.hasRole);
+  CHECK(shopParseRequest("play|shop|", r));
+  CHECK(r.hasPlace && r.place == SHOP_MARKET && !r.hasRole);
   CHECK(shopParseRequest("play|Laden an der Kasse|Verkäufer", r));
   CHECK(r.hasPlace && r.place == SHOP_MARKET && r.role == SHOP_SELLER);
   CHECK(!shopParseRequest("", r));

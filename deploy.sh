@@ -162,6 +162,9 @@ if ! arduino-cli core list | grep -q "esp32:esp32"; then
     echo ""
 fi
 
+# Build info (feature keywords, commit, time) on the boot splash, see scripts/zitro_build_info.sh
+scripts/install_build_hook.sh
+
 # Clean if requested
 if [ "$CLEAN_BUILD" = true ]; then
     print_info "Cleaning previous build..."

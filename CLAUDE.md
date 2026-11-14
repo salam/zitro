@@ -20,6 +20,12 @@ When modifying Arduino sketch files (*.ino), always run the verification script 
 
 This ensures the code compiles successfully before presenting changes to the user.
 
+## Build Info on the Splash
+
+Every development build shows its feature keywords, commit and build time under the boot logo (and on serial as `Dev build: …`), e.g. `build, fast, sticks3, voci` / `#9b0a4+, 18:23`. Nothing to do for it: a hook in the esp32 core runs `scripts/zitro_build_info.sh` inside every `arduino-cli compile`, and `./verify.sh` reinstalls the hook when it's missing. Before testing on a shared stick, check the splash or serial to see whose build is on it. The first keyword is your branch's first word, so name branches after the feature (`feature/dino-silhouettes` → `dino`).
+
+Release firmware must be built with `ZITRO_RELEASE=1` in the environment, so it shows the logo alone; `installer/rebuild_installer.sh` sets it. Any other script that builds firmware for users has to set it too.
+
 ## Website Cache Busting
 
 When modifying JavaScript files in the webpage/ directory (script.js, shop.js), ALWAYS update the version parameter in the corresponding HTML files to force browser cache refresh:

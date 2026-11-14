@@ -40,6 +40,10 @@ if ! arduino-cli core list | grep -q "esp32:esp32"; then
     echo ""
 fi
 
+# Development builds show their feature keywords, commit and build time on the boot splash.
+# The hook lives in the esp32 core, so it covers compiles by hand too; a core update drops it.
+scripts/install_build_hook.sh
+
 # Verify the sketch
 echo "Sketch: $SKETCH_PATH"
 echo ""

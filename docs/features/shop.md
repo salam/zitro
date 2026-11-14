@@ -28,8 +28,8 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
 - New answer field `shop`: `play|<place>|<role>`, place `lemonade`, `bakery`, `shop` or empty, role `seller` (the
   child sells) or `guest` (the child shops) or empty. German words work too (Bäckerei, Laden, Kasse, Verkäufer,
   Kunde). Missing parts keep the last choice (first time: lemonade bar, child sells).
-- Start screen: the place, "Du verkaufst" or "Du kaufst ein", four of its goods. A starts, B swaps the role, C goes to
-  the next place.
+- Start screen: the place, "Du verkaufst" or "Du kaufst ein", four of its goods. A starts, C goes to the next place,
+  B opens the menu (other role, next place, Beenden).
 - A takeover mode like the vocabulary trainer: `loop()` hands over to `shopTick()` while `shopActive()`. Holding B
   doesn't reset WiFi, three presses of C don't open the settings. Deep sleep ends the game.
 
@@ -43,8 +43,11 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
 - What was said lands on the counter. Right: a heart, "Thank you! Bye!". Wrong: the guest says the first difference
   ("Just two lemonades, please.", "And a cookie, please!", "I didn't order a muffin.") and the bubble shows the order
   in pictures. After the third wrong try the guest takes the order anyway ("Never mind. Thank you! Bye!").
+- A right part of the order isn't wrong: the guest asks for the rest ("And a cookie, please!") and the next answer
+  adds to the counter.
 - "?" (C): the guest says the order again, slowly; the second time the bubble shows it in pictures too.
-- No sound (volume 0, no key, no network): the bubble shows the pictures right away.
+- No sound (volume 0, no key, no network): the bubble shows the pictures right away, "?" too, and what the guest
+  would say shows on the counter.
 
 ### The child shops (saying the words)
 
@@ -56,14 +59,17 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
   counter and the list shows a check or a cross per line. "How many apples?" when a plural came without a number:
   then a number alone answers it ("Two."). Things the place doesn't sell: "Sorry, we don't have bananas." After the
   third try the seller says the order right and serves it ("Ah, three apples and a bottle of milk. Here you are!").
-- "?" (C): Zitro (not the seller) says the list's words slowly; the second time the whole order.
+- A right part of the list: "A cookie. Anything else?", the next answer adds to it ("and two lemonades").
+- "?" (C): Zitro (not the seller) says the list's words slowly; the second time the whole order. The words show on the
+  counter too.
+- When the seller can't be heard, the answer shows on the counter.
 
 ### Hearing an order
 
 - Words are folded to lower-case letters and digits; "I'd" is "id", hyphens split ("ice-cream").
 - The longest name wins ("apple juice" before "apple", "bread roll" before "bread"). Plurals, British and American
   words and spellings: biscuit/cookie, donut/doughnut, tomatos, bun/roll, chocolate/cocoa for hot chocolate.
-- Numbers: one to ten, digits up to 20, "a", "an". The latest number before a thing counts ("two, no, three
+- Numbers: one to twenty, as words or digits, "a", "an". The latest number before a thing counts ("two, no, three
   lemonades"), words in between don't matter ("two big cold lemonades"), "to", "too" and "for" aren't numbers. A thing
   said again replaces its number, "another" adds one. A singular with a number counts ("two lemonade"); a plural
   without a number is "how many?". German words aren't heard as goods.
@@ -74,8 +80,8 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
 - 5 guests or lists. One thing for the first two, two for the next two, three for the last; one or two of each for
   the first, up to three later. A heart for every one right the first time without the pictures; the end shows
   "4 von 5 · auf Anhieb richtig".
-- Menu (B): Weiter, Selber einkaufen / Selber verkaufen, Zur Bäckerei (the next place), Beenden. Role and place go
-  back to the start screen.
+- Menu (B, also on the start screen): Weiter, Selber einkaufen / Selber verkaufen, Zur Bäckerei (the next place),
+  Beenden. Role and place go back to the start screen.
 
 ### Voices
 
@@ -87,10 +93,22 @@ Part 3 of the English practice (issue #21, this part #25). Logic in `sketch/sket
 
 `shop play|<place>|<role>`, `shopkey a|b|c`, `shoptype <text>` (stands in for the next recording).
 
+## Speech test (2026-11-14)
+
+16 orders read by macOS voices (English, a German voice reading English, German), 16 kHz, `gpt-transcribe` with
+`language=en` and the place's goods in the prompt (scratchpad spike, not in the repository):
+
+- English orders came back word for word (5 of 5).
+- German orders stayed German ("Zwei Limonaden und ein Keks, bitte.", "Drei Äpfel ...") and are not heard as goods:
+  a German answer can't pass as English. "Glace" became "Glas", "Rüebli" "Rührei".
+- A German voice reading English: 3 of 5 right, two garbled ("Two lemon, addes", "three etel doses"); those
+  count as not understood or wrong, never as right.
+- Computer voices and clean audio: children at the stick's microphone will do worse.
+
 ## User guide
 
 **Playing shop.** Say "Lass uns Verkäuferlis spielen", "Ich will Bäckerei spielen" or "Ich kaufe ein". Pick the place
-with the upper side button and the side (sell or shop) with the lower one, then press M5.
+with the upper side button; the lower one opens the menu, where you swap sides or stop. Then press M5.
 
 **You sell.** A guest comes and orders in English. Press M5 and say what you give: "Two lemonades and a cookie". Didn't
 understand? Press the upper side button (?): the guest says it again slowly, the second time you see it in pictures.

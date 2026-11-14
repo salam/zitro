@@ -98,9 +98,10 @@ struct ShopHeard {
 };
 
 static inline std::string shopNumberWord(int n) {
-  static const char* const words[] = {"zero", "one", "two", "three", "four", "five",
-                                      "six",  "seven", "eight", "nine", "ten"};
-  return n >= 0 && n <= 10 ? words[n] : std::to_string(n);
+  static const char* const words[] = {"zero",   "one",     "two",      "three",    "four",    "five",    "six",
+                                      "seven",  "eight",   "nine",     "ten",      "eleven",  "twelve",  "thirteen",
+                                      "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"};
+  return n >= 0 && n <= 20 ? words[n] : std::to_string(n);
 }
 
 static inline std::string shopCapitalized(std::string s) {
@@ -193,7 +194,7 @@ static inline size_t shopNameAt(const std::vector<std::string>& words, size_t i,
 // 1 to SHOP_MAX_QTY for a number word or digits, "a", "an" and "another" are one; 0 for anything else
 static inline int shopNumberValue(const std::string& w) {
   if (w == "a" || w == "an" || w == "another") return 1;
-  for (int n = 1; n <= 10; n++)
+  for (int n = 1; n <= SHOP_MAX_QTY; n++)
     if (w == shopNumberWord(n)) return n;
   if (w.empty() || w.size() > 2) return 0;
   for (char c : w)
@@ -297,15 +298,41 @@ static inline std::string shopComplaint(const std::vector<ShopDiff>& diffs) {
   return "I'd like " + shopPhrase(d.item, d.want) + ", please.";
 }
 
-// The thing whose number the seller asks for ("How many lemonades?"), or -1
-static inline int shopAskedItem(const ShopHeard& heard) {
+// The thing of this place whose number the seller asks for ("How many lemonades?"), or -1
+static inline int shopAskedItem(const ShopHeard& heard, ShopPlace place) {
   for (const ShopLine& l : heard.lines)
-    if (l.qty < 0) return (int)l.item;
+    if (l.qty < 0 && shopPlaceOf(l.item) == place) return (int)l.item;
   return -1;
 }
 
-// The seller, when the child ordered
-static inline std::string shopSellerReply(ShopMatch match, const ShopHeard& heard, ShopPlace place) {
+// Only ordered things are missing, everything said was right: a part of the order ("a cookie" for "two lemonades
+// and a cookie"). The next answer adds to it.
+static inline bool shopOnlyMissing(const std::vector<ShopDiff>& diffs) {
+  if (diffs.empty()) return false;
+  for (const ShopDiff& d : diffs)
+    if (d.want == 0 || d.got != 0) return false;
+  return true;
+}
+
+// The earlier answer with the next one: things said again take the new number, "please" stays
+static inline ShopHeard shopMerge(const ShopHeard& before, const ShopHeard& next) {
+  ShopHeard out = before;
+  out.please = before.please || next.please;
+  for (const ShopLine& n : next.lines) {
+    bool found = false;
+    for (ShopLine& l : out.lines)
+      if (l.item == n.item) {
+        l.qty = n.qty;
+        found = true;
+      }
+    if (!found) out.lines.push_back(n);
+  }
+  return out;
+}
+
+// The seller, when the child ordered. partOfOrder: what was heard is a right part of the list (shopOnlyMissing).
+static inline std::string shopSellerReply(ShopMatch match, const ShopHeard& heard, ShopPlace place,
+                                          bool partOfOrder = false) {
   if (match == SHOP_MATCH_EXACT)
     return std::string(heard.please ? "Of course! " : "") + "Here you are: " + shopListPhrase(heard.lines) + ".";
   if (match == SHOP_MATCH_NOTHING || heard.lines.empty()) return "Sorry? What would you like?";
@@ -319,6 +346,7 @@ static inline std::string shopSellerReply(ShopMatch match, const ShopHeard& hear
   if (!out.empty()) out += " ";
   for (const ShopLine& l : here)
     if (l.qty < 0) return out + "How many " + shopItemInfo(l.item).many + "?";
+  if (out.empty() && match == SHOP_MATCH_WRONG && partOfOrder) return shopCapitalized(shopListPhrase(here)) + ". Anything else?";
   return out + shopCapitalized(shopListPhrase(here)) + "?";
 }
 

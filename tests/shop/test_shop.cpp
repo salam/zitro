@@ -116,6 +116,8 @@ static void testHearing() {
   CHECK_EQ(heardText("two big cold lemonades"), std::string("2 lemonade"));
   CHECK_EQ(heardText("two, no, three lemonades"), std::string("3 lemonade"));
   CHECK_EQ(heardText("TEN EGGS"), std::string("10 egg"));
+  CHECK_EQ(heardText("twelve eggs"), std::string("12 egg"));
+  CHECK_EQ(heardText("twenty eggs"), std::string("20 egg"));
   // Said twice: the later one counts, "another" adds one
   CHECK_EQ(heardText("a lemonade and another lemonade"), std::string("2 lemonade"));
   CHECK_EQ(heardText("two cookies, sorry, three cookies"), std::string("3 cookie"));
@@ -128,6 +130,17 @@ static void testHearing() {
   CHECK_EQ(heardText(""), std::string(""));
   CHECK(shopHear("Two lemonades, please").please);
   CHECK(!shopHear("Two lemonades").please);
+  // Transcripts from the speech test (2026-11-14, gpt-transcribe, language=en, computer voices): German stays German
+  // and is not heard as goods, a German voice reading English can lose a word
+  CHECK_EQ(heardText("Zwei Limonaden und ein Keks, bitte."), std::string(""));
+  CHECK_EQ(heardText("Ich hätte gern ein Glas und einen Tee."), std::string(""));
+  CHECK_EQ(heardText("Drei Orangensaft."), std::string(""));
+  CHECK_EQ(heardText("Zwei Brezeln und ein Gipfeli, bitte."), std::string(""));
+  CHECK_EQ(heardText("Drei Äpfel und eine Flasche Milch, bitte."), std::string(""));
+  CHECK_EQ(heardText("Here you are, three orange juices."), std::string("3 orange juice"));
+  CHECK_EQ(heardText("Two lemon, addes and a cookie, please."), std::string("1 cookie"));
+  CHECK_EQ(heardText("We would like two bananas and four eggs."), std::string("2 banana, 4 egg"));
+  CHECK_EQ(heardText("A hot chocolate and two glasses of water, please."), std::string("1 hot chocolate, 2 water"));
   // A bare number answers "How many?"
   CHECK_EQ(shopBareNumber("Two."), 2);
   CHECK_EQ(shopBareNumber("three please"), 3);
@@ -196,7 +209,29 @@ static void testReplies() {
   h = shopHear("lemonades and a cookie");
   shopCompare(want, h, SHOP_BAR, d);
   CHECK_EQ(shopSellerReply(SHOP_MATCH_WRONG, h, SHOP_BAR), std::string("How many lemonades?"));
-  CHECK_EQ(shopAskedItem(h), (int)I::Lemonade);
+  CHECK_EQ(shopAskedItem(h, SHOP_BAR), (int)I::Lemonade);
+  // The seller only asks about what the place sells: the number goes to the rolls, not the bananas
+  h = shopHear("bananas and rolls, please");
+  shopCompare(order({{I::Roll, 3}}), h, SHOP_BAKERY, d);
+  CHECK_EQ(shopSellerReply(SHOP_MATCH_WRONG, h, SHOP_BAKERY), std::string("Sorry, we don't have bananas. How many bread rolls?"));
+  CHECK_EQ(shopAskedItem(h, SHOP_BAKERY), (int)I::Roll);
+  CHECK_EQ(shopAskedItem(shopHear("bananas"), SHOP_BAKERY), -1);
+  // Part of the order, all of it right: "Anything else?", and the next answer adds to it
+  h = shopHear("a cookie, please");
+  CHECK_EQ((int)shopCompare(want, h, SHOP_BAR, d), (int)SHOP_MATCH_WRONG);
+  CHECK(shopOnlyMissing(d));
+  CHECK_EQ(shopSellerReply(SHOP_MATCH_WRONG, h, SHOP_BAR, shopOnlyMissing(d)), std::string("A cookie. Anything else?"));
+  ShopHeard both = shopMerge(h, shopHear("and two lemonades"));
+  CHECK_EQ((int)shopCompare(want, both, SHOP_BAR, d), (int)SHOP_MATCH_EXACT);
+  CHECK(both.please);
+  // A later number replaces the earlier one
+  both = shopMerge(shopHear("a lemonade"), shopHear("two lemonades"));
+  CHECK(both.lines.size() == 1 && both.lines[0].qty == 2);
+  // Something wrong in it: not only missing
+  shopCompare(want, shopHear("three lemonades"), SHOP_BAR, d);
+  CHECK(!shopOnlyMissing(d));
+  shopCompare(want, shopHear("a muffin"), SHOP_BAR, d);
+  CHECK(!shopOnlyMissing(d));
   // Something this place doesn't sell next to something it does: the seller says what's missing first
   h = shopHear("a lemonade and a banana");
   shopCompare(want, h, SHOP_BAR, d);

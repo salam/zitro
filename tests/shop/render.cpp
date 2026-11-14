@@ -169,10 +169,10 @@ int main(int argc, char** argv) {
   {  // Start and end
     HostCanvas c(240, 135);
     shopDrawStart(c, SHOP_BAKERY, SHOP_SELLER, look(8), "Bäckerei", "Du verkaufst");
-    tabs(c, T_PLAY, T_SWAP, T_NEXT);
+    tabs(c, T_PLAY, T_MENU, T_NEXT);
     save(c, "10-start-seller");
     shopDrawStart(c, SHOP_BAR, SHOP_GUEST, look(9), "Limonadenbar", "Du kaufst ein");
-    tabs(c, T_PLAY, T_SWAP, T_NEXT);
+    tabs(c, T_PLAY, T_MENU, T_NEXT);
     save(c, "11-start-guest");
     shopDrawEnd(c, SHOP_MARKET, {1, 1, 2, 1, 1}, "4 von 5", "Gäste zufrieden");
     tabs(c, T_PLAY, T_MENU, T_NONE);

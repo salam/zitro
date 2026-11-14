@@ -43,6 +43,8 @@ static bool shopTurnDone = false;  // served: the next press brings the next gue
 static std::string shopOrderLine;  // what the guest ordered, said again at "?"
 static ShopHeard shopLastHeard;    // the child's last order, for the answer to "How many?"
 static int shopAsked = -1;         // the thing the seller asked "How many?" about
+static bool shopPartial = false;   // the last answer was a right part of the order: the next one adds to it
+static String shopNoteText;        // keeps the note's text alive while the scene points at it
 
 static const char* st(const char* de, const char* en) {
   return shopGerman ? de : en;
@@ -110,7 +112,7 @@ static void shopDrawStartScreen() {
   shopDrawStart(c, shopPlace, shopRole, shopStartPerson(), shopPlaceName(shopPlace),
                 shopRole == SHOP_SELLER ? st("Du verkaufst", "You sell") : st("Du kaufst ein", "You shop"));
   shopPressRow(c, SHOP_COUNTER_Y + 18);
-  shopTabs(c, HINT_OK, HINT_CUT, HINT_NEXT);
+  shopTabs(c, HINT_OK, HINT_MENU, HINT_NEXT);
   shopPush(c);
 }
 
@@ -231,11 +233,18 @@ static void shopNarrate(const std::string& text) {
   if (shopVolume() > 0) speakTextVoiced(String(text.c_str()), SHOP_SLOW, "nova");
 }
 
-// Draws the person talking, says the line, then shows them with the mood that follows
+static void shopSetNote(const String& text) {
+  shopNoteText = text;
+  shopNow.note = shopNoteText.c_str();
+}
+
+// Draws the person talking, says the line, then shows them with the mood that follows. When it can't be heard, the
+// line shows on the counter instead (unless a note is already there).
 static bool shopSay(const std::string& text, ShopMood after, bool slow = false) {
   shopNow.mood = SHOP_MOOD_TALK;
   shopDrawPlay();
   const bool heard = shopSpeak(text, slow);
+  if (!heard && !shopNow.note) shopSetNote(String(text.c_str()));
   shopNow.mood = after;
   shopDrawPlay();
   return heard;
@@ -290,6 +299,7 @@ static void shopNextTurn() {
   shopHelp = 0;
   shopTurnDone = false;
   shopAsked = -1;
+  shopPartial = false;
   shopLastHeard = ShopHeard();
   shopNow.counter.clear();
   shopNow.note = nullptr;
@@ -349,23 +359,27 @@ static String shopHeardNote(const String& text) {
   return String(st("Gehört: «", "Heard: \"")) + text + st("»", "\"");
 }
 
-static String shopNoteText;  // keeps the note's text alive while the scene points at it
-
-// The child sells: says what it hands over
-static void shopServe(const String& text, const ShopHeard& heard) {
+// The child sells: says what it hands over. After a right part of the order, the next answer adds to it.
+static void shopServe(const String& text, ShopHeard heard) {
+  if (shopPartial && !heard.lines.empty()) heard = shopMerge(shopLastHeard, heard);
   std::vector<ShopDiff> diffs;
   const ShopMatch m = shopCompare(shopNow.order, heard, shopPlace, diffs);
   if (m == SHOP_MATCH_NOTHING) {
-    shopNoteText = shopHeardNote(text);
-    shopNow.note = shopNoteText.c_str();
+    shopSetNote(shopHeardNote(text));
     shopSay("Sorry?", SHOP_MOOD_NEUTRAL);
     return;
   }
+  shopLastHeard = heard;
+  shopPartial = shopOnlyMissing(diffs);
   shopNow.counter = shopOnCounter(heard);
   if (m == SHOP_MATCH_EXACT) {
     shopNow.bubble = SHOP_BUBBLE_HEART;
     shopFinishTurn(shopTries == 0 && shopHelp < 2);
     shopSay(shopThanks(shopRng), SHOP_MOOD_HAPPY);
+    return;
+  }
+  if (shopPartial) {  // "And a cookie, please!": not wrong, just not all yet
+    shopSay(shopComplaint(diffs), SHOP_MOOD_HAPPY);
     return;
   }
   shopTries++;
@@ -379,7 +393,7 @@ static void shopServe(const String& text, const ShopHeard& heard) {
   shopSay(shopComplaint(diffs), SHOP_MOOD_NEUTRAL);
 }
 
-// The child shops: orders what's on the list
+// The child shops: orders what's on the list. After a right part of it ("Anything else?") the next answer adds to it.
 static void shopOrder(const String& text, ShopHeard heard) {
   // The answer to "How many apples?": just a number
   const int n = shopBareNumber(text.c_str());
@@ -387,23 +401,29 @@ static void shopOrder(const String& text, ShopHeard heard) {
     heard = shopLastHeard;
     for (ShopLine& l : heard.lines)
       if ((int)l.item == shopAsked) l.qty = (int8_t)n;
+  } else if (shopPartial && !heard.lines.empty()) {
+    heard = shopMerge(shopLastHeard, heard);
   }
   std::vector<ShopDiff> diffs;
   const ShopMatch m = shopCompare(shopNow.order, heard, shopPlace, diffs);
   shopAsked = -1;
   if (m == SHOP_MATCH_NOTHING) {
-    shopNoteText = shopHeardNote(text);
-    shopNow.note = shopNoteText.c_str();
+    shopSetNote(shopHeardNote(text));
     shopSay(shopSellerReply(m, heard, shopPlace), SHOP_MOOD_NEUTRAL);
     return;
   }
   shopLastHeard = heard;
+  shopPartial = shopOnlyMissing(diffs);
   shopNow.counter = shopOnCounter(heard);
   for (size_t k = 0; k < shopNow.order.size(); k++)
     shopNow.marks[k] = shopQtyOf(heard.lines, shopNow.order[k].item) == shopNow.order[k].qty ? SHOP_MARK_OK : SHOP_MARK_BAD;
   if (m == SHOP_MATCH_EXACT) {
     shopFinishTurn(shopTries == 0 && shopHelp < 2);
     shopSay(shopSellerReply(m, heard, shopPlace), SHOP_MOOD_HAPPY);
+    return;
+  }
+  if (shopPartial) {  // a right part of the list: "A cookie. Anything else?"
+    shopSay(shopSellerReply(m, heard, shopPlace, true), SHOP_MOOD_HAPPY);
     return;
   }
   shopTries++;
@@ -414,7 +434,7 @@ static void shopOrder(const String& text, ShopHeard heard) {
     shopSay(shopModelAnswer(shopNow.order), SHOP_MOOD_HAPPY);
     return;
   }
-  shopAsked = shopAskedItem(heard);
+  shopAsked = shopAskedItem(heard, shopPlace);
   shopSay(shopSellerReply(m, heard, shopPlace), SHOP_MOOD_TALK);
 }
 
@@ -440,15 +460,24 @@ static void shopHint() {
   shopNow.note = nullptr;
   if (shopRole == SHOP_SELLER) {
     if (shopHelp >= 2) shopNow.bubble = SHOP_BUBBLE_PICTURES;
-    shopSay(shopOrderLine, shopNow.mood == SHOP_MOOD_TALK ? SHOP_MOOD_HAPPY : shopNow.mood, true);
+    // Can't be heard: the pictures at once
+    if (!shopSay(shopOrderLine, shopNow.mood == SHOP_MOOD_TALK ? SHOP_MOOD_HAPPY : shopNow.mood, true)) {
+      shopNow.bubble = SHOP_BUBBLE_PICTURES;
+      shopNow.note = nullptr;
+      shopDrawPlay();
+    }
+    discardButtonA(0);
     return;
   }
+  // The words on the counter too, for reading along (and when there's no sound)
   std::string words;
   if (shopHelp == 1) {
     for (const ShopLine& l : shopNow.order) words += std::string(words.empty() ? "" : ", ") + shopItemInfo(l.item).word;
   } else {
     words = shopListPhrase(shopNow.order) + ", please.";
   }
+  shopSetNote(String(words.c_str()));
+  shopDrawPlay();
   shopNarrate(words);
   discardButtonA(0);
 }
@@ -527,8 +556,9 @@ static void shopPress(ShopButton b) {
       if (b == SHOP_BTN_A) {
         shopBeginRound();
       } else if (b == SHOP_BTN_B) {
-        shopRole = shopRole == SHOP_SELLER ? SHOP_GUEST : SHOP_SELLER;
-        shopDrawStartScreen();
+        shopMenuReturn = SHOP_SCR_START;  // role, place and "Beenden" are in the menu
+        shopMenuSel = 0;
+        shopShow(SHOP_SCR_MENU);
       } else {
         shopPlace = (ShopPlace)((shopPlace + 1) % SHOP_PLACES);
         shopDrawStartScreen();

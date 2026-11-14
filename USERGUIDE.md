@@ -213,8 +213,8 @@ in, then the same pages with the answers.
 ### Playing shop in English
 
 **Start.** Say "Lass uns Verkäuferlis spielen", "Ich will Bäckerei spielen" or "Ich kaufe ein". The start screen shows
-the place and your side. The upper side button picks the place (lemonade bar, bakery, shop), the lower one the side
-(you sell or you shop). Press M5 to start. Five guests or shopping lists make a round; a heart for each one you got
+the place and your side. The upper side button picks the place (lemonade bar, bakery, shop), the lower one opens the
+menu, where you swap sides (you sell or you shop) or stop. Press M5 to start. Five guests or shopping lists make a round; a heart for each one you got
 right the first time.
 
 **You sell.** A guest comes in and orders in English: "Can I have two lemonades and a cookie, please?" Press M5 and
@@ -224,7 +224,8 @@ tell you ("Just two lemonades, please.") and show the order in pictures. Didn't 
 
 **You shop.** The seller greets you. Your shopping list shows pictures ("3x" and an apple). Press M5 and order in
 English: "Three apples and a bottle of milk, please". If the seller understood something else, they ask back
-("Three apples and a piece of cheese?") and the list shows what was right. Answer the question: to "How many
+("Three apples and a piece of cheese?") and the list shows what was right. Said only part of it? The seller asks
+"Anything else?" and you add the rest: "and two carrots". Answer the question: to "How many
 apples?" just say "Three". The upper side button (?) says the words for you, the second time the whole order.
 
 **Menu.** The lower side button: go on, swap sides, go to the next place, or stop.

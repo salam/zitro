@@ -601,9 +601,9 @@ static const char DINO_PROMPT_RULE[] =
 
 ## Task C: Upload and test on the stick (needs the user's go-ahead)
 
-- [ ] **Step 1: Ask the user** for the go-ahead to upload. Uploading is outward-facing.
+- [x] **Step 1: Ask the user** for the go-ahead to upload. Uploading is outward-facing.
 
-- [ ] **Step 2: Upload.** Upload to `<user>@<cyon-host>:public_html/zitro.spot/`, the site root that `webpage2/` maps to. Do this before any firmware with this feature leaves the bench: a stick whose server has no sheets falls back to the picture and says it has no fact sheet. Upload in this order, so no index ever names a sheet that isn't there yet:
+- [x] **Step 2: Upload.** Done before 2026-11-14: that day the live files matched this tree over HTTPS (all indexes, `credits.html`, 60 sheets, 30 pictures, the three timeline files and `index.html`). The three T-Rex requests took 0.03 to 0.06 s each from a computer; on the stick they are still unmeasured. Upload to `<user>@<cyon-host>:public_html/zitro.spot/`, the site root that `webpage2/` maps to. Do this before any firmware with this feature leaves the bench: a stick whose server has no sheets falls back to the picture and says it has no fact sheet. Upload in this order, so no index ever names a sheet that isn't there yet:
   1. Sheets, pictures and `credits.html`, without the indexes and **without `--delete`**: `rsync -av --exclude 'index-*' webpage2/data/dino/ <user>@<cyon-host>:public_html/zitro.spot/data/dino/`. (rsync keeps receiver files that match `--exclude` unless `--delete-excluded` is given, so `--delete` here would remove dropped sheets while the old indexes still list them.)
   2. Then the indexes, which is the whole folder again, and only now the stale files go: `rsync -av --delete-after webpage2/data/dino/ <user>@<cyon-host>:public_html/zitro.spot/data/dino/`. The new indexes are in place before anything is deleted.
   3. The timeline, pictures before the index: `webpage2/data/timeline/life_history.jpgs`, then `life_history.txt` and `credits.html`, to `.../zitro.spot/data/timeline/`, with `rsync -av` and no `--delete`.

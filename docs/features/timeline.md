@@ -64,7 +64,7 @@ For `life_history`, three pictures were turned down while choosing, before the s
 
 **Performance.** One picture decoded per frame at most, into one of 5 PSRAM sprites (46 KB each) kept for the current event and its neighbours. Pictures are never decoded per frame once in a sprite. Every 5 s the serial log prints `Timeline frame: draw avg .. max .. ms, period avg .. ms, N decodes avg .. max .. ms, ...`. Expect one decode to be visible as a short hitch at the start of a move; this is unmeasured on the stick.
 
-**Not tested on the stick:** everything on the device, including the tilt direction, frame time, decode time, the fetch against the live server, and how `life_history` looks ("Mrd. Jahre her", 20 events). It is not on the server until the data is uploaded. `model timeline:world_wars` on the serial port tries it.
+**Not tested on the stick:** everything on the device, including the tilt direction, frame time, decode time, the fetch against the live server, and how `life_history` looks ("Mrd. Jahre her", 20 events). Its files are on zitro.spot (checked over HTTPS on 2026-11-14). `model timeline:world_wars` on the serial port tries it.
 
 **Tests.** `tests/timeline/run.sh`: parser with broken and hostile input, picture checks, layout, motion, tilt gesture, year text, label wrap, and every generated file. It also decodes all pictures with `lgfx_tjpgd`, the decoder behind `drawJpg`. Measured here: 183 pictures, average 4.9 KB, largest 11 KB, all decoded without error. Decode time on this computer says nothing about the stick.
 

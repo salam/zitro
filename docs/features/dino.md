@@ -2,7 +2,7 @@
 
 Answer field: `model` = `dino:<name>`. Example: "Erzaehl mir vom T-Rex" gives `dino:Tyrannosaurus`. Kind `dino`, source name "Wikidata". Spec: `docs/superpowers/specs/2026-11-12-dinosaur-factsheet-design.md`.
 
-Status: built and tested on the computer. **Not tested on the stick**, and the data is **not uploaded yet** (see the end).
+Status: built and tested on the computer, merged into `main` on 2026-11-14. The data is on zitro.spot. **Not tested on the stick** (see the end).
 
 ## Requirements
 
@@ -107,4 +107,5 @@ See "Dinosaurs and other animals of the past" in `USERGUIDE.md`.
 ## Not tested, not done
 
 - **Nothing on the stick was tested:** the drawing (including `fillRectAlpha` on the picture band, the look of the person and the DejaVu12 fallback for one name wider than 232 px, "Dromaeosauriformipes rarus"), the fetch time of three HTTPS requests within 10 s, the tilt direction, and whether the button tabs cover the counter. Host tests cover the logic, every generated file and the decoder on all 1760 pictures (`tests/dino/run.sh`). `./verify.sh` compiles. The serial command `model dino:Tyrannosaurus` opens the view without voice or AI, for the later trial.
-- **The data is not uploaded.** `webpage2/data/dino/` goes to `public_html/zitro.spot/data/dino/` on cyon, and `webpage2/index.html` (the link to `credits.html`) to `public_html/zitro.spot/`, with the user's go-ahead. The order and commands are in Task C of the plan: sheets and pictures first without `--delete`, then the indexes with `--delete-after` on `data/dino/` only (so no old index names a deleted sheet; the generator empties the folder, so a dropped sheet must go from the server too), the data before any firmware with this feature leaves the bench, and the three requests timed against the 10 s. Until then a dinosaur question would fall back to the picture and the "Einen Steckbrief dazu habe ich nicht." line.
+- **The data is on the server.** Checked on 2026-11-14 over HTTPS against this tree: all 263 index files, `credits.html`, 60 random sheets and 30 random pictures are byte for byte the same, and the live `index.html` has the link to `credits.html` (item 15). Not checked: the other sheets and pictures one by one. Still open: timing the three requests against the 10 s on the stick.
+- **When the data is generated again**, upload it as in Task C of the plan: sheets and pictures first without `--delete`, then the indexes with `--delete-after` on `data/dino/` only (so no old index names a deleted sheet; the generator empties the folder, so a dropped sheet must go from the server too). Upload the data before any firmware that needs it leaves the bench. A stick whose server has no sheet falls back to the picture and the "Einen Steckbrief dazu habe ich nicht." line.

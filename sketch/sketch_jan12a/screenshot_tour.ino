@@ -42,6 +42,7 @@ static void dumpCanvas(M5Canvas &canvas, const String &name) {
 
 void captureCanvas(M5Canvas &canvas) {
   gifAnimOnScreenDraw();  // every full-screen draw comes through here
+  wifiIconOnScreenDraw();
   if (captureArmed <= 0) return;
   if (captureSkipFrames > 0) {
     captureSkipFrames--;
@@ -259,8 +260,14 @@ static void runScreenshotTour() {
   armCapture("04-setup-mode", 0);
   drawSetupScreen();
   delay(300);
-  tourScreen("05-waking-up", "Waking up...");
-  tourScreen("06-reconnecting", "Reconnecting to\nHome WiFi...");
+  // After a wake: WiFi still being searched, its icon at the bright end of the pulse
+  wifiIconTourLevel = 255;
+  tourScreen("05-home-wifi-search", MAIN_QUESTION);
+  armCapture("06-recording-wifi-search", 0);
+  drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);
+  delay(300);
+  wifiIconTourLevel = 0;
+  tourScreen("06b-no-known-wifi", "No known WiFi\nfound.");
 
   armCapture("07-recording", 0);
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);

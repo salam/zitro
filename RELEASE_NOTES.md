@@ -2,6 +2,11 @@
 
 ## Sat 14 Nov, 2026
 
+- **Wake up and ask right away**: Zitro no longer waits for WiFi before it is ready. Press the button, and while you speak, Zitro finds the network in the background.
+- **Faster WiFi**: Zitro first tries the network it used last, then looks at all networks around in one go and picks the strongest one it knows. No more waiting through your saved networks one by one.
+- **See it searching**: a little WiFi symbol pulses in the corner until Zitro is connected, then it disappears.
+- **At a friend's?** Ask your question anyway: if Zitro finds no known network, it opens the setup screen so you can add theirs.
+
 - **Play shop in English**: say "Lass uns Verkäuferlis spielen". Guests come to your lemonade bar, bakery or shop and order in English. Listen, serve them and see their faces light up.
 - **Swap sides**: be the customer with a shopping list in pictures and order everything yourself. The seller asks back if something got lost.
 - **Stuck?** Press "?" and the guest says it again slowly, or shows the order in pictures.

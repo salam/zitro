@@ -38,6 +38,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "clock_core.h"  // World clock: cities, time zones, the Sun (feature_worldclock.ino)
 #include "dino_core.h"   // Dinosaur fact sheets (feature_dino.ino); the main flow needs dinoMissLine
 #include "shake_core.h"  // What a shake can show besides a fact
+#include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -151,8 +152,6 @@ struct WiFiCredential {
 };
 WiFiCredential wifiNetworks[MAX_WIFI_NETWORKS];
 int wifiNetworkCount = 0;
-unsigned long lastConnectionCheck = 0;
-#define CONNECTION_CHECK_INTERVAL 30000  // Check every 30 seconds
 
 // Wikipedia rate limiting
 unsigned long wikipediaBlockedUntil = 0;  // Timestamp when Wikipedia requests can resume
@@ -463,6 +462,18 @@ void loadSleepTimeouts();
 void powerDownPeripherals();
 void enterDeepSleep();
 void captureCanvas(M5Canvas &canvas);
+// WiFi in the background (wifi_link.ino)
+void wifiLinkStart();
+void wifiLinkStop();
+bool wifiLinkUp();
+void wifiBackgroundTick();
+bool wifiWaitForLink(uint32_t maxMs, bool showIcon);
+bool connectToWiFi();
+bool reconnectWiFiNow();
+void wifiIconDrawInto(M5Canvas& canvas);
+void wifiIconScreenAllows();
+void wifiIconOnScreenDraw();
+extern uint8_t wifiIconTourLevel;
 void gifAnimStart(float scale);
 bool gifAnimResume(float scale);
 void gifAnimTick();
@@ -1487,7 +1498,9 @@ void drawHomeScreen() {
   canvas.drawString(shake, x + SHAKEICON_WIDTH + gap, cy);
 
   drawBatteryIndicator(canvas);
+  wifiIconDrawInto(canvas);  // While WiFi is still being searched
   captureCanvas(canvas);
+  wifiIconScreenAllows();
   canvas.pushSprite(0, 0);
   canvas.deleteSprite();
 }
@@ -1612,8 +1625,10 @@ void drawProgress(int secondsRemaining) {
 
   // Draw battery indicator
   drawBatteryIndicator(canvas);
+  wifiIconDrawInto(canvas);  // While WiFi is still being searched
 
   captureCanvas(canvas);
+  wifiIconScreenAllows();
 
   canvas.pushSprite(0, 0);
   canvas.deleteSprite();
@@ -2047,6 +2062,7 @@ void startAPMode() {
   Serial.println("\n========== STARTING AP MODE ==========");
 
   apMode = true;
+  wifiLinkStop();  // The radio becomes the setup hotspot
 
   static const String AP_NAME = "zitro";
 
@@ -2139,232 +2155,7 @@ void drawSetupScreen(bool openingSettings) {
   canvas.deleteSprite();
 }
 
-bool connectToWiFi() {
-  // Load all credentials from storage
-  loadWiFiCredentials();
-
-  Serial.println("\n========== WIFI CONNECTION ==========");
-
-  // Show stored networks
-  listStoredNetworks();
-
-  if (wifiNetworkCount == 0) {
-    Serial.println("No credentials stored");
-    Serial.println("======================================\n");
-    return false;
-  }
-
-  // Ensure WiFi is fully stopped before starting
-  WiFi.disconnect(true);
-  delay(100);
-  WiFi.mode(WIFI_STA);
-  WiFi.setAutoReconnect(false);  // Disable auto-reconnect for manual control
-  WiFi.persistent(false);         // Disable NVS storage
-  delay(100);
-
-  // Try connecting to each known network
-  for (int i = 0; i < wifiNetworkCount; i++) {
-    String ssid = wifiNetworks[i].ssid;
-    String pass = wifiNetworks[i].password;
-
-    if (ssid.length() == 0) {
-      Serial.printf("Skipping empty SSID at index %d\n", i);
-      continue;
-    }
-
-    Serial.printf("\nAttempting connection [%d/%d]:\n", i + 1, wifiNetworkCount);
-    Serial.printf("  SSID: '%s'\n", ssid.c_str());
-    Serial.printf("  Password: %d chars\n", pass.length());
-    Serial.printf("  Using wifiNetworks[%d]\n", i);
-
-    drawScreen("Connecting to\n" + ssid + "...\n(" + String(i + 1) + "/" + String(wifiNetworkCount) + ")");
-
-    // Disconnect from any previous connection attempt
-    if (i > 0) {
-      Serial.println("Disconnecting from previous attempt...");
-      WiFi.disconnect(false);
-      delay(500);  // Wait for disconnect to complete
-    }
-
-    // Start new connection attempt
-    Serial.println("Calling WiFi.begin()...");
-    WiFi.begin(ssid.c_str(), pass.c_str());
-
-    int attempts = 0;
-    while (WiFi.status() != WL_CONNECTED && attempts < 5) {
-      delay(500);
-      Serial.print(".");
-      attempts++;
-    }
-
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.println("\nConnected!");
-      Serial.print("IP address: ");
-      Serial.println(WiFi.localIP());
-
-      // Move this network to front of list for faster future connections
-      moveNetworkToFront(i);
-
-      // Store as currently connected
-      savedSSID = ssid;
-      savedPass = pass;
-
-      // NTP, in the home city's time zone with its real daylight saving rules
-      startNtpWithHomeTimeZone();
-      Serial.println("Syncing time with NTP...");
-
-      Serial.println("======================================\n");
-      return true;
-    }
-
-    Serial.println(" Failed");
-  }
-
-  Serial.println("\nFailed to connect to any known network");
-  Serial.println("======================================\n");
-  return false;
-}
-
-// Check WiFi connection and reconnect if needed
-void checkWiFiConnection() {
-  // Skip if in AP mode or if not enough time has passed
-  if (apMode || millis() - lastConnectionCheck < CONNECTION_CHECK_INTERVAL) {
-    return;
-  }
-
-  lastConnectionCheck = millis();
-
-  // Check if still connected
-  if (WiFi.status() == WL_CONNECTED) {
-    return;  // All good
-  }
-
-  Serial.println("\n========== WIFI DISCONNECTED ==========");
-  Serial.println("Attempting to reconnect...");
-
-  // Try to reconnect to any known network
-  if (wifiNetworkCount == 0) {
-    loadWiFiCredentials();
-  }
-
-  WiFi.disconnect(true);
-  delay(100);
-  WiFi.mode(WIFI_STA);
-  delay(100);
-
-  for (int i = 0; i < wifiNetworkCount; i++) {
-    String ssid = wifiNetworks[i].ssid;
-    String pass = wifiNetworks[i].password;
-
-    if (ssid.length() == 0) continue;
-
-    Serial.printf("Trying network [%d/%d]: %s\n", i + 1, wifiNetworkCount, ssid.c_str());
-
-    // Disconnect between attempts
-    if (i > 0) {
-      WiFi.disconnect(false);
-      delay(500);
-    }
-
-    WiFi.begin(ssid.c_str(), pass.c_str());
-
-    int attempts = 0;
-    while (WiFi.status() != WL_CONNECTED && attempts < 20) {
-      delay(500);
-      Serial.print(".");
-      attempts++;
-    }
-
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.println("\nReconnected!");
-      Serial.print("IP address: ");
-      Serial.println(WiFi.localIP());
-
-      // Move this network to front of list for faster future connections
-      moveNetworkToFront(i);
-
-      savedSSID = ssid;
-      savedPass = pass;
-
-      Serial.println("=======================================\n");
-      return;
-    }
-
-    Serial.println(" Failed");
-  }
-
-  Serial.println("Could not reconnect to any network");
-  Serial.println("=======================================\n");
-}
-
-// Force immediate WiFi reconnection (for use when HTTP requests fail)
-bool reconnectWiFiNow() {
-  Serial.println("\n========== FORCING WIFI RECONNECTION ==========");
-
-  // Load credentials if not already loaded
-  if (wifiNetworkCount == 0) {
-    loadWiFiCredentials();
-  }
-
-  if (wifiNetworkCount == 0) {
-    Serial.println("No networks stored, cannot reconnect");
-    Serial.println("===============================================\n");
-    return false;
-  }
-
-  // Disconnect and reconnect
-  WiFi.disconnect(true);
-  delay(100);
-  WiFi.mode(WIFI_STA);
-  delay(100);
-
-  // Try all known networks
-  for (int i = 0; i < wifiNetworkCount; i++) {
-    String ssid = wifiNetworks[i].ssid;
-    String pass = wifiNetworks[i].password;
-
-    if (ssid.length() == 0) continue;
-
-    Serial.printf("Trying network [%d/%d]: %s\n", i + 1, wifiNetworkCount, ssid.c_str());
-    drawScreen("Reconnecting to\n" + ssid + "...");
-
-    // Disconnect between attempts
-    if (i > 0) {
-      WiFi.disconnect(false);
-      delay(500);
-    }
-
-    WiFi.begin(ssid.c_str(), pass.c_str());
-
-    int attempts = 0;
-    while (WiFi.status() != WL_CONNECTED && attempts < 20) {
-      delay(500);
-      Serial.print(".");
-      attempts++;
-    }
-
-    if (WiFi.status() == WL_CONNECTED) {
-      Serial.println("\nReconnected!");
-      Serial.print("IP address: ");
-      Serial.println(WiFi.localIP());
-
-      // Move this network to front of list for faster future connections
-      moveNetworkToFront(i);
-
-      savedSSID = ssid;
-      savedPass = pass;
-
-      Serial.println("===============================================\n");
-      return true;
-    }
-
-    Serial.println(" Failed");
-  }
-
-  Serial.println("Could not reconnect to any network");
-  Serial.println("===============================================\n");
-  return false;
-}
+// connectToWiFi() and reconnectWiFiNow() are in wifi_link.ino
 
 void resetCredentials() {
   Serial.println("\n========== RESETTING CREDENTIALS ==========");
@@ -2528,6 +2319,7 @@ void enterLightSleep() {
 
   // Power down WiFi to save power
   Serial.println("Disconnecting WiFi...");
+  wifiLinkStop();
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 
@@ -2589,13 +2381,11 @@ void enterLightSleep() {
   gyroPowerState = -1;
   setGyroEnabled(false);
 
-  // Wake display immediately after button press
+  // Wake display immediately after button press. It still holds the screen from before the sleep,
+  // and handleLightSleepWake() draws it again on the next loop, without waiting for WiFi.
   Serial.println("Waking display...");
   M5.Display.wakeup();
   displaySleeping = false;
-
-  // Show waking up message immediately
-  drawScreen("Waking up...");
 
   wakeFromLightSleep = true;
   currentPowerState = POWER_ACTIVE;
@@ -2620,6 +2410,7 @@ void enterDeepSleep() {
 
   // Power down WiFi
   Serial.println("Disconnecting WiFi...");
+  wifiLinkStop();
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 
@@ -2653,50 +2444,9 @@ void enterDeepSleep() {
 void handleLightSleepWake() {
   Serial.println("Handling light sleep wake-up...");
 
-  // Reconnect WiFi
-  Serial.println("Reconnecting WiFi...");
-
-  if (wifiNetworkCount == 0) {
-    loadWiFiCredentials();
-  }
-
-  // Ensure WiFi is fully stopped before starting
-  WiFi.disconnect(true);
-  delay(100);
-  WiFi.mode(WIFI_STA);
-  WiFi.setAutoReconnect(false);  // Disable auto-reconnect to prevent race condition
-  WiFi.persistent(false);         // Disable NVS storage
-  delay(200);
-  bool connected = false;
-
-  // Try to reconnect to known networks (quick attempt)
-  for (int i = 0; i < wifiNetworkCount && !connected; i++) {
-    String ssid = wifiNetworks[i].ssid;
-
-    // Show reconnection status on display
-    drawScreen("Reconnecting to\n" + ssid + "...");
-    Serial.printf("Attempting to reconnect to: %s\n", ssid.c_str());
-
-    WiFi.begin(ssid.c_str(), wifiNetworks[i].password.c_str());
-
-    int attempts = 0;
-    while (WiFi.status() != WL_CONNECTED && attempts < 20) {
-      delay(500);
-      attempts++;
-    }
-
-    if (WiFi.status() == WL_CONNECTED) {
-      connected = true;
-      Serial.println("WiFi reconnected");
-
-      // Move this network to front of list for faster future connections
-      moveNetworkToFront(i);
-    }
-  }
-
-  if (!connected) {
-    Serial.println("Warning: Could not reconnect to WiFi");
-  }
+  // WiFi comes back in the background (wifi_link.ino): the last network directly, else one scan.
+  // The screen and Button A don't wait for it.
+  wifiLinkStart();
 
   // Display is already awake (woken in enterLightSleep immediately after GPIO wake)
   // Just redraw previous content
@@ -2718,13 +2468,11 @@ void handleLightSleepWake() {
     drawScreen(MAIN_QUESTION);
   }
 
-  // Drop the wake-up press. It was read in enterLightSleep and released during the WiFi
-  // reconnect; left alone, M5Unified reports it as a single click ~1 s later, which
-  // used to start a recording.
+  // Drop the wake-up press (waits for its release); left alone, M5Unified reports it as a
+  // single click ~1 s later, which used to start a recording.
   discardButtonA(0);
 
-  // Reset cooldown timer AFTER WiFi reconnection so the 2-second window
-  // starts now (not before the multi-second WiFi reconnection delay)
+  // The 2-second cooldown starts once the wake press is gone
   timeWokeFromSleep = millis();
 
   // Clear flag so handleLightSleepWake() only runs once per wake cycle.
@@ -2753,12 +2501,12 @@ void handleDeepSleepWake() {
     Serial.println("Displayed restored response");
   }
 
-  // If we had an image, try to re-download it
+  // If we had an image, try to re-download it, once WiFi is back (searched since the logo)
   if (hasImage && currentImageUrl.length() > 0) {
     Serial.println("Attempting to re-download image...");
     drawScreen("Restoring image...");
 
-    bool imageDownloaded = downloadImage(currentImageUrl);
+    bool imageDownloaded = wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true) && downloadImage(currentImageUrl);
 
     if (imageDownloaded) {
       Serial.println("Image restored successfully");
@@ -2796,9 +2544,10 @@ void handleDeepSleepWake() {
     drawScreen(response);
   }
 
-  // A 3D model is fetched again, like a picture
+  // A 3D model is fetched again, like a picture. Most need WiFi; the built-in ones load without it.
   if (modelRefText.length() > 0) {
     drawScreen("Restoring...");
+    wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true);
     ModelRef ref;
     const bool wasShowingModel = currentDisplayMode == SHOW_MODEL;
     if (parseModelRef(modelRefText.c_str(), ref) && fetchModel(ref)) {
@@ -3043,6 +2792,7 @@ bool recordAudio(bool &cancelled) {
       M5.Mic.record(&audioBuffer[sec * samplesPerSecond], samplesPerSecond, activeSampleRate);
       while (M5.Mic.isRecording()) {
         M5.update();  // Update button states
+        wifiBackgroundTick();  // WiFi may still be on its way after a wake
 
         // Button A during recording: one tap restarts, a second quick tap cancels
         if (M5.BtnA.wasPressed()) {
@@ -3144,6 +2894,12 @@ bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const 
   if (!ep.available) {
     Serial.println("ERROR: No speech key configured");
     error = "No speech key";
+    return false;
+  }
+
+  if (WiFi.status() != WL_CONNECTED && !reconnectWiFiNow()) {
+    Serial.println("ERROR: No WiFi");
+    error = "No WiFi";
     return false;
   }
 
@@ -8157,8 +7913,11 @@ bool speakText(const String &text) { return speakTextStyled(text, nullptr); }
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
-  
+  // A wake from deep sleep goes straight on; on power-on a serial monitor gets a moment to catch up
+  const esp_sleep_wakeup_cause_t bootCause = esp_sleep_get_wakeup_cause();
+  const bool bootFromDeepSleep = bootCause == ESP_SLEEP_WAKEUP_EXT0 || bootCause == ESP_SLEEP_WAKEUP_EXT1;
+  if (!bootFromDeepSleep) delay(1000);
+
   Serial.println("\n\n========================================");
   Serial.println("          Zitro Voice Assistant");
   Serial.println("========================================\n");
@@ -8195,7 +7954,22 @@ void setup() {
   if (esp_sleep_get_wakeup_cause() == ESP_SLEEP_WAKEUP_UNDEFINED) {
     M5.Speaker.playRaw(splashJingleData, SPLASH_JINGLE_SAMPLES, SPLASH_JINGLE_SAMPLE_RATE, false, 1, 0, true);
   }
-  delay(2000);  // Show logo for 2 seconds
+  // The logo stays 2 s on power-on (the jingle ends inside), 1 s after deep sleep. WiFi is searched
+  // meanwhile, and goes on in the background afterwards (wifi_link.ino).
+  const unsigned long logoShownAt = millis();
+  const unsigned long logoMs = bootFromDeepSleep ? 1000 : 2000;
+  loadWiFiCredentials();
+  // Without networks or an AI key, setup mode follows: no search then
+  const bool searchWifi = wifiNetworkCount > 0 && aiChatConfigured();
+  bool wifiStarted = false;
+  // Not while the jingle plays: the StickS3 can restart on battery with speaker and radio both drawing
+  auto startWifiAfterJingle = [&]() {
+    if (searchWifi && !wifiStarted && !M5.Speaker.isPlaying()) {
+      wifiLinkStart();
+      wifiStarted = true;
+    }
+  };
+  startWifiAfterJingle();
 
   // Configure button timing for better detection
   // M5Unified buttons: BtnA (GPIO37), BtnB (GPIO39), BtnPWR/BtnC (GPIO35)
@@ -8219,6 +7993,13 @@ void setup() {
   Serial.println("IMU initialized");
 
   Serial.printf("Free heap: %d bytes\n", ESP.getFreeHeap());
+
+  while (millis() - logoShownAt < logoMs) {
+    startWifiAfterJingle();
+    wifiBackgroundTick();
+    delay(10);
+  }
+  if (searchWifi && !wifiStarted) wifiLinkStart();
 
   // Check if waking from deep sleep
   esp_sleep_wakeup_cause_t wakeup_reason = esp_sleep_get_wakeup_cause();
@@ -8247,8 +8028,9 @@ void setup() {
       activeRecordSamples * 2 / 1024);
   }
 
-  // Try to connect with saved credentials
-  if (!connectToWiFi()) {
+  // No WiFi stored yet: open the setup page. With stored networks the home screen comes at once, and
+  // WiFi is found in the background; setup only opens when a recorded question can't be sent.
+  if (wifiNetworkCount == 0) {
     startAPMode();
     return;
   }
@@ -8265,6 +8047,11 @@ void setup() {
   // Handle deep sleep wake-up restoration
   if (wakeFromDeepSleep) {
     handleDeepSleepWake();
+    // Asleep on the home screen (nothing to restore): the home screen, not the logo, stays.
+    // Before WiFi went to the background, "Connecting to ..." used to be left there instead.
+    if (currentDisplayMode == SHOW_TEXT && (response.length() == 0 || response.startsWith("Press BUTTON"))) {
+      drawScreen(MAIN_QUESTION);
+    }
     discardButtonA(0);  // The wake-up press must not start a recording
     timeWokeFromSleep = millis();
   } else {
@@ -8852,6 +8639,19 @@ void handleVoiceQuery(bool playAudio) {
   Serial.printf("Free heap after recording: %d bytes\n", ESP.getFreeHeap());
 
   drawScreenWithIcon("Transcribing...", transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
+
+  // Right after a wake WiFi may still be on its way: the question waits for it, with the icon
+  // pulsing in the corner. No known network around: the setup screen, to add this one.
+  if (!wifiLinkUp() && !wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true)) {
+    lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
+    serialTestQuestion = "";
+    Serial.println("No known WiFi found - opening setup");
+    drawScreen("No known WiFi\nfound.");
+    delay(2000);
+    startAPMode();
+    return;
+  }
+
   String question = typedQuestion ? serialTestQuestion : transcribeAudio();
   serialTestQuestion = "";
 
@@ -9200,11 +9000,9 @@ void loop() {
     return;
   }
 
-  // Only check WiFi connection if display is active (not sleeping)
-  // Skip if waking from light sleep - handleLightSleepWake() will handle reconnection
-  if (!displaySleeping && currentPowerState == POWER_ACTIVE && !wakeFromLightSleep) {
-    checkWiFiConnection();
-  }
+  // WiFi search and its icon (wifi_link.ino). Never blocks; a lost connection is searched again
+  // only while the screen is on.
+  wifiBackgroundTick();
 
   // Handle light sleep wake-up
   if (wakeFromLightSleep) {

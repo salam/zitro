@@ -498,7 +498,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 - Time questions ("what time is it?") return the current time including seconds.
 
 ### Web setup (AP mode)
-- If no WiFi is connected or no AI provider key is configured, the device creates an AP named "zitro".
+- If no WiFi network is stored or no AI provider key is configured, the device creates an AP named "zitro". It does the same when you ask a question and no known WiFi is around, so you can add the network you're in.
 - Connect to it — a captive portal should auto-open. If not, browse to `zitro.local` or `192.168.4.1`.
 - Setup page actions:
   - **WiFi**: Add a network (SSID + password), reorder networks with Up/Down buttons, delete a network.
@@ -510,23 +510,26 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 - After inactivity: display sleep ~30s, light sleep ~90s, deep sleep ~180s. The three times can be changed on the Settings tab and are used right away.
 - Before sleeping, Zitro switches off WiFi, the screen, the motion sensor, the microphone and the speaker to save battery.
 - Press Button A to wake. Deep sleep reboots and restores the last response if possible.
+- Zitro doesn't wait for WiFi when it wakes: you can ask right away while it looks for the network in the background. A WiFi symbol pulses grey and white in the top right corner meanwhile, and disappears once Zitro is connected.
 - With a reminder timer running, Zitro stays in light sleep (not deep sleep) so the alarm can ring on time; this uses more battery.
 
 ## User interface hierarchy
 
 - Boot and connection
-  - Power on or wake (the logo appears; two playful little pops sound on power-on and restart, at your speaker volume, and stay quiet when waking from deep sleep)
-  - WiFi connect attempts
+  - Power on or wake (the logo appears for 2 seconds, 1 second when waking from deep sleep; two playful little pops sound on power-on and restart, at your speaker volume, and stay quiet when waking from deep sleep)
+  - WiFi search in the background: the screen doesn't wait for it
   - AP setup mode (screen with SSID + IP, web setup page)
 - Home / idle
   - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for a surprise."
+  - WiFi symbol in the top right corner while Zitro is still looking for WiFi: pulsing grey and white while it searches, grey when it found no known network
   - Battery indicator appears when low
   - Rotate icon appears when an image is available
 - Question flow
-  - Recording (large mic icon + progress)
+  - Recording (large mic icon + progress; the WiFi symbol too while WiFi is still being searched)
     - Tap: "Restarting..." and record again
     - Double tap: cancel, back to the last answer
-  - Transcribing (icon)
+  - Transcribing (icon). Without WiFi yet, it waits here with the WiFi symbol
+    - No known WiFi found: "No known WiFi found.", then the setup screen
   - Thinking (large robot icon) / Calculating / Creating image / Finding image
   - Answer (text view)
   - Optional image view
@@ -549,7 +552,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 ## Easy user guide
 
 ### Quick start
-1. Power on the device and wait for WiFi to connect.
+1. Power on the device and wait for the logo to go.
 2. On the home screen, press Button A once and speak your question.
 3. Wait for the answer on screen. The device records for about 5 seconds.
 
@@ -613,7 +616,7 @@ Good to know:
 ### WiFi setup and device configuration
 
 1. Enter setup mode by either:
-   - Waiting for the device to automatically enter AP mode (if WiFi fails or no API key is configured), or
+   - Waiting for the device to automatically enter AP mode (if no WiFi network or API key is stored, or when you ask a question and no known WiFi is around), or
    - Triple-clicking Button C (not while a list, picture or 3D model is in use), or saying "Open settings page".
 
 2. Connect your phone or computer to "zitro" (or scan the QR code on the screen).
@@ -659,6 +662,8 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
+- You don't need to wait for WiFi. Zitro looks for it in the background: first the network it used last, then all networks around in one go, the strongest known one first. While it searches, a WiFi symbol pulses grey and white in the top right corner of the home and recording screens. When it's connected, the symbol disappears. If you finish your question before that, Zitro waits with "Transcribing..." until it is connected.
+- No known network around (at a friend's, say)? The symbol stays grey and Zitro tries again every 30 seconds. Ask a question anyway, and Zitro opens the setup screen so you can add the network.
 - Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again. A Wolfram picture isn't kept, so that answer comes back without it.
 
 ## Screenshots of the device screens

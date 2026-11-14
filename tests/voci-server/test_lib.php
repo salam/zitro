@@ -549,6 +549,16 @@ check($parseError('192.0.2.1', $hour) === 'rate_limited', 'the third preview in 
 check($parseError('192.0.2.9', $hour) === null, 'another connection still may');
 check($parseError('192.0.2.1', $hour + 3600) === null, 'the next hour starts again');
 check(!str_contains(implode(' ', glob($rateData . '/_rate/*')), '192.0.2'), 'the IP is not in the counter file names');
+check($parseError('2001:db8:5:6::1', $hour) === null && $parseError('2001:db8:5:6:ffff::2', $hour) === null, 'two previews from one IPv6 /64');
+check($parseError('2001:db8:5:6:1234:5678:9abc:def0', $hour) === 'rate_limited', 'a third from another address in the same /64 is refused');
+check($parseError('2001:db8:5:7::1', $hour) === null, 'the next /64 still may');
+
+// What a connection is counted by: an IPv4 address, or an IPv6 address's /64
+check(voci_ip_key('192.0.2.1') === '192.0.2.1', 'IPv4 counts per address: ' . voci_ip_key('192.0.2.1'));
+check(voci_ip_key('2001:db8:1:2:3:4:5:6') === '2001:db8:1:2::/64' && voci_ip_key('2001:DB8:1:2::ffff') === '2001:db8:1:2::/64', 'IPv6 counts per /64: ' . voci_ip_key('2001:db8:1:2:3:4:5:6'));
+check(voci_ip_key('2001:db8:1:3::1') === '2001:db8:1:3::/64', 'another /64 is another key');
+check(voci_ip_key('::ffff:192.0.2.1') === '192.0.2.1', 'IPv4 written as IPv6 counts as IPv4: ' . voci_ip_key('::ffff:192.0.2.1'));
+check(voci_ip_key('') === '' && voci_ip_key('not an address') === 'not an address', 'anything else stays as it is');
 
 echo "voci lib: $checks checks, $failures failed\n";
 exit($failures ? 1 : 0);

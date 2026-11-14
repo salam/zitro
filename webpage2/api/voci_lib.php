@@ -757,14 +757,15 @@ function voci_count_parse(string $data, string $ip, int $now, int $limit = VOCI_
     voci_count_ip($data, $ip, $now, 'p' . gmdate('YmdH', $now), $limit, 'rate_parse');
 }
 
-// One counter per period and IP hash in voci-data/_rate; refuses when it has reached the limit.
+// One counter per period and IP hash in voci-data/_rate; refuses when it has reached the limit. IPv6 counts per
+// /64 (voci_ip_key).
 function voci_count_ip(string $data, string $ip, int $now, string $period, int $limit, string $message): void {
     $rate = $data . '/_rate';
     if (!is_dir($rate)) @mkdir($rate, 0700, true);
     foreach (glob($rate . '/*') ?: [] as $file) {
         if (@filemtime($file) < $now - 2 * 86400) @unlink($file);
     }
-    $file = $rate . '/' . $period . '-' . substr(hash_hmac('sha256', $ip, voci_salt($data)), 0, 32);
+    $file = $rate . '/' . $period . '-' . substr(hash_hmac('sha256', voci_ip_key($ip), voci_salt($data)), 0, 32);
     $handle = fopen($file, 'c+');
     if (!$handle || !flock($handle, LOCK_EX)) throw new RuntimeException('cannot count requests');
     try {
@@ -777,6 +778,15 @@ function voci_count_ip(string $data, string $ip, int $now, string $period, int $
         flock($handle, LOCK_UN);
         fclose($handle);
     }
+}
+
+// What a connection is counted by: an IPv4 address as it is, an IPv6 address by its /64, since one connection
+// usually gets a whole /64 and can use any address in it. IPv4 written as IPv6 (::ffff:192.0.2.1) is IPv4.
+function voci_ip_key(string $ip): string {
+    $bin = @inet_pton($ip);
+    if ($bin === false || strlen($bin) !== 16) return $ip;
+    if (str_starts_with($bin, str_repeat("\0", 10) . "\xFF\xFF")) return (string)inet_ntop(substr($bin, 12));
+    return inet_ntop(substr($bin, 0, 8) . str_repeat("\0", 8)) . '/64';
 }
 
 function voci_salt(string $data): string {

@@ -44,6 +44,7 @@ const VOCI_TEXTS = [
         'no_file' => 'Es ist keine Datei angekommen. Wähle die Datei nochmal aus.',
         'too_big' => 'Die Datei ist grösser als 5 MB. Eine Wörterliste ist viel kleiner: Speichere nur die Liste als CSV-Datei und lade diese hoch.',
         'too_many' => 'Die Liste hat %d Einträge, erlaubt sind höchstens 500. Teile sie auf, zum Beispiel in eine Liste pro Unit.',
+        'too_many_more' => 'Die Liste hat mehr als 500 Einträge. Teile sie auf, zum Beispiel in eine Liste pro Unit.',
         'anki_new_format' => 'Diese Anki-Datei hat das neue Format, das wir nicht lesen können. Exportiere den Stapel in Anki nochmal und setze dabei das Häkchen bei «Ältere Anki-Versionen unterstützen» (englisch: «Support older Anki versions»).',
         'anki_broken' => 'In dieser Anki-Datei finden wir keine Karten. Exportiere den Stapel in Anki nochmal als Stapelpaket (.apkg) und setze dabei das Häkchen bei «Ältere Anki-Versionen unterstützen».',
         'spreadsheet' => 'Excel- und Numbers-Dateien können wir nicht direkt lesen. Speichere die Tabelle mit «Speichern unter» oder «Exportieren» als «CSV UTF-8» und lade diese Datei hoch.',
@@ -73,6 +74,7 @@ const VOCI_TEXTS = [
         'no_file' => 'No file arrived. Please choose the file again.',
         'too_big' => 'The file is larger than 5 MB. A word list is much smaller: save just the list as a CSV file and upload that.',
         'too_many' => 'The list has %d entries, at most 500 are allowed. Split it up, for example into one list per unit.',
+        'too_many_more' => 'The list has more than 500 entries. Split it up, for example into one list per unit.',
         'anki_new_format' => 'This Anki file uses the new format, which we can\'t read. Export the deck again in Anki and tick “Support older Anki versions”.',
         'anki_broken' => 'We can\'t find any cards in this Anki file. Export the deck again in Anki as a deck package (.apkg) and tick “Support older Anki versions”.',
         'spreadsheet' => 'We can\'t read Excel or Numbers files directly. Use “Save as” or “Export” to save the table as “CSV UTF-8” and upload that file.',
@@ -196,35 +198,56 @@ function voci_read_text(string $text): array {
 }
 
 // Quizlet can put all cards on one line with semicolons between them: "dog,Hund;cat,Katze;" or with tabs
-// inside. The cards, or null if the text doesn't look like that.
+// inside. The cards, or null if the text doesn't look like that. Counts and checks without splitting the
+// text (a 5 MB file would be millions of strings) and refuses more than 500 cards and a header before
+// making any.
 function voci_quizlet_cards(string $text): ?array {
     if (!str_contains($text, ';')) return null;
-    $lines = count(array_filter(explode("\n", $text), fn($l) => trim($l) !== ''));
-    $parts = array_values(array_filter(array_map('trim', explode(';', $text)), fn($p) => $p !== ''));
-    if (count($parts) < 2 || ($lines > 1 && count($parts) < 3 * $lines)) return null;
+    // Lines, and parts between semicolons, with more in them than trim() removes
+    $lines = preg_match_all('/(?:\A|\n)[ \t\r\x00\x0B]*+[^ \t\n\r\x00\x0B]/', $text);
+    $parts = preg_match_all('/(?:\A|;)[ \t\n\r\x00\x0B]*+[^; \t\n\r\x00\x0B]/', $text);
+    if ($lines === false || $parts === false) voci_fail('unreadable');
+    if ($parts < 2 || ($lines > 1 && $parts < 3 * $lines)) return null;
     foreach (["\t", ','] as $inner) {
-        $every = true;
-        foreach ($parts as $part) {
-            if (!str_contains($part, $inner)) { $every = false; break; }
-        }
-        if (!$every) continue;
+        $at = 0;
+        do {
+            $part = voci_next_part($text, $at);
+        } while ($part !== null && str_contains($part, $inner));
+        if ($part !== null) continue;  // A card without it
+        if ($parts > VOCI_MAX_ENTRIES + 1) voci_fail('too_many', 'too_many_more');
         $rows = [];
-        foreach ($parts as $i => $part) {
-            $rows[] = ['cells' => explode($inner, $part, 2), 'line' => $i + 1, 'quoted' => true];
+        $at = 0;
+        while (($part = voci_next_part($text, $at)) !== null) {
+            $rows[] = ['cells' => explode($inner, $part, 2), 'line' => count($rows) + 1, 'quoted' => true];
         }
         return $rows;
     }
     return null;
 }
 
+// The next part between semicolons from $at on that isn't empty, trimmed, or null at the end. Moves $at to
+// the semicolon after it. Empty parts and spaces are skipped in one step.
+function voci_next_part(string $text, int &$at): ?string {
+    $n = strlen($text);
+    $at += strspn($text, "; \t\n\r\0\x0B", $at);
+    if ($at >= $n) return null;
+    $end = strpos($text, ';', $at);
+    if ($end === false) $end = $n;
+    $part = rtrim(substr($text, $at, $end - $at));
+    $at = $end;
+    return $part;
+}
+
 // Tab, semicolon or comma: the one on the most of the first lines (outside quotes), in that order on a tie.
-// Null if none of them is there.
+// Null if none of them is there. Reads only up to the sixth line with something in it.
 function voci_guess_separator(string $text): ?string {
     $sample = [];
-    foreach (explode("\n", $text) as $line) {
-        if (trim($line) === '') continue;
-        $sample[] = $line;
-        if (count($sample) === 6) break;
+    $n = strlen($text);
+    for ($i = 0; $i < $n && count($sample) < 6; $i = $end + 1) {
+        $end = strpos($text, "\n", $i);
+        if ($end === false) $end = $n;
+        $line = substr($text, $i, $end - $i);  // Untrimmed: a tab at the start counts
+        if (trim($line) !== '') $sample[] = $line;
     }
     $best = null;
     $bestLines = 0;
@@ -253,6 +276,7 @@ function voci_count_outside_quotes(string $line, string $char): int {
 
 // Rows of delimited text per RFC 4180: a field in quotes may hold the separator, line breaks and "" for a
 // quote. Spaces before an opening quote are allowed. Each row: ['cells', 'line' (where it starts), 'quoted'].
+// Blank rows are left out, and reading stops after 500 filled rows and a header (voci_add_row).
 function voci_split_rows(string $text, string $sep, int $line = 1): array {
     $rows = [];
     $cells = [];
@@ -301,7 +325,7 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
             $i++;
         } else {  // End of the row
             $cells[] = $cell;
-            $rows[] = ['cells' => $cells, 'line' => $rowLine, 'quoted' => $rowQuoted];
+            voci_add_row($rows, $cells, $rowLine, $rowQuoted);
             $cells = [];
             $cell = '';
             $cellQuoted = $rowQuoted = false;
@@ -311,9 +335,21 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
     }
     if ($cell !== '' || $cells) {
         $cells[] = $cell;
-        $rows[] = ['cells' => $cells, 'line' => $rowLine, 'quoted' => $rowQuoted];
+        voci_add_row($rows, $cells, $rowLine, $rowQuoted);
     }
     return $rows;
+}
+
+// Adds a row unless all its cells are blank (voci_table_pairs drops those anyway). A 502nd row is refused
+// right away: a list has at most 500 entries and a header, and a 5 MB file of short rows wouldn't fit in
+// memory. A row with one side empty counts too.
+function voci_add_row(array &$rows, array $cells, int $line, bool $quoted): void {
+    foreach ($cells as $cell) {
+        if (trim($cell) === '') continue;
+        if (count($rows) > VOCI_MAX_ENTRIES) voci_fail('too_many', 'too_many_more');
+        $rows[] = ['cells' => $cells, 'line' => $line, 'quoted' => $quoted];
+        return;
+    }
 }
 
 // An Anki package (.apkg, .colpkg): the notes' fields as a table. Spreadsheets are zips too and get their

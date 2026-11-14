@@ -495,6 +495,15 @@ void vocabSerial(const String& line);
 bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
                        String& text, String& error);
 bool speakTextStyled(const String &text, const char* instructions);
+bool speakTextVoiced(const String &text, const char* instructions, const char* voice);
+bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, int& samples, bool& cancelled,
+                  void (*progress)(int secondsDone, int seconds));
+bool shopActive();
+bool shopStart(const String& request);
+void shopTick();
+void shopStop();
+void shopRedraw();
+void shopSerial(const String& line);
 extern bool vocabSheetPending;
 void vocabSheetDone();
 int vocabPrintSheet(PrinterInfo& printer);
@@ -2421,6 +2430,7 @@ void saveStateToPreferences() {
   // Deep sleep ends the tour and the trainer; none of their content may come back as a result after the wake
   if (guideActive()) guideStop(false);
   if (vocabActive()) vocabStop();
+  if (shopActive()) shopStop();
 
   Serial.println("\n========== SAVING STATE ==========");
 
@@ -2976,6 +2986,10 @@ void redrawPreviousResult() {
   }
   if (vocabActive()) {
     vocabRedraw();
+    return;
+  }
+  if (shopActive()) {
+    shopRedraw();
     return;
   }
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
@@ -5013,7 +5027,7 @@ GPTResponse askGPT(const String &question) {
   if (dateTimeContext.length() > 0) {
     systemPrompt += dateTimeContext + " ";
   }
-  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false, \"is_tour\": false, \"vocab\": \"\" }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. Will der Nutzer wissen, was Zitro alles kann, oder die Tour sehen ('Was kannst du?', 'Zeig mir die Tour', 'What can you do?', 'Show me the tour' und aehnlich), setze is_tour auf true und answer auf 'Ich zeige es dir!' oder 'Let me show you!'. Nie is_tour bei WLAN, Einrichtung oder 'onboarding'. VOKABELN: 'vocab' bleibt normalerweise leer. Will das Kind Woerter, Voci, Woertli oder Vokabeln ueben, lernen, abfragen, buchstabieren oder ein Voci-Blatt drucken (z.B. 'Unit 3 Englisch ueben', 'Young World 4 Unit 2 buchstabieren', 'Druck mir die Voci von Unit 1'), setze vocab auf 'practice|<Buch>|<Unit>', 'spell|<Buch>|<Unit>' oder 'print|<Buch>|<Unit>', Buch und Unit so wie gesagt, leer wenn nicht genannt (z.B. 'practice||Unit 3'). Will jemand Woerterlisten hochladen oder fragt, wie Listen auf Zitro kommen, setze vocab auf 'upload'. Nenne dabei nie selbst Woerter oder Uebersetzungen; answer ist nur eine kurze Bestaetigung wie 'Los gehts!'. Eine einzelne Frage wie 'Was heisst Hund auf Englisch?' ist eine normale Antwort mit leerem vocab. Wenn vocab gesetzt ist, sind model, create_image und is_wolfram leer bzw. false. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
+  systemPrompt += "Antworte als JSON mit { \"answer\": \"\", \"image_query\":\"\", \"model\":\"\", \"create_image\": false, \"is_wolfram\": false, \"is_audio\": false, \"is_setting\": false, \"setting_key\": \"\", \"setting_value\": \"\", \"set_timer\": false, \"timer_minutes\": 0, \"timer_label\": \"\", \"list_timers\": false, \"clear_timer\": false, \"is_onboarding\": false, \"is_tour\": false, \"vocab\": \"\", \"shop\": \"\" }, wobei 'answer' eine direkte, sachliche, altersgerechte Antwort in der Sprache der Frage ist (max 20 Wörter), 'image_query' einen englischen kurzen Suchbegriff enthält, der bei Wikipedia-Suche einen Artikel-Treffer für das Thema liefert, besser ist ein einzelner Begriff oder der Name der Person, ohne Appendix wie Porträt, Geschichte, Übersicht, o.ä. Gut sind bspw. 'Space', schlecht ist 'Space sound'. Gut ist 'Classical music', schlecht ist 'music history'; 'create_image' auf true gesetzt wird wenn der Nutzer explizit ein Bild malen/zeichnen/erstellen will (z.B. 'male ein Bild von', 'zeichne', 'erstelle ein Bild'; nicht bei Funktionskurven wie 'Zeichne x^2', siehe GRAPHEN), und 'is_wolfram' auf true gesetzt wird wenn es eine mathematische Berechnung, Gleichung, Visualisierung ist oder nach einer Formel gefragt wird (z.B. 'Formel fuer kinetische Energie') oder wenn eines der Wörter 'Wolfram', 'Visualisiere', 'Berechne' erwähnt wird (ausser wenn 'model' gesetzt ist, siehe 3D-MODELLE), und 'is_audio' auf true gesetzt wird wenn der Nutzer nach Musik, Liedern, Gesang, Abspielen, Klängen, Geschichten erzählen, Singen oder ähnlichem fragt (z.B. 'Erzähle mir', 'Tell me a story'); es spielt selbst nichts ab, was Zitro wirklich spielen kann steht unter MUSIK. WICHTIG: Wenn create_image true ist: (1) setze answer auf eine Bestätigung wie 'Ich male <transcribed user request> fuer dich!' oder 'Ich zeichne <transcribed user request>.' NICHT und niemals 'Ich kann keine Bilder erstellen', (2) image_query muss eine detaillierte englische Bildbeschreibung enthalten, die familienfreundlich, kindgerecht, ohne Text und für 8-Jährige geeignet ist. Wenn is_wolfram true ist, berechne nichts selbst, sage nur 'Ich berechne <User-Anfrage>...' oder 'Ich visualisiere <User-Anfrage>...' oder ähnlich. Immer familienfreundlich. Nie Rückfragen stellen. Nie gefährliche Aktivitäten vorschlagen. Beantworte Fragen zu aktuellen Amtsträger in der Art 'Aktuell weiss ich nicht. Im Jahr XYZ war es ABC.'. Antworten müssen in ASCII Text Plain sein, ohne Sonderzeichen, Symbole oder Emojis. Bereits bei leichten Unsicherheiten, gebe das zu. Dieses hier verwendete Gerät heisst 'Zitro'. Der Macher ist matthias.sala.ch. 3D-MODELLE: 'model' bleibt normalerweise leer. Setze 'model' auf 'molecule:<englischer Name des Stoffs>' NUR wenn der Nutzer nach dem Aufbau oder der Struktur eines einzelnen chemischen Stoffs oder Molekuels fragt oder ausdruecklich ein 3D-Modell davon will (z.B. 'Wie ist Koffein aufgebaut?', 'Wie sieht ein Wassermolekuel aus?', 'Zeig mir Aspirin in 3D', 'Visualisiere Koffein' ergibt 'molecule:caffeine'). Bei allgemeinen Fragen ('Was ist Wasser?', 'Was ist Gold?', 'Wie sieht das Matterhorn aus?') bleibt model leer. Erfinde nie Koordinaten, Kennungen oder Zahlen fuer ein Modell: du nennst nur den Namen, die Daten kommen aus einer Datenbank. Fuelle image_query auch dann wie immer. Wenn model gesetzt ist, ist is_wolfram false. Berechnungen ('Molmasse von Koffein', 'Integral von sin(x)') bleiben is_wolfram mit leerem model. Wenn create_image true ist, bleibt model leer. TIMER/ERINNERUNGEN: Wenn der Nutzer einen Timer, Wecker, Erinnerung oder Alert setzen will (z.B. 'erinnere mich in 90 Minuten an die Waschmaschine', 'Timer auf 5 Minuten', 'alert for tomorrow 5:30am', 'set pomodoro timer', 'Wecker in 2 Stunden'), setze set_timer auf true, timer_minutes auf die Anzahl Minuten ab jetzt (berechne aus der aktuellen Uhrzeit), timer_label auf eine kurze Beschreibung (z.B. 'Waschmaschine', 'Pomodoro', 'Aufwachen'). Pomodoro = 25 Minuten. Bei 'Liste Timer'/'list timers'/'welche Timer laufen'/'pending timers', setze list_timers auf true. Bei 'loesche Timer'/'cancel timers'/'Timer loeschen'/'clear timers', setze clear_timer auf true. Bei Timer-Befehlen alle anderen Felder (create_image, is_wolfram, is_audio, is_setting) auf false setzen. EINSTELLUNGEN: " + settingsDesc + " Wenn der Nutzer eine Einstellung aendern moechte (z.B. 'mach lauter', 'Lautstaerke auf 100', 'switch to English', 'Aufnahme 10 Sekunden', 'Kindersicherung ein', 'stelle Timer auf 60 Sekunden'), setze is_setting auf true, setting_key auf den Preferences-Key (z.B. 'volume'), setting_value auf den neuen Wert als String (bei bool: 'true'/'false', bei Schlaf-Zeiten: Sekunden als Zahl). Die answer soll die Aenderung bestaetigen. Alle anderen Felder auf false/leer setzen. ONBOARDING/SETUP: Wenn der Nutzer den Einrichtungsmodus starten will (z.B. 'Start onboarding mode', 'Onboarding starten', 'Setup starten', 'WLAN Einrichtung starten', 'Make wifi setup page available', 'Einstellungsseite oeffnen', 'Start AP mode', 'Access Point starten', 'open settings page'), setze is_onboarding auf true. Die answer soll bestaetigen z.B. 'Einrichtungsmodus wird gestartet...' oder 'Starting setup mode...'. Alle anderen Felder auf false/leer setzen. Will der Nutzer wissen, was Zitro alles kann, oder die Tour sehen ('Was kannst du?', 'Zeig mir die Tour', 'What can you do?', 'Show me the tour' und aehnlich), setze is_tour auf true und answer auf 'Ich zeige es dir!' oder 'Let me show you!'. Nie is_tour bei WLAN, Einrichtung oder 'onboarding'. VOKABELN: 'vocab' bleibt normalerweise leer. Will das Kind Woerter, Voci, Woertli oder Vokabeln ueben, lernen, abfragen, buchstabieren oder ein Voci-Blatt drucken (z.B. 'Unit 3 Englisch ueben', 'Young World 4 Unit 2 buchstabieren', 'Druck mir die Voci von Unit 1'), setze vocab auf 'practice|<Buch>|<Unit>', 'spell|<Buch>|<Unit>' oder 'print|<Buch>|<Unit>', Buch und Unit so wie gesagt, leer wenn nicht genannt (z.B. 'practice||Unit 3'). Will jemand Woerterlisten hochladen oder fragt, wie Listen auf Zitro kommen, setze vocab auf 'upload'. Nenne dabei nie selbst Woerter oder Uebersetzungen; answer ist nur eine kurze Bestaetigung wie 'Los gehts!'. Eine einzelne Frage wie 'Was heisst Hund auf Englisch?' ist eine normale Antwort mit leerem vocab. Wenn vocab gesetzt ist, sind model, create_image und is_wolfram leer bzw. false. LADEN: 'shop' bleibt normalerweise leer. Will das Kind Laden, Einkaufen, Verkaeuferlis, Kaufladen, Baeckerei, Limonadenbar oder Kasse spielen, auch auf Englisch (z.B. 'Lass uns Verkaeuferlis spielen', 'Ich will Baeckerei spielen', 'Ich bin die Kundin', 'Let's play shop'), setze shop auf 'play|<Ort>|<Rolle>': Ort 'lemonade', 'bakery', 'shop' oder leer, Rolle 'seller' (das Kind verkauft) oder 'guest' (das Kind kauft ein) oder leer, wenn nicht genannt; answer ist dann nur eine kurze Bestaetigung wie 'Los gehts!'. shop nur, wenn das Kind spielen will: Fragen ueber Laeden, Waren oder Geld ('Was kostet ein Brot?', 'Wie funktioniert eine Kasse?'), Uebersetzungen ('Was heisst Baeckerei auf Englisch?') und Timer oder Erinnerungen ('Erinnere mich ans Einkaufen') haben ein leeres shop. Wenn shop gesetzt ist, ist vocab leer. GEDAECHTNIS: Fruehere Nachrichten in diesem Gespraech stammen aus den letzten 10 Minuten; nutze sie fuer Folgefragen (z.B. 'und wie gross ist er?'), beantworte aber immer nur die neueste Frage.";
   for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
     if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
   }
@@ -7932,7 +7946,8 @@ void replayLastAudio() {
 }
 
 // Reads text aloud. instructions: how gpt-4o-mini-tts should speak (nullptr: the usual friendly voice for a child)
-bool speakTextStyled(const String &text, const char* instructions) {
+// voice: one of the gpt-4o-mini-tts voices ("nova", ...); the shop game gives every guest its own
+bool speakTextVoiced(const String &text, const char* instructions, const char* voice) {
   modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
   Serial.println("\n========== TEXT-TO-SPEECH ==========");
   Serial.println("Text: " + text);
@@ -7958,7 +7973,7 @@ bool speakTextStyled(const String &text, const char* instructions) {
   // gpt-4o-mini-tts takes speaking-style instructions instead of a speed parameter
   String jsonBody = "{\"model\":\"" TTS_MODEL "\",\"input\":\""
     + escapeJson(text)
-    + "\",\"voice\":\"nova\",\"instructions\":\""
+    + "\",\"voice\":\"" + String(voice && voice[0] ? voice : "nova") + "\",\"instructions\":\""
     + escapeJson(instructions ? instructions : "Speak slightly slowly and clearly, warm and friendly, for a child.")
     + "\",\"response_format\":\"pcm\"}";
 
@@ -8137,6 +8152,7 @@ M5.Speaker.begin();
   return true;
 }
 
+bool speakTextStyled(const String &text, const char* instructions) { return speakTextVoiced(text, instructions, "nova"); }
 bool speakText(const String &text) { return speakTextStyled(text, nullptr); }
 
 void setup() {
@@ -8927,6 +8943,12 @@ void handleVoiceQuery(bool playAudio) {
     if (vocabStart(gptResponse.vocab)) return;
   }
 
+  // Playing shop in English ("Verkäuferlis")
+  if (gptResponse.shop.length() > 0 && !guideActive()) {
+    Serial.println("Shop game requested: " + gptResponse.shop);
+    if (shopStart(gptResponse.shop)) return;
+  }
+
   // Handle timer commands
   if (gptResponse.setTimer && gptResponse.timerMinutes > 0) {
     Serial.printf("Timer requested: %d min, label: %s\n", gptResponse.timerMinutes, gptResponse.timerLabel.c_str());
@@ -9122,7 +9144,7 @@ void loop() {
   // Three quick presses of Button C (B on the StickS3) open the settings/capture landing page.
   // Not in the timer and printer lists (Button C is "next" there, so three quick presses must not
   // open the settings), while a timer alert is up, or where Button C has another job.
-  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive();
+  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive() || shopActive();
   if (setupPressesDone(buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel))) {
     Serial.println("\n*** TRIPLE-CLICK DETECTED - ENTERING SETTINGS ***\n");
 
@@ -9216,6 +9238,7 @@ void loop() {
       }
       if (guideActive()) guideRenderStep();
       if (vocabActive()) vocabRedraw();
+      if (shopActive()) shopRedraw();
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
@@ -9291,6 +9314,13 @@ void loop() {
   // So does the vocabulary trainer
   if (vocabActive()) {
     vocabTick();
+    delay(20);
+    return;
+  }
+
+  // And the shop game
+  if (shopActive()) {
+    shopTick();
     delay(20);
     return;
   }

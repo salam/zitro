@@ -109,6 +109,9 @@ $r = upload($A, fixture_apkg($temp . '/old.apkg', ['collection.anki21' => [['<b>
 check($r['status'] === 200 && ($r['json']['entries'] ?? null) === [['t' => 'green', 'b' => 'grün'], ['t' => 'red', 'b' => 'rot']] && $r['json']['book'] === 'Farben', 'an Anki package: ' . show($r['json']));
 file_put_contents($temp . '/huge.csv', str_repeat('a', 5242881));
 check(is_error(upload($A, $temp . '/huge.csv', 'huge.csv'), 413, 'too_big'), 'a file over 5 MB');
+file_put_contents($temp . '/short-rows.csv', str_repeat("a,b\n", 1300000));
+$r = upload($A, $temp . '/short-rows.csv', 'short-rows.csv');
+check(is_error($r, 400, 'too_many') && str_contains($r['json']['message'], 'mehr als 500'), 'almost 5 MB of short rows: too_many, read only up to row 502: ' . show($r['json'] ?? $r['status']));
 file_put_contents($temp . '/list.pdf', "%PDF-1.4\n");
 check(is_error(upload($A, $temp . '/list.pdf', 'list.pdf'), 400, 'unreadable'), 'a PDF');
 

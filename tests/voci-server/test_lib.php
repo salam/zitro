@@ -46,6 +46,23 @@ function parseApkg(string $path): array|string {
         return $e->errorCode;
     }
 }
+// The VociError's message for a file, or '' if it was read
+function message(string $name, string $bytes): string {
+    try {
+        voci_parse_file(fixture($name, $bytes), $name);
+        return '';
+    } catch (VociError $e) {
+        return $e->getMessage();
+    }
+}
+// A file read by parse_one.php in a PHP process with 32 MB of memory: its JSON line as an array, or what the
+// process printed instead (a fatal error when it ran out of memory)
+function parseApart(string $name, string $bytes): array|string {
+    $cmd = escapeshellarg(PHP_BINARY) . ' -d memory_limit=32M ' . escapeshellarg(__DIR__ . '/parse_one.php') . ' ' . escapeshellarg(fixture($name, $bytes)) . ' 2>&1';
+    $out = trim((string)shell_exec($cmd));
+    $r = json_decode($out, true);
+    return is_array($r) ? $r : substr($out, 0, 300);
+}
 
 // ---------- Delimited text ----------
 
@@ -232,6 +249,45 @@ $r = parse('big.csv', implode("\n", $rows));
 check($r === 'too_many', '501 rows are too many: ' . show($r));
 $r = parse('ok.csv', implode("\n", array_slice($rows, 0, 500)));
 check(is_array($r) && count($r['entries']) === 500, '500 rows are fine');
+
+// Reading stops after 500 filled rows and a header: the rest of a big file is never split up
+$gappy = ['English,Deutsch'];
+foreach (array_slice($rows, 0, 500) as $i => $row) {
+    $gappy[] = $row;
+    if ($i % 50 === 0) array_push($gappy, '', ',,', ' , ', "\t");
+}
+$r = parse('gappy.csv', implode("\n", $gappy) . "\n\n\n");
+check(is_array($r) && count($r['entries']) === 500 && $r['entries'][499] === ['t' => 'word500', 'b' => 'Wort500'], 'a header, 500 entries and blank rows between them are fine: ' . (is_array($r) ? count($r['entries']) : $r));
+$rows600 = [];
+for ($i = 1; $i <= 600; $i++) $rows600[] = "word$i,Wort$i";
+check(str_contains(message('600.csv', implode("\n", $rows600)), 'mehr als 500'), '600 rows: "mehr als 500": ' . message('600.csv', implode("\n", $rows600)));
+voci_lang('en');
+check(str_contains(message('600.csv', implode("\n", $rows600)), 'more than 500'), 'and "more than 500" in English: ' . message('600.csv', implode("\n", $rows600)));
+voci_lang('de');
+check(str_contains(message('big.csv', implode("\n", $rows)), '501 Einträge'), '501 rows still get their count: ' . message('big.csv', implode("\n", $rows)));
+$half = array_slice($rows, 0, 495);
+for ($i = 1; $i <= 10; $i++) $half[] = "only$i,";
+$r = parse('half.csv', implode("\n", $half));
+check($r === 'too_many', 'rows with one side filled count too: 495 pairs and 10 half rows are refused: ' . (is_array($r) ? count($r['entries']) : $r));
+$cards = [];
+for ($i = 1; $i <= 502; $i++) $cards[] = "word$i,Wort$i";
+check(str_contains(message('quizlet-502.txt', implode(';', $cards)), 'mehr als 500'), '502 Quizlet cards on one line: "mehr als 500"');
+$r = parse('quizlet-500.txt', implode(';', array_slice($cards, 0, 500)) . ';');
+check(is_array($r) && count($r['entries']) === 500, '500 Quizlet cards are fine: ' . (is_array($r) ? count($r['entries']) : $r));
+$r = parse('long-semi.csv', implode(';', array_map(fn($i) => "w$i", range(1, 1000))));
+check(pairs($r) === ['w1|w2'], 'a line of 1000 parts without commas is no Quizlet export and no list too long: ' . show(pairs($r)));
+
+// Hostile files of almost 5 MB, each in a process with 32 MB of memory
+$r = parseApart('short-rows.csv', str_repeat("a,b\n", 1300000));
+check(($r['code'] ?? null) === 'too_many' && str_contains($r['message'], 'mehr als 500'), '1.3 million short rows: too_many, not out of memory: ' . show($r));
+$r = parseApart('quizlet-huge.txt', str_repeat("a,b;", 1300000));
+check(($r['code'] ?? null) === 'too_many', '1.3 million Quizlet cards on one line: too_many: ' . show($r));
+$r = parseApart('semicolons.txt', str_repeat(";;;;\n", 1000000));
+check(($r['code'] ?? null) === 'no_entries', 'a million lines of ";;;;": no_entries: ' . show($r));
+$r = parseApart('blank-rows.csv', str_repeat(",\n", 2500000));
+check(($r['code'] ?? null) === 'no_entries', '2.5 million rows of ",": no_entries: ' . show($r));
+$r = parseApart('blank-lines.csv', str_repeat("\n", 2500000) . str_repeat(" \n", 1000000) . "dog,Hund\ncat,Katze\n");
+check(($r['entries'] ?? null) === 2, 'millions of blank lines before two pairs: ' . show($r));
 
 $long = str_repeat('a', 130);
 $umlauts = str_repeat('ä', 120);

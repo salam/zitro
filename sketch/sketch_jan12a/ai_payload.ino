@@ -146,6 +146,7 @@ bool parseAiAnswer(const String& content, GPTResponse& out) {
     out.isOnboarding = jsonFlag(doc["is_onboarding"]);
     out.isTour = jsonFlag(doc["is_tour"]);
     out.vocab = jsonText(doc["vocab"]);
+    out.shop = jsonText(doc["shop"]);
   } else {
     Serial.printf("AI JSON parse error: %s\n", err.c_str());
   }

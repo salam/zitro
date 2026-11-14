@@ -66,6 +66,7 @@ struct GPTResponse {
   bool isTour;  // User wants to see what Zitro can do: the guided tour
   String model;       // What to look up as a 3D model: "<kind>:<query>", or empty. Filled by name, not by position
   String vocab;       // Vocabulary trainer request: "upload" or "<practice|spell|print>|<book>|<unit>", or empty
+  String shop;        // Shop game request: "play|<place>|<role>", or empty
 };
 
 // Chat endpoint configuration for the selected provider

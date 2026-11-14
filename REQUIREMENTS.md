@@ -500,7 +500,7 @@ spike results: [docs/features/vocab.md](docs/features/vocab.md).
 - Quizzes on the display are wanted since 2026-11-13: the vocabulary trainer first, a shop role-play with the words
   ("Verkäuferlis") and quizzes on any topic later. This reverses "no quiz mode on the display" (2026-11-05).
 - Zitro ships no word lists. Parents upload their own to zitro.spot/voci, tied to the stick by a code shown as a QR
-  code. No account.
+  code. No account. (2026-11-14: this means school lists; the shop game brings its own 24 everyday goods.)
 
 ## What changes for existing behaviour
 
@@ -514,3 +514,26 @@ spike results: [docs/features/vocab.md](docs/features/vocab.md).
 - `eduHttpGetWithHeader()` sends one request header and accepts plain `http://` (for a test server).
 - New button tab `HINT_DONTKNOW` ("?").
 
+---
+
+# Requirements for the Shop Game ("Verkäuferlis")
+
+All requirements, the user guide part and the release note: [docs/features/shop.md](docs/features/shop.md).
+Screens drawn by the stick's own drawing code: `screenshots/shop/`.
+
+## Decisions
+
+- 2026-11-14, the user: a first-person scene at the counter (lemonade bar, bakery, till), as the guest or as the
+  seller, new guests keep coming and order. "ja loslegen" to building the game with its own drawn goods.
+- No chat model in the game: the stick hears the order itself and answers from fixed sentences, so nothing is made up
+  and answers come fast. Only speech-to-text and text-to-speech go out.
+- The child serves by voice, not with buttons (Claude's call while building; the user had seen "buttons" proposed).
+
+## What changes for existing behaviour
+
+- In the game, Button A answers, B opens the game's menu, C is "?" (like the vocabulary trainer). Holding B doesn't
+  reset WiFi and three presses of C don't open the settings there.
+- The answer JSON has a new field `shop`; the prompt has one more rule.
+- `speakTextVoiced()` takes the voice; `speakTextStyled()` and `speakText()` still use "nova".
+- The vocabulary trainer's recording loop moved to `record_speech.ino` (`recordSpeech()`), unchanged, with the screen
+  drawn by the caller.

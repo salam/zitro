@@ -165,6 +165,7 @@ The project includes deployment scripts for building and uploading firmware to y
 - When parental lock is enabled, responses are blocked between 20:00 and 06:00, but settings changes (like disabling the lock) still work.
 - Say "Start onboarding mode", "WLAN Einrichtung starten", "Open settings page", or similar to enter AP/setup mode by voice.
 - Say "Was kannst du?" or "Show me the tour" to start the guided tour.
+- Say "Lass uns Verkäuferlis spielen" or "Let's play shop" to play shop in English.
 
 ### Guided tour
 
@@ -208,6 +209,25 @@ or stop.
 
 **On paper.** "Voci-Blatt drucken" in the menu (or say "Druck mir die Voci von Unit 1") prints the unit as pages to fill
 in, then the same pages with the answers.
+
+### Playing shop in English
+
+**Start.** Say "Lass uns Verkäuferlis spielen", "Ich will Bäckerei spielen" or "Ich kaufe ein". The start screen shows
+the place and your side. The upper side button picks the place (lemonade bar, bakery, shop), the lower one the side
+(you sell or you shop). Press M5 to start. Five guests or shopping lists make a round; a heart for each one you got
+right the first time.
+
+**You sell.** A guest comes in and orders in English: "Can I have two lemonades and a cookie, please?" Press M5 and
+say what you hand over: "Two lemonades and a cookie". It lands on the counter. If it's not what the guest wanted, they
+tell you ("Just two lemonades, please.") and show the order in pictures. Didn't understand? Press the upper side button
+(?): the guest says it again slowly; press it again to see the order in pictures.
+
+**You shop.** The seller greets you. Your shopping list shows pictures ("3x" and an apple). Press M5 and order in
+English: "Three apples and a bottle of milk, please". If the seller understood something else, they ask back
+("Three apples and a piece of cheese?") and the list shows what was right. Answer the question: to "How many
+apples?" just say "Three". The upper side button (?) says the words for you, the second time the whole order.
+
+**Menu.** The lower side button: go on, swap sides, go to the next place, or stop.
 
 ### Timers and reminders
 

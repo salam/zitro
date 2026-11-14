@@ -1,5 +1,11 @@
 # Release Notes
 
+## Sat 14 Nov, 2026
+
+- **Play shop in English**: say "Lass uns Verkäuferlis spielen". Guests come to your lemonade bar, bakery or shop and order in English. Listen, serve them and see their faces light up.
+- **Swap sides**: be the customer with a shopping list in pictures and order everything yourself. The seller asks back if something got lost.
+- **Stuck?** Press "?" and the guest says it again slowly, or shows the order in pictures.
+
 ## Fri 13 Nov, 2026
 
 - **Practise your English words with Zitro**: upload your child's word lists on your phone with the QR code from the stick, then say "Unit 3 Englisch üben". Zitro asks, listens and says each word for you.

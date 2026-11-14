@@ -15,6 +15,7 @@ const VOCI_MAX_UNZIPPED = 67108864;   // Bytes of the collection inside an Anki 
 const VOCI_MAX_NOTES = 20000;         // Notes read from an Anki package before giving up
 const VOCI_MAX_CELLS = 100;           // Cells kept from one row or note; only the first two filled columns count
 const VOCI_MAX_HEADERS = 20;          // Lines of Anki headers read (Anki writes each of its 11 kinds once)
+const VOCI_SCORE_BYTES = 1000;        // Bytes of a cell looked at for German signals; a side has at most 120 characters
 const VOCI_NEW_DIRS_PER_DAY = 20;     // New sticks per IP hash and day
 const VOCI_WRITES_PER_HOUR = 120;     // Changes per stick and hour
 const VOCI_PARSES_PER_HOUR = 120;     // Files read (previews) per IP hash and hour: reading costs the server time
@@ -134,17 +135,18 @@ function voci_parse_file(string $path, string $filename): array {
     $size = @filesize($path);
     if ($size === false) voci_fail('no_file');
     if ($size > VOCI_MAX_UPLOAD) voci_fail('too_big');
-    $bytes = (string)file_get_contents($path);
-    if (str_starts_with($bytes, "PK\x03\x04")) {
+    $head = (string)file_get_contents($path, false, null, 0, 4);
+    if (str_starts_with($head, "PK\x03\x04")) {
         $table = voci_read_zip($path);
-    } elseif (str_starts_with($bytes, '%PDF')) {
+    } elseif (str_starts_with($head, '%PDF')) {
         voci_fail('unreadable', 'pdf');
-    } elseif (str_starts_with($bytes, "\xD0\xCF\x11\xE0")) {
+    } elseif (str_starts_with($head, "\xD0\xCF\x11\xE0")) {
         voci_fail('unreadable', 'spreadsheet');  // Old Excel (.xls)
     } else {
-        $text = voci_decode($bytes);
+        $text = voci_decode((string)file_get_contents($path));
         if (str_contains($text, "\0")) voci_fail('unreadable');
         $table = voci_read_text($text);
+        unset($text);  // The rows hold what is needed from here on
     }
     [$pairs, $swapped, $warnings] = voci_table_pairs($table);
     [$entries, $more] = voci_validate_entries($pairs, $table['unit']);
@@ -354,11 +356,16 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
 // memory. A row with one side empty counts too.
 function voci_add_row(array &$rows, array $cells, int $line, bool $quoted): void {
     foreach ($cells as $cell) {
-        if (trim($cell) === '') continue;
+        if (voci_blank($cell)) continue;
         if (count($rows) > VOCI_MAX_ENTRIES) voci_fail('too_many', 'too_many_more');
         $rows[] = ['cells' => $cells, 'line' => $line, 'quoted' => $quoted];
         return;
     }
+}
+
+// Whether trim() would leave nothing, without copying the string
+function voci_blank(string $s): bool {
+    return strspn($s, " \t\n\r\0\x0B") === strlen($s);
 }
 
 // An Anki package (.apkg, .colpkg): the notes' fields as a table. Spreadsheets are zips too and get their
@@ -482,8 +489,8 @@ function voci_table_pairs(array $table): array {
     [$a, $b] = $columns;
 
     $swapped = null;
-    $la = VOCI_HEADER_LABELS[mb_strtolower($rows[0]['cells'][$a] ?? '')] ?? null;
-    $lb = VOCI_HEADER_LABELS[mb_strtolower($rows[0]['cells'][$b] ?? '')] ?? null;
+    $la = voci_label($rows[0]['cells'][$a] ?? '');
+    $lb = voci_label($rows[0]['cells'][$b] ?? '');
     if ($la !== null && $lb !== null && $la !== $lb) {
         array_shift($rows);
         if ($la === 'de' || $lb === 'en') $swapped = true;
@@ -526,10 +533,17 @@ function voci_table_pairs(array $table): array {
     return [$pairs, $swapped, $warnings];
 }
 
+// What a header label says about its column, or null. Labels have at most 11 bytes, so a longer cell (with
+// room for letters that get shorter in lower case) isn't lowered just to look it up.
+function voci_label(string $cell): ?string {
+    return strlen($cell) <= 40 ? (VOCI_HEADER_LABELS[mb_strtolower($cell)] ?? null) : null;
+}
+
 // How German a cell looks: umlauts and ß +2, a capitalised single word +1, a German function word +1, an
-// English function word -1.
+// English function word -1. Only the first 1000 bytes count, so a huge cell isn't split into millions of words.
 function voci_german_score(string $s): int {
     if ($s === '') return 0;
+    if (strlen($s) > VOCI_SCORE_BYTES) $s = mb_strcut($s, 0, VOCI_SCORE_BYTES, 'UTF-8');
     $score = 0;
     if (preg_match('/[äöüßÄÖÜ]/u', $s)) $score += 2;
     if (!str_contains($s, ' ') && preg_match('/^\p{Lu}/u', $s)) $score += 1;

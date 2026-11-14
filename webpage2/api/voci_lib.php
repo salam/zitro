@@ -13,6 +13,7 @@ const VOCI_MAX_LISTS = 100;           // Lists per stick
 const VOCI_MAX_BYTES = 1048576;       // Bytes of list files per stick
 const VOCI_MAX_UNZIPPED = 67108864;   // Bytes of the collection inside an Anki package
 const VOCI_MAX_NOTES = 20000;         // Notes read from an Anki package before giving up
+const VOCI_MAX_FIELD = 4096;          // Bytes read from one Anki field: a word with its markup fits many times
 const VOCI_MAX_CELLS = 100;           // Cells kept from one row or note; only the first two filled columns count
 const VOCI_MAX_HEADERS = 20;          // Lines of Anki headers read (Anki writes each of its 11 kinds once)
 const VOCI_SCORE_BYTES = 1000;        // Bytes of a cell looked at for German signals; a side has at most 120 characters
@@ -434,12 +435,18 @@ function voci_read_anki_notes(string $file): array {
         while (($column = $columns->fetchArray(SQLITE3_ASSOC)) !== false) {
             if ((int)($column['hidden'] ?? 0) !== 0) voci_fail('unreadable', 'anki_broken');
         }
-        $result = $db->query('SELECT flds FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
+        // Two fields' worth of each note: the first two filled fields are what counts
+        $result = $db->query('SELECT substr(flds, 1, ' . 2 * VOCI_MAX_FIELD . ') FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
         while (($note = $result->fetchArray(SQLITE3_NUM)) !== false) {
             $read++;
-            // The first 100 fields; explode leaves the rest in one more, which is dropped
-            $cells = explode("\x1f", (string)$note[0], VOCI_MAX_CELLS + 1);
+            // At most 100 fields (explode leaves the rest in one more, which is dropped) of at most 4 KB each.
+            // A longer field is cut, so like any side over 120 characters it is left out with a warning.
+            $cells = explode("\x1f", mb_strcut((string)$note[0], 0, 2 * VOCI_MAX_FIELD, 'UTF-8'), VOCI_MAX_CELLS + 1);
             if (count($cells) > VOCI_MAX_CELLS) array_pop($cells);
+            foreach ($cells as &$cell) {
+                if (strlen($cell) > VOCI_MAX_FIELD) $cell = mb_strcut($cell, 0, VOCI_MAX_FIELD, 'UTF-8');
+            }
+            unset($cell);
             voci_add_row($rows, $cells, $read, true);  // A card's number counts the empty notes too
         }
         $db->close();

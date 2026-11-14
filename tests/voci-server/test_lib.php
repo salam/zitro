@@ -360,6 +360,17 @@ check(str_contains($m, 'mehr als 500'), '502 notes: "mehr als 500": ' . $m);
 $r = parseApkg(apkg('blank-first.apkg', ['collection.anki2' => [['', ''], ['dog', 'Hund'], ['cat', '']]]));
 check(pairs($r) === ['dog|Hund'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Karte 3'), 'card numbers count blank notes: ' . show($r));
 
+// One long Anki field: only its first 4 KB are read, and like any side over 120 characters it is left out
+$path = apkg('long-field.apkg', ['collection.anki2' => [['dog', str_repeat('Hund ', 4000000)], ['cat', 'Katze']]]);
+$r = parsePathApart($path, '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), 'an apkg field of 20 MB: left out, the other card read within 32 MB and 2 s: ' . cost($r));
+$r = parseApkg(apkg('long-field-100k.apkg', ['collection.anki2' => [['dog', str_repeat('Hund ', 20000)], ['cat', 'Katze']]]));
+check(pairs($r) === ['cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], '120') && str_contains($r['warnings'][0], 'Karte 1'), 'a 100 KB field is left out as too long: ' . show($r['warnings'] ?? $r));
+$r = parseApkg(apkg('styled.apkg', ['collection.anki2' => [['<span style="' . str_repeat('x', 3000) . '">dog</span>', 'Hund']]]));
+check(pairs($r) === ['dog|Hund'], 'a word in 3 KB of markup is still read: ' . show(pairs($r)));
+$r = parseApkg(apkg('long-first.apkg', ['collection.anki2' => [[str_repeat('a', 6000), 'Hund'], ['cat', 'Katze']]]));
+check(pairs($r) === ['cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], '120'), 'the field after a 6 KB field is still read, so the card is too long, not one-sided: ' . show($r['warnings'] ?? $r));
+
 // The most the limits still let through: 500 rows of 100 cells of 100 characters, about 5 MB
 $wide = [];
 for ($row = 1; $row <= 500; $row++) {

@@ -17,7 +17,12 @@ bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, i
     int pos = 0, lastSecond = -1, calibrated = 0, quietMs = 0;
     long noise = 0;
     bool speech = false;
-    M5.Mic.begin();
+    if (!micStart()) {
+      micStop();
+      free(buffer);
+      buffer = nullptr;
+      return false;
+    }
     while (pos + chunk <= total) {
       const int second = pos / rate;
       if (second != lastSecond) {
@@ -28,7 +33,7 @@ bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, i
       while (M5.Mic.isRecording()) {
         M5.update();
         if (M5.BtnA.wasPressed()) {
-          M5.Mic.end();
+          micStop();
           const unsigned long tap = millis();
           bool second = false;
           while (millis() - tap < MULTI_TAP_WINDOW) {
@@ -77,7 +82,7 @@ bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, i
       if (speech && quietMs >= 1200 && elapsedMs >= 1500) break;
     }
     if (!restart) {
-      M5.Mic.end();
+      micStop();
       samples = pos;
     }
   } while (restart);

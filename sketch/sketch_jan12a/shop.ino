@@ -593,8 +593,8 @@ void shopTick() {
   shopWasAsleep = !awake;
 
   const bool clickedA = M5.BtnA.wasClicked();
-  const bool clickedB = M5.BtnB.wasClicked();
-  const bool clickedC = M5.BtnPWR.wasClicked();
+  const bool clickedB = buttonBClicked();
+  const bool clickedC = buttonCClicked();
   if (!guideAcceptsPress(awake, inWakeCooldown())) {
     if (clickedA || clickedB || clickedC) {
       shopLastPress = now;

@@ -172,9 +172,8 @@ unsigned long DISPLAY_SLEEP_TIMEOUT = 30000;      // 30 seconds - display off
 unsigned long LIGHT_SLEEP_TIMEOUT = 90000;        // 90 seconds - enter light sleep (WiFi off, CPU paused)
 unsigned long DEEP_SLEEP_TIMEOUT = 180000;        // 180 seconds (3 min) - enter deep sleep
 
-// GPIO pins for M5StickC Plus 2 buttons
-#define BUTTON_A_GPIO GPIO_NUM_37
-#define BUTTON_B_GPIO GPIO_NUM_39
+// Which stick this build is for, and how its buttons, microphone and speaker are used
+#include "board.h"
 
 // Preferences keys for deep sleep state persistence
 #define PREFS_NAMESPACE "powerstate"
@@ -266,10 +265,6 @@ int printMenuStep = PRINT_STEP_PRINTER;
 #define PRINT_COMPOSE_FAILED      1
 #define PRINT_COMPOSE_UNAVAILABLE 2  // could not build the page: send the image file instead
 
-// Triple-click detection for Button C to enter settings
-unsigned long btnCLastClickTime = 0;
-int btnCClickCount = 0;
-const unsigned long TRIPLE_CLICK_TIMEOUT = 500;  // 500ms window for triple-click
 
 // Timer/Reminder system
 #define MAX_TIMERS 5
@@ -2518,10 +2513,10 @@ void clearSavedState() {
 void configureGPIOWakeup() {
   Serial.println("Configuring GPIO wake-up sources...");
 
-  // Configure Button A (GPIO37) as wake source - wake on LOW (button pressed)
+  // Configure Button A as wake source - wake on LOW (button pressed)
   esp_sleep_enable_ext0_wakeup(BUTTON_A_GPIO, 0);
 
-  Serial.println("GPIO wake-up configured for Button A (GPIO37)");
+  Serial.printf("GPIO wake-up configured for Button A (GPIO%d)\n", (int)BUTTON_A_GPIO);
 }
 
 // Enter light sleep mode
@@ -2637,7 +2632,10 @@ void enterDeepSleep() {
   // otherwise the board can drop its own power and Button A can no longer wake it.
   // GPIO4 is an RTC pad, so gpio_hold_en alone keeps it through deep sleep. (The global
   // gpio_deep_sleep_hold_en() would also latch buzzer and LCD lines.)
+  // The StickS3's power chip keeps it on by itself, and its GPIO4 is the Hat2-Bus boot pin.
+#if !ZITRO_STICKS3
   gpio_hold_en(GPIO_NUM_4);
+#endif
 
   Serial.println("Entering deep sleep mode...");
   Serial.println("Will wake on Button A press (device will reboot)");
@@ -2907,6 +2905,10 @@ void loadSleepTimeouts() {
   LIGHT_SLEEP_TIMEOUT = sp.getLong("lightSleep", 90000);
   DEEP_SLEEP_TIMEOUT = sp.getLong("deepSleep", 180000);
   sp.end();
+#ifdef ZITRO_MIC_DIAG
+  // Development build: sleep would take the stick off USB in the middle of a test
+  LIGHT_SLEEP_TIMEOUT = DEEP_SLEEP_TIMEOUT = 3600000;
+#endif
   if (LIGHT_SLEEP_TIMEOUT < DISPLAY_SLEEP_TIMEOUT) LIGHT_SLEEP_TIMEOUT = DISPLAY_SLEEP_TIMEOUT;
   if (DEEP_SLEEP_TIMEOUT < LIGHT_SLEEP_TIMEOUT) DEEP_SLEEP_TIMEOUT = LIGHT_SLEEP_TIMEOUT;
   Serial.printf("Sleep timeouts: display %lus, light %lus, deep %lus\n",
@@ -2918,8 +2920,12 @@ void loadSleepTimeouts() {
 // So the gyro runs only while an image or equation is on screen.
 void setGyroEnabled(bool on) {
   if (gyroPowerState == (on ? 1 : 0)) return;
-  // PWR_MGMT_2 (0x6C): bits 2..0 put the gyro X/Y/Z axes in standby, accelerometer stays on
+#if !ZITRO_STICKS3
+  // MPU6886 PWR_MGMT_2 (0x6C): bits 2..0 put the gyro X/Y/Z axes in standby, accelerometer stays on.
+  // The StickS3's BMI270 keeps its gyro on: 0x6C is its pad drive strength there, and
+  // M5.Imu.sleep() still switches the whole sensor off for sleep.
   M5.In_I2C.writeRegister8(0x68, 0x6C, on ? 0x00 : 0x07, 400000);
+#endif
   gyroPowerState = on ? 1 : 0;
   if (on) gyroEnabledAt = millis();
   Serial.printf("Gyroscope %s\n", on ? "on (image view)" : "off");
@@ -3024,7 +3030,11 @@ bool recordAudio(bool &cancelled) {
     }
 
     Serial.println("Starting mic...");
-    M5.Mic.begin();
+    if (!micStart()) {
+      Serial.println("ERROR: Microphone didn't start");
+      micStop();
+      return false;
+    }
 
     int samplesPerSecond = activeSampleRate;
     for (int sec = 0; sec < activeRecordSeconds; sec++) {
@@ -3036,7 +3046,7 @@ bool recordAudio(bool &cancelled) {
 
         // Button A during recording: one tap restarts, a second quick tap cancels
         if (M5.BtnA.wasPressed()) {
-          M5.Mic.end();
+          micStop();
           drawScreen("Restarting...");
           unsigned long tapTime = millis();
           bool secondTap = false;
@@ -3070,7 +3080,7 @@ bool recordAudio(bool &cancelled) {
 
     // Only complete recording if we didn't restart
     if (!restartRecording) {
-      M5.Mic.end();
+      micStop();
       Serial.println("Recording complete");
 
       int16_t minVal = 32767, maxVal = -32768;
@@ -4930,7 +4940,7 @@ String applySettingChange(const String& key, const String& value) {
 
     // Hot-apply runtime globals
     if (key == "volume") {
-      M5.Speaker.setVolume(intVal);
+      M5.Speaker.setVolume(speakerVolume(intVal));
     } else if (key == "sampleRate") {
       activeSampleRate = intVal;
       activeRecordSamples = activeSampleRate * activeRecordSeconds;
@@ -8157,9 +8167,11 @@ void setup() {
   M5.begin(cfg);
   // Release the power latch held through deep sleep. Drive it high first so power stays on
   // when the hold lets go (writes are ignored while held).
+#if !ZITRO_STICKS3
   pinMode(GPIO_NUM_4, OUTPUT);
   digitalWrite(GPIO_NUM_4, HIGH);
   gpio_hold_dis(GPIO_NUM_4);
+#endif
   M5.Display.setRotation(getLandscapeRotation());
 
   // Initialize custom fonts with European language support
@@ -8171,7 +8183,7 @@ void setup() {
   {
     Preferences volumePrefs;
     volumePrefs.begin("settings", true);
-    M5.Speaker.setVolume(volumePrefs.getInt("volume", 210));
+    M5.Speaker.setVolume(speakerVolume(volumePrefs.getInt("volume", 210)));
     volumePrefs.end();
   }
 
@@ -8469,7 +8481,7 @@ void playAlarmSound() {
   volPrefs.begin("settings", true);
   int vol = volPrefs.getInt("volume", 210);
   volPrefs.end();
-  M5.Speaker.setVolume(vol);
+  M5.Speaker.setVolume(speakerVolume(vol));
   delay(50);  // Allow speaker to settle
 
   // Play alert sound twice for emphasis
@@ -9129,49 +9141,26 @@ void loop() {
   handleSerialCommands();
   gifAnimTick();
 
-  // Triple-click detection for Button C to enter settings/capture landing page
-  // Track presses (not clicks) to detect pattern without interfering with other handlers
-  static bool btnCWasPressed = false;
-  bool btnCIsPressed = M5.BtnPWR.isPressed();
-
-  // Detect button press edge (not pressed -> pressed).
-  // Not counted in the timer and printer lists (Button C is "next" there, so three quick
-  // presses must not open the settings) or while a timer alert is up.
+  // Three quick presses of Button C (B on the StickS3) open the settings/capture landing page.
+  // Not in the timer and printer lists (Button C is "next" there, so three quick presses must not
+  // open the settings), while a timer alert is up, or where Button C has another job.
   bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive() || shopActive();
-  if (btnCIsPressed && !btnCWasPressed && buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel)) {
-    unsigned long now = millis();
+  if (setupPressesDone(buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel))) {
+    Serial.println("\n*** TRIPLE-CLICK DETECTED - ENTERING SETTINGS ***\n");
 
-    // Reset count if too much time has passed since last press
-    if (now - btnCLastClickTime > TRIPLE_CLICK_TIMEOUT) {
-      btnCClickCount = 0;
+    // Display message
+    drawSetupScreen(true);
+    delay(2000);
+
+    // Stop any ongoing operations if not in AP mode
+    if (!apMode) {
+      WiFi.disconnect();
     }
 
-    btnCClickCount++;
-    btnCLastClickTime = now;
-
-    Serial.printf("Button C press detected (count: %d)\n", btnCClickCount);
-
-    // Check for triple-press
-    if (btnCClickCount >= 3) {
-      Serial.println("\n*** TRIPLE-CLICK DETECTED - ENTERING SETTINGS ***\n");
-      btnCClickCount = 0;  // Reset counter
-
-      // Display message
-      drawSetupScreen(true);
-      delay(2000);
-
-      // Stop any ongoing operations if not in AP mode
-      if (!apMode) {
-        WiFi.disconnect();
-      }
-
-      // Start settings/captive portal
-      startAPMode();
-      return;
-    }
+    // Start settings/captive portal
+    startAPMode();
+    return;
   }
-
-  btnCWasPressed = btnCIsPressed;
 
   // Handle AP mode web server
   if (apMode) {
@@ -9268,14 +9257,14 @@ void loop() {
 
   // Handle timer list mode - navigate/clear timers (C: next, B: delete, like the printer list)
   if (inTimerListMode) {
-    if (M5.BtnPWR.wasClicked()) {
+    if (buttonCClicked()) {
       // Next timer
       timerListIndex++;
       if (timerListIndex >= timerCount) timerListIndex = 0;
       drawTimerListEntry(timerListIndex);
       resetToActiveState();
     }
-    if (M5.BtnB.wasClicked()) {
+    if (buttonBClicked()) {
       // Clear currently displayed timer
       int realIdx = getTimerRealIndex(timerListIndex);
       if (realIdx >= 0) {
@@ -9567,7 +9556,7 @@ void loop() {
   if (inPrinterSelectionMode) {
     // Wake guard: a press on a dark screen (or right after waking) only brings the list back
     if (displaySleeping || currentPowerState != POWER_ACTIVE || wakeFromLightSleep || inWakeCooldown()) {
-      if (M5.BtnA.wasClicked() || M5.BtnB.wasClicked() || M5.BtnPWR.wasClicked()) {
+      if (M5.BtnA.wasClicked() || M5.BtnB.wasClicked() || buttonCClicked()) {
         resetToActiveState();
         displayPrinterSelection();
       }
@@ -9584,7 +9573,7 @@ void loop() {
     }
 
     // Button C: next printer, page size or zoom value
-    if (M5.BtnPWR.wasClicked()) {
+    if (buttonCClicked()) {
       printMenuNext();
       Serial.printf("Print menu step %d: next (printer %d)\n", printMenuStep, selectedPrinterIndex);
       displayPrinterSelection();
@@ -9625,10 +9614,10 @@ void loop() {
     }
 
     // Button B: one step back, or leave printing from the printer list
-    if (M5.BtnB.wasClicked() && printMenuBack()) {
+    if (buttonBClicked() && printMenuBack()) {
       displayPrinterSelection();
       resetToActiveState();
-    } else if (M5.BtnB.wasClicked()) {
+    } else if (buttonBClicked()) {
       inPrinterSelectionMode = false;
       Serial.println("Printer selection cancelled");
 
@@ -9686,7 +9675,7 @@ void loop() {
     }
   }
   // Button B short press: scroll up when showing an image
-  else if (M5.BtnB.wasClicked()) {
+  else if (buttonBClicked()) {
     Serial.printf("Button B single-click detected! displaySleeping=%d, mode=%d, hasImage=%d\n",
                   displaySleeping, currentDisplayMode, hasImage);
     if (!displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
@@ -9702,13 +9691,13 @@ void loop() {
     }
   }
   // Button B double click: comes a second after the two clicks, which each did their own job above
-  if (M5.BtnB.wasDoubleClicked() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
+  if (buttonBDoubleClicked() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel) {
     modelButtonBDouble();
     resetToActiveState();
   }
 
   // Button C (PWR button) short press: scroll down when showing an image
-  if (M5.BtnPWR.wasClicked()) {
+  if (buttonCClicked()) {
     if (!displaySleeping && hasModel && response.length() > 0 &&
         (currentDisplayMode == SHOW_MODEL || currentDisplayMode == SHOW_TEXT)) {
       if (currentDisplayMode == SHOW_MODEL) {
@@ -9744,7 +9733,7 @@ void loop() {
     }
   }
 
-  if (M5.BtnPWR.wasHold() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel &&
+  if (buttonCHeld() && !displaySleeping && currentDisplayMode == SHOW_MODEL && hasModel &&
       response.length() > 0 && modelButtonCHold()) {
     resetToActiveState();
   }

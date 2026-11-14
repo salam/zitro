@@ -7,6 +7,9 @@ set -e  # Exit on error
 
 SKETCH_PATH="sketch/sketch_jan12a/sketch_jan12a.ino"
 FQBN="esp32:esp32:m5stack_stickc_plus2"
+# The core has no StickS3 entry: ESP32-S3 with its 8 MB flash, 8 MB octal PSRAM, Serial over its own USB,
+# and the Plus2's partition layout
+FQBN_STICKS3="esp32:esp32:esp32s3:PSRAM=opi,FlashSize=8M,FlashMode=qio,PartitionScheme=default_8MB,CDCOnBoot=cdc,USBMode=hwcdc"
 
 echo "======================================"
 echo "   AI Stick - Sketch Verification"
@@ -38,19 +41,36 @@ if ! arduino-cli core list | grep -q "esp32:esp32"; then
 fi
 
 # Verify the sketch
-echo "Compiling sketch..."
-echo "Board: $FQBN"
 echo "Sketch: $SKETCH_PATH"
 echo ""
 
-if arduino-cli compile --fqbn "$FQBN" --build-property "compiler.c.elf.extra_flags=-Wl,--allow-multiple-definition" "$SKETCH_PATH"; then
+# Both sticks, each in its own build folder so switching boards doesn't rebuild everything
+failed=0
+for BOARD in "$FQBN" "$FQBN_STICKS3"; do
+    NAME=$(echo "$BOARD" | cut -d: -f3)
+    echo "Compiling for $NAME..."
+    echo "Board: $BOARD"
+    # The StickS3 needs newer M5Stack libraries than the installed ones (see the script)
+    LIBRARY_FLAGS=""
+    if [ "$BOARD" = "$FQBN_STICKS3" ]; then
+        LIBRARY_FLAGS=$(scripts/sticks3_libraries.sh)
+    fi
+    # shellcheck disable=SC2086  # LIBRARY_FLAGS is a list of flags
+    if ! arduino-cli compile --fqbn "$BOARD" $LIBRARY_FLAGS \
+        --build-property "compiler.c.elf.extra_flags=-Wl,--allow-multiple-definition" \
+        --build-path "sketch/sketch_jan12a/build/$NAME" "$SKETCH_PATH"; then
+        echo "❌ $NAME failed"
+        failed=1
+    fi
     echo ""
+done
+
+if [ "$failed" = 0 ]; then
     echo "======================================"
     echo "✅ Compilation successful!"
     echo "======================================"
     exit 0
 else
-    echo ""
     echo "======================================"
     echo "❌ Compilation failed!"
     echo "======================================"

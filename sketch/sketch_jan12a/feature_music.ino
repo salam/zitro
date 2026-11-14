@@ -120,7 +120,7 @@ static bool musicBegin(M5Canvas& c) {
   musicStoredVolume = prefs.getInt("volume", 210);
   musicColored = prefs.getBool("musicColors", false) || guideActive();  // The tour shows them off, without saving it
   prefs.end();
-  M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
+  M5.Speaker.setVolume(speakerVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel)));
   musicOpen = true;
   return true;
 }
@@ -128,7 +128,7 @@ static bool musicBegin(M5Canvas& c) {
 static void musicEnd() {
   M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
   // The level is only for this song: speech and alarms go back to the stored volume
-  if (musicOpen) M5.Speaker.setVolume(musicStoredVolume);
+  if (musicOpen) M5.Speaker.setVolume(speakerVolume(musicStoredVolume));
   musicOpen = false;
 }
 
@@ -150,7 +150,7 @@ static void musicButtonBDouble() {
 // Button C: the next volume level. Holding it goes back to the text (modelButtonCHold).
 static bool musicButtonC() {
   musicVolumeLevel = musicNextVolumeLevel(musicVolumeLevel);
-  M5.Speaker.setVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel));
+  M5.Speaker.setVolume(speakerVolume(musicVolumeAt(musicStoredVolume, musicVolumeLevel)));
   if (!musicVolumeSounds(musicVolumeLevel)) M5.Speaker.stop(MUSIC_SPEAKER_CHANNEL);
   Serial.printf("Music: volume level %d, speaker %d\n", musicVolumeLevel, M5.Speaker.getVolume());
   return true;

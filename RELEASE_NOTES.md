@@ -5,6 +5,7 @@
 - **Play shop in English**: say "Lass uns Verkäuferlis spielen". Guests come to your lemonade bar, bakery or shop and order in English. Listen, serve them and see their faces light up.
 - **Swap sides**: be the customer with a shopping list in pictures and order everything yourself. The seller asks back if something got lost.
 - **Stuck?** Press "?" and the guest says it again slowly, or shows the order in pictures.
+- **Clear answer for huge lists**: a word list with more than 500 entries now gets its "split it up" message right away, even when the file is very large.
 
 ## Fri 13 Nov, 2026
 

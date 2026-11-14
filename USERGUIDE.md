@@ -136,6 +136,16 @@ The project includes deployment scripts for building and uploading firmware to y
   - Print menu: next printer, page size or zoom value.
   - Timer list: show the next timer.
 
+### Buttons on the M5Stack StickS3
+Zitro also runs on the StickS3. The installer can't put it there yet: build it from the source with `./verify.sh` and flash the StickS3 build. The StickS3 has a front button (A) and a side button (B). Its power button only switches the stick on and off, so Button B also takes over Button C's job:
+- Button A: the same as on the Plus2.
+- Button B, one click: what Button B does on the Plus2. It counts once the stick has made sure no second click follows, so it reacts a moment later.
+- Button B, double click: what one click on Button C does on the Plus2: scroll down, next page of a fact sheet or timeline, text or picture, next timer, next printer.
+- Button B, three quick clicks: open the setup page, in the same places as three clicks on Button C.
+- Holding Button B works as on the Plus2. Where holding B has no job, it does what holding C does: in music, back to the text.
+- Coloured note heads in music (a double click of Button B on the Plus2) can't be switched on the StickS3, because a double click there is Button C.
+- The speaker volume stops at 75 %: louder can restart the StickS3 when it runs on battery.
+
 ### Gestures
 - Shake: a surprise, no voice playback. Half the time a fact, otherwise a scene, a shape, a star map or the time in a big city, all built in, so it works without WiFi. Switch it off in the settings ("Schuetteln aus").
 - Rotate: rotate to the opposite orientation and back to toggle text vs image.

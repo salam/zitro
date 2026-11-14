@@ -1,3 +1,15 @@
+# Requirements for Supported Boards
+
+- **M5StickC Plus2**: ESP32, 8 MB flash, USB through a WCH USB serial chip (USB vendor ID `0x1A86`). The installer puts Zitro on it
+- **M5Stack StickS3**: ESP32-S3 on its own USB (Espressif, vendor ID `0x303A`). Zitro runs on it from the same sketch; the installer can't install on it yet
+  - Build: `board.h` picks the board (`ZITRO_STICKS3` when `CONFIG_IDF_TARGET_ESP32S3`). ESP32 core 3.3.6 has no StickS3 board entry, so `verify.sh` builds `esp32:esp32:esp32s3` with 8 MB flash, OPI PSRAM, USB CDC on boot and the Plus2's partition table (`default_8MB`), next to the Plus2 build
+  - Libraries: M5Unified 0.2.12 breaks the StickS3: its microphone is never switched on (fixed in 0.2.13), ESP32-S3 audio samples come out of order (0.2.20), its clock chip is driven as the wrong part (0.2.27). The StickS3 build takes M5Unified 0.2.29 and M5GFX 0.2.36, pinned by commit (`scripts/sticks3_libraries.sh`, used by `verify.sh`), and refuses to compile with an older M5Unified. The Plus2 keeps the installed versions until it has been tested with the new ones
+  - Buttons: A and B only, because the power button belongs to the power chip (M5PM1) and the firmware can't read it. Button B does Button C's job too: one click is B, a double click is C, three quick clicks open the setup page (where three presses of C would), holding B is holding C where holding B has no job of its own (music: back to the text). A single click on B counts once the double-click window has passed. Every B and C read goes through `buttonBClicked()`, `buttonCClicked()`, `buttonCHeld()`, `buttonBDoubleClicked()` and `setupPressesDone()`. The Plus2's double click on B in a view (coloured note heads in music) isn't there on the StickS3
+  - Speaker volume capped at 75 % (191 of 255), because the StickS3 can restart on battery above that (M5Stack's documentation)
+  - Microphone and speaker share the StickS3's codec (ES8311) and its I2S pins: `micStart()` stops the speaker while recording and `micStop()` starts it again. A microphone that doesn't start ends the recording with an error
+  - No GPIO4 power latch (on the StickS3 it is the Hat2-Bus boot pin) and no MPU6886 gyro standby register (its BMI270 keeps the gyro on; `M5.Imu.sleep()` still switches it off for sleep)
+  - Development build with `-DZITRO_MIC_DIAG` (`mic_diag.ino`): serial commands `hwinfo`, `micdiag <seconds> <r|l|s>` (raw samples as hex) and `asktest` (a recorded question through Whisper), and no sleep. Never in a release
+
 # Requirements for Feature Image Downsampling 
 
 ## Hardware

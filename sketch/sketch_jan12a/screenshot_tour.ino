@@ -385,6 +385,14 @@ void handleSerialCommands() {
     } else if (line.startsWith("modelnomem ")) {
       modelForceNoMemory = line.substring(11).toInt() != 0;
       Serial.printf("modelnomem %d\n", modelForceNoMemory);
+#ifdef ZITRO_MIC_DIAG
+    } else if (line.startsWith("micdiag")) {
+      runMicDiag(line.substring(7));
+    } else if (line == "hwinfo") {
+      runHwInfo();
+    } else if (line == "asktest") {
+      runAskTest();
+#endif
     } else if (line.startsWith("printimg ") || line.startsWith("printtest ") || line.startsWith("printtext ")) {
       runPrintTestCommand(line);
     }

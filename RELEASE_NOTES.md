@@ -1,5 +1,9 @@
 # Release Notes
 
+## Sat 14 Nov, 2026
+
+- **Zitro on the StickS3**: Zitro now runs on the M5Stack StickS3 too. Its side button does double duty: click once for Button B, twice for Button C, three times for the setup page.
+
 ## Fri 13 Nov, 2026
 
 - **Practise your English words with Zitro**: upload your child's word lists on your phone with the QR code from the stick, then say "Unit 3 Englisch üben". Zitro asks, listens and says each word for you.

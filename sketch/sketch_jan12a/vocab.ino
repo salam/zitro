@@ -861,7 +861,12 @@ static bool vocabRecord(int rate, int seconds, bool stopOnSilence, int16_t*& buf
     int pos = 0, lastSecond = -1, calibrated = 0, quietMs = 0;
     long noise = 0;
     bool speech = false;
-    M5.Mic.begin();
+    if (!micStart()) {
+      micStop();
+      free(buffer);
+      buffer = nullptr;
+      return false;
+    }
     while (pos + chunk <= total) {
       const int second = pos / rate;
       if (second != lastSecond) {
@@ -872,7 +877,7 @@ static bool vocabRecord(int rate, int seconds, bool stopOnSilence, int16_t*& buf
       while (M5.Mic.isRecording()) {
         M5.update();
         if (M5.BtnA.wasPressed()) {
-          M5.Mic.end();
+          micStop();
           const unsigned long tap = millis();
           bool second = false;
           while (millis() - tap < MULTI_TAP_WINDOW) {
@@ -921,7 +926,7 @@ static bool vocabRecord(int rate, int seconds, bool stopOnSilence, int16_t*& buf
       if (speech && quietMs >= 1200 && elapsedMs >= 1500) break;
     }
     if (!restart) {
-      M5.Mic.end();
+      micStop();
       samples = pos;
     }
   } while (restart);
@@ -1445,8 +1450,8 @@ void vocabTick() {
   vocabWasAsleep = !awake;
 
   const bool clickedA = M5.BtnA.wasClicked();
-  const bool clickedB = M5.BtnB.wasClicked();
-  const bool clickedC = M5.BtnPWR.wasClicked();
+  const bool clickedB = buttonBClicked();
+  const bool clickedC = buttonCClicked();
   if (!guideAcceptsPress(awake, inWakeCooldown())) {
     if (clickedA || clickedB || clickedC) {
       vocabLastPress = now;

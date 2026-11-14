@@ -55,13 +55,42 @@ function message(string $name, string $bytes): string {
         return $e->getMessage();
     }
 }
-// A file read by parse_one.php in a PHP process with 32 MB of memory: its JSON line as an array, or what the
-// process printed instead (a fatal error when it ran out of memory)
-function parseApart(string $name, string $bytes): array|string {
-    $cmd = escapeshellarg(PHP_BINARY) . ' -d memory_limit=32M ' . escapeshellarg(__DIR__ . '/parse_one.php') . ' ' . escapeshellarg(fixture($name, $bytes)) . ' 2>&1';
-    $out = trim((string)shell_exec($cmd));
+// A file read by parse_one.php in a PHP process with 32 MB of memory (or $memory): its JSON line as an array,
+// or what the process printed instead (a fatal error when it ran out of memory). A process still reading after
+// 10 seconds is stopped, so a slow parser fails the check instead of holding up the test.
+function parseApart(string $name, string $bytes, string $memory = '32M'): array|string {
+    return parsePathApart(fixture($name, $bytes), $memory);
+}
+function parsePathApart(string $path, string $memory = '32M', int $deadline = 10): array|string {
+    $cmd = [PHP_BINARY, '-d', "memory_limit=$memory", __DIR__ . '/parse_one.php', $path];
+    $proc = proc_open($cmd, [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['redirect', 1]], $pipes);
+    if (!is_resource($proc)) return 'could not start php';
+    $out = '';
+    $end = microtime(true) + $deadline;
+    while (!feof($pipes[1])) {
+        $left = $end - microtime(true);
+        $read = [$pipes[1]];
+        $none = null;
+        if ($left <= 0 || !stream_select($read, $none, $none, (int)$left, (int)(fmod($left, 1) * 1e6))) {
+            proc_terminate($proc, 9);
+            fclose($pipes[1]);
+            proc_close($proc);
+            return "still reading after $deadline s";
+        }
+        $out .= (string)fread($pipes[1], 65536);
+    }
+    fclose($pipes[1]);
+    proc_close($proc);
+    $out = trim($out);
     $r = json_decode($out, true);
     return is_array($r) ? $r : substr($out, 0, 300);
+}
+// Whether a file read apart stayed within 32 MB of memory and 2 seconds, with what it took
+function cheap(array|string $r): bool {
+    return is_array($r) && $r['peak'] < 32 * 1048576 && $r['seconds'] < 2;
+}
+function cost(array|string $r): string {
+    return is_array($r) ? sprintf('%s, %.1f MB, %.2f s', $r['code'] ?? ($r['entries'] . ' entries'), $r['peak'] / 1048576, $r['seconds']) : $r;
 }
 
 // ---------- Delimited text ----------
@@ -288,6 +317,46 @@ $r = parseApart('blank-rows.csv', str_repeat(",\n", 2500000));
 check(($r['code'] ?? null) === 'no_entries', '2.5 million rows of ",": no_entries: ' . show($r));
 $r = parseApart('blank-lines.csv', str_repeat("\n", 2500000) . str_repeat(" \n", 1000000) . "dog,Hund\ncat,Katze\n");
 check(($r['entries'] ?? null) === 2, 'millions of blank lines before two pairs: ' . show($r));
+
+// One very wide row: only the first 100 cells of a row are kept, the rest is skipped without being split up.
+// These run with 128 MB, so a parser that needs more than 32 MB shows its numbers instead of just failing.
+$r = parseApart('commas.csv', str_repeat(',', 5000000), '128M');
+check(($r['code'] ?? null) === 'no_entries' && cheap($r), '5 MB of commas on one line: no_entries within 32 MB and 2 s: ' . cost($r));
+$r = parseApart('wide-comma.csv', str_repeat('a,', 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million cells "a," on one line: one pair within 32 MB and 2 s: ' . cost($r));
+$r = parseApart('wide-tab.txt', str_repeat("a\t", 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million tab-separated cells on one line: ' . cost($r));
+$r = parseApart('wide-semi.txt', str_repeat('a;', 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million semicolon-separated cells on one line: ' . cost($r));
+$path = apkg('wide.apkg', ['collection.anki2' => [[str_repeat("a\x1f", 2600000) . 'a']]]);
+$r = parsePathApart($path, '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), 'an apkg note with 2.6 million fields: ' . cost($r));
+// The most the limits still let through: 500 rows of 100 cells of 100 characters, about 5 MB
+$wide = [];
+for ($row = 1; $row <= 500; $row++) {
+    $cells = [];
+    for ($cell = 1; $cell <= 100; $cell++) $cells[] = str_pad("w{$row}x{$cell}", 100, 'a');
+    $wide[] = implode(',', $cells);
+}
+$r = parseApart('wide-rows.csv', implode("\n", $wide), '128M');
+check(($r['entries'] ?? null) === 500 && cheap($r), '500 rows of 100 cells, 5 MB: within 32 MB and 2 s: ' . cost($r));
+
+// Rows wider than 100 cells still read like before: empty cells at the end (a spreadsheet's used range), and
+// a quoted line break after the 100th cell still belongs to the row
+$r = parse('trailing.csv', "en,de" . str_repeat(',', 200) . "\ndog,Hund" . str_repeat(',', 200) . "\ncat,Katze" . str_repeat(',', 150) . "\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && $r['warnings'] === [], 'rows with 200 empty cells at the end: ' . show($r));
+$r = parse('wide-quoted.csv', "dog,Hund" . str_repeat(',', 150) . "\"x\ny\"\ncat,\nbird,Vogel\n");
+check(pairs($r) === ['dog|Hund', 'bird|Vogel'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 3'), 'a quoted line break after the 100th cell keeps the line numbers: ' . show($r));
+
+// Anki headers are read without copying the text for each one, and at most 20 of them
+$r = parseApart('headers.txt', str_repeat("#html:true\n", 470000), '128M');
+check(isset($r['code']) && cheap($r), '5 MB of "#html:true" lines: an error within 32 MB and 2 s: ' . cost($r));
+$r = parse('anki-20.txt', str_repeat("#separator:comma\n", 20) . "dog,Hund\ncat,Katze\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && $r['warnings'] === [], '20 Anki header lines: ' . show($r));
+$r = parse('anki-21.txt', str_repeat("#separator:comma\n", 21) . "dog,Hund\ncat,Katze\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 21'), 'a 21st header line is read as a row, like any other line starting with #: ' . show($r));
+$r = parse('anki-lines.txt', "#separator:tab\n#html:true\n#deck column:3\ndog\tHund\tDeck\ncat\t\tDeck\n");
+check(pairs($r) === ['dog|Hund'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 5'), 'line numbers count the Anki headers: ' . show($r));
 
 $long = str_repeat('a', 130);
 $umlauts = str_repeat('ä', 120);

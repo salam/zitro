@@ -1,5 +1,9 @@
 # Release Notes
 
+## Sat 14 Nov, 2026
+
+- **Clear answer for huge lists**: a word list with more than 500 entries now gets its "split it up" message right away, even when the file is very large.
+
 ## Fri 13 Nov, 2026
 
 - **Practise your English words with Zitro**: upload your child's word lists on your phone with the QR code from the stick, then say "Unit 3 Englisch üben". Zitro asks, listens and says each word for you.

@@ -44,6 +44,7 @@
     - The reply is a `batch_id`; the stick asks `GET /1/ai/{ikProduct}/results/{batch_id}` every 0.4 s, at most 30 s, over one TLS connection. `pending`/`processing` waits, `success` carries the transcript in `data` (Whisper JSON as a string, or plain text), anything else is "No transcription"
     - Product IDs must be digits (they go into the request line). Parsing lives in `stt_core.h`, host tests in `tests/stt/run.sh`
     - Not yet tested against a live Infomaniak account
+- Wikipedia and Wikimedia requests (search, page summary, picture download) send `User-Agent: Zitro.spot/1.0 (https://zitro.spot; hello@zitro.spot)` (`ZITRO_USER_AGENT`): Wikimedia's API policy asks for a client name and a way to reach its operator. No personal address goes out
 
 ### AI Provider Layer (ai_provider.h / ai_provider.ino)
 - One entry point `aiChat(system, user, maxTokens, withMemory, jsonMode)` used by the main answer and the Wolfram translation

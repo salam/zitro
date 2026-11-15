@@ -450,7 +450,7 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **Recipes step by step**: [docs/features/recipe.md](docs/features/recipe.md)
 - **Globe with a pin**: [docs/features/globe.md](docs/features/globe.md)
 - **World clock and day and night**: [docs/features/clock.md](docs/features/clock.md). The written answer to a time question is always computed by Zitro, never the AI's. 320 cities are built in and work offline; other places come from the zitro.spot server (`webpage2/api/place.php`, GeoNames). `webpage2/api/locate.php` says roughly where the asking IPv4 address is (DB-IP Lite mapped to GeoNames places, `scripts/make_ip_data.py`), for the home setting a parent can switch on; the script stores and logs nothing, and the data (37 MB, monthly) is uploaded, not committed
-- **ISS live**: [docs/features/iss.md](docs/features/iss.md). The zitro.spot server (`webpage2/api/iss.php`) turns NASA's ephemeris into a track; the written answer is computed, never the AI's
+- **ISS live**: [docs/features/iss.md](docs/features/iss.md). The zitro.spot server (`webpage2/api/iss.php`) turns NASA's ephemeris into a track; the written answer is computed, never the AI's. With `?places=1` it also names the place under the track from Natural Earth (`webpage2/data/iss`, made by `scripts/make_iss_places.py`); disputed regions inside a country stay blank
 - **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
 - **Night sky**: [docs/features/sky.md](docs/features/sky.md)
 - **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)

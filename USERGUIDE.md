@@ -389,6 +389,8 @@ Ask "Wo ist die ISS gerade?" or "Where is the ISS?". Zitro shows the Earth with 
 - **Turn the stick** to turn the globe; **Button B** zooms; **Button C** shows the answer as text. Go back to the globe and the space station is in the middle again, where it is now.
 - **Turn it like a steering wheel** or hold it upright: the globe stays put and the writing turns to be read.
 
+A yellow arrow above the coordinates shows what lies right below the station: a sea such as the South Pacific, a country, a state such as Alaska, a canton, or an island such as Korsika. Long names scroll slowly. Over a few places whose border is disputed, such as Crimea or Kashmir, there's no name, only the coordinates.
+
 Zitro gets the path from NASA through the Zitro server, so it needs WiFi. After three hours the path runs out: ask again.
 
 #### Proteins, DNA and crystals

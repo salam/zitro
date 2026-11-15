@@ -10,6 +10,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "clock_data.h"
@@ -117,11 +118,19 @@ struct ClockTransition {
   int32_t time;  // Seconds after local midnight; may be negative or past 24 h (RFC 8536)
 };
 
+// A zone whose tz database entry departs from its own POSIX rule for a while (Cuba kept summer time through
+// the winter of 2026/27) gets fixed offsets first: until fixedUntil[0] fixedOffset[0], then the next, and from
+// the last one on the rule. Made by scripts/make_clock_data.py (zone_until).
+static const int CLOCK_FIXED_MAX = 4;
+
 struct ClockRule {
   int32_t stdOffset;  // Seconds east of UTC (POSIX writes west, this is turned round)
   int32_t dstOffset;
   bool hasDst;
   ClockTransition start, end;
+  uint8_t fixedCount;
+  int64_t fixedUntil[CLOCK_FIXED_MAX];   // UTC seconds, rising
+  int32_t fixedOffset[CLOCK_FIXED_MAX];  // Seconds east of UTC
 };
 
 inline bool clockParseName(const char*& p) {
@@ -242,10 +251,60 @@ inline bool clockIsDst(const ClockRule& r, int64_t utc) {
   return utc < end || utc >= start;  // Southern hemisphere: daylight time runs over New Year
 }
 
-inline int32_t clockUtcOffset(const ClockRule& r, int64_t utc) { return clockIsDst(r, utc) ? r.dstOffset : r.stdOffset; }
+inline int32_t clockUtcOffset(const ClockRule& r, int64_t utc) {
+  for (int i = 0; i < r.fixedCount; i++) {
+    if (utc < r.fixedUntil[i]) return r.fixedOffset[i];
+  }
+  return clockIsDst(r, utc) ? r.dstOffset : r.stdOffset;
+}
+
+// The fixed offsets before the rule: "1805000400:-14400" or several joined by ';', rising. "" or nullptr: none.
+// False for anything else; the rule's own fields stay as clockParseRule left them.
+inline bool clockParseUntil(const char* text, ClockRule& r) {
+  r.fixedCount = 0;
+  if (!text || !*text) return true;
+  const char* p = text;
+  while (*p) {
+    if (r.fixedCount >= CLOCK_FIXED_MAX) return false;
+    char* end;
+    const long long until = strtoll(p, &end, 10);
+    if (end == p || *end != ':' || until <= 0) return false;
+    p = end + 1;
+    const long offset = strtol(p, &end, 10);
+    if (end == p || offset < -14 * 3600 || offset > 14 * 3600) return false;
+    if (r.fixedCount > 0 && until <= r.fixedUntil[r.fixedCount - 1]) return false;
+    r.fixedUntil[r.fixedCount] = until;
+    r.fixedOffset[r.fixedCount] = (int32_t)offset;
+    r.fixedCount++;
+    p = end;
+    if (*p == ';') {
+      p++;
+      if (!*p) return false;
+    } else if (*p) {
+      return false;
+    }
+  }
+  return true;
+}
 
 inline bool clockZoneRule(int zone, ClockRule& r) {
-  return zone >= 0 && zone < CLOCK_ZONE_COUNT && clockParseRule(CLOCK_ZONES[zone].posix, r);
+  return zone >= 0 && zone < CLOCK_ZONE_COUNT && clockParseRule(CLOCK_ZONES[zone].posix, r) &&
+         clockParseUntil(CLOCK_ZONES[zone].until, r);
+}
+
+// The device clock's TZ while a fixed offset holds: "<-04>4" as newlib takes it ("LST4"). False when the rule
+// itself applies at utc.
+inline bool clockLibraryFixed(const ClockRule& r, int64_t utc, char* out, size_t size) {
+  for (int i = 0; i < r.fixedCount; i++) {
+    if (utc < r.fixedUntil[i]) {
+      const int32_t west = -r.fixedOffset[i];
+      const int32_t a = west < 0 ? -west : west;
+      if (a % 3600) snprintf(out, size, "LST%s%d:%02d", west < 0 ? "-" : "", (int)(a / 3600), (int)(a % 3600 / 60));
+      else snprintf(out, size, "LST%s%d", west < 0 ? "-" : "", (int)(a / 3600));
+      return true;
+    }
+  }
+  return false;
 }
 
 // The device clock's TZ for configTzTime. newlib may not read names in <...>, which only name the zone and

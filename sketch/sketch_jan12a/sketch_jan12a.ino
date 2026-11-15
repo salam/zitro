@@ -481,6 +481,11 @@ const char* homeZoneName() {
 static bool homeTimeZoneRule(char* rule, size_t size) {
   homeEnsure();
   const ZitroHome& h = homeCache;
+  // A zone departing from its rule for a while (clockParseUntil): newlib gets that fixed offset until it ends.
+  // Set at boot and at every NTP start, so a deep sleep or two after the date the rule takes over.
+  ClockRule parsed;
+  const time_t now = time(nullptr);
+  if (now >= 1704067200 && homeRule(parsed) && clockLibraryFixed(parsed, (int64_t)now, rule, size)) return true;
   return clockLibraryRule(h.city >= 0 ? CLOCK_ZONES[CLOCK_CITIES[h.city].zone].posix : h.place.posix, rule, size);
 }
 

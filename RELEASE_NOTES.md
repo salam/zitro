@@ -2,6 +2,7 @@
 
 ## Mon 16 Nov, 2026
 
+- **The right time in Havana**: Cuba keeps its summer time this winter, and Zitro's world clock now knows. Other countries' one-off changes like this come through from now on.
 - **See what the ISS flies over**: a yellow arrow next to the station's numbers now shows what's right below it, from Korsika and Alaska to the South Pacific. Ask "Wo ist die ISS?" and watch the names change as it flies.
 - **An installer that never gets stuck**: if a plugged-in device doesn't answer, the installer stops after a few seconds and tells you what to do, instead of waiting forever.
 - **It knows your stick**: the installer only lists real Zitro sticks. It recognises a StickS3 too, but can't put Zitro on it yet: use an M5StickC Plus2.

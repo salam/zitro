@@ -18,8 +18,9 @@ struct ClockPlace {
   char region[8];   // "TN": the US state, else the country
   char zone[48];    // "America/New_York": names the country's helpline (care_core.h)
   char posix[64];   // "EST5EDT,M3.2.0,M11.1.0": the device's own time zone when this is home
+  char until[48];   // Fixed offsets before the rule, for a few zones (clockParseUntil); usually ""
   float lat, lon;
-  ClockRule rule;   // posix, read
+  ClockRule rule;   // posix and until, read
 };
 
 enum ClockPlaceResult {
@@ -73,6 +74,7 @@ inline ClockPlaceResult clockParsePlace(const char* body, size_t length, ClockPl
   if (!doc["found"].is<bool>()) return CLOCK_PLACE_BAD;
   if (!doc["found"].as<bool>()) return CLOCK_PLACE_UNKNOWN;
   const char* name = doc["name"], *region = doc["region"], *rule = doc["rule"], *zone = doc["zone"];
+  const char* until = doc["until"] | "";  // Older servers don't send it
   if (!doc["lat"].is<float>() || !doc["lon"].is<float>()) return CLOCK_PLACE_BAD;
   const float lat = doc["lat"].as<float>(), lon = doc["lon"].as<float>();
   if (!clockPlaceTextOk(name, sizeof(out.name)) || !clockPlaceTextOk(region, sizeof(out.region)) ||
@@ -80,12 +82,14 @@ inline ClockPlaceResult clockParsePlace(const char* body, size_t length, ClockPl
     return CLOCK_PLACE_BAD;
   }
   if (!(fabsf(lat) <= 90.0f) || !(fabsf(lon) <= 180.0f)) return CLOCK_PLACE_BAD;
-  if (!clockParseRule(rule, out.rule)) return CLOCK_PLACE_BAD;
+  if (strlen(until) >= sizeof(out.until)) return CLOCK_PLACE_BAD;
+  if (!clockParseRule(rule, out.rule) || !clockParseUntil(until, out.rule)) return CLOCK_PLACE_BAD;
   snprintf(out.name, sizeof(out.name), "%s", name);
   snprintf(out.label, sizeof(out.label), "%s, %s", name, region);
   snprintf(out.region, sizeof(out.region), "%s", region);
   snprintf(out.zone, sizeof(out.zone), "%s", zone);
   snprintf(out.posix, sizeof(out.posix), "%s", rule);
+  snprintf(out.until, sizeof(out.until), "%s", until);
   out.lat = lat;
   out.lon = lon;
   return CLOCK_PLACE_FOUND;
@@ -94,7 +98,7 @@ inline ClockPlaceResult clockParsePlace(const char* body, size_t length, ClockPl
 // Home anywhere (setting homeCity, requested 2026-11-15). A home that isn't built in is kept with all the
 // stick needs, so the time zone is right at boot with no network. Stored as Preferences bytes: homePlace for
 // a place the parent named, homeFound for the one zitro.spot/api/locate.php found.
-static const uint32_t CLOCK_HOME_MAGIC = 0x5A484D31;  // "ZHM1": a record of this layout
+static const uint32_t CLOCK_HOME_MAGIC = 0x5A484D32;  // "ZHM2": a record of this layout (ZHM1 had no until)
 
 struct ClockHomeRecord {
   uint32_t magic;
@@ -103,6 +107,7 @@ struct ClockHomeRecord {
   char region[8];
   char zone[48];
   char posix[64];
+  char until[48];
   float lat, lon;
   int64_t at;       // A found home: when it was found, UTC seconds. 0 otherwise
 };
@@ -115,6 +120,7 @@ inline void clockHomeFromPlace(const ClockPlace& p, const char* key, int64_t at,
   snprintf(out.region, sizeof(out.region), "%s", p.region);
   snprintf(out.zone, sizeof(out.zone), "%s", p.zone);
   snprintf(out.posix, sizeof(out.posix), "%s", p.posix);
+  snprintf(out.until, sizeof(out.until), "%s", p.until);
   out.lat = p.lat;
   out.lon = p.lon;
   out.at = at;
@@ -125,19 +131,20 @@ inline void clockHomeFromPlace(const ClockPlace& p, const char* key, int64_t at,
 inline bool clockHomeToPlace(const ClockHomeRecord& r, size_t size, ClockPlace& out) {
   if (size != sizeof(ClockHomeRecord) || r.magic != CLOCK_HOME_MAGIC) return false;
   if (!memchr(r.key, 0, sizeof(r.key)) || !memchr(r.name, 0, sizeof(r.name)) || !memchr(r.region, 0, sizeof(r.region)) ||
-      !memchr(r.zone, 0, sizeof(r.zone)) || !memchr(r.posix, 0, sizeof(r.posix))) {
+      !memchr(r.zone, 0, sizeof(r.zone)) || !memchr(r.posix, 0, sizeof(r.posix)) || !memchr(r.until, 0, sizeof(r.until))) {
     return false;
   }
   if (!clockPlaceTextOk(r.name, sizeof(r.name)) || !clockPlaceTextOk(r.region, sizeof(r.region)) ||
       !clockZoneNameOk(r.zone, sizeof(r.zone)) || !(fabsf(r.lat) <= 90.0f) || !(fabsf(r.lon) <= 180.0f)) {
     return false;
   }
-  if (!clockParseRule(r.posix, out.rule)) return false;
+  if (!clockParseRule(r.posix, out.rule) || !clockParseUntil(r.until, out.rule)) return false;
   snprintf(out.name, sizeof(out.name), "%s", r.name);
   snprintf(out.label, sizeof(out.label), "%s, %s", r.name, r.region);
   snprintf(out.region, sizeof(out.region), "%s", r.region);
   snprintf(out.zone, sizeof(out.zone), "%s", r.zone);
   snprintf(out.posix, sizeof(out.posix), "%s", r.posix);
+  snprintf(out.until, sizeof(out.until), "%s", r.until);
   out.lat = r.lat;
   out.lon = r.lon;
   return true;

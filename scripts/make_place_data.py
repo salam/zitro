@@ -11,7 +11,8 @@ zone's rule comes from the IANA tz database as installed, the same way as for cl
 Written:
   xx.tsv.gz    the places whose key starts with xx, biggest first for each key:
                key, name, country, admin1, latitude, longitude, zone number
-  zones.tsv    zone number's line: IANA name, POSIX rule
+  zones.tsv    zone number's line: IANA name, POSIX rule and, where the tz database departs from the rule
+               for a while, the fixed offsets before it (make_clock_data.zone_until)
   regions.tsv  folded region or country name, then what it means: US or US.TN (for "Paris, Texas")
   SOURCE.txt   what this was built from
 
@@ -20,18 +21,21 @@ Keys fold exactly as the firmware's clockFold does, because the stick sends the 
 Usage: python3 -I scripts/make_place_data.py <cities1000.txt> <admin1CodesASCII.txt> <countryInfo.txt>
            <zoneinfo dir> <download date> <out dir>
 """
+import calendar
 import gzip
 import hashlib
 import importlib.util
 import io
 import os
 import sys
+import time
 
 _spec = importlib.util.spec_from_file_location(
     "make_clock_data", os.path.join(os.path.dirname(os.path.abspath(__file__)), "make_clock_data.py"))
 _clock = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_clock)
 fold, fold_german, screen_name, posix_rule = _clock.fold, _clock.fold_german, _clock.screen_name, _clock.posix_rule
+zone_until = _clock.zone_until
 
 MAX_KEY = 48
 ALTERNATES_FROM_POPULATION = 100_000  # Other names (Cologne for Köln) only for places this big
@@ -44,6 +48,10 @@ def main():
     if len(sys.argv) != 7:
         raise SystemExit(__doc__)
     cities_path, admin_path, country_path, zoneinfo, date, out_dir = sys.argv[1:]
+    try:
+        start = calendar.timegm(time.strptime(date, "%Y-%m-%d"))  # Exceptions to a zone's rule count from then
+    except ValueError:
+        start = int(time.time()) // 86400 * 86400
 
     zones, zone_number = [], {}
     rows = []
@@ -59,7 +67,8 @@ def main():
                 raise SystemExit(f"{name} ({country}): no time zone")
             if zone not in zone_number:
                 zone_number[zone] = len(zones)
-                zones.append((zone, posix_rule(zoneinfo, zone)))  # Stops if the zone isn't in the tz database
+                rule = posix_rule(zoneinfo, zone)  # Stops if the zone isn't in the tz database
+                zones.append((zone, rule, zone_until(zoneinfo, zone, rule, start)))
             place_count += 1
             weight = population * (DISTRICT_WEIGHT if code == "PPLX" else 1)
             shown = screen_name(name)
@@ -87,8 +96,8 @@ def main():
                 gz.write(text.getvalue().encode("utf-8"))
 
     with open(os.path.join(out_dir, "zones.tsv"), "w", encoding="utf-8", newline="\n") as f:
-        for zone, rule in zones:
-            f.write(f"{zone}\t{rule}\n")
+        for zone, rule, until in zones:
+            f.write(f"{zone}\t{rule}" + (f"\t{until}" if until else "") + "\n")
 
     regions = set()
     with open(country_path, encoding="utf-8") as f:

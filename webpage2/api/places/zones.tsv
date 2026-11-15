@@ -109,7 +109,7 @@ Asia/Urumqi	<+06>-6
 Asia/Macau	CST-8
 America/Bogota	<-05>5
 America/Costa_Rica	CST6
-America/Havana	CST5CDT,M3.2.0/0,M11.1.0/1
+America/Havana	CST5CDT,M3.2.0/0,M11.1.0/1	1805000400:-14400
 America/New_York	EST5EDT,M3.2.0,M11.1.0
 Atlantic/Cape_Verde	<-01>1
 America/Curacao	AST4

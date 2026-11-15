@@ -659,6 +659,11 @@ Characters display correctly without conversion - umlauts and special characters
 - Hold Button B for about 3 seconds in normal mode.
 - Hold Button B for about 5 seconds in AP mode.
 
+### When your child shares a worry
+- Zitro is not a friend or a counsellor, and says so. If your child tells it about something sad, scary or painful ("Niemand will mit mir spielen", "Ich habe Kopfweh"), Zitro answers kindly in a sentence or two and suggests talking to you, a teacher or the school social worker.
+- If it sounds serious, for example someone hurts your child or it doesn't want to live any more, Zitro names the free children's helpline: 147 (Pro Juventute) in Switzerland, 147 (Rat auf Draht) in Austria, 116 111 (Nummer gegen Kummer) in Germany, and 112 in acute danger. Which one depends on the home city in the settings. For other countries Zitro names no number and tells your child to get an adult right away.
+- These answers never show a picture.
+
 ### Parental lock
 - Say "Kindersicherung ein" to enable.
 - Say "Kindersicherung aus" to disable.

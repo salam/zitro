@@ -233,7 +233,7 @@
   "5cc9f27d": "Lyssnar bara på knappen",
   "9d0c0b2f": "Inget väckningsord, ingen inspelning av omgivningen. Den hör ditt barn bara medan knappen är intryckt.",
   "73a17d4f": "Din nyckel, ditt WiFi",
-  "ac992179": "Inget barnkonto, ingen profil. Zitro körs med familjens egen AI-nyckel över familjens eget nätverk. Frågan går till den AI-tjänst du väljer, till exempel Infomaniak i Schweiz; röst, uppläsning och bilder går till OpenAI.",
+  "0aedbb30": "Inget barnkonto, ingen profil. Zitro körs med familjens egen AI-nyckel över familjens eget nätverk. Frågan går till den AI-tjänst du väljer, till exempel Infomaniak i Schweiz. Röst, uppläsning och bilder går tills vidare till OpenAI; från nästa uppdatering kan även Infomaniak göra om rösten till text.",
   "dded0c46": "Inget att falla ner i",
   "c94ec441": "Inget flöde, inga notiser, ingen reklam, inget socialt lager, ingen oändlig scrollning. Ingenting drar för att få dig tillbaka.",
   "14052875": "Svar ni läser tillsammans",

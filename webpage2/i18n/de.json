@@ -233,7 +233,7 @@
   "5cc9f27d": "Hört nur auf Knopfdruck zu",
   "9d0c0b2f": "Kein Aktivierungswort, keine Aufnahme im Hintergrund. Er hört dein Kind nur, solange der Knopf gedrückt ist.",
   "73a17d4f": "Dein Schlüssel, dein WLAN",
-  "ac992179": "Kein Kinderkonto, kein Profil. Zitro läuft mit dem eigenen KI-Schlüssel der Familie über das eigene Netz der Familie. Die Frage geht an den KI-Dienst, den du wählst, zum Beispiel Infomaniak in der Schweiz; Stimme, Vorlesen und Bilder gehen an OpenAI.",
+  "0aedbb30": "Kein Kinderkonto, kein Profil. Zitro läuft mit dem eigenen KI-Schlüssel der Familie über das eigene Netz der Familie. Die Frage geht an den KI-Dienst, den du wählst, zum Beispiel Infomaniak in der Schweiz. Stimme, Vorlesen und Bilder gehen vorerst an OpenAI; ab dem nächsten Update kann auch Infomaniak die Stimme in Text umwandeln.",
   "dded0c46": "Nichts, in das man fällt",
   "c94ec441": "Kein Feed, keine Benachrichtigungen, keine Werbung, keine sozialen Funktionen, kein endloses Scrollen. Nichts zieht dich zurück.",
   "14052875": "Antworten, die man gemeinsam liest",

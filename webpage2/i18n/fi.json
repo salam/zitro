@@ -233,7 +233,7 @@
   "5cc9f27d": "Kuuntelee vain painikkeella",
   "9d0c0b2f": "Ei herätyssanaa, ei ympäristön tallennusta. Se kuulee lapsesi vain silloin, kun painiketta painetaan.",
   "73a17d4f": "Sinun avaimesi, sinun WiFisi",
-  "ac992179": "Ei lapsen tiliä, ei profiilia. Zitro toimii perheen oman tekoälyavaimen kanssa perheen omassa verkossa. Kysymys menee valitsemallesi tekoälypalvelulle, esimerkiksi sveitsiläiselle Infomaniakille; ääni, ääneen luku ja kuvat menevät OpenAI:lle.",
+  "0aedbb30": "Ei lapsen tiliä, ei profiilia. Zitro toimii perheen oman tekoälyavaimen kanssa perheen omassa verkossa. Kysymys menee valitsemallesi tekoälypalvelulle, esimerkiksi sveitsiläiselle Infomaniakille. Ääni, ääneen luku ja kuvat menevät toistaiseksi OpenAI:lle; seuraavasta päivityksestä alkaen Infomaniak voi muuttaa myös äänen tekstiksi.",
   "dded0c46": "Ei mitään, mihin uppoaa",
   "c94ec441": "Ei syötettä, ei ilmoituksia, ei mainoksia, ei sosiaalista kerrosta, ei loputonta selaamista. Mikään ei houkuttele sinua takaisin.",
   "14052875": "Vastauksia, jotka luette yhdessä",

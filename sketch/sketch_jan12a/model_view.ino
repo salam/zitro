@@ -19,6 +19,42 @@ static bool modelHintsWereShowing = false;
 static unsigned long modelHandTurnedAt = 0;
 static M5Canvas* modelCanvas = nullptr;
 static bool modelCanvasInPsram = false;
+// Views that level (activeFeature->levels): the stick's roll and the way the text reads
+static LevelState modelLevel;
+int modelReadingTurn = 0;
+float modelForcedRollDeg = NAN;  // Serial "roll <degrees>": the roll without turning the stick, for screenshots
+
+static bool modelLevels() {
+  return activeFeature && activeFeature->levels;
+}
+
+void modelLevelMatrix(float out[9]) {
+  levelMatrix(modelRotation.m, modelLevels() ? modelLevel.roll : 0.0f, out);
+}
+
+void modelToReading(M5Canvas& c, int bx, int by, int& rx, int& ry) {
+  float x, y;
+  levelToReading(modelReadingTurn, (float)bx, (float)by, WIDTH, HEIGHT, x, y);
+  rx = (int)lroundf(x);
+  ry = (int)lroundf(y);
+}
+
+// Gravity right now, so a view opened with the stick upright reads upright from its first frame
+static void modelLevelRead() {
+  levelReset(modelLevel);
+  M5.Imu.update();
+  const auto imu = M5.Imu.getImuData();
+  float up[3];
+  gyroToScreen(M5.Display.getRotation(), imu.accel.x, imu.accel.y, imu.accel.z, up);
+  levelStep(modelLevel, up);
+}
+
+static void modelLevelApplyForced() {
+  if (isnan(modelForcedRollDeg)) return;
+  modelLevel.roll = levelWrap(modelForcedRollDeg * (float)M_PI / 180.0f);
+  modelLevel.known = true;
+  levelSnap(modelLevel, true);
+}
 
 bool modelViewSpriteInPsram() {
   return modelCanvasInPsram;
@@ -68,7 +104,10 @@ bool modelViewBegin() {
     modelCanvas = nullptr;
     return false;
   }
-  M5.Display.setRotation(getLandscapeRotation());  // Locked until the view ends
+  M5.Display.setRotation(getLandscapeRotation());  // Locked until the view ends; views that level turn within it
+  modelLevelRead();
+  modelLevelApplyForced();
+  modelReadingTurn = modelLevels() ? modelLevel.quarter : 0;
   return true;
 }
 
@@ -90,7 +129,10 @@ static void modelDrawHints(M5Canvas& c) {
   int kindB = activeFeature->buttonB ? HINT_NONE : HINT_ZOOM;
   int kindC = activeFeature->buttonC ? HINT_NONE : HINT_TEXT;
   if (activeFeature->hints) activeFeature->hints(kindB, kindC);
-  drawButtonHints(c, M5.Display.getRotation(), HINT_MIC, kindB, kindC);
+  // Views that level: the tabs in the reading frame, still next to the buttons
+  c.setRotation(modelReadingTurn);
+  drawButtonHints(c, (M5.Display.getRotation() + modelReadingTurn) & 3, HINT_MIC, kindB, kindC);
+  c.setRotation(0);
 }
 
 // Draws one frame and shows it
@@ -99,7 +141,11 @@ void modelViewRender(float dt) {
   const bool hints = guideActive() || modelHintsShowing(millis(), modelHintsFrom);
   modelViewRedraw = modelHintsWereShowing && !hints;
   modelHintsWereShowing = hints;
+  // The tour's frame and tabs are drawn for the landscape: the text stays that way while it runs
+  modelReadingTurn = modelLevels() && !guideActive() ? modelLevel.quarter : 0;
+  modelCanvas->setRotation(0);
   activeFeature->frame(*modelCanvas, dt);
+  modelCanvas->setRotation(0);  // Raw buffer access and screenshots expect the buffer's own axes
   modelViewRedraw = false;
   if (hints) modelDrawHints(*modelCanvas);
   modelCanvas->pushSprite(0, 0);
@@ -189,12 +235,24 @@ void modelViewTick() {
     const auto imu = M5.Imu.getImuData();
     gyroToScreen(M5.Display.getRotation(), imu.gyro.x, imu.gyro.y, imu.gyro.z, modelGyroDps);
     magnitude = sqrtf(imu.gyro.x * imu.gyro.x + imu.gyro.y * imu.gyro.y + imu.gyro.z * imu.gyro.z);
+    if (modelLevels()) {
+      // The roll turns the picture exactly (levelMatrix); tilt and swivel turn the globe as the upright
+      // picture sees them
+      float up[3];
+      gyroToScreen(M5.Display.getRotation(), imu.accel.x, imu.accel.y, imu.accel.z, up);
+      levelStep(modelLevel, up);
+      modelLevelApplyForced();
+      float upright[3];
+      levelGyro(modelGyroDps, modelLevel.roll, upright);
+      memcpy(modelGyroDps, upright, sizeof(upright));
+    }
     if (magnitude >= MODEL_STILL_DPS && activeFeature->turnsWithGyro) {
       const float k = MODEL_TURN_SIGN * MODEL_TURN_GAIN * dt * (float)M_PI / 180.0f;
       mat3Rotate(modelRotation, k * modelGyroDps[0], k * modelGyroDps[1], k * modelGyroDps[2]);
     }
     if (magnitude >= MODEL_ACTIVE_DPS && now - modelWindowStart < MODEL_MOTION_CAP_MS) lastActivityTime = now;
   }
+  if (modelLevels() && !gyroReady()) modelLevelApplyForced();
   if (magnitude >= MODEL_STILL_DPS) modelHandTurnedAt = now;
   modelIdleTurning = modelIdleTurnAllowed(now, modelHandTurnedAt);
   if (activeFeature->keepAwake && activeFeature->keepAwake()) lastActivityTime = now;
@@ -210,7 +268,8 @@ void modelViewTick() {
 // Name and source on the left of the bottom line. reserveRight keeps room for a legend.
 void eduDrawFooter(M5Canvas& c, int reserveRight) {
   static String cachedLabel, cachedSource, cachedText;
-  static int cachedReserve = -1;
+  static int cachedReserve = -1, cachedWidth = -1;
+  const int width = c.width(), height = c.height();  // The reading frame: views that level turn the sprite
   bool ascii = true;
   for (unsigned int i = 0; i < modelLabel.length(); i++) {
     if ((uint8_t)modelLabel[i] >= 0x80) ascii = false;  // The small font only knows ASCII
@@ -221,12 +280,14 @@ void eduDrawFooter(M5Canvas& c, int reserveRight) {
     c.setFreeFont(FontManager::getFont12pt());  // Names with umlauts or Greek letters
   }
   c.setTextSize(1);
-  if (cachedLabel != modelLabel || cachedSource != modelSourceName || cachedReserve != reserveRight) {
+  if (cachedLabel != modelLabel || cachedSource != modelSourceName || cachedReserve != reserveRight ||
+      cachedWidth != width) {
     cachedLabel = modelLabel;
     cachedSource = modelSourceName;
     cachedReserve = reserveRight;
+    cachedWidth = width;
     const String source = modelSourceName.length() > 0 ? " - " + modelSourceName : String("");
-    const int room = WIDTH - reserveRight - 6;
+    const int room = width - reserveRight - 6;
     String name = modelLabel;
     if (c.textWidth((name + source).c_str()) > room) {
       while (name.length() > 1 && c.textWidth((name + "..." + source).c_str()) > room) {
@@ -239,10 +300,10 @@ void eduDrawFooter(M5Canvas& c, int reserveRight) {
     }
     cachedText = name + source;
   }
-  c.fillRect(0, HEIGHT - EDU_FOOTER_HEIGHT, WIDTH, EDU_FOOTER_HEIGHT, TFT_BLACK);
+  c.fillRect(0, height - EDU_FOOTER_HEIGHT, width, EDU_FOOTER_HEIGHT, TFT_BLACK);
   c.setTextDatum(textdatum_t::baseline_left);
   c.setTextColor(TFT_LIGHTGREY);
-  c.drawString(cachedText, 2, HEIGHT - 4);
+  c.drawString(cachedText, 2, height - 4);
 }
 
 // Serial "modelgyro": how much the gyro reads while nothing moves, against the activity limit

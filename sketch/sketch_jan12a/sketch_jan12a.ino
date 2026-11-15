@@ -568,6 +568,7 @@ bool wolframSwitchToPicture();
 bool fetchWolframSimpleImage(const String &englishQuery);
 void modelGyroNoise();
 extern bool modelResetRotateToggle;
+extern float modelForcedRollDeg;  // Serial "roll <degrees>" (model_view.ino)
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();

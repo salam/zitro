@@ -5,7 +5,8 @@ const T = (s) => (window.zitroT ? window.zitroT(s) : s);
 const downloadBtn = document.getElementById('downloadBtn');
 const downloadBtnTop = document.getElementById('downloadBtnTop');
 const deviceQuestion = document.getElementById('deviceQuestion');
-const hasDeviceYes = document.getElementById('hasDeviceYes');
+const hasDeviceS3 = document.getElementById('hasDeviceS3');
+const hasDevicePlus2 = document.getElementById('hasDevicePlus2');
 const hasDeviceNo = document.getElementById('hasDeviceNo');
 const emailForm = document.getElementById('emailForm');
 const downloadForm = document.getElementById('downloadForm');
@@ -36,12 +37,15 @@ downloadBtnTop.addEventListener('click', () => {
     }
 });
 
-// Device question handlers
-hasDeviceYes.addEventListener('click', () => {
-    hasDevice = 'yes';
+// Device question handlers: the stick goes with the request, as the StickS3 gets its own installer
+function chooseDevice(device) {
+    hasDevice = device;
     deviceQuestion.classList.add('hidden');
     emailForm.classList.remove('hidden');
-});
+}
+
+hasDeviceS3.addEventListener('click', () => chooseDevice('s3'));
+hasDevicePlus2.addEventListener('click', () => chooseDevice('plus2'));
 
 hasDeviceNo.addEventListener('click', () => {
     hasDevice = 'no';
@@ -192,9 +196,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check for download deep link
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('download') === 'true') {
-        // Show email form directly without device question
+        // "Get Zitro" on the other pages: ask which stick first, like the button here
         downloadBtn.style.display = 'none';
-        emailForm.classList.remove('hidden');
+        deviceQuestion.classList.remove('hidden');
 
         const heroSection = document.querySelector('.hero');
         if (heroSection) {

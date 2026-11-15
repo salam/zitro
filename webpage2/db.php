@@ -54,6 +54,12 @@ function initDatabase() {
             user_agent TEXT
         )");
 
+        // Orders name their stick since the shop sells the StickS3 too; older orders were all PLUS2
+        $orderColumns = $db->query("PRAGMA table_info(orders)")->fetchAll(PDO::FETCH_COLUMN, 1);
+        if (!in_array('device', $orderColumns, true)) {
+            $db->exec("ALTER TABLE orders ADD COLUMN device TEXT DEFAULT 'plus2'");
+        }
+
         // Create indexes for better performance
         $db->exec("CREATE INDEX IF NOT EXISTS idx_newsletter_email ON newsletter_subscriptions(email)");
         $db->exec("CREATE INDEX IF NOT EXISTS idx_downloads_email ON download_requests(email)");
@@ -75,6 +81,14 @@ function getDb() {
         $db = initDatabase();
     }
     return $db;
+}
+
+/**
+ * Full name of a stick as the website sends it ('plus2', 's3'); null for anything else
+ */
+function deviceName($code) {
+    $names = ['plus2' => 'M5StickC PLUS2', 's3' => 'M5Stack StickS3'];
+    return $names[$code] ?? null;
 }
 
 /**

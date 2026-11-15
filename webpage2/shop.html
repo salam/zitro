@@ -36,7 +36,7 @@
         {
           "@type": "Product",
           "@id": "https://zitro.spot/#product",
-          "name": "Zitro — pre-flashed M5StickC PLUS2",
+          "name": "Zitro — pre-flashed M5StickC PLUS2 or M5Stack StickS3",
           "description": "Zitro is a pocket-sized AI you ask out loud. It answers on a small screen — as text, a graph, or a real photo — then goes quiet. No feed, no notifications, no account, no camera on your face.",
           "image": "https://zitro.spot/images/og-zitro.jpg",
           "brand": {
@@ -59,7 +59,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&family=Instrument+Sans:wght@400;500;600&family=Fragment+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=1.1.9">
+    <link rel="stylesheet" href="styles.css?v=1.1.10">
     <script>/* Languages: keep the English text hidden until site.js has put in the translation (at most 2 s) */try{var zl=new URLSearchParams(location.search).get('lang')||localStorage.getItem('zitroLang')||navigator.language||'en';if(zl.slice(0,2).toLowerCase()!=='en'){document.documentElement.classList.add('i18n-wait');setTimeout(function(){document.documentElement.classList.remove('i18n-wait')},2000)}}catch(e){}</script>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
@@ -92,13 +92,13 @@
                         <img src="images/M5StickC.webp" alt="Zitro AI stick" class="product-image" data-i18n-a="alt:ad2bbd6b">
                         <div class="product-info">
                             <h1 data-i18n="cde7e5b3">Zitro</h1>
-                            <p class="product-subtitle" data-i18n="5bfbc609">Pre-flashed M5StickC PLUS2</p>
+                            <p class="product-subtitle" data-i18n="7d49dc02">Pre-flashed M5StickC PLUS2 or M5Stack StickS3</p>
                             <div class="product-price" data-i18n="800a22ee">
                                 <span class="price-amount">$50</span>
                                 <span class="price-note">+ shipping · no subscription</span>
                             </div>
                             <ul class="product-features">
-                                <li data-i18n="7d78efe7">✓ M5StickC PLUS2 device (<a href="https://docs.m5stack.com/en/core/M5StickC%20PLUS2" target="_blank" rel="noopener">Specs</a>)</li>
+                                <li data-i18n="ff97490d">✓ M5StickC PLUS2 or M5Stack StickS3, your choice (specs: <a href="https://docs.m5stack.com/en/core/M5StickC%20PLUS2" target="_blank" rel="noopener">PLUS2</a>, <a href="https://docs.m5stack.com/en/core/StickS3" target="_blank" rel="noopener">StickS3</a>)</li>
                                 <li data-i18n="f08e9277">✓ <a href="index.html">Zitro</a> firmware pre-installed</li>
                                 <li data-i18n="078bf7d0">✓ Ready to use out of the box</li>
                                 <li data-i18n="0301fc96">✓ Voice-controlled settings &amp; timers</li>
@@ -114,6 +114,26 @@
                         <h2 data-i18n="ebc7f692">Order your Zitro</h2>
 
                         <form id="orderForm" class="order-form">
+                            <div class="form-section">
+                                <h3 data-i18n="66168606">Your stick</h3>
+
+                                <fieldset class="form-group stick-choice">
+                                    <legend data-i18n="c8bfa751">Which stick should Zitro come on?</legend>
+                                    <label class="stick-option">
+                                        <input type="radio" name="device" value="plus2" checked>
+                                        <span class="stick-dot stick-dot-plus2" aria-hidden="true"></span>
+                                        <span class="stick-name" data-i18n="36840f3c">M5StickC PLUS2</span>
+                                        <span class="stick-color" data-i18n="05bf6449">yellow</span>
+                                    </label>
+                                    <label class="stick-option">
+                                        <input type="radio" name="device" value="s3">
+                                        <span class="stick-dot stick-dot-s3" aria-hidden="true"></span>
+                                        <span class="stick-name" data-i18n="c38dd1a3">M5Stack StickS3</span>
+                                        <span class="stick-color" data-i18n="ba9ab39a">gray</span>
+                                    </label>
+                                </fieldset>
+                            </div>
+
                             <div class="form-section">
                                 <h3 data-i18n="9abbc007">Shipping address</h3>
 
@@ -235,6 +255,7 @@
                 <div class="footer-brand">
                     <h3 data-i18n="6e7cf95f">zitro<span class="wordmark-dot">.</span>spot</h3>
                     <p data-i18n="03797f9a">The AI you ask and put down.</p>
+                    <p class="footer-devices" data-i18n="371360c4">Runs on the M5StickC PLUS2 and the M5Stack StickS3.</p>
                 </div>
                 <div class="footer-cols">
                     <div class="footer-col" data-i18n="6173962d">
@@ -264,6 +285,6 @@
     </footer>
 
     <script src="site.js?v=1.1.0"></script>
-    <script src="shop.js?v=1.2.0"></script>
+    <script src="shop.js?v=1.3.0"></script>
 </body>
 </html>

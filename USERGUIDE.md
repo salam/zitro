@@ -39,7 +39,8 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 [zitro.spot](https://zitro.spot) (folder `webpage2/`) has:
 - Product overview and feature showcase
 - Product comparison table vs other AI gadgets (Meta glasses, Bee, Rabbit R1, and more)
-- The installer download and the shop
+- Get Zitro: say which stick you have, the M5Stack StickS3 or the M5StickC PLUS2, and get the installer link by e-mail. The StickS3 gets its own installer
+- The shop, with Zitro pre-flashed on either stick: pick the yellow PLUS2 or the gray StickS3 when you order
 - Pages for young minds, screen detox and creativity
 - Direct access to the GitHub repository
 

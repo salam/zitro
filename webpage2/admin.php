@@ -154,6 +154,7 @@ try {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Country</th>
+                            <th>Stick</th>
                             <th>Total</th>
                             <th>Status</th>
                             <th>Date</th>
@@ -166,6 +167,7 @@ try {
                                 <td><?php echo htmlspecialchars($order['full_name']); ?></td>
                                 <td><?php echo htmlspecialchars($order['email']); ?></td>
                                 <td><?php echo htmlspecialchars($order['country']); ?></td>
+                                <td><?php echo htmlspecialchars(deviceName($order['device'] ?? 'plus2') ?? ($order['device'] ?? '')); ?></td>
                                 <td>$<?php echo number_format($order['total_cost'], 2); ?></td>
                                 <td><span class="badge badge-pending"><?php echo htmlspecialchars($order['order_status']); ?></span></td>
                                 <td><?php echo date('M j, Y H:i', strtotime($order['ordered_at'])); ?></td>
@@ -187,7 +189,7 @@ try {
                         <tr>
                             <th>Email</th>
                             <th>Platform</th>
-                            <th>Has Device</th>
+                            <th>Stick</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -196,7 +198,7 @@ try {
                             <tr>
                                 <td><?php echo htmlspecialchars($download['email']); ?></td>
                                 <td><span class="badge badge-<?php echo $download['platform']; ?>"><?php echo htmlspecialchars($download['platform']); ?></span></td>
-                                <td><span class="badge badge-<?php echo $download['has_device'] === 'yes' ? 'yes' : 'no'; ?>"><?php echo htmlspecialchars($download['has_device']); ?></span></td>
+                                <td><span class="badge badge-<?php echo (deviceName($download['has_device']) || $download['has_device'] === 'yes') ? 'yes' : 'no'; ?>"><?php echo htmlspecialchars(deviceName($download['has_device']) ?? $download['has_device']); ?></span></td>
                                 <td><?php echo date('M j, Y H:i', strtotime($download['requested_at'])); ?></td>
                             </tr>
                         <?php endforeach; ?>

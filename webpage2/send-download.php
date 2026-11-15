@@ -29,6 +29,11 @@ if (!$input) {
 $email = trim($input['email'] ?? '');
 $platform = trim($input['platform'] ?? '');
 $hasDevice = trim($input['hasDevice'] ?? 'unknown');
+// 'plus2' or 's3' from the device question, 'yes' from pages cached before it named the stick
+if (!deviceName($hasDevice) && !in_array($hasDevice, ['yes', 'no', 'unknown'], true)) {
+    $hasDevice = 'unknown';
+}
+$deviceLabel = deviceName($hasDevice) ?? ($hasDevice === 'yes' ? 'yes, stick not named' : $hasDevice);
 
 if (empty($email)) {
     jsonResponse(false, 'Email is required');
@@ -66,11 +71,11 @@ try {
     $notificationBody = "New download request!\n\n";
     $notificationBody .= "Email: $email\n";
     $notificationBody .= "Platform: $platform\n";
-    $notificationBody .= "Has Device: $hasDevice\n";
+    $notificationBody .= "Stick: $deviceLabel\n";
     $notificationBody .= "IP Address: " . getClientIp() . "\n";
     $notificationBody .= "User Agent: " . getUserAgent() . "\n";
 
-    sendNotificationEmail('New Download Request', $notificationBody);
+    sendNotificationEmail("New Download Request ($deviceLabel)", $notificationBody);
 
     // In a production environment, you would send an email to the user with the download link
     // For now, we'll just return success

@@ -472,7 +472,10 @@ void wifiLinkStart();
 void wifiLinkStop();
 bool wifiLinkUp();
 void wifiBackgroundTick();
-bool wifiWaitForLink(uint32_t maxMs, bool showIcon);
+bool wifiWaitForLink(uint32_t maxMs, WifiWaitShow show);
+void wifiPageShow(WifiPageLook look);
+void wifiPageTourShot(WifiPageLook look, const String& ssid, int next, int count, uint16_t progress,
+                      uint32_t pulseAt);
 bool connectToWiFi();
 bool reconnectWiFiNow();
 void wifiIconDrawInto(M5Canvas& canvas);
@@ -2534,7 +2537,7 @@ void handleDeepSleepWake() {
     Serial.println("Attempting to re-download image...");
     drawScreen(uiText("Hole das Bild...", "Restoring image..."));
 
-    bool imageDownloaded = wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true) && downloadImage(currentImageUrl);
+    bool imageDownloaded = wifiWaitForLink(WIFI_QUESTION_WAIT_MS, WIFI_SHOW_ICON) && downloadImage(currentImageUrl);
 
     if (imageDownloaded) {
       Serial.println("Image restored successfully");
@@ -2575,7 +2578,7 @@ void handleDeepSleepWake() {
   // A 3D model is fetched again, like a picture. Most need WiFi; the built-in ones load without it.
   if (modelRefText.length() > 0) {
     drawScreen(uiText("Hole das Modell...", "Restoring..."));
-    wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true);
+    wifiWaitForLink(WIFI_QUESTION_WAIT_MS, WIFI_SHOW_ICON);
     ModelRef ref;
     const bool wasShowingModel = currentDisplayMode == SHOW_MODEL;
     if (parseModelRef(modelRefText.c_str(), ref) && fetchModel(ref)) {
@@ -8700,19 +8703,19 @@ void handleVoiceQuery(bool playAudio) {
 
   Serial.printf("Free heap after recording: %d bytes\n", ESP.getFreeHeap());
 
-  drawScreenWithIcon(uiText("Ich verstehe...", "Transcribing..."), transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
-
-  // Right after a wake WiFi may still be on its way: the question waits for it, with the icon
-  // pulsing in the corner. No known network around: the setup screen, to add this one.
-  if (!wifiLinkUp() && !wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true)) {
+  // Right after a wake WiFi may still be on its way: the question waits for it on the WiFi page. No
+  // known network around: the setup screen, to add this one.
+  if (!wifiLinkUp() && !wifiWaitForLink(WIFI_QUESTION_WAIT_MS, WIFI_SHOW_PAGE)) {
     lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     serialTestQuestion = "";
     Serial.println("No known WiFi found - opening setup");
-    drawScreen(uiText("Kein bekanntes\nWLAN gefunden.", "No known WiFi\nfound."));
+    wifiPageShow(WIFI_PAGE_NONE);
     delay(2000);
     startAPMode();
     return;
   }
+
+  drawScreenWithIcon(uiText("Ich verstehe...", "Transcribing..."), transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
 
   String question = typedQuestion ? serialTestQuestion : transcribeAudio();
   serialTestQuestion = "";
@@ -9032,8 +9035,7 @@ void loop() {
     // Check for Button A press to retry WiFi connection
     if (M5.BtnA.wasPressed()) {
       Serial.println("Button A pressed - retrying WiFi connection...");
-      drawScreen(uiText("Verbinde das WLAN\nnochmal...", "Retrying WiFi\nconnection..."));
-      delay(1000);
+      wifiPageShow(WIFI_PAGE_SEARCHING);
 
       // Stop AP mode
       WiFi.softAPdisconnect(true);
@@ -9045,7 +9047,7 @@ void loop() {
       // Try to reconnect
       if (connectToWiFi()) {
         Serial.println("WiFi connection successful!");
-        drawScreen(String(uiText("Verbunden!\n", "Connected!\n")) + WiFi.SSID());
+        wifiPageShow(WIFI_PAGE_CONNECTED);
         delay(2000);
         drawScreen(MAIN_QUESTION);
       } else {

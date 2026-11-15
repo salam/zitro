@@ -261,6 +261,98 @@ static void testPulse() {
   CHECK(wifiPulseLevel(0xFFFFFFFFu) >= WIFI_ICON_GREY);
 }
 
+// The WiFi page's bar: steps for the remembered network, the scan and each network found, creeping
+// within a step but never reaching its end, never going back, full once connected
+static void testProgressSteps() {
+  WifiMachine m;
+  wifiStart(m, 0, true);
+  uint16_t p = wifiProgress(m, 0, 0);
+  CHECK(p == 0);
+  uint16_t q = wifiProgress(m, 500, p);
+  CHECK(q > p && q < WIFI_BAR_SCAN_AFTER_FAST);
+  p = q;
+  // Creeps, but stays inside the step however long it takes
+  q = wifiProgress(m, WIFI_FAST_MS - 1, p);
+  CHECK(q > p && q < WIFI_BAR_SCAN_AFTER_FAST);
+  p = q;
+  // Fast join timed out: the scan's step
+  wifiTick(m, at(WIFI_FAST_MS));
+  CHECK(m.phase == WIFI_SCAN);
+  q = wifiProgress(m, WIFI_FAST_MS, p);
+  CHECK(q >= WIFI_BAR_SCAN_AFTER_FAST && q > p);
+  p = q;
+  q = wifiProgress(m, WIFI_FAST_MS + WIFI_SCAN_MS - 1, p);
+  CHECK(q > p && q < WIFI_BAR_JOIN_AFTER_FAST);
+  p = q;
+  // Two networks found: half of what's left for each
+  WifiInputs in = at(WIFI_FAST_MS + 1600);
+  in.scanResult = 2;
+  wifiTick(m, in);
+  CHECK(m.phase == WIFI_JOIN);
+  const uint32_t joinAt = WIFI_FAST_MS + 1600;
+  const uint16_t half = WIFI_BAR_JOIN_AFTER_FAST + (WIFI_BAR_FULL - WIFI_BAR_JOIN_AFTER_FAST) / 2;
+  q = wifiProgress(m, joinAt, p);
+  CHECK(q >= WIFI_BAR_JOIN_AFTER_FAST && q > p);
+  p = q;
+  q = wifiProgress(m, joinAt + WIFI_JOIN_MS - 1, p);
+  CHECK(q > p && q < half);
+  p = q;
+  // The first one timed out: the second one's slice
+  wifiTick(m, at(joinAt + WIFI_JOIN_MS));
+  CHECK(m.next == 1);
+  q = wifiProgress(m, joinAt + WIFI_JOIN_MS, p);
+  CHECK(q >= half && q < WIFI_BAR_FULL);
+  p = q;
+  q = wifiProgress(m, joinAt + 2 * WIFI_JOIN_MS - 1, p);
+  CHECK(q > p && q < WIFI_BAR_FULL);
+  // Connected: full
+  in = at(joinAt + WIFI_JOIN_MS + 2000);
+  in.connected = true;
+  wifiTick(m, in);
+  CHECK(wifiProgress(m, joinAt + WIFI_JOIN_MS + 2000, q) == WIFI_BAR_FULL);
+}
+
+static void testProgressWithoutFastJoin() {
+  // Nothing remembered: the scan starts at the left end and gets more room
+  WifiMachine m;
+  wifiStart(m, 0, false);
+  CHECK(wifiProgress(m, 0, 0) == 0);
+  uint16_t p = wifiProgress(m, WIFI_SCAN_MS - 1, 0);
+  CHECK(p > 0 && p < WIFI_BAR_JOIN);
+  CHECK(p > WIFI_BAR_JOIN_AFTER_FAST - WIFI_BAR_SCAN_AFTER_FAST);
+  WifiInputs in = at(1500);
+  in.scanResult = 1;
+  wifiTick(m, in);
+  uint16_t q = wifiProgress(m, 1500, 0);
+  CHECK(q == WIFI_BAR_JOIN);
+  // One network: all that's left is its slice
+  q = wifiProgress(m, 1500 + WIFI_JOIN_MS - 1, q);
+  CHECK(q > WIFI_BAR_JOIN && q < WIFI_BAR_FULL);
+}
+
+static void testProgressHoldsAndNeverGoesBack() {
+  // Nothing found: the bar stays where it got to
+  WifiMachine m;
+  wifiStart(m, 0, false);
+  uint16_t p = wifiProgress(m, 1000, 0);
+  WifiInputs in = at(1600);
+  in.scanResult = 0;
+  wifiTick(m, in);
+  CHECK(m.phase == WIFI_NONE);
+  CHECK(wifiProgress(m, 1600, p) == p);
+  CHECK(wifiProgress(m, 60000, p) == p);
+  // A search started again (a retry) doesn't pull a bar back that got further before
+  wifiStart(m, 70000, false);
+  CHECK(wifiProgress(m, 70000, 400) == 400);
+  // Idle: nothing to show, nothing taken away
+  wifiStop(m);
+  CHECK(wifiProgress(m, 80000, 123) == 123);
+  // millis() wrapping during a step: still inside it
+  wifiStart(m, 0xFFFFFF00u, true);
+  uint16_t w = wifiProgress(m, 0x100u, 0);
+  CHECK(w > 0 && w < WIFI_BAR_SCAN_AFTER_FAST);
+}
+
 int main() {
   testRanking();
   testFastJoin();
@@ -277,6 +369,9 @@ int main() {
   testLostConnection();
   testStop();
   testPulse();
+  testProgressSteps();
+  testProgressWithoutFastJoin();
+  testProgressHoldsAndNeverGoesBack();
   printf("wifi: %d checks, %d failures\n", checks, failures);
   return failures == 0 ? 0 : 1;
 }

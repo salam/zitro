@@ -1,6 +1,7 @@
 // The WiFi connection, found in the background (order and timings in wifi_core.h). Nothing here
 // waits except wifiWaitForLink(): the screens and recording go on while Zitro searches, and a corner
-// icon pulses grey to white on the home and recording screens until the connection stands.
+// icon pulses grey to white on the home and recording screens until the connection stands. What
+// can't go on without WiFi (a recorded question, the setup screen's retry) waits on the WiFi page.
 // wifiBackgroundTick() runs from loop() and from the recording loop.
 
 static WifiMachine wifiMachine;
@@ -32,6 +33,13 @@ static int wifiIconX = 0, wifiIconY = 0;
 uint8_t wifiIconTourLevel = 0;  // the screenshot tour shows the icon at this brightness (0: off)
 static const int WIFI_ICON_W = 17;
 static const int WIFI_ICON_H = 14;
+
+// The WiFi page
+static bool wifiPageUp = false;      // the searching page is on screen: its frames may be drawn
+static bool wifiPageGerman = true;   // read once per wait: the setting lives in flash
+static String wifiPageDetail;        // the line under the title, as drawn
+static uint16_t wifiPageBar = 0;     // the bar, as drawn
+static unsigned long wifiPageLastFrame = 0;
 
 // A disconnect reported while joining: the network isn't there or refused. Our own disconnect
 // (ASSOC_LEAVE) doesn't count. Runs in the network event task.
@@ -254,9 +262,10 @@ void wifiIconScreenAllows() {
 }
 
 // Every full-screen draw passes here (captureCanvas()); the home and recording screens then hand the
-// corner back with wifiIconScreenAllows()
+// corner back with wifiIconScreenAllows(), the WiFi page takes the screen back after its own draw
 void wifiIconOnScreenDraw() {
   wifiIconScreenOk = false;
+  wifiPageUp = false;
 }
 
 static void wifiIconTick() {
@@ -280,23 +289,197 @@ void wifiBackgroundTick() {
   wifiIconTick();
 }
 
-// Wait until connected, searching at once if no search is under way. False after maxMs, or once a
-// whole search found no known network. showIcon: the screen shown has room for the corner icon.
-bool wifiWaitForLink(uint32_t maxMs, bool showIcon) {
-  if (apMode) return false;
-  if (wifiNetworkCount == 0) loadWiFiCredentials();
-  if (wifiNetworkCount == 0) return false;
-  if (wifiMachine.phase == WIFI_IDLE) wifiRadioOn();
-  if (wifiMachine.phase == WIFI_UP && WiFi.status() != WL_CONNECTED) {
-    wifiRun(wifiStart(wifiMachine, millis(), true));  // lost and not noticed yet
-  } else {
-    wifiRun(wifiKick(wifiMachine, millis(), wifiCanFast()));
+// =============== THE WIFI PAGE ===============
+// Full screen while something can't go on without WiFi: a large symbol whose arcs pulse grey to white
+// outwards, what is being tried, and a bar that moves on in steps (wifiProgress()). Drawn whole when
+// its text changes; in between only the symbol and the bar, so no full-screen canvas per frame.
+
+static const int WIFI_PAGE_CX = WIDTH / 2;
+static const int WIFI_PAGE_CY = 48;  // centre of the symbol's dot
+static const int WIFI_PAGE_SYM_W = 56, WIFI_PAGE_SYM_H = 40;  // the box redrawn for the pulse
+static const int WIFI_PAGE_SYM_X = WIFI_PAGE_CX - WIFI_PAGE_SYM_W / 2;
+static const int WIFI_PAGE_SYM_Y = WIFI_PAGE_CY - 35;
+static const int WIFI_PAGE_TITLE_Y = 76;
+static const int WIFI_PAGE_DETAIL_Y = 98;
+static const int WIFI_BAR_X = 50, WIFI_BAR_Y = 117, WIFI_BAR_W = 140, WIFI_BAR_H = 6;
+static const uint32_t WIFI_PAGE_AFTER_MS = 300;  // a connection this quick doesn't flash the page
+static const uint32_t WIFI_PAGE_FRAME_MS = 40;
+
+static uint16_t wifiGrey(M5Canvas& c, uint8_t level) {
+  return c.color565(level, level, level);
+}
+
+// Brightness of the dot with the inner arc, the middle arc and the outer arc
+static void wifiPageLevels(WifiPageLook look, uint32_t now, uint8_t* level) {
+  for (int i = 0; i < 3; i++) {
+    if (look == WIFI_PAGE_CONNECTED) {
+      level[i] = 255;
+    } else if (look == WIFI_PAGE_NONE) {
+      level[i] = WIFI_ICON_GREY;
+    } else {
+      level[i] = wifiPulseLevel(now - i * WIFI_WAVE_MS);  // the outer arcs follow the inner ones
+    }
   }
-  if (wifiMachine.phase == WIFI_UP) return true;
-  if (showIcon) {
+}
+
+// The large symbol, the same shape as the corner icon: a dot and three arcs, the dot's centre at cx, cy
+static void drawWifiPageSymbol(M5Canvas& c, int cx, int cy, const uint8_t* level) {
+  c.fillCircle(cx, cy, 4, wifiGrey(c, level[0]));
+  c.fillArc(cx, cy, 10, 14, 225, 315, wifiGrey(c, level[0]));
+  c.fillArc(cx, cy, 19, 23, 225, 315, wifiGrey(c, level[1]));
+  c.fillArc(cx, cy, 28, 32, 225, 315, wifiGrey(c, level[2]));
+}
+
+static void drawWifiPageBar(M5Canvas& c, int x, int y, uint16_t progress) {
+  c.fillRoundRect(x, y, WIFI_BAR_W, WIFI_BAR_H, WIFI_BAR_H / 2, wifiGrey(c, 55));
+  int w = (int)((uint32_t)WIFI_BAR_W * progress / WIFI_BAR_FULL);
+  if (w > 0 && w < WIFI_BAR_H) w = WIFI_BAR_H;  // a sliver still has round ends
+  if (w > 0) c.fillRoundRect(x, y, w, WIFI_BAR_H, WIFI_BAR_H / 2, CITRUS);
+}
+
+// text, cut short with "..." to fit maxW pixels, whole characters only
+static String wifiFitWidth(M5Canvas& c, const String& text, int maxW) {
+  if (c.textWidth(text) <= maxW) return text;
+  String s = text;
+  while (s.length() > 0 && c.textWidth(s + "...") > maxW) {
+    int end = s.length() - 1;
+    while (end > 0 && ((uint8_t)s[end] & 0xC0) == 0x80) end--;  // back to the character's first byte
+    s.remove(end);
+  }
+  return s + "...";
+}
+
+static String wifiPageTitle(WifiPageLook look) {
+  if (look == WIFI_PAGE_CONNECTED) return wifiPageGerman ? "Verbunden!" : "Connected!";
+  if (look == WIFI_PAGE_NONE) return wifiPageGerman ? "Kein bekanntes WLAN" : "No known WiFi found";
+  return wifiPageGerman ? "Suche WLAN..." : "Looking for WiFi...";
+}
+
+// The line under the title while searching: the network being joined, with "2/3" when the scan found
+// several, or the scan itself. A tab separates the count, which stays when the name is cut short.
+static String wifiPageSearchText(const String& ssid, int next, int count) {
+  if (ssid.length() == 0) return wifiPageGerman ? "Netze in der Nähe" : "Networks nearby";
+  if (count < 2) return ssid;
+  return ssid + "\t" + String(next + 1) + "/" + String(count);
+}
+
+static String wifiPageNoneText() {
+  return wifiPageGerman ? "Öffne die Einrichtung..." : "Opening setup...";
+}
+
+static String wifiPageSearchDetail() {
+  if (wifiMachine.phase == WIFI_SCAN) return wifiPageSearchText("", 0, 0);
+  if (wifiJoining < 0 || wifiJoining >= wifiNetworkCount) return "";
+  const int count = wifiMachine.phase == WIFI_JOIN ? wifiMachine.candidates : 0;
+  return wifiPageSearchText(wifiNetworks[wifiJoining].ssid, wifiMachine.next, count);
+}
+
+// The whole page. now: where the pulse is; progress: the bar (not drawn when nothing was found)
+static void drawWifiPage(WifiPageLook look, const String& detail, uint16_t progress, uint32_t now) {
+  M5.Display.setRotation(getLandscapeRotation());
+  M5Canvas canvas(&M5.Display);
+  canvas.createSprite(WIDTH, HEIGHT);
+  canvas.fillSprite(TFT_BLACK);
+  uint8_t level[3];
+  wifiPageLevels(look, now, level);
+  drawWifiPageSymbol(canvas, WIFI_PAGE_CX, WIFI_PAGE_CY, level);
+
+  canvas.setFreeFont(FontManager::getFont12pt());
+  canvas.setTextDatum(MC_DATUM);
+  canvas.setTextColor(TFT_WHITE);
+  canvas.drawString(wifiPageTitle(look), WIDTH / 2, WIFI_PAGE_TITLE_Y);
+
+  String line = detail;
+  const int tab = detail.indexOf('\t');
+  const int maxW = WIDTH - 24;
+  if (tab >= 0) {
+    const String count = "  " + detail.substring(tab + 1);
+    line = wifiFitWidth(canvas, detail.substring(0, tab), maxW - canvas.textWidth(count)) + count;
+  } else {
+    line = wifiFitWidth(canvas, detail, maxW);
+  }
+  canvas.setTextColor(wifiGrey(canvas, 160));
+  canvas.drawString(line, WIDTH / 2, WIFI_PAGE_DETAIL_Y);
+
+  if (look != WIFI_PAGE_NONE) drawWifiPageBar(canvas, WIFI_BAR_X, WIFI_BAR_Y, progress);
+
+  drawBatteryIndicator(canvas);
+  captureCanvas(canvas);
+  wifiPageUp = look == WIFI_PAGE_SEARCHING;
+  canvas.pushSprite(0, 0);
+  canvas.deleteSprite();
+  wifiPageDetail = detail;
+  wifiPageBar = progress;
+  wifiPageLastFrame = millis();
+}
+
+// One frame of the searching page: the pulse and the bar; all of it when the text changed
+static void wifiPageFrame() {
+  const unsigned long now = millis();
+  if (wifiPageUp && now - wifiPageLastFrame < WIFI_PAGE_FRAME_MS) return;
+  const uint16_t bar = wifiProgress(wifiMachine, now, wifiPageBar);
+  const String detail = wifiPageSearchDetail();
+  if (!wifiPageUp || detail != wifiPageDetail) {
+    drawWifiPage(WIFI_PAGE_SEARCHING, detail, bar, now);
+    return;
+  }
+  wifiPageLastFrame = now;
+  uint8_t level[3];
+  wifiPageLevels(WIFI_PAGE_SEARCHING, now, level);
+  M5Canvas c(&M5.Display);
+  c.createSprite(WIFI_PAGE_SYM_W, WIFI_PAGE_SYM_H);
+  c.fillSprite(TFT_BLACK);
+  drawWifiPageSymbol(c, WIFI_PAGE_CX - WIFI_PAGE_SYM_X, WIFI_PAGE_CY - WIFI_PAGE_SYM_Y, level);
+  c.pushSprite(WIFI_PAGE_SYM_X, WIFI_PAGE_SYM_Y);
+  c.deleteSprite();
+  if (bar != wifiPageBar) {
+    c.createSprite(WIFI_BAR_W, WIFI_BAR_H);
+    c.fillSprite(TFT_BLACK);
+    drawWifiPageBar(c, 0, 0, bar);
+    c.pushSprite(WIFI_BAR_X, WIFI_BAR_Y);
+    c.deleteSprite();
+    wifiPageBar = bar;
+  }
+}
+
+// The page now: searching (before a wait, so a button press shows at once), connected with the
+// network's name, or nothing found before the setup screen opens
+void wifiPageShow(WifiPageLook look) {
+  wifiPageGerman = deviceLanguageIsGerman();
+  String detail;
+  if (look == WIFI_PAGE_SEARCHING) {
+    detail = wifiPageSearchDetail();
+  } else if (look == WIFI_PAGE_CONNECTED) {
+    detail = WiFi.SSID();
+  } else {
+    detail = wifiPageNoneText();
+  }
+  drawWifiPage(look, detail, look == WIFI_PAGE_SEARCHING ? 0 : WIFI_BAR_FULL, millis());
+}
+
+// For the screenshot tour: the page at one moment of a search, without searching, with a made-up
+// network name (never the real one). ssid empty while searching: the scan.
+void wifiPageTourShot(WifiPageLook look, const String& ssid, int next, int count, uint16_t progress,
+                      uint32_t pulseAt) {
+  wifiPageGerman = deviceLanguageIsGerman();
+  String detail = ssid;
+  if (look == WIFI_PAGE_SEARCHING) detail = wifiPageSearchText(ssid, next, count);
+  if (look == WIFI_PAGE_NONE) detail = wifiPageNoneText();
+  drawWifiPage(look, detail, progress, pulseAt);
+  wifiPageUp = false;  // not a real search: no frames follow
+}
+
+// =============== WAITING FOR THE CONNECTION ===============
+
+static bool wifiWaitLoop(uint32_t maxMs, WifiWaitShow show) {
+  if (show == WIFI_SHOW_ICON) {
     wifiIconPlace();
     wifiIconDrawn = false;
     wifiIconScreenOk = true;
+  }
+  if (show == WIFI_SHOW_PAGE) {
+    wifiPageGerman = deviceLanguageIsGerman();
+    if (!wifiPageUp) wifiPageBar = 0;
   }
   const unsigned long start = millis();
   while (millis() - start < maxMs) {
@@ -306,19 +489,38 @@ bool wifiWaitForLink(uint32_t maxMs, bool showIcon) {
       return true;
     }
     if (wifiMachine.phase == WIFI_NONE) return false;
+    // The page right away when it is already up (the caller showed it), else after a short while
+    if (show == WIFI_SHOW_PAGE && (wifiPageUp || millis() - start >= WIFI_PAGE_AFTER_MS)) wifiPageFrame();
     delay(10);
   }
   Serial.println("WiFi: gave up waiting");
   return WiFi.status() == WL_CONNECTED;
 }
 
-// Blocking connect for the setup screen's retry
+// Wait until connected, searching at once if no search is under way. False after maxMs, or once a
+// whole search found no known network. show: what the screen shows meanwhile.
+bool wifiWaitForLink(uint32_t maxMs, WifiWaitShow show) {
+  if (apMode) return false;
+  if (wifiNetworkCount == 0) loadWiFiCredentials();
+  if (wifiNetworkCount == 0) return false;
+  if (wifiMachine.phase == WIFI_IDLE) wifiRadioOn();
+  if (wifiMachine.phase == WIFI_UP && WiFi.status() != WL_CONNECTED) {
+    wifiRun(wifiStart(wifiMachine, millis(), true));  // lost and not noticed yet
+  } else {
+    wifiRun(wifiKick(wifiMachine, millis(), wifiCanFast()));
+  }
+  const bool up = wifiMachine.phase == WIFI_UP || wifiWaitLoop(maxMs, show);
+  wifiPageUp = false;  // no more frames: the caller draws what comes next
+  return up;
+}
+
+// Blocking connect for the setup screen's retry, on the WiFi page
 bool connectToWiFi() {
   loadWiFiCredentials();
   listStoredNetworks();
   if (wifiNetworkCount == 0) return false;
   wifiLinkStart();
-  return wifiWaitForLink(WIFI_CONNECT_WAIT_MS, false);
+  return wifiWaitForLink(WIFI_CONNECT_WAIT_MS, WIFI_SHOW_PAGE);
 }
 
 // For a request that found no connection, or failed on one that looked fine: wait for the
@@ -334,5 +536,5 @@ bool reconnectWiFiNow() {
     Serial.println("WiFi: request failed on a connection, joining again");
     wifiRun(wifiStart(wifiMachine, millis(), wifiCanFast()));
   }
-  return wifiWaitForLink(WIFI_CONNECT_WAIT_MS, false);
+  return wifiWaitForLink(WIFI_CONNECT_WAIT_MS, WIFI_SHOW_NOTHING);
 }

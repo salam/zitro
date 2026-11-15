@@ -193,6 +193,66 @@ inline uint8_t wifiPulseLevel(uint32_t now) {
   return (uint8_t)(WIFI_ICON_GREY + (255 - WIFI_ICON_GREY) * up / half);
 }
 
+// What the screen shows while something waits for the connection (wifiWaitForLink)
+enum WifiWaitShow : uint8_t {
+  WIFI_SHOW_NOTHING,  // the screen stays as it is: a request already under way
+  WIFI_SHOW_ICON,     // the corner icon on the screen shown ("Restoring...")
+  WIFI_SHOW_PAGE,     // the WiFi page: a recorded question, the setup screen's retry
+};
+
+// The WiFi page's looks
+enum WifiPageLook : uint8_t {
+  WIFI_PAGE_SEARCHING,  // the arcs pulse outwards, the bar moves on
+  WIFI_PAGE_CONNECTED,  // white, full bar, the network's name
+  WIFI_PAGE_NONE,       // grey and still, no bar: no known network answered
+};
+
+static const uint32_t WIFI_WAVE_MS = 200;  // on the page, each arc pulses this long after the one inside it
+
+// The WiFi page's progress bar, 0 .. WIFI_BAR_FULL. How long a search takes isn't known ahead, so the
+// bar moves in steps: the remembered network, the scan, then an equal slice for each network found.
+// Within a step it creeps towards the step's end without ever reaching it.
+static const uint16_t WIFI_BAR_FULL = 1000;
+static const uint16_t WIFI_BAR_SCAN_AFTER_FAST = 250;  // where the scan starts after a fast join
+static const uint16_t WIFI_BAR_JOIN_AFTER_FAST = 450;  // where joining starts after a fast join and a scan
+static const uint16_t WIFI_BAR_JOIN = 300;             // where joining starts after a scan alone
+static const uint32_t WIFI_BAR_CREEP_FAST_MS = 1000;   // half a step after this long (fast join: about 1.7 s)
+static const uint32_t WIFI_BAR_CREEP_SCAN_MS = 1600;   // one scan: about 1.6 s
+static const uint32_t WIFI_BAR_CREEP_JOIN_MS = 2500;
+
+inline uint16_t wifiBarCreep(uint16_t from, uint16_t to, uint32_t elapsed, uint32_t halfAfter) {
+  return (uint16_t)(from + (uint64_t)(to - from) * elapsed / ((uint64_t)elapsed + halfAfter));
+}
+
+// shown: what the bar shows now. The bar never goes back, and stays put once a search found nothing.
+inline uint16_t wifiProgress(const WifiMachine& m, uint32_t now, uint16_t shown) {
+  const uint32_t elapsed = now - m.since;
+  const uint16_t joinFrom = m.canFast ? WIFI_BAR_JOIN_AFTER_FAST : WIFI_BAR_JOIN;
+  uint16_t p = shown;
+  switch (m.phase) {
+    case WIFI_FAST:
+      p = wifiBarCreep(0, WIFI_BAR_SCAN_AFTER_FAST, elapsed, WIFI_BAR_CREEP_FAST_MS);
+      break;
+    case WIFI_SCAN:
+      p = wifiBarCreep(m.canFast ? WIFI_BAR_SCAN_AFTER_FAST : 0, joinFrom, elapsed, WIFI_BAR_CREEP_SCAN_MS);
+      break;
+    case WIFI_JOIN: {
+      const uint16_t count = m.candidates > 0 ? m.candidates : 1;
+      const uint16_t span = WIFI_BAR_FULL - joinFrom;
+      const uint16_t from = joinFrom + span * m.next / count;
+      const uint16_t to = joinFrom + span * (m.next + 1) / count;
+      p = wifiBarCreep(from, to, elapsed, WIFI_BAR_CREEP_JOIN_MS);
+      break;
+    }
+    case WIFI_UP:
+      p = WIFI_BAR_FULL;
+      break;
+    default:  // idle, nothing found
+      break;
+  }
+  return p > shown ? p : shown;
+}
+
 // How long a caller waits for the connection before giving up
 static const uint32_t WIFI_CONNECT_WAIT_MS = 30000;   // a request, the setup screen's retry
 static const uint32_t WIFI_QUESTION_WAIT_MS = 25000;  // a recorded question, before the setup screen opens

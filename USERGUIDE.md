@@ -124,7 +124,7 @@ Development builds show two small grey lines under the logo at power-on: the new
   - Triple click: capture photo with camera and analyze image (if camera attached).
   - Sleep wake: first press shows previous result; press again after 2 seconds to start recording.
   - While recording: tap once to start the recording over; tap twice quickly to cancel and show the last answer again.
-  - AP mode: retry WiFi connection.
+  - AP mode: retry WiFi connection. A big WiFi symbol and a progress bar show the search, then "Verbunden!" with your network's name.
   - Print menu: confirm the printer, then the page size. The last confirmation prints.
 - Button B (side)
   - Short click (image view): scroll. The upper of the two side buttons scrolls up, the lower one down, however you hold the stick.
@@ -515,7 +515,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 - After inactivity: display sleep ~30s, light sleep ~90s, deep sleep ~180s. The three times can be changed on the Settings tab and are used right away.
 - Before sleeping, Zitro switches off WiFi, the screen, the motion sensor, the microphone and the speaker to save battery.
 - Press Button A to wake. Deep sleep reboots and restores the last response if possible.
-- Zitro doesn't wait for WiFi when it wakes: you can ask right away while it looks for the network in the background. A WiFi symbol pulses grey and white in the top right corner meanwhile, and disappears once Zitro is connected.
+- Zitro doesn't wait for WiFi when it wakes: you can ask right away while it looks for the network in the background. A WiFi symbol pulses grey and white in the top right corner meanwhile, and disappears once Zitro is connected. If your question is ready before the WiFi is, Zitro shows a big WiFi page with the network it's trying and a progress bar, then answers as soon as it's online.
 - With a reminder timer running, Zitro stays in light sleep (not deep sleep) so the alarm can ring on time; this uses more battery.
 
 ## User interface hierarchy
@@ -533,8 +533,9 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
   - Recording (large mic icon + progress; the WiFi symbol too while WiFi is still being searched)
     - Tap: "Restarting..." and record again
     - Double tap: cancel, back to the last answer
-  - Transcribing (icon). Without WiFi yet, it waits here with the WiFi symbol
-    - No known WiFi found: "No known WiFi found.", then the setup screen
+  - Waiting for WiFi, only if Zitro isn't connected yet: big WiFi symbol whose arcs light up outwards, "Suche WLAN...", the network it's trying (or "Netze in der Nähe" while it looks around), and a lemon-yellow progress bar
+    - No known WiFi found: the WiFi page in grey, "Kein bekanntes WLAN", then the setup screen
+  - Transcribing (icon)
   - Thinking (large robot icon) / Calculating / Creating image / Finding image
   - These screens speak the stick's language (Settings → Language). In German, the default: "Ich verstehe...", "Ich überlege...", "Ich rechne...", "Ich male...", "Ich suche ein Bild...", "Nochmal von vorn...", and so on. The setup screen with the QR code stays in English.
   - Answer (text view)

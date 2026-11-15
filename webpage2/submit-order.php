@@ -62,6 +62,13 @@ if (abs(($productPrice + $shippingCost) - $totalCost) > 0.01) {
     jsonResponse(false, 'Price calculation mismatch');
 }
 
+// Which stick: shop pages cached from before the choice send none, and sold only the PLUS2
+$device = trim($input['device'] ?? 'plus2');
+$deviceLabel = deviceName($device);
+if (!$deviceLabel) {
+    jsonResponse(false, 'Please choose a stick');
+}
+
 // Check if US order (which should be blocked)
 if (strtoupper($input['country']) === 'US') {
     jsonResponse(false, 'We currently don\'t ship to the US. Please check the alternative options on the shop page.');
@@ -74,9 +81,9 @@ try {
     $stmt = $db->prepare("
         INSERT INTO orders (
             full_name, email, address, city, state, zip, country,
-            product_price, shipping_cost, total_cost, order_status,
+            device, product_price, shipping_cost, total_cost, order_status,
             ip_address, user_agent
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     $stmt->execute([
@@ -87,6 +94,7 @@ try {
         trim($input['state']),
         trim($input['zip']),
         trim($input['country']),
+        $device,
         $productPrice,
         $shippingCost,
         $totalCost,
@@ -104,7 +112,8 @@ try {
     $notificationBody = "New order received!\n\n";
     $notificationBody .= "ORDER DETAILS:\n";
     $notificationBody .= "Order ID: #$orderId\n";
-    $notificationBody .= "Status: pending\n\n";
+    $notificationBody .= "Status: pending\n";
+    $notificationBody .= "Stick: $deviceLabel\n\n";
 
     $notificationBody .= "CUSTOMER:\n";
     $notificationBody .= "Name: {$input['fullName']}\n";
@@ -124,7 +133,7 @@ try {
     $notificationBody .= "IP Address: " . getClientIp() . "\n";
     $notificationBody .= "User Agent: " . getUserAgent() . "\n";
 
-    sendNotificationEmail("New Order #$orderId - $" . number_format($totalCost, 2), $notificationBody);
+    sendNotificationEmail("New Order #$orderId - $deviceLabel - $" . number_format($totalCost, 2), $notificationBody);
 
     // In production, you would:
     // 1. Create a Stripe checkout session here

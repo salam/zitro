@@ -1,7 +1,7 @@
 # Requirements for Supported Boards
 
 - **M5StickC Plus2**: ESP32, 8 MB flash, USB through a WCH USB serial chip (USB vendor ID `0x1A86`). The installer puts Zitro on it
-- **M5Stack StickS3**: ESP32-S3 on its own USB (Espressif, vendor ID `0x303A`). Zitro runs on it from the same sketch; the installer can't install on it yet
+- **M5Stack StickS3**: ESP32-S3 on its own USB (Espressif, vendor ID `0x303A`). Zitro runs on it from the same sketch; the installer can't install on it yet, a separate StickS3 installer is in the works. zitro.spot already offers both sticks (see "Requirements for Get Zitro and the Shop")
   - Build: `board.h` picks the board (`ZITRO_STICKS3` when `CONFIG_IDF_TARGET_ESP32S3`). ESP32 core 3.3.6 has no StickS3 board entry, so `verify.sh` builds `esp32:esp32:esp32s3` with 8 MB flash, OPI PSRAM, USB CDC on boot and the Plus2's partition table (`default_8MB`), next to the Plus2 build
   - Libraries: M5Unified 0.2.12 breaks the StickS3: its microphone is never switched on (fixed in 0.2.13), ESP32-S3 audio samples come out of order (0.2.20), its clock chip is driven as the wrong part (0.2.27). The StickS3 build takes M5Unified 0.2.29 and M5GFX 0.2.36, pinned by commit (`scripts/sticks3_libraries.sh`, used by `verify.sh`), and refuses to compile with an older M5Unified. The Plus2 keeps the installed versions until it has been tested with the new ones
   - Buttons: A and B only, because the power button belongs to the power chip (M5PM1) and the firmware can't read it. Button B does Button C's job too: one click is B, a double click is C, three quick clicks open the setup page (where three presses of C would), holding B is holding C where holding B has no job of its own (music: back to the text). A single click on B counts once the double-click window has passed. Every B and C read goes through `buttonBClicked()`, `buttonCClicked()`, `buttonCHeld()`, `buttonBDoubleClicked()` and `setupPressesDone()`. The Plus2's double click on B in a view (coloured note heads in music) isn't there on the StickS3
@@ -358,6 +358,14 @@ Requested by the user on 2026-11-14: start faster after a wake, record right awa
 - Setup screen retry (Button A): the WiFi page at once, then the same search, blocking, up to 30 s. Connected: the page's "connected" look for 2 s, then the home screen. Not connected: back to the setup screen
 
 ---
+
+# Requirements for Get Zitro and the Shop
+
+- zitro.spot names both sticks: every page's footer says "Runs on the M5StickC PLUS2 and the M5Stack StickS3." (`.footer-devices`, its own text block under the tagline, so the footer columns keep their translations)
+- "Get Zitro" asks "Do you have an M5StickC PLUS2 or an M5Stack StickS3?" with three buttons, in this order: "Yes, S3", "Yes, PLUS2", "Not yet". Both yes buttons open the e-mail form for the installer link; "Not yet" opens the shop. No device photo, as there is none of the StickS3 yet. "Get Zitro" on the other pages links to `index.html?download=true`, which opens the same question (it used to skip it and show the e-mail form)
+- The download request sends `hasDevice` as `s3` or `plus2` (`send-download.php`). Pages cached from before still send `yes`, which is kept. Anything else is stored as `unknown`. The notification e-mail to the admin names the stick in the subject and body ("New Download Request (M5Stack StickS3)", "Stick: M5Stack StickS3"), because StickS3 owners get the separate StickS3 installer
+- The shop sells Zitro pre-flashed on either stick, at the same price: "Your stick" comes first in the order form: two radio choices (`name="device"`, PLUS2 preselected), each with a circle in the stick's case colour and the colour's name: PLUS2 yellow (`#f5c400`), StickS3 gray (`#9b9a97`). shop.js sends `device` (`plus2` or `s3`). `submit-order.php` refuses other values and treats a missing one as `plus2` (shop pages cached from before sold only the PLUS2). The order is stored with its stick (`orders.device`; `db.php` adds the column to older databases, older orders count as `plus2`), and the notification e-mail names it in the subject and body ("New Order #12 - M5Stack StickS3 - $55.00", "Stick: M5Stack StickS3")
+- `deviceName()` in `db.php` turns `plus2`/`s3` into the full names; the admin page shows the stick for download requests and orders
 
 # Requirements for Website Languages
 

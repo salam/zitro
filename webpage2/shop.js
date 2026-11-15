@@ -90,7 +90,8 @@ orderForm.addEventListener('submit', async (e) => {
         city: document.getElementById('city').value,
         state: document.getElementById('state').value,
         zip: document.getElementById('zip').value,
-        country: countrySelect.value
+        country: countrySelect.value,
+        device: orderForm.querySelector('input[name="device"]:checked').value
     };
 
     const shippingCost = shippingRates[formData.country] || 25.00;

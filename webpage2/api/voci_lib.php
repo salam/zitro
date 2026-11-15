@@ -13,6 +13,12 @@ const VOCI_MAX_LISTS = 100;           // Lists per stick
 const VOCI_MAX_BYTES = 1048576;       // Bytes of list files per stick
 const VOCI_MAX_UNZIPPED = 67108864;   // Bytes of the collection inside an Anki package
 const VOCI_MAX_NOTES = 20000;         // Notes read from an Anki package before giving up
+const VOCI_MAX_FIELD = 4096;          // Bytes read from one Anki field: a word with its markup fits many times
+const VOCI_TMP_PREFIX = 'voci-anki-'; // Collections extracted from packages, in the system's temp folder
+const VOCI_TMP_KEEP = 600;            // Seconds before such a file counts as left over and is deleted
+const VOCI_MAX_CELLS = 100;           // Cells kept from one row or note; only the first two filled columns count
+const VOCI_MAX_HEADERS = 20;          // Lines of Anki headers read (Anki writes each of its 11 kinds once)
+const VOCI_SCORE_BYTES = 1000;        // Bytes of a cell looked at for German signals; a side has at most 120 characters
 const VOCI_NEW_DIRS_PER_DAY = 20;     // New sticks per IP hash and day
 const VOCI_WRITES_PER_HOUR = 120;     // Changes per stick and hour
 const VOCI_PARSES_PER_HOUR = 120;     // Files read (previews) per IP hash and hour: reading costs the server time
@@ -129,20 +135,22 @@ function voci_fail(string $code, ?string $key = null, string|int ...$args): neve
 // An uploaded file as ['entries' => [['t', 'b'], ...], 'book', 'name', 'swapped', 'warnings'], t being the
 // trained language (English) and b German. Throws VociError with a message for parents.
 function voci_parse_file(string $path, string $filename): array {
+    voci_sweep_tmp(time());
     $size = @filesize($path);
     if ($size === false) voci_fail('no_file');
     if ($size > VOCI_MAX_UPLOAD) voci_fail('too_big');
-    $bytes = (string)file_get_contents($path);
-    if (str_starts_with($bytes, "PK\x03\x04")) {
+    $head = (string)file_get_contents($path, false, null, 0, 4);
+    if (str_starts_with($head, "PK\x03\x04")) {
         $table = voci_read_zip($path);
-    } elseif (str_starts_with($bytes, '%PDF')) {
+    } elseif (str_starts_with($head, '%PDF')) {
         voci_fail('unreadable', 'pdf');
-    } elseif (str_starts_with($bytes, "\xD0\xCF\x11\xE0")) {
+    } elseif (str_starts_with($head, "\xD0\xCF\x11\xE0")) {
         voci_fail('unreadable', 'spreadsheet');  // Old Excel (.xls)
     } else {
-        $text = voci_decode($bytes);
+        $text = voci_decode((string)file_get_contents($path));
         if (str_contains($text, "\0")) voci_fail('unreadable');
         $table = voci_read_text($text);
+        unset($text);  // The rows hold what is needed from here on
     }
     [$pairs, $swapped, $warnings] = voci_table_pairs($table);
     [$entries, $more] = voci_validate_entries($pairs, $table['unit']);
@@ -173,8 +181,11 @@ function voci_read_text(string $text): array {
     $html = false;
     $skip = [];
     $line = 1;
-    // Anki's text export starts with lines like "#separator:tab", "#html:true", "#deck column:3"
-    while (preg_match('/^#([a-z ]+):([^\n]*)(?:\n|$)/i', $text, $m) && in_array(strtolower(trim($m[1])), VOCI_ANKI_HEADERS, true)) {
+    $at = 0;
+    // Anki's text export starts with lines like "#separator:tab", "#html:true", "#deck column:3". Read in place
+    // and cut off once: the text isn't copied per line. Past the 20th, a line is a row like any other.
+    while ($line <= VOCI_MAX_HEADERS && preg_match('/\G#([a-z ]+):([^\n]*)(?:\n|$)/i', $text, $m, 0, $at)
+        && in_array(strtolower(trim($m[1])), VOCI_ANKI_HEADERS, true)) {
         $key = strtolower(trim($m[1]));
         $value = trim($m[2]);
         if ($key === 'separator') {
@@ -184,9 +195,10 @@ function voci_read_text(string $text): array {
         } elseif (str_ends_with($key, ' column') && ctype_digit($value) && (int)$value > 0) {
             $skip[] = (int)$value - 1;
         }
-        $text = substr($text, strlen($m[0]));
+        $at += strlen($m[0]);
         $line++;
     }
+    if ($at > 0) $text = substr($text, $at);
     if ($sep === null) {
         $cards = voci_quizlet_cards($text);
         if ($cards !== null) return ['rows' => $cards, 'html' => $html, 'skip' => [], 'join' => false, 'unit' => 'card'];
@@ -254,7 +266,7 @@ function voci_guess_separator(string $text): ?string {
     foreach (["\t", ';', ','] as $sep) {
         $lines = 0;
         foreach ($sample as $line) {
-            if (voci_count_outside_quotes($line, $sep) > 0) $lines++;
+            if (voci_outside_quotes($line, $sep)) $lines++;
         }
         if ($lines > $bestLines) {
             $best = $sep;
@@ -264,19 +276,22 @@ function voci_guess_separator(string $text): ?string {
     return $best;
 }
 
-function voci_count_outside_quotes(string $line, string $char): int {
-    $count = 0;
-    $quoted = false;
-    for ($i = 0, $n = strlen($line); $i < $n; $i++) {
-        if ($line[$i] === '"') $quoted = !$quoted;
-        elseif ($line[$i] === $char && !$quoted) $count++;
+// Whether $char is on the line outside quotes. Jumps from quote to quote: a long line takes no loop per byte.
+function voci_outside_quotes(string $line, string $char): bool {
+    $n = strlen($line);
+    for ($i = strcspn($line, '"' . $char); $i < $n; $i += strcspn($line, '"' . $char, $i)) {
+        if ($line[$i] === $char) return true;
+        $i = strpos($line, '"', $i + 1);  // The closing quote
+        if ($i === false) return false;
+        $i++;
     }
-    return $count;
+    return false;
 }
 
 // Rows of delimited text per RFC 4180: a field in quotes may hold the separator, line breaks and "" for a
 // quote. Spaces before an opening quote are allowed. Each row: ['cells', 'line' (where it starts), 'quoted'].
-// Blank rows are left out, and reading stops after 500 filled rows and a header (voci_add_row).
+// Blank rows are left out, and reading stops after 500 filled rows and a header (voci_add_row). A row keeps
+// its first 100 cells; the rest is still read to find where the row ends, but not kept.
 function voci_split_rows(string $text, string $sep, int $line = 1): array {
     $rows = [];
     $cells = [];
@@ -295,7 +310,7 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
             continue;
         }
         $c = $text[$i];
-        if ($c === '"' && !$cellQuoted && trim($cell) === '') {
+        if ($c === '"' && !$cellQuoted && voci_blank($cell)) {
             $cellQuoted = $rowQuoted = true;
             $cell = '';
             $i++;
@@ -319,12 +334,12 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
             $cell .= '"';
             $i++;
         } elseif ($c === $sep) {
-            $cells[] = $cell;
+            if (count($cells) < VOCI_MAX_CELLS) $cells[] = $cell;
             $cell = '';
             $cellQuoted = false;
             $i++;
         } else {  // End of the row
-            $cells[] = $cell;
+            if (count($cells) < VOCI_MAX_CELLS) $cells[] = $cell;
             voci_add_row($rows, $cells, $rowLine, $rowQuoted);
             $cells = [];
             $cell = '';
@@ -334,7 +349,7 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
         }
     }
     if ($cell !== '' || $cells) {
-        $cells[] = $cell;
+        if (count($cells) < VOCI_MAX_CELLS) $cells[] = $cell;
         voci_add_row($rows, $cells, $rowLine, $rowQuoted);
     }
     return $rows;
@@ -345,11 +360,16 @@ function voci_split_rows(string $text, string $sep, int $line = 1): array {
 // memory. A row with one side empty counts too.
 function voci_add_row(array &$rows, array $cells, int $line, bool $quoted): void {
     foreach ($cells as $cell) {
-        if (trim($cell) === '') continue;
+        if (voci_blank($cell)) continue;
         if (count($rows) > VOCI_MAX_ENTRIES) voci_fail('too_many', 'too_many_more');
         $rows[] = ['cells' => $cells, 'line' => $line, 'quoted' => $quoted];
         return;
     }
+}
+
+// Whether trim() would leave nothing, without copying the string
+function voci_blank(string $s): bool {
+    return strspn($s, " \t\n\r\0\x0B") === strlen($s);
 }
 
 // An Anki package (.apkg, .colpkg): the notes' fields as a table. Spreadsheets are zips too and get their
@@ -382,7 +402,9 @@ function voci_read_zip(string $path): array {
             voci_fail('unreadable');
         }
         if ($sizes[$pick] > VOCI_MAX_UNZIPPED) voci_fail('unreadable', 'anki_broken');
-        $tmp = tempnam(sys_get_temp_dir(), 'voci');
+        $tmp = tempnam(sys_get_temp_dir(), VOCI_TMP_PREFIX);
+        // finally doesn't run after a fatal error such as running out of memory; a shutdown function does
+        register_shutdown_function('voci_remove_file', $tmp);
         $in = $zip->getStream($pick);
         $out = fopen($tmp, 'wb');
         $copied = ($in && $out) ? stream_copy_to_stream($in, $out, VOCI_MAX_UNZIPPED + 1) : false;
@@ -396,9 +418,22 @@ function voci_read_zip(string $path): array {
     }
 }
 
-// The fields of every note in an Anki collection (SQLite), oldest note first.
+function voci_remove_file(string $path): void {
+    if (is_file($path)) @unlink($path);
+}
+
+// Deletes collections extracted more than 10 minutes ago: left by a process that was killed outright.
+function voci_sweep_tmp(int $now): void {
+    foreach (glob(sys_get_temp_dir() . '/' . VOCI_TMP_PREFIX . '*') ?: [] as $file) {
+        if (is_file($file) && (int)@filemtime($file) < $now - VOCI_TMP_KEEP) @unlink($file);
+    }
+}
+
+// The fields of the notes in an Anki collection (SQLite), oldest note first. Like rows of text (voci_add_row),
+// notes with nothing in them are left out and reading stops at the 502nd with something, before any is cleaned.
 function voci_read_anki_notes(string $file): array {
     $rows = [];
+    $read = 0;
     try {
         $db = new SQLite3($file, SQLITE3_OPEN_READONLY);
         $db->enableExceptions(true);
@@ -416,15 +451,27 @@ function voci_read_anki_notes(string $file): array {
         while (($column = $columns->fetchArray(SQLITE3_ASSOC)) !== false) {
             if ((int)($column['hidden'] ?? 0) !== 0) voci_fail('unreadable', 'anki_broken');
         }
-        $result = $db->query('SELECT flds FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
+        // Two fields' worth of each note: the first two filled fields are what counts
+        $result = $db->query('SELECT substr(flds, 1, ' . 2 * VOCI_MAX_FIELD . ') FROM notes ORDER BY rowid LIMIT ' . (VOCI_MAX_NOTES + 1));
         while (($note = $result->fetchArray(SQLITE3_NUM)) !== false) {
-            $rows[] = ['cells' => explode("\x1f", (string)$note[0]), 'line' => count($rows) + 1, 'quoted' => true];
+            $read++;
+            // At most 100 fields (explode leaves the rest in one more, which is dropped) of at most 4 KB each.
+            // A longer field is cut, so like any side over 120 characters it is left out with a warning.
+            $cells = explode("\x1f", mb_strcut((string)$note[0], 0, 2 * VOCI_MAX_FIELD, 'UTF-8'), VOCI_MAX_CELLS + 1);
+            if (count($cells) > VOCI_MAX_CELLS) array_pop($cells);
+            foreach ($cells as &$cell) {
+                if (strlen($cell) > VOCI_MAX_FIELD) $cell = mb_strcut($cell, 0, VOCI_MAX_FIELD, 'UTF-8');
+            }
+            unset($cell);
+            voci_add_row($rows, $cells, $read, true);  // A card's number counts the empty notes too
         }
         $db->close();
+    } catch (VociError $e) {
+        throw $e;  // Too many notes, or not a collection we read
     } catch (Exception $e) {
         voci_fail('unreadable', 'anki_broken');
     }
-    if (count($rows) > VOCI_MAX_NOTES) voci_fail('too_many', null, count($rows));
+    if ($read > VOCI_MAX_NOTES) voci_fail('too_many', null, $read);
     return $rows;
 }
 
@@ -470,8 +517,8 @@ function voci_table_pairs(array $table): array {
     [$a, $b] = $columns;
 
     $swapped = null;
-    $la = VOCI_HEADER_LABELS[mb_strtolower($rows[0]['cells'][$a] ?? '')] ?? null;
-    $lb = VOCI_HEADER_LABELS[mb_strtolower($rows[0]['cells'][$b] ?? '')] ?? null;
+    $la = voci_label($rows[0]['cells'][$a] ?? '');
+    $lb = voci_label($rows[0]['cells'][$b] ?? '');
     if ($la !== null && $lb !== null && $la !== $lb) {
         array_shift($rows);
         if ($la === 'de' || $lb === 'en') $swapped = true;
@@ -514,10 +561,17 @@ function voci_table_pairs(array $table): array {
     return [$pairs, $swapped, $warnings];
 }
 
+// What a header label says about its column, or null. Labels have at most 11 bytes, so a longer cell (with
+// room for letters that get shorter in lower case) isn't lowered just to look it up.
+function voci_label(string $cell): ?string {
+    return strlen($cell) <= 40 ? (VOCI_HEADER_LABELS[mb_strtolower($cell)] ?? null) : null;
+}
+
 // How German a cell looks: umlauts and ß +2, a capitalised single word +1, a German function word +1, an
-// English function word -1.
+// English function word -1. Only the first 1000 bytes count, so a huge cell isn't split into millions of words.
 function voci_german_score(string $s): int {
     if ($s === '') return 0;
+    if (strlen($s) > VOCI_SCORE_BYTES) $s = mb_strcut($s, 0, VOCI_SCORE_BYTES, 'UTF-8');
     $score = 0;
     if (preg_match('/[äöüßÄÖÜ]/u', $s)) $score += 2;
     if (!str_contains($s, ' ') && preg_match('/^\p{Lu}/u', $s)) $score += 1;
@@ -703,14 +757,15 @@ function voci_count_parse(string $data, string $ip, int $now, int $limit = VOCI_
     voci_count_ip($data, $ip, $now, 'p' . gmdate('YmdH', $now), $limit, 'rate_parse');
 }
 
-// One counter per period and IP hash in voci-data/_rate; refuses when it has reached the limit.
+// One counter per period and IP hash in voci-data/_rate; refuses when it has reached the limit. IPv6 counts per
+// /64 (voci_ip_key).
 function voci_count_ip(string $data, string $ip, int $now, string $period, int $limit, string $message): void {
     $rate = $data . '/_rate';
     if (!is_dir($rate)) @mkdir($rate, 0700, true);
     foreach (glob($rate . '/*') ?: [] as $file) {
         if (@filemtime($file) < $now - 2 * 86400) @unlink($file);
     }
-    $file = $rate . '/' . $period . '-' . substr(hash_hmac('sha256', $ip, voci_salt($data)), 0, 32);
+    $file = $rate . '/' . $period . '-' . substr(hash_hmac('sha256', voci_ip_key($ip), voci_salt($data)), 0, 32);
     $handle = fopen($file, 'c+');
     if (!$handle || !flock($handle, LOCK_EX)) throw new RuntimeException('cannot count requests');
     try {
@@ -723,6 +778,15 @@ function voci_count_ip(string $data, string $ip, int $now, string $period, int $
         flock($handle, LOCK_UN);
         fclose($handle);
     }
+}
+
+// What a connection is counted by: an IPv4 address as it is, an IPv6 address by its /64, since one connection
+// usually gets a whole /64 and can use any address in it. IPv4 written as IPv6 (::ffff:192.0.2.1) is IPv4.
+function voci_ip_key(string $ip): string {
+    $bin = @inet_pton($ip);
+    if ($bin === false || strlen($bin) !== 16) return $ip;
+    if (str_starts_with($bin, str_repeat("\0", 10) . "\xFF\xFF")) return (string)inet_ntop(substr($bin, 12));
+    return inet_ntop(substr($bin, 0, 8) . str_repeat("\0", 8)) . '/64';
 }
 
 function voci_salt(string $data): string {

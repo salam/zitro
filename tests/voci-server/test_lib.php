@@ -55,13 +55,42 @@ function message(string $name, string $bytes): string {
         return $e->getMessage();
     }
 }
-// A file read by parse_one.php in a PHP process with 32 MB of memory: its JSON line as an array, or what the
-// process printed instead (a fatal error when it ran out of memory)
-function parseApart(string $name, string $bytes): array|string {
-    $cmd = escapeshellarg(PHP_BINARY) . ' -d memory_limit=32M ' . escapeshellarg(__DIR__ . '/parse_one.php') . ' ' . escapeshellarg(fixture($name, $bytes)) . ' 2>&1';
-    $out = trim((string)shell_exec($cmd));
+// A file read by parse_one.php in a PHP process with 32 MB of memory (or $memory): its JSON line as an array,
+// or what the process printed instead (a fatal error when it ran out of memory). A process still reading after
+// 10 seconds is stopped, so a slow parser fails the check instead of holding up the test.
+function parseApart(string $name, string $bytes, string $memory = '32M'): array|string {
+    return parsePathApart(fixture($name, $bytes), $memory);
+}
+function parsePathApart(string $path, string $memory = '32M', int $deadline = 10): array|string {
+    $cmd = [PHP_BINARY, '-d', "memory_limit=$memory", __DIR__ . '/parse_one.php', $path];
+    $proc = proc_open($cmd, [0 => ['file', '/dev/null', 'r'], 1 => ['pipe', 'w'], 2 => ['redirect', 1]], $pipes);
+    if (!is_resource($proc)) return 'could not start php';
+    $out = '';
+    $end = microtime(true) + $deadline;
+    while (!feof($pipes[1])) {
+        $left = $end - microtime(true);
+        $read = [$pipes[1]];
+        $none = null;
+        if ($left <= 0 || !stream_select($read, $none, $none, (int)$left, (int)(fmod($left, 1) * 1e6))) {
+            proc_terminate($proc, 9);
+            fclose($pipes[1]);
+            proc_close($proc);
+            return "still reading after $deadline s";
+        }
+        $out .= (string)fread($pipes[1], 65536);
+    }
+    fclose($pipes[1]);
+    proc_close($proc);
+    $out = trim($out);
     $r = json_decode($out, true);
     return is_array($r) ? $r : substr($out, 0, 300);
+}
+// Whether a file read apart stayed within 32 MB of memory and 2 seconds, with what it took
+function cheap(array|string $r): bool {
+    return is_array($r) && $r['peak'] < 32 * 1048576 && $r['seconds'] < 2;
+}
+function cost(array|string $r): string {
+    return is_array($r) ? sprintf('%s, %.1f MB, %.2f s', $r['code'] ?? ($r['entries'] . ' entries'), $r['peak'] / 1048576, $r['seconds']) : $r;
 }
 
 // ---------- Delimited text ----------
@@ -289,6 +318,120 @@ check(($r['code'] ?? null) === 'no_entries', '2.5 million rows of ",": no_entrie
 $r = parseApart('blank-lines.csv', str_repeat("\n", 2500000) . str_repeat(" \n", 1000000) . "dog,Hund\ncat,Katze\n");
 check(($r['entries'] ?? null) === 2, 'millions of blank lines before two pairs: ' . show($r));
 
+// One very wide row: only the first 100 cells of a row are kept, the rest is skipped without being split up.
+// These run with 128 MB, so a parser that needs more than 32 MB shows its numbers instead of just failing.
+$r = parseApart('commas.csv', str_repeat(',', 5000000), '128M');
+check(($r['code'] ?? null) === 'no_entries' && cheap($r), '5 MB of commas on one line: no_entries within 32 MB and 2 s: ' . cost($r));
+$r = parseApart('wide-comma.csv', str_repeat('a,', 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million cells "a," on one line: one pair within 32 MB and 2 s: ' . cost($r));
+$r = parseApart('wide-tab.txt', str_repeat("a\t", 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million tab-separated cells on one line: ' . cost($r));
+$r = parseApart('wide-semi.txt', str_repeat('a;', 2600000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), '2.6 million semicolon-separated cells on one line: ' . cost($r));
+$path = apkg('wide.apkg', ['collection.anki2' => [[str_repeat("a\x1f", 2600000) . 'a']]]);
+$r = parsePathApart($path, '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), 'an apkg note with 2.6 million fields: ' . cost($r));
+// Anki notes: reading stops at the 502nd note with anything in it, like rows of text (voci_add_row)
+$path = apkg('many-notes.apkg', ['collection.anki2' => (function () {
+    for ($i = 0; $i < 20000; $i++) yield array_fill(0, 100, 'ab');
+})()]);
+$r = parsePathApart($path, '128M');
+check(($r['code'] ?? null) === 'too_many' && cheap($r), '20,000 notes of 100 fields: too_many within 32 MB and 2 s: ' . cost($r));
+$apkgMessage = function (string $path): string {
+    try {
+        voci_parse_file($path, basename($path));
+        return '';
+    } catch (VociError $e) {
+        return $e->getMessage();
+    }
+};
+$notes = [['English', 'Deutsch']];
+for ($i = 1; $i <= 500; $i++) {
+    $notes[] = ["word$i", "Wort$i"];
+    if ($i % 100 === 0) $notes[] = ['', ' '];
+}
+$r = parseApkg(apkg('notes-500.apkg', ['collection.anki2' => $notes]));
+check(is_array($r) && count($r['entries']) === 500 && $r['entries'][499] === ['t' => 'word500', 'b' => 'Wort500'], 'a header note, 500 notes and blank notes between them are fine: ' . (is_array($r) ? count($r['entries']) : $r));
+$notes = array_map(fn($i) => ["word$i", "Wort$i"], range(1, 502));
+$m = $apkgMessage(apkg('notes-501.apkg', ['collection.anki2' => array_slice($notes, 0, 501)]));
+check(str_contains($m, '501 Einträge'), '501 notes still get their count: ' . $m);
+$m = $apkgMessage(apkg('notes-502.apkg', ['collection.anki2' => $notes]));
+check(str_contains($m, 'mehr als 500'), '502 notes: "mehr als 500": ' . $m);
+$r = parseApkg(apkg('blank-first.apkg', ['collection.anki2' => [['', ''], ['dog', 'Hund'], ['cat', '']]]));
+check(pairs($r) === ['dog|Hund'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Karte 3'), 'card numbers count blank notes: ' . show($r));
+
+// One long Anki field: only its first 4 KB are read, and like any side over 120 characters it is left out
+$path = apkg('long-field.apkg', ['collection.anki2' => [['dog', str_repeat('Hund ', 4000000)], ['cat', 'Katze']]]);
+$r = parsePathApart($path, '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), 'an apkg field of 20 MB: left out, the other card read within 32 MB and 2 s: ' . cost($r));
+$r = parseApkg(apkg('long-field-100k.apkg', ['collection.anki2' => [['dog', str_repeat('Hund ', 20000)], ['cat', 'Katze']]]));
+check(pairs($r) === ['cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], '120') && str_contains($r['warnings'][0], 'Karte 1'), 'a 100 KB field is left out as too long: ' . show($r['warnings'] ?? $r));
+$r = parseApkg(apkg('styled.apkg', ['collection.anki2' => [['<span style="' . str_repeat('x', 3000) . '">dog</span>', 'Hund']]]));
+check(pairs($r) === ['dog|Hund'], 'a word in 3 KB of markup is still read: ' . show(pairs($r)));
+$r = parseApkg(apkg('long-first.apkg', ['collection.anki2' => [[str_repeat('a', 6000), 'Hund'], ['cat', 'Katze']]]));
+check(pairs($r) === ['cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], '120'), 'the field after a 6 KB field is still read, so the card is too long, not one-sided: ' . show($r['warnings'] ?? $r));
+
+// The collection extracted from a package doesn't stay in the temp folder: not after a parse, not after one
+// that ran out of memory (a shutdown function removes it), and leftovers older than 10 minutes are swept
+$tmpDir = sys_get_temp_dir();
+$extracted = fn() => array_filter(glob($tmpDir . '/voci*') ?: [], 'is_file');
+$before = $extracted();
+parseApkg(apkg('tidy.apkg', ['collection.anki2' => [['dog', 'Hund']]]));
+check(array_diff($extracted(), $before) === [], 'a parsed package leaves nothing in the temp folder');
+$notes = [];
+for ($i = 0; $i < 501; $i++) $notes[] = [str_repeat('ä', 2048) . $i, str_repeat('<b>&amp;</b>', 400) . $i];
+$path = apkg('fatal.apkg', ['collection.anki2' => $notes]);
+$before = $extracted();
+$r = parsePathApart($path, '6M');  // Runs out of memory while reading the notes, after extracting
+$left = array_diff($extracted(), $before);
+check(is_string($r) && str_contains($r, 'Allowed memory size') && $left === [], 'a package parse that runs out of memory removes its extracted collection: ' . json_encode(array_values($left)) . ' ' . (is_string($r) ? substr($r, 0, 80) : cost($r)));
+foreach ($left as $file) @unlink($file);
+$stale = $tmpDir . '/voci-anki-stale' . getmypid();
+$fresh = $tmpDir . '/voci-anki-fresh' . getmypid();
+file_put_contents($stale, 'x');
+touch($stale, time() - 3600);
+file_put_contents($fresh, 'x');
+touch($fresh, time() - 60);
+parse('sweep.csv', "dog,Hund\n");
+check(!file_exists($stale) && file_exists($fresh), 'a parse sweeps extracted collections older than 10 minutes, not newer ones');
+@unlink($stale);
+@unlink($fresh);
+
+// The most the limits still let through: 500 rows of 100 cells of 100 characters, about 5 MB
+$wide = [];
+for ($row = 1; $row <= 500; $row++) {
+    $cells = [];
+    for ($cell = 1; $cell <= 100; $cell++) $cells[] = str_pad("w{$row}x{$cell}", 100, 'a');
+    $wide[] = implode(',', $cells);
+}
+$r = parseApart('wide-rows.csv', implode("\n", $wide), '128M');
+check(($r['entries'] ?? null) === 500 && cheap($r), '500 rows of 100 cells, 5 MB: within 32 MB and 2 s: ' . cost($r));
+
+// One very long cell: only its start is looked at for German signals
+$r = parseApart('long-cell.csv', "dog,Hund\ncat," . str_repeat('x ', 2500000), '128M');
+check(($r['entries'] ?? null) === 1 && cheap($r), 'a 5 MB cell: left out, the other pair read within 32 MB and 2 s: ' . cost($r));
+
+// Quotes inside a long cell: whether one opens a quoted field is checked without copying the cell each time
+$r = parseApart('quotes.csv', 'a, ' . str_repeat('x', 2500000) . str_repeat('"', 2500000), '128M');
+check(($r['code'] ?? null) === 'no_entries' && cheap($r), 'a 2.5 MB cell followed by 2.5 million quotes: within 32 MB and 2 s: ' . cost($r));
+
+// Rows wider than 100 cells still read like before: empty cells at the end (a spreadsheet's used range), and
+// a quoted line break after the 100th cell still belongs to the row
+$r = parse('trailing.csv', "en,de" . str_repeat(',', 200) . "\ndog,Hund" . str_repeat(',', 200) . "\ncat,Katze" . str_repeat(',', 150) . "\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && $r['warnings'] === [], 'rows with 200 empty cells at the end: ' . show($r));
+$r = parse('wide-quoted.csv', "dog,Hund" . str_repeat(',', 150) . "\"x\ny\"\ncat,\nbird,Vogel\n");
+check(pairs($r) === ['dog|Hund', 'bird|Vogel'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 3'), 'a quoted line break after the 100th cell keeps the line numbers: ' . show($r));
+
+// Anki headers are read without copying the text for each one, and at most 20 of them
+$r = parseApart('headers.txt', str_repeat("#html:true\n", 470000), '128M');
+check(isset($r['code']) && cheap($r), '5 MB of "#html:true" lines: an error within 32 MB and 2 s: ' . cost($r));
+$r = parse('anki-20.txt', str_repeat("#separator:comma\n", 20) . "dog,Hund\ncat,Katze\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && $r['warnings'] === [], '20 Anki header lines: ' . show($r));
+$r = parse('anki-21.txt', str_repeat("#separator:comma\n", 21) . "dog,Hund\ncat,Katze\n");
+check(pairs($r) === ['dog|Hund', 'cat|Katze'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 21'), 'a 21st header line is read as a row, like any other line starting with #: ' . show($r));
+$r = parse('anki-lines.txt', "#separator:tab\n#html:true\n#deck column:3\ndog\tHund\tDeck\ncat\t\tDeck\n");
+check(pairs($r) === ['dog|Hund'] && count($r['warnings']) === 1 && str_contains($r['warnings'][0], 'Zeile 5'), 'line numbers count the Anki headers: ' . show($r));
+
 $long = str_repeat('a', 130);
 $umlauts = str_repeat('ä', 120);
 $r = parse('long.csv', "dog,Hund\n$long,lang\ncat,$umlauts\n");
@@ -406,6 +549,16 @@ check($parseError('192.0.2.1', $hour) === 'rate_limited', 'the third preview in 
 check($parseError('192.0.2.9', $hour) === null, 'another connection still may');
 check($parseError('192.0.2.1', $hour + 3600) === null, 'the next hour starts again');
 check(!str_contains(implode(' ', glob($rateData . '/_rate/*')), '192.0.2'), 'the IP is not in the counter file names');
+check($parseError('2001:db8:5:6::1', $hour) === null && $parseError('2001:db8:5:6:ffff::2', $hour) === null, 'two previews from one IPv6 /64');
+check($parseError('2001:db8:5:6:1234:5678:9abc:def0', $hour) === 'rate_limited', 'a third from another address in the same /64 is refused');
+check($parseError('2001:db8:5:7::1', $hour) === null, 'the next /64 still may');
+
+// What a connection is counted by: an IPv4 address, or an IPv6 address's /64
+check(voci_ip_key('192.0.2.1') === '192.0.2.1', 'IPv4 counts per address: ' . voci_ip_key('192.0.2.1'));
+check(voci_ip_key('2001:db8:1:2:3:4:5:6') === '2001:db8:1:2::/64' && voci_ip_key('2001:DB8:1:2::ffff') === '2001:db8:1:2::/64', 'IPv6 counts per /64: ' . voci_ip_key('2001:db8:1:2:3:4:5:6'));
+check(voci_ip_key('2001:db8:1:3::1') === '2001:db8:1:3::/64', 'another /64 is another key');
+check(voci_ip_key('::ffff:192.0.2.1') === '192.0.2.1', 'IPv4 written as IPv6 counts as IPv4: ' . voci_ip_key('::ffff:192.0.2.1'));
+check(voci_ip_key('') === '' && voci_ip_key('not an address') === 'not an address', 'anything else stays as it is');
 
 echo "voci lib: $checks checks, $failures failed\n";
 exit($failures ? 1 : 0);

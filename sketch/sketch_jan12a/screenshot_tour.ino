@@ -267,7 +267,19 @@ static void runScreenshotTour() {
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);
   delay(300);
   wifiIconTourLevel = 0;
-  tourScreen("06b-no-known-wifi", uiText("Kein bekanntes\nWLAN gefunden.", "No known WiFi\nfound."));
+  // The WiFi page (a question waiting for WiFi, the setup screen's retry), mid-pulse
+  armCapture("06b-no-known-wifi", 0);
+  wifiPageTourShot(WIFI_PAGE_NONE, "", 0, 0, 0, 0);
+  delay(300);
+  armCapture("06c-wifi-page-scan", 0);
+  wifiPageTourShot(WIFI_PAGE_SEARCHING, "", 0, 0, 280, 700);
+  delay(300);
+  armCapture("06d-wifi-page-join", 0);
+  wifiPageTourShot(WIFI_PAGE_SEARCHING, "Home WiFi", 1, 3, 640, 700);
+  delay(300);
+  armCapture("06e-wifi-page-connected", 0);
+  wifiPageTourShot(WIFI_PAGE_CONNECTED, "Home WiFi", 0, 0, WIFI_BAR_FULL, 0);
+  delay(300);
 
   armCapture("07-recording", 0);
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);

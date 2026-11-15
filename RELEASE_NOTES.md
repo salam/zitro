@@ -7,6 +7,8 @@
 
 ## Sun 15 Nov, 2026
 
+- **Live anywhere**: your home city can now be any town, not only the 320 big cities. Say "Stelle meinen Wohnort auf Winterthur", or type it on the setup page: Zitro looks it up as soon as it's online, and keeps the time zone right even without WiFi.
+- **Let Zitro find its home**: tick "Wohnort über zitro.spot bestimmen" on the setup page and Zitro takes the town of its internet address as home. It stays off unless you switch it on.
 - **Turn the world clock any way you like**: hold the stick upright or turn it like a steering wheel. The globe stays exactly where it is, north up, and the writing turns so you can read it. The same for "Wo liegt …?" and the ISS.
 - **Find your home on the globe**: a little white house marks your home city on the world clock, the globe and the ISS view. See how far away Tokyo is, or when the ISS flies over you.
 - **StickS3 welcome on zitro.spot**: "Get Zitro" now asks whether you have a StickS3 or a PLUS2, the shop lets you pick either stick pre-flashed (the yellow PLUS2 or the gray StickS3), and every page's footer names both.

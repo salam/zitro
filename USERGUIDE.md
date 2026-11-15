@@ -378,7 +378,9 @@ Zitro shows the Earth turned to that city, with a yellow pin. The time there is 
 
 Zitro has 320 cities built in: every capital and the biggest cities of the world. For other places, such as "Wie spät ist es in Knoxville?", it asks the Zitro server, so those need WiFi. If several places share the name, you get the biggest, and you can say which one you mean: "Wie spät ist es in Paris in Texas?". Zitro always works out the time itself, summer time included, so it needs to have been online once to set its clock. For a place it can't find, it says so.
 
-Set your own city on the setup page under **Home city**, or say "Stelle meinen Wohnort auf Berlin". It also sets your Zitro's time zone.
+Set your own city on the setup page under **Home city**, or say "Stelle meinen Wohnort auf Berlin". It also sets your Zitro's time zone. Any town works, not only the cities in the list: "Stelle meinen Wohnort auf Winterthur". A town you type on the setup page is looked up as soon as Zitro is online again; until then your old home stays.
+
+Or let Zitro find its home: tick **Find home through zitro.spot** on the setup page. Zitro then asks zitro.spot roughly where its internet address is, usually your town or one nearby, and takes that as home. It's off unless you switch it on. With a VPN or mobile data it can be wrong, and since the home also picks the children's helpline Zitro names, check the place the setup page shows.
 
 #### ISS live
 
@@ -645,7 +647,8 @@ Good to know:
    - Configure sleep timeouts (display, light, deep sleep)
    - Enable/disable features: image search, Wolfram Alpha, local quotes, parental lock
    - Enable/disable gestures: shake for a surprise, double-click for audio, roll for zoom, rotation for toggle
-   - Home city: sets the time zone (summer time included) and "here" for the world clock (default Zurich)
+   - Home city: sets the time zone (summer time included) and "here" for the world clock (default Zurich). Any town works; one that isn't in the list is looked up once Zitro is online
+   - Find home through zitro.spot: off unless you tick it. Zitro then takes the town its internet address belongs to as home (roughly; IP Geolocation by DB-IP)
    - Set speaker volume (0-255, default 210)
 6. Add WiFi networks, reorder, or delete old ones.
 7. Save settings. They apply from the next question on; adding a WiFi network restarts the device.

@@ -339,7 +339,7 @@ void handleSerialCommands() {
     char c = (char)Serial.read();
     if (c == '\r') continue;
     if (c != '\n') {
-      if (line.length() < 200) line += c;
+      if ((int)line.length() < SERIAL_LINE_MAX) line += c;
       continue;
     }
     line.trim();
@@ -426,6 +426,10 @@ void handleSerialCommands() {
 #endif
     } else if (line.startsWith("printimg ") || line.startsWith("printtest ") || line.startsWith("printtext ")) {
       runPrintTestCommand(line);
+    } else if (line == "zitro-ping") {
+      Serial.println("@@ZITRO READY");
+    } else if (line.startsWith("provision ")) {
+      handleProvisionCommand(line.substring(10));
     }
     line = "";
   }

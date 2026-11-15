@@ -47,6 +47,14 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - Label: "Knoxville, TN" for US places (state), "Lyon, FR" elsewhere: other countries' region codes are often just numbers. On the panel the region is left out if it doesn't fit.
 - Home city stays table-only: its rule also sets the device clock at boot, without a network.
 
+### Where the stick is (IP locator)
+
+- `GET https://zitro.spot/api/locate.php`, no parameters: the place for the IPv4 address the request comes from, in the same shape as `place.php` with `"source":"DB-IP"`, or `{"found":false}` (IPv6, private or reserved addresses, or no place known). `Cache-Control: private, no-store`. Built for the home setting "Wohnort über zitro.spot bestimmen" (`homeAuto`, off unless a parent switches it on); nothing on the stick asks it otherwise.
+- The script stores nothing and logs nothing: the address is looked up and forgotten. The web server's own access log is the same as for every other zitro.spot request.
+- How exact: DB-IP's city for the address, usually the town or region of the internet provider's exchange; with a VPN or mobile data it can be far off. It sets the time zone and, through the zone, the helpline (REQUIREMENTS.md), so a wrong country there is the visible risk; the setting says so.
+- Data: DB-IP "IP to City Lite" (`download.db-ip.com/free/dbip-city-lite-YYYY-MM.csv.gz`, CC BY 4.0, monthly). `scripts/make_ip_data.py` maps every DB-IP city to the GeoNames `cities1000` place of that name within 30 km, else the nearest one in the same country within 100 km, so the answer has a GeoNames name and a zone rule from `places/zones.tsv`. 2026-11: 3,598,816 IPv4 ranges, 3,598,297 with a place, merged into 3,320,814 records over 111,297 places: `ip4.bin` 26.6 MB (8-byte records, binary search, 22 reads per request), `places.bin` 10.7 MB (96-byte records).
+- Regenerate monthly: `python3 -I scripts/make_ip_data.py dbip-city-lite-YYYY-MM.csv.gz cities1000.txt admin1CodesASCII.txt webpage2/api/places/zones.tsv webpage2/api/ipdata`. Not committed (37 MB, new every month): upload `ipdata/` with `ip4.bin`, `places.bin`, `SOURCE.txt` and `.htaccess` (closes the folder) next to `locate.php` and `locate_lib.php`. Regenerate it too whenever `places/zones.tsv` changes, since the zone numbers refer to it.
+
 ### Data
 
 - Cities: Natural Earth `ne_10m_populated_places` (public domain). Kept: every national capital (`Admin-0 capital`, `Admin-0 capital alt`), every place with at least 3 million people, Swiss places from 50,000, German and Austrian ones from 500,000. 320 cities, sorted biggest first.
@@ -59,6 +67,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 ### Tests
 
 - `tests/clock/run.sh`: every zone against the host's own tz database every 3 hours from November 2026 to November 2030 (2.28 million comparisons, none differ); rule parsing including southern hemisphere, all-year daylight time, half and quarter hours and broken rules; calendar round trips; every city found by its names; sorted keys; font range; Sun positions; the answer sentences.
+- Also in `tests/clock/run.sh`, first: the IP locator's generator and lookup on a few DB-IP lines (a merged range and its ends, nearest place for an English or district name, a same-named place nearby before the biggest, nothing beyond 100 km, private, reserved, IPv6 and junk addresses).
 - Also in `tests/clock/run.sh`: all 392 zones the server can send against the host's tz database (4.58 million comparisons, none differ); the generator and lookup on real GeoNames lines (biggest wins, hints, Cologne, Brooklyn, refusals, the endpoint's 400); hostile replies on the stick's side; Python's and the stick's fold agree on every name in the data (929,314 with `GEONAMES_CITIES` set to the real file).
 - `tests/globe/run.sh`: shading levels, the disc filled only where it should be, the Sun's direction on screen.
 - On the stick (2026-11-08, screenshots with `shot`): Tokyo, New Delhi (+4:30 h) and Sydney (summer time, UTC+11) show the right times, the night side and the Sun's overhead point where they belong, and the panel fits. Not checked: long home names (cut with "..."), how turning feels.
@@ -86,6 +95,7 @@ Zitro has every capital and the biggest cities of the world built in, 320 in all
 | --- | --- | --- |
 | Cities, coordinates, names, zone names | Natural Earth, `ne_10m_populated_places`, `github.com/nvkelso/natural-earth-vector` | Public domain: "No permission is needed to use Natural Earth." |
 | Other places: names, coordinates, zone names | GeoNames, `cities1000`, `download.geonames.org/export/dump/` | CC BY 4.0: credit "GeoNames", shown on the stick's bottom line and on zitro.spot |
+| Where an IP address is (home setting, if switched on) | DB-IP "IP to City Lite", `db-ip.com/db/download/ip-to-city-lite` | CC BY 4.0: credit "IP Geolocation by DB-IP" with a link, on the setup page and on zitro.spot |
 | Time zone rules | IANA tz database (tzdata 2026e), via the TZif files | Public domain |
 | Sun's position | Astronomical Almanac, low-precision formulas | Equations, implemented here |
 | Test dates | US Naval Observatory, 2026 equinoxes and solstices | US government data |

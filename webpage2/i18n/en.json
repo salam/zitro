@@ -233,7 +233,7 @@
   "5cc9f27d": "Listens only on the button",
   "9d0c0b2f": "No wake word, no ambient recording. It hears your kid only while the button is pressed.",
   "73a17d4f": "Your key, your WiFi",
-  "ac992179": "No child account, no profile. Zitro runs on the family's own AI key over the family's own network. The question goes to the AI service you pick, for example Infomaniak in Switzerland; voice, read-aloud and pictures go to OpenAI.",
+  "0aedbb30": "No child account, no profile. Zitro runs on the family's own AI key over the family's own network. The question goes to the AI service you pick, for example Infomaniak in Switzerland. Voice, read-aloud and pictures go to OpenAI for now; from the next update, Infomaniak can transcribe the voice too.",
   "dded0c46": "Nothing to fall into",
   "c94ec441": "No feed, no notifications, no ads, no social layer, no infinite scroll. There is nothing pulling for re-engagement.",
   "14052875": "Answers you read together",

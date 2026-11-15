@@ -233,7 +233,7 @@
   "5cc9f27d": "Csak a gombra hallgat",
   "9d0c0b2f": "Nincs ébresztőszó, nincs környezeti hangfelvétel. Csak addig hallja a gyerekedet, amíg a gomb nyomva van.",
   "73a17d4f": "A te kulcsod, a te WiFid",
-  "ac992179": "Nincs gyerekfiók, nincs profil. A Zitro a család saját MI-kulcsával fut a család saját hálózatán. A kérdés az általad választott MI-szolgáltatáshoz megy, például a svájci Infomaniakhoz; a hang, a felolvasás és a képek az OpenAI-hoz.",
+  "0aedbb30": "Nincs gyerekfiók, nincs profil. A Zitro a család saját MI-kulcsával fut a család saját hálózatán. A kérdés az általad választott MI-szolgáltatáshoz megy, például a svájci Infomaniakhoz. A hang, a felolvasás és a képek egyelőre az OpenAI-hoz mennek; a következő frissítéstől az Infomaniak a hangot is szöveggé tudja alakítani.",
   "dded0c46": "Nincs mibe belesüllyedni",
   "c94ec441": "Nincs hírfolyam, nincs értesítés, nincs reklám, nincs közösségi réteg, nincs végtelen görgetés. Semmi nem húz vissza.",
   "14052875": "Válaszok, amiket együtt olvastok",

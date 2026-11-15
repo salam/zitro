@@ -10,6 +10,7 @@
 - **A kind word, then a real person**: when a child tells Zitro about something sad or scary, Zitro answers gently and suggests talking to a parent or a teacher. If it sounds serious, it names the free children's helpline, 147 in Switzerland.
 - **zitro.spot speaks your language**: the website now comes in German and 38 more languages, from Romansh to Arabic and Chinese. Tap the globe at the top, or just open the site: it picks your browser's language.
 - **Honest about checking**: the page for young minds now says clearly that the answer's sentence comes from the AI and gets checked in a book or with a grown-up, and where your voice and questions go.
+- **Where your voice goes, now and next**: the page for young minds now says that voice, read-aloud and pictures go to OpenAI for now, and that with the next update Infomaniak in Switzerland can turn the voice into text too.
 
 ## Sat 14 Nov, 2026
 

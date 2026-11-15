@@ -36,6 +36,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "edu_feature.h"
 #include "button_rules.h"
 #include "clock_core.h"  // World clock: cities, time zones, the Sun (feature_worldclock.ino)
+#include "clock_place.h"  // Places from zitro.spot, and a home anywhere
 #include "dino_core.h"   // Dinosaur fact sheets (feature_dino.ino); the main flow needs dinoMissLine
 #include "shake_core.h"  // What a shake can show besides a fact
 #include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
@@ -355,8 +356,11 @@ static const SettingDef settingsRegistry[] = {
   {"moveZoom",    "bool",   "Roll-Zoom",          "Roll zoom",        "Roll gesture for zoom",     -1, -1,      NULL,         false, 1},
   {"moveToggle",  "bool",   "Dreh-Umschalten",    "Rotate toggle",    "Rotation to toggle view",   -1, -1,      NULL,         false, 1},
   {"memory",      "bool",   "Gespraechsgedaechtnis", "Conversation memory", "Remember last 10 minutes", -1, -1, NULL,       false, 1},
-  // A city from clock_data.h, stored by its English name: sets the time zone and "here" for the world clock
+  // A city from clock_data.h by its English name, or any place zitro.spot knows (homePlace): sets the time
+  // zone and "here" for the world clock
   {"homeCity",    "string", "Wohnort",            "Home city",        "Home city and time zone",   -1, -1,      NULL,         false, 0},
+  // Home from the internet address, via zitro.spot/api/locate.php: off unless a parent switches it on
+  {"homeAuto",    "bool",   "Wohnort bestimmen",  "Locate home",      "Find home via zitro.spot",  -1, -1,      NULL,         false, 0},
 };
 static const int SETTINGS_REGISTRY_COUNT = sizeof(settingsRegistry) / sizeof(settingsRegistry[0]);
 
@@ -379,21 +383,102 @@ const char* uiText(const char* de, const char* en) {
   return deviceLanguageIsGerman() ? de : en;
 }
 
-// The home city from the settings, or Zurich if it's missing or no longer in the table
-int clockHomeCity() {
+// ================= HOME =================
+bool wifiLinkUp();     // wifi_link.ino
+bool guideActive();    // guide.ino
+bool vocabActive();    // vocab.ino
+bool shopActive();     // shop.ino
+ClockPlaceResult clockAskServer(const char* query, ClockPlace& out);  // feature_worldclock.ino
+
+// Home (settings homeCity and homeAuto): a city of the world clock's table, or any place zitro.spot knows,
+// kept with everything the stick needs offline (ClockHomeRecord, clock_place.h). In order:
+//   1. homeAuto on and a place zitro.spot/api/locate.php found (homeFound)
+//   2. homeCity, a city in the table
+//   3. homeCity, a place looked up earlier (homePlace, for exactly that name)
+//   4. Zurich
+// A name typed on the setup page (no internet there) waits in homePending until the stick is online; the old
+// home holds until then. Read once and again after every change (homeChanged).
+struct ZitroHome {
+  int city;          // Table index, or -1 for a place
+  ClockPlace place;  // city -1
+};
+static ZitroHome homeCache;
+static bool homeLoaded = false;
+
+static bool homeReadRecord(Preferences& prefs, const char* key, ClockHomeRecord& r) {
+  return prefs.getBytesLength(key) == sizeof(r) && prefs.getBytes(key, &r, sizeof(r)) == sizeof(r);
+}
+
+// No custom types in the signatures: the Arduino build puts its own prototypes above the struct
+static void homeEnsure() {
+  if (homeLoaded) return;
+  ZitroHome& h = homeCache;
+  h.city = CLOCK_HOME_DEFAULT;
   Preferences prefs;
   prefs.begin("settings", true);
   const String name = prefs.getString("homeCity", "Zurich");
+  ClockHomeRecord r;
+  char key[64];
+  if (prefs.getBool("homeAuto", false) && homeReadRecord(prefs, "homeFound", r) && clockHomeToPlace(r, sizeof(r), h.place)) {
+    h.city = -1;
+  } else if (clockFindCity(name.c_str()) >= 0) {
+    h.city = clockFindCity(name.c_str());
+  } else if (clockHomeKey(name.c_str(), key, sizeof(key)) && homeReadRecord(prefs, "homePlace", r) &&
+             strcmp(r.key, key) == 0 && clockHomeToPlace(r, sizeof(r), h.place)) {
+    h.city = -1;
+  }
   prefs.end();
-  const int city = clockFindCity(name.c_str());
-  return city >= 0 ? city : CLOCK_HOME_DEFAULT;
+  homeLoaded = true;
 }
 
-// The device clock follows the home city's time zone, daylight saving included. Timers count in UTC and
-// aren't affected; the parental lock's hours and the clock face are local.
+// The home city's table index, or -1 when home is a place that isn't built in
+int clockHomeCity() {
+  homeEnsure();
+  return homeCache.city;
+}
+
+const char* homeName(bool german) {
+  homeEnsure();
+  const ZitroHome& h = homeCache;
+  return h.city >= 0 ? clockCityName(h.city, german) : h.place.name;
+}
+
+bool homeRule(ClockRule& rule) {
+  homeEnsure();
+  const ZitroHome& h = homeCache;
+  if (h.city >= 0) return clockZoneRule(CLOCK_CITIES[h.city].zone, rule);
+  rule = h.place.rule;
+  return true;
+}
+
+void homeLatLon(float& lat, float& lon) {
+  homeEnsure();
+  const ZitroHome& h = homeCache;
+  lat = h.city >= 0 ? CLOCK_CITIES[h.city].lat100 / 100.0f : h.place.lat;
+  lon = h.city >= 0 ? CLOCK_CITIES[h.city].lon100 / 100.0f : h.place.lon;
+}
+
+// True when home is a place that isn't built in: then out is that place
+bool homePlace(ClockPlace& out) {
+  homeEnsure();
+  if (homeCache.city >= 0) return false;
+  out = homeCache.place;
+  return true;
+}
+
+// The IANA zone: it names the country's helpline (care_core.h)
+const char* homeZoneName() {
+  homeEnsure();
+  const ZitroHome& h = homeCache;
+  return h.city >= 0 ? CLOCK_ZONES[CLOCK_CITIES[h.city].zone].iana : h.place.zone;
+}
+
+// The device clock follows home's time zone, daylight saving included. Timers count in UTC and aren't
+// affected; the parental lock's hours and the clock face are local.
 static bool homeTimeZoneRule(char* rule, size_t size) {
-  const int city = clockHomeCity();
-  return clockLibraryRule(CLOCK_ZONES[CLOCK_CITIES[city].zone].posix, rule, size);
+  homeEnsure();
+  const ZitroHome& h = homeCache;
+  return clockLibraryRule(h.city >= 0 ? CLOCK_ZONES[CLOCK_CITIES[h.city].zone].posix : h.place.posix, rule, size);
 }
 
 void applyHomeTimeZone() {
@@ -401,14 +486,109 @@ void applyHomeTimeZone() {
   if (!homeTimeZoneRule(rule, sizeof(rule))) return;
   setenv("TZ", rule, 1);
   tzset();
-  Serial.printf("Time zone: %s (%s)\n", CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana, rule);
+  Serial.printf("Time zone: %s, %s (%s)\n", homeName(false), homeZoneName(), rule);
 }
 
 void startNtpWithHomeTimeZone() {
   char rule[64];
   if (!homeTimeZoneRule(rule, sizeof(rule))) strcpy(rule, "CET-1CEST,M3.5.0,M10.5.0/3");
   configTzTime(rule, "pool.ntp.org", "time.nist.gov");
-  Serial.printf("Time zone: %s (%s)\n", CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana, rule);
+  Serial.printf("Time zone: %s, %s (%s)\n", homeName(false), homeZoneName(), rule);
+}
+
+// Home's settings changed: read them again and set the clock's zone
+static bool homeCheckSoon = true;  // homeBackgroundTick: at boot and after a change, not only every 10 minutes
+
+void homeChanged() {
+  homeLoaded = false;
+  homeCheckSoon = true;
+  applyHomeTimeZone();
+}
+
+// Stores a place as home under the name the parent gave it. While the locator is on, its place still comes
+// first (the setup page says so); a home named by voice switches it off (applySettingChange).
+static void homeStorePlace(Preferences& prefs, const String& name, const ClockPlace& place) {
+  char key[64];
+  ClockHomeRecord r;
+  if (!clockHomeKey(name.c_str(), key, sizeof(key))) return;
+  clockHomeFromPlace(place, key, 0, r);
+  prefs.putBytes("homePlace", &r, sizeof(r));
+  prefs.putString("homeCity", name);
+  prefs.remove("homePending");
+  prefs.remove("homeMiss");
+}
+
+static const char HOME_LOCATE_URL[] = "https://zitro.spot/api/locate.php";
+static const unsigned long HOME_LOOKUP_MS = 5000;          // Blocks the loop meanwhile: kept short
+static const unsigned long HOME_RETRY_MS = 10UL * 60 * 1000;
+static const int64_t HOME_FOUND_FOR_S = 12 * 3600;         // A found home is asked for again after this
+static const time_t HOME_CLOCK_VALID = 1704067200;         // 2024-01-01: before that the clock was never set
+
+// zitro.spot's answer about a place (place.php) or about where the stick is (locate.php)
+static ClockPlaceResult homeAsk(const String& url, ClockPlace& out) {
+  char* body = (char*)ps_malloc(1024);
+  size_t length = 0;
+  const bool answered = body && eduHttpGet(url, millis() + HOME_LOOKUP_MS, body, 1024, length);
+  const ClockPlaceResult result = answered ? clockParsePlace(body, length, out) : CLOCK_PLACE_BAD;
+  free(body);
+  return result;
+}
+
+// What the setup page left for later (homePending) and, if switched on, where the stick is (homeAuto). The
+// setup page has no internet, so this waits until Zitro is online and idle. A request blocks the loop for up
+// to 5 s, so there's at most one per call, and none while buttons drive a game, a list or an alert.
+void homeBackgroundTick() {
+  static unsigned long lastCheck = 0;
+  if (!homeCheckSoon && millis() - lastCheck < HOME_RETRY_MS) return;
+  if (apMode || !wifiLinkUp() || currentDisplayMode == SHOW_MODEL || guideActive() || vocabActive() || shopActive() ||
+      timerAlertActive || inTimerListMode || inPrinterSelectionMode) {
+    return;
+  }
+  if (millis() - lastActivityTime < 2000) return;  // Someone is using the stick
+  homeCheckSoon = false;
+  lastCheck = millis();
+
+  Preferences prefs;
+  prefs.begin("settings", false);
+  const String pending = prefs.getString("homePending", "");
+  bool changed = false;
+  if (pending.length() > 0) {
+    ClockPlace place;
+    char name[64], hint[64];
+    ClockPlaceResult r = CLOCK_PLACE_UNKNOWN;
+    if (clockSplitPlaceQuery(pending.c_str(), name, sizeof(name), hint, sizeof(hint))) {
+      r = homeAsk(String(CLOCK_PLACE_URL) + "?q=" + name + (hint[0] ? String("&r=") + hint : String("")), place);
+    }
+    Serial.printf("Home '%s': %s\n", pending.c_str(), r == CLOCK_PLACE_FOUND ? place.label : r == CLOCK_PLACE_BAD ? "no answer, later" : "unknown");
+    if (r == CLOCK_PLACE_FOUND) {
+      homeStorePlace(prefs, pending, place);
+      changed = true;
+    } else if (r == CLOCK_PLACE_UNKNOWN) {
+      prefs.putString("homeMiss", pending);  // The setup page says so
+      prefs.remove("homePending");
+    }
+    homeCheckSoon = r != CLOCK_PLACE_BAD;  // The locator, if it's on, at the next call
+  } else if (prefs.getBool("homeAuto", false)) {
+    ClockHomeRecord found;
+    const bool have = homeReadRecord(prefs, "homeFound", found) && found.magic == CLOCK_HOME_MAGIC;
+    const time_t now = time(nullptr);
+    const bool stale = !have || prefs.getString("homeFoundNet", "") != WiFi.SSID() ||
+                       (now >= HOME_CLOCK_VALID && (found.at == 0 || (int64_t)now - found.at > HOME_FOUND_FOR_S));
+    if (stale) {
+      ClockPlace place;
+      const ClockPlaceResult r = homeAsk(HOME_LOCATE_URL, place);
+      Serial.printf("Home located: %s\n", r == CLOCK_PLACE_FOUND ? place.label : r == CLOCK_PLACE_BAD ? "no answer, later" : "unknown");
+      if (r == CLOCK_PLACE_FOUND) {
+        ClockHomeRecord record;
+        clockHomeFromPlace(place, "", now >= HOME_CLOCK_VALID ? (int64_t)now : 0, record);
+        prefs.putBytes("homeFound", &record, sizeof(record));
+        prefs.putString("homeFoundNet", WiFi.SSID());
+        changed = true;
+      }
+    }
+  }
+  prefs.end();
+  if (changed) homeChanged();
 }
 
 // Icon bitmaps are now in icons.ino (auto-generated from PNG files)
@@ -794,6 +974,10 @@ const char* setupPage = R"rawliteral(
         <label for="homeCity" id="labelHomeCity">Home city (time zone)</label>
         <input type="text" id="homeCity" list="cityList" autocomplete="off" required>
         <datalist id="cityList"></datalist>
+        <div class="info" id="homeNote">Not in the list? Type any town: Zitro looks it up as soon as it's online.</div>
+        <div class="note hidden" id="homeStatus"></div>
+        <div class="checkbox-group"><input type="checkbox" id="homeAuto"><label for="homeAuto" id="labelHomeAuto">Find home through zitro.spot</label></div>
+        <div class="info" id="homeAutoNote">Roughly, from the internet address Zitro goes online with. zitro.spot looks it up in its own copy of DB-IP; Zitro's code there stores nothing. With a VPN or mobile data it can be wrong. IP Geolocation by DB-IP (db-ip.com).</div>
 
         <label for="recordSec" id="labelRecordSec">Recording duration (seconds)</label>
         <input type="number" id="recordSec" min="1" max="30" value="5" required>
@@ -842,7 +1026,7 @@ const char* setupPage = R"rawliteral(
     var networks = [];
     var currentLang = 'EN';
     var firstRun = false;
-    var BOOL_KEYS = ['memory','searchImg','useWolfram','localQuotes','parentLock','shakeRandom','tripleAudio','autoAudio','moveZoom','moveToggle'];
+    var BOOL_KEYS = ['memory','searchImg','useWolfram','localQuotes','parentLock','shakeRandom','tripleAudio','autoAudio','moveZoom','moveToggle','homeAuto'];
     var SECRET_KEYS = ['apiKey','claudeKey','ikKey','customKey','zitroKey','azKey'];
     var TEXT_KEYS = ['oaModel','claudeModel','ikModel','ikProduct','customUrl','customModel','azRegion','azVoice'];
 
@@ -878,7 +1062,10 @@ const char* setupPage = R"rawliteral(
         speechInfoIkAz: 'Your voice is transcribed by Infomaniak in Switzerland, and Azure reads the answers aloud. Only pictures still use OpenAI: without an OpenAI key, Zitro makes no pictures.',
         deviceSettingsTitle: 'Device settings',
         labelMemory: 'Remember the last 10 minutes (follow-up questions)',
-        labelLanguage: 'Language', labelHomeCity: 'Home city (time zone)', cityUnknown: 'Please pick a city from the list.', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
+        labelLanguage: 'Language', labelHomeCity: 'Home city (time zone)', homeNote: 'Not in the list? Type any town: Zitro looks it up as soon as it\'s online.',
+        labelHomeAuto: 'Find home through zitro.spot', homeAutoNote: 'Roughly, from the internet address Zitro goes online with. zitro.spot looks it up in its own copy of DB-IP; Zitro\'s code there stores nothing. With a VPN or mobile data it can be wrong. IP Geolocation by DB-IP (db-ip.com).',
+        homePendingText: 'Looked up as soon as Zitro is online: {p}. Until then home stays as it was.', homeMissText: 'zitro.spot doesn\'t know {p}. Try the nearest bigger town.',
+        homeFoundText: 'Found through zitro.spot: {p} (roughly). It counts as home while the box is ticked.', homeSearchText: 'Zitro looks for its home as soon as it\'s online.', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
         optSampleRate8k: 'Standard (8 kHz), faster', optSampleRate16k: 'High (16 kHz), best quality',
         labelVolume: 'Volume (0-255)', labelDispSleep: 'Display sleep (seconds)',
         labelLightSleep: 'Light sleep (seconds)', labelDeepSleep: 'Deep sleep (seconds)',
@@ -925,7 +1112,10 @@ const char* setupPage = R"rawliteral(
         speechInfoIkAz: 'Deine Stimme wird bei Infomaniak in der Schweiz in Text umgewandelt, Azure liest die Antworten vor. Nur Bilder laufen weiter über OpenAI: ohne OpenAI-Schlüssel malt Zitro keine Bilder.',
         deviceSettingsTitle: 'Geräteeinstellungen',
         labelMemory: 'Die letzten 10 Minuten merken (Folgefragen)',
-        labelLanguage: 'Sprache', labelHomeCity: 'Wohnort (Zeitzone)', cityUnknown: 'Bitte eine Stadt aus der Liste wählen.', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
+        labelLanguage: 'Sprache', labelHomeCity: 'Wohnort (Zeitzone)', homeNote: 'Nicht in der Liste? Schreib einfach den Ort hin: Zitro schlägt ihn nach, sobald es online ist.',
+        labelHomeAuto: 'Wohnort über zitro.spot bestimmen', homeAutoNote: 'Ungefähr, aus der Internet-Adresse, mit der Zitro online geht. zitro.spot schaut sie in einer eigenen Kopie von DB-IP nach; Zitros Code dort speichert nichts. Mit VPN oder mobilen Daten kann es danebenliegen. IP Geolocation by DB-IP (db-ip.com).',
+        homePendingText: 'Wird nachgeschlagen, sobald Zitro online ist: {p}. Bis dahin bleibt der Wohnort, wie er war.', homeMissText: 'zitro.spot kennt {p} nicht. Versuch es mit dem nächsten grösseren Ort.',
+        homeFoundText: 'Über zitro.spot gefunden: {p} (ungefähr). Gilt als Wohnort, solange das Häkchen gesetzt ist.', homeSearchText: 'Zitro sucht seinen Wohnort, sobald es online ist.', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
         optSampleRate8k: 'Standard (8 kHz), schneller', optSampleRate16k: 'Hoch (16 kHz), beste Qualität',
         labelVolume: 'Lautstärke (0-255)', labelDispSleep: 'Display-Ruhemodus (Sek.)',
         labelLightSleep: 'Leichter Ruhemodus (Sek.)', labelDeepSleep: 'Tiefer Ruhemodus (Sek.)',
@@ -1015,6 +1205,7 @@ const char* setupPage = R"rawliteral(
           $('sampleRate').value = data.sampleRate || 8000;
           $('language').value = data.language || 'DE';
           $('homeCity').value = data.homeCity || 'Zurich';
+          showHomeStatus(data);
           $('volume').value = data.volume != null ? data.volume : 210;
           $('dispSleep').value = (data.dispSleep || 30000) / 1000;
           $('lightSleep').value = (data.lightSleep || 90000) / 1000;
@@ -1083,17 +1274,25 @@ const char* setupPage = R"rawliteral(
         .catch(function() {});
     };
 
+    // What became of the home: waiting for the internet, unknown, or found by zitro.spot
+    var showHomeStatus = function(data) {
+      var tr = t[currentLang], el = $('homeStatus'), text = '';
+      if (data.homeAuto && data.homeFound) text = tr.homeFoundText.replace('{p}', data.homeFound);
+      else if (data.homeAuto) text = tr.homeSearchText;
+      else if (data.homePending) text = tr.homePendingText.replace('{p}', data.homePending);
+      else if (data.homeMiss) text = tr.homeMissText.replace('{p}', data.homeMiss);
+      el.textContent = text;
+      el.classList.toggle('hidden', !text);
+    };
+
     $('settingsForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      var city = $('homeCity').value.trim();
-      var known = cityNames.length === 0 || cityNames.some(function(n) { return n.toLowerCase() === city.toLowerCase(); });
-      if (!known) { alert(t[currentLang].cityUnknown); return; }
       var params = new URLSearchParams();
       ['recordSec','sampleRate','language','volume','homeCity'].forEach(function(k) { params.append(k, $(k).value.trim()); });
       ['dispSleep','lightSleep','deepSleep'].forEach(function(k) { params.append(k, $(k).value * 1000); });
       BOOL_KEYS.forEach(function(k) { params.append(k, $(k).checked ? '1' : '0'); });
       post(params)
-        .then(function() { alert(t[currentLang].saved); })
+        .then(function() { loadSettings(); alert(t[currentLang].saved); })
         .catch(function() { alert(t[currentLang].saveFailed); });
     });
 
@@ -2012,6 +2211,16 @@ void handleGetSettings() {
   }
   doc["ikSpeech"] = settingsPrefs.getBool("ikSpeech", false);
   doc["ttsProv"] = settingsPrefs.getString("ttsProv", "openai");
+  // Home: a name waiting to be looked up, one zitro.spot didn't know, and the place it found
+  doc["homePending"] = settingsPrefs.getString("homePending", "");
+  doc["homeMiss"] = settingsPrefs.getString("homeMiss", "");
+  {
+    ClockHomeRecord found;
+    ClockPlace place;
+    if (homeReadRecord(settingsPrefs, "homeFound", found) && clockHomeToPlace(found, sizeof(found), place)) {
+      doc["homeFound"] = place.label;
+    }
+  }
   // Only reveal whether a key exists plus its last 4 characters
   for (const char* key : SECRET_SETTING_KEYS) {
     String secret = settingsPrefs.getString(key, "");
@@ -2056,6 +2265,7 @@ void handleSaveSettings() {
 
     if (strcmp(def.type, "bool") == 0) {
       bool on = (value == "1" || value == "true" || value == "on");
+      if (strcmp(def.key, "homeAuto") == 0 && on != settingsPrefs.getBool(def.key, false)) homeTimeZoneChanged = true;
       settingsPrefs.putBool(def.key, on);
       if (strcmp(def.key, "memory") == 0 && !on) memoryClear();
     } else if (strcmp(def.type, "int") == 0) {
@@ -2071,10 +2281,26 @@ void handleSaveSettings() {
       long v = constrain(value.toInt(), (long)def.minVal * 1000, (long)def.maxVal * 1000);
       settingsPrefs.putLong(def.key, v);
     } else if (strcmp(def.key, "homeCity") == 0) {
+      value.trim();
       const int city = clockFindCity(value.c_str());
-      if (city < 0) continue;  // Only cities in the table: a typo keeps the old one
-      settingsPrefs.putString(def.key, CLOCK_CITIES[city].en);
-      homeTimeZoneChanged = true;
+      char key[64];
+      ClockHomeRecord known;
+      if (city >= 0) {
+        if (settingsPrefs.getString(def.key, "Zurich") != CLOCK_CITIES[city].en) homeTimeZoneChanged = true;
+        settingsPrefs.putString(def.key, CLOCK_CITIES[city].en);
+        settingsPrefs.remove("homePending");
+        settingsPrefs.remove("homeMiss");
+      } else if (value == settingsPrefs.getString(def.key, "Zurich") || !clockHomeKey(value.c_str(), key, sizeof(key))) {
+        continue;  // Unchanged, or not a name at all
+      } else if (homeReadRecord(settingsPrefs, "homePlace", known) && strcmp(known.key, key) == 0) {
+        settingsPrefs.putString(def.key, value);  // Looked up before: no need to ask again
+        settingsPrefs.remove("homePending");
+        homeTimeZoneChanged = true;
+      } else {
+        // Setup mode has no internet: homeBackgroundTick looks it up once Zitro is online. Home stays until then.
+        settingsPrefs.putString("homePending", value);
+        settingsPrefs.remove("homeMiss");
+      }
     } else {
       value.toUpperCase();
       if (def.allowedVals && ("," + String(def.allowedVals) + ",").indexOf("," + value + ",") < 0) continue;
@@ -2128,7 +2354,7 @@ void handleSaveSettings() {
   }
 
   settingsPrefs.end();
-  if (homeTimeZoneChanged) applyHomeTimeZone();
+  if (homeTimeZoneChanged) homeChanged();
   loadSleepTimeouts();
   server.send(200, "text/plain", "OK");
 }
@@ -4787,7 +5013,7 @@ String buildSettingsPrompt() {
     } else if (strcmp(s.type, "string") == 0) {
       String val = sp.getString(s.key, settingStringDefault(s));
       if (s.allowedVals) prompt += "(" + String(s.allowedVals) + ", jetzt:" + val + ")";
-      else prompt += "(englischer Name einer Stadt, setzt die Zeitzone, jetzt:" + val + ")";
+      else prompt += "(Name eines Orts wie gesagt, mit Region nach Komma wenn genannt ('Paris, Texas'), setzt die Zeitzone, jetzt:" + val + ")";
     }
   }
   sp.end();
@@ -4827,6 +5053,7 @@ String applySettingChange(const String& key, const String& value) {
     if (key == "memory" && !boolVal) {
       memoryClear();
     }
+    if (key == "homeAuto") homeChanged();  // Home is now the found place, or the named one again
 
     // Hot-apply parental lock
     if (key == "parentLock") {
@@ -4897,17 +5124,37 @@ String applySettingChange(const String& key, const String& value) {
     return String(setting->nameDE) + " auf " + String(longVal / 1000) + " Sekunden gesetzt.";
 
   } else if (strcmp(setting->type, "string") == 0 && key == "homeCity") {
-    const int city = clockFindCity(value.c_str());
-    if (city < 0) {
-      sp.end();
-      return deviceLanguageIsGerman() ? "Diese Stadt kenne ich nicht. Nimm eine Hauptstadt oder grosse Stadt."
-                                      : "I don't know that city. Pick a capital or a big city.";
-    }
-    sp.putString(setting->key, CLOCK_CITIES[city].en);
-    sp.end();
-    applyHomeTimeZone();
+    // Named by voice: that's the home wanted, so the locator goes off
     const bool german = deviceLanguageIsGerman();
-    return String(german ? "Wohnort auf " : "Home city set to ") + clockCityName(city, german) + ".";
+    const bool wasAuto = sp.getBool("homeAuto", false);
+    const int city = clockFindCity(value.c_str());
+    String shown;
+    if (city >= 0) {
+      sp.putString(setting->key, CLOCK_CITIES[city].en);
+      sp.remove("homePending");
+      sp.remove("homeMiss");
+      shown = clockCityName(city, german);
+    } else {
+      // Not built in: zitro.spot knows more places
+      ClockPlace place;
+      const ClockPlaceResult r = clockAskServer(value.c_str(), place);
+      if (r != CLOCK_PLACE_FOUND) {
+        sp.end();
+        if (r == CLOCK_PLACE_BAD) {
+          return german ? "Ich kann " + value + " gerade nicht nachschlagen: Der Zitro-Server antwortet nicht."
+                        : "I can't look up " + value + " right now: the Zitro server doesn't answer.";
+        }
+        return german ? "Diesen Ort kenne ich nicht." : "I don't know that place.";
+      }
+      homeStorePlace(sp, value, place);
+      shown = place.label;
+    }
+    sp.putBool("homeAuto", false);
+    sp.end();
+    homeChanged();
+    String reply = String(german ? "Wohnort auf " : "Home city set to ") + shown + ".";
+    if (wasAuto) reply += german ? " Zitro sucht ihn nicht mehr selbst." : " Zitro no longer looks for it itself.";
+    return reply;
   } else if (strcmp(setting->type, "string") == 0) {
     // Validate against allowed values
     if (setting->allowedVals) {
@@ -4963,7 +5210,7 @@ GPTResponse askGPT(const String &question) {
     if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
   }
   // Worries and sadness: send the child to people; the helpline follows the home city (care_core.h)
-  systemPrompt += " " + String(careRuleText(CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana).c_str());
+  systemPrompt += " " + String(careRuleText(homeZoneName()).c_str());
 
   // Language: EN answers are requested explicitly (German is the prompt's default)
   String userText = question;
@@ -9271,6 +9518,7 @@ void loop() {
   // WiFi search and its icon (wifi_link.ino). Never blocks; a lost connection is searched again
   // only while the screen is on.
   wifiBackgroundTick();
+  homeBackgroundTick();  // Looks up a home the setup page named, or where the stick is (homeAuto)
 
   // Handle light sleep wake-up
   if (wakeFromLightSleep) {

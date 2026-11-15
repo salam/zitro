@@ -34,7 +34,9 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 
 ### Home city and time zone
 
-- Setting `homeCity` (string, stored as the city's English name, default Zurich). Web page: a text field with the table's names as suggestions (`/cities`); a name not in the table isn't saved and the page says so. Voice: "Stelle meinen Wohnort auf Berlin" (the prompt lists it as "englischer Name einer Stadt"); an unknown city gets "Diese Stadt kenne ich nicht.".
+- Setting `homeCity` (string, default Zurich): a table city stored by its English name, or any place as the parent wrote it (since 2026-11-15). Web page: a text field with the table's names as suggestions (`/cities`). Setup mode has no internet, so a name not in the table goes to `homePending` and `homeBackgroundTick` looks it up with `place.php` once the stick is online and idle; found, it becomes `homeCity` with a `homePlace` record (`ClockHomeRecord`: name, region, IANA zone, POSIX rule, position, and the folded name it belongs to); unknown, it goes to `homeMiss` and the page says so; no answer, it's tried again in 10 minutes. Until then home stays as it was. A name looked up before needs no new lookup. Voice: "Stelle meinen Wohnort auf Winterthur" asks `place.php` right away and answers "Wohnort auf Winterthur, CH gesetzt.", "Diesen Ort kenne ich nicht." or that the server doesn't answer; it also switches `homeAuto` off and says so.
+- Setting `homeAuto` (default off): home is the place `locate.php` finds for the stick's internet address (`homeFound`), ahead of `homeCity`. Asked when online and idle, at most one request per call and none while buttons drive the vocabulary trainer, the shop, the timer list or alert, the print menu or the tour; again after 12 hours or on another WiFi network. The setup page shows "Über zitro.spot gefunden: Winterthur, CH (ungefähr)". Off by default: where a child lives stays with the parents unless they choose.
+- Home in order: the found place (if `homeAuto`), a table city, the looked-up place for exactly that name, Zurich. Read once, again after each change (`homeChanged`). Everything else asks through `homeName`, `homeRule`, `homeLatLon`, `homeZoneName` and `homePlace`.
 - It sets the device's time zone with the zone's real POSIX rule, at boot, on every NTP start (`configTzTime`) and right after a change. Before, `configTime(3600, 3600)` gave newlib the TZ `UTC-1DST` without any dates, so the library picked its own default rule instead of the EU's last Sundays of March and October. Zone names in `<...>` become plain letters for newlib (`clockLibraryRule`); they don't change any time.
 - Affects everything that reads local time, such as the parental lock's 20-6 h.
 
@@ -45,7 +47,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - The server says where a place is and which rule its zone follows. The time is still computed on the stick from the rule (`clockRuleTime`, `clockAnswerFor`), as for built-in cities. `clockParsePlace` refuses a reply unless the rule parses and coordinates and texts make sense.
 - Which place: the biggest of that name. Parts of a city (GeoNames `PPLX`) and places under another name count a tenth of their population: Brooklyn still beats the towns called Brooklyn, Cologne is Köln and not the village in Italy, a suburb doesn't beat a town. With a hint, only places in that US state or admin region or country; a hint it doesn't know finds nothing rather than the wrong place.
 - Label: "Knoxville, TN" for US places (state), "Lyon, FR" elsewhere: other countries' region codes are often just numbers. On the panel the region is left out if it doesn't fit.
-- Home city stays table-only: its rule also sets the device clock at boot, without a network.
+- Home can be such a place too (since 2026-11-15): it's stored with its rule and position, so the device clock is right at boot without a network.
 
 ### Where the stick is (IP locator)
 

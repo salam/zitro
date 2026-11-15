@@ -81,8 +81,9 @@ static void globeDrawHome(M5Canvas& c, int x, int y) {
 static float globeHome[3] = {0, 0, 1};
 
 static void globeHomeLoad() {
-  const int city = clockHomeCity();
-  globeUnitVector(CLOCK_CITIES[city].lat100 / 100.0f, CLOCK_CITIES[city].lon100 / 100.0f, globeHome);
+  float lat, lon;
+  homeLatLon(lat, lon);
+  globeUnitVector(lat, lon, globeHome);
 }
 
 // Home on the globe: where to draw the house, in the sprite's buffer. False if it's round the back or off screen.

@@ -21,6 +21,35 @@ static const char* GOOD =
     "{\"found\":true,\"name\":\"Knoxville\",\"region\":\"TN\",\"country\":\"US\",\"lat\":35.961,\"lon\":-83.921,"
     "\"zone\":\"America/New_York\",\"rule\":\"EST5EDT,M3.2.0,M11.1.0\",\"source\":\"GeoNames\"}";
 
+static void testHomeRecords() {
+  ClockPlace p, back;
+  CHECK(parse(GOOD, p) == CLOCK_PLACE_FOUND);
+  ClockHomeRecord r;
+  clockHomeFromPlace(p, "knoxville", 1794000000, r);
+  CHECK(clockHomeToPlace(r, sizeof(r), back));
+  CHECK(!strcmp(back.name, "Knoxville") && !strcmp(back.label, "Knoxville, TN") && !strcmp(back.zone, "America/New_York"));
+  CHECK(!strcmp(back.posix, "EST5EDT,M3.2.0,M11.1.0") && back.lat == p.lat && back.lon == p.lon);
+  CHECK(clockUtcOffset(back.rule, utcOf(2026, 11, 9, 12, 0)) == -5 * 3600);
+  CHECK(!strcmp(r.key, "knoxville") && r.at == 1794000000);
+  // Never written, another layout, a short read, a broken text or rule: not a home
+  ClockHomeRecord bad;
+  memset(&bad, 0, sizeof(bad));
+  CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  CHECK(!clockHomeToPlace(r, sizeof(r) - 1, back));
+  bad = r; bad.magic ^= 1; CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  bad = r; memset(bad.name, 'x', sizeof(bad.name)); CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  bad = r; strcpy(bad.posix, "banana"); CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  bad = r; strcpy(bad.zone, "a b"); CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  bad = r; bad.lat = NAN; CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  bad = r; bad.name[0] = 0; CHECK(!clockHomeToPlace(bad, sizeof(bad), back));
+  // The key a setting is stored under
+  char key[64];
+  CHECK(clockHomeKey("Paris, Texas", key, sizeof(key)) && !strcmp(key, "paristexas"));
+  CHECK(clockHomeKey("Knoxville", key, sizeof(key)) && !strcmp(key, "knoxville"));
+  CHECK(clockHomeKey("  Zürich ", key, sizeof(key)) && !strcmp(key, "zurich"));
+  CHECK(!clockHomeKey("x", key, sizeof(key)) && !clockHomeKey("", key, sizeof(key)) && !clockHomeKey("Paris, T", key, sizeof(key)));
+}
+
 static void testReplies() {
   ClockPlace p;
   CHECK(parse(GOOD, p) == CLOCK_PLACE_FOUND);
@@ -28,6 +57,8 @@ static void testReplies() {
   CHECK(fabs(p.lat - 35.961f) < 0.001f && fabs(p.lon + 83.921f) < 0.001f);
   CHECK(clockUtcOffset(p.rule, utcOf(2026, 11, 9, 12, 0)) == -5 * 3600);
   CHECK(clockUtcOffset(p.rule, utcOf(2026, 7, 1, 12, 0)) == -4 * 3600);
+
+  CHECK(!strcmp(p.region, "TN") && !strcmp(p.zone, "America/New_York") && !strcmp(p.posix, "EST5EDT,M3.2.0,M11.1.0"));
 
   CHECK(parse("{\"found\":false}", p) == CLOCK_PLACE_UNKNOWN);
 
@@ -48,6 +79,8 @@ static void testReplies() {
            with("\"region\":\"TN\"", "\"region\":\"TOOLONGREGION\""), with("\"region\":\"TN\",", ""),
            with("EST5EDT,M3.2.0,M11.1.0", "banana"), with("EST5EDT,M3.2.0,M11.1.0", ""),
            with("EST5EDT,M3.2.0,M11.1.0", "EST5EDT"), with("EST5EDT,M3.2.0,M11.1.0", std::string(70, 'A') + "5"),
+           with("\"zone\":\"America/New_York\",", ""), with("America/New_York", ""), with("America/New_York", "Amer ica"),
+           with("America/New_York", "../../etc"), with("America/New_York", std::string(48, 'A')),
        }) {
     CHECK(parse(bad, p) == CLOCK_PLACE_BAD);
   }
@@ -155,6 +188,7 @@ static void testFold(const char* path) {
 int main(int argc, char** argv) {
   if (argc != 3) return 2;
   testReplies();
+  testHomeRecords();
   testSplit();
   testAnswer();
   testServerZones(argv[1]);

@@ -11,12 +11,13 @@
 #include "clock_core.h"
 #include "clock_place.h"
 
-static const char CLOCK_PLACE_URL[] = "https://zitro.spot/api/place.php";
 static const size_t CLOCK_PLACE_REPLY_LIMIT = 1024;
 
-static int clockCity = -1, clockHome = -1;  // clockCity -1 and clockIsPlace true: a place from the server
+static int clockCity = -1;  // -1 and clockIsPlace true: a place from the server, or home if that's a place
 static bool clockIsPlace = false;
 static ClockPlace clockPlace;
+static bool clockAtHome = false;  // The place shown is home: no second time, no house
+static ClockRule clockHomeRule;    // Home's, whether a city of the table or a place (homeRule)
 static bool clockGerman = true;
 static GlobeSpin clockSpin;
 static float clockPin[3];
@@ -24,12 +25,14 @@ static int16_t clockCapitalXyz[CLOCK_CITY_COUNT][3];  // Unit vectors x 2^14, fi
 
 static void clockUnload() {
   globeUnload();
-  clockCity = clockHome = -1;
+  clockCity = -1;
   clockIsPlace = false;
+  clockAtHome = false;
 }
 
-// A place that isn't built in, from the server. Only asked once the built-in table has said no.
-static ClockPlaceResult clockAskServer(const char* query, ClockPlace& out) {
+// A place that isn't built in, from the server. Only asked once the built-in table has said no. Also for a
+// home named by voice.
+ClockPlaceResult clockAskServer(const char* query, ClockPlace& out) {
   char name[64], hint[64];
   if (!clockSplitPlaceQuery(query, name, sizeof(name), hint, sizeof(hint))) return CLOCK_PLACE_UNKNOWN;
   String url = String(CLOCK_PLACE_URL) + "?q=" + name;  // Folded: letters a-z only, nothing to encode
@@ -49,10 +52,18 @@ static bool clockFetch(const char* query) {
   char folded[16];
   clockFold(query, folded, sizeof(folded));
   const bool here = strcmp(folded, "here") == 0 || strcmp(folded, "home") == 0;
-  const int city = here ? clockHomeCity() : clockFindCity(query);
+  const int home = clockHomeCity();  // -1: home is a place, kept in the settings
+  ClockPlace homeAsPlace;
+  const bool homeIsPlace = homePlace(homeAsPlace);
+  const int city = here ? home : clockFindCity(query);
   // The whole name first: "Paris, Texas" must not become the Paris in the table
   ClockPlaceResult asked = CLOCK_PLACE_UNKNOWN;
-  if (clockKnown && city < 0) asked = clockAskServer(query, clockPlace);
+  if (here && homeIsPlace) {
+    clockPlace = homeAsPlace;  // Home is known without asking
+    asked = CLOCK_PLACE_FOUND;
+  } else if (clockKnown && city < 0) {
+    asked = clockAskServer(query, clockPlace);
+  }
   const bool isPlace = city < 0 && asked == CLOCK_PLACE_FOUND;
   char text[256];
   if (!clockKnown || (city < 0 && !isPlace)) {
@@ -62,28 +73,34 @@ static bool clockFetch(const char* query) {
     Serial.printf("Clock lookup '%s': %s\n", query, !clockKnown ? "no clock yet" : asked == CLOCK_PLACE_BAD ? "no answer from the server" : "place unknown");
     return false;
   }
+  ClockRule cityRule;
+  if (!homeRule(clockHomeRule) || (!isPlace && !clockZoneRule(CLOCK_CITIES[city].zone, cityRule))) return false;
   if (!globeLoadCoast(GLOBE_COAST_BUILTIN, GLOBE_COAST_BUILTIN_SIZE)) {
     Serial.println("Clock lookup: no memory for the coastline");
     return false;
   }
   clockCity = city;
   clockIsPlace = isPlace;
-  clockHome = clockHomeCity();
+  // A place is home when it was asked for as home, or when it's the very place home is
+  clockAtHome = here || (!isPlace && city == home) ||
+                (isPlace && homeIsPlace && !strcmp(clockPlace.name, homeAsPlace.name) &&
+                 fabsf(clockPlace.lat - homeAsPlace.lat) < 0.01f && fabsf(clockPlace.lon - homeAsPlace.lon) < 0.01f);
   float lat, lon;
+  const char* name;
   if (isPlace) {
-    ClockRule homeRule;
-    if (!clockZoneRule(CLOCK_CITIES[clockHome].zone, homeRule)) return false;
-    clockAnswerFor(text, sizeof(text), clockGerman, clockPlace.label, clockPlace.rule, false, clockCityName(clockHome, clockGerman), homeRule, (int64_t)now);
+    name = clockPlace.label;
+    cityRule = clockPlace.rule;
     modelLabel = clockPlace.label;
-    modelSourceName = "GeoNames";
+    modelSourceName = "GeoNames";  // Home found by zitro.spot too: the place is GeoNames'
     lat = clockPlace.lat;
     lon = clockPlace.lon;
   } else {
-    clockAnswer(text, sizeof(text), clockGerman, clockCity, clockHome, (int64_t)now);
-    modelLabel = clockCityName(clockCity, clockGerman);
+    name = clockCityName(clockCity, clockGerman);
+    modelLabel = name;
     lat = CLOCK_CITIES[clockCity].lat100 / 100.0f;
     lon = CLOCK_CITIES[clockCity].lon100 / 100.0f;
   }
+  clockAnswerFor(text, sizeof(text), clockGerman, name, cityRule, clockAtHome, homeName(clockGerman), clockHomeRule, (int64_t)now);
   modelAnswerText = text;
   globeUnitVector(lat, lon, clockPin);
   globeFacing(lat, lon, modelRotation.m);
@@ -92,7 +109,7 @@ static bool clockFetch(const char* query) {
     globeUnitVector(CLOCK_CITIES[i].lat100 / 100.0f, CLOCK_CITIES[i].lon100 / 100.0f, v);
     for (int k = 0; k < 3; k++) clockCapitalXyz[i][k] = (int16_t)lroundf(v[k] * GLOBE_Q14);
   }
-  Serial.printf("Clock lookup '%s': %s, home %s\n", query, isPlace ? clockPlace.label : CLOCK_CITIES[clockCity].en, CLOCK_CITIES[clockHome].en);
+  Serial.printf("Clock lookup '%s': %s, home %s\n", query, isPlace ? clockPlace.label : CLOCK_CITIES[clockCity].en, homeName(false));
   return true;
 }
 
@@ -186,7 +203,8 @@ static void clockFrame(M5Canvas& c, float dt) {
   bool timeKnown = true;
   if (clockIsPlace) clockRuleTime(clockPlace.rule, now, d, offset);
   else timeKnown = clockCityTime(clockCity, now, d, offset);
-  const bool away = clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset);
+  const bool away = !clockAtHome;
+  if (away) clockRuleTime(clockHomeRule, now, h, homeOffset);
 
   // The pin and, somewhere else, the house at home. From here on the sprite reads upright.
   globeDrawMarkers(c, m, clockPin, cx, cy, radius, away);
@@ -203,17 +221,17 @@ static void clockFrame(M5Canvas& c, float dt) {
     if (away) {
       clockFormatGap(gapText, sizeof(gapText), offset - homeOffset);
       snprintf(homeTime, sizeof(homeTime), "%02d:%02d", h.hour, h.minute);
-      const char* homeName = clockCityName(clockHome, clockGerman);
+      const char* home = homeName(clockGerman);
       if (portrait) {
         c.setFreeFont(FontManager::getFont16pt());
         globePanelText(c, homeTime, 192, TFT_LIGHTGREY, width);
         c.setFreeFont(FontManager::getFont12pt());
-        clockHomeName(c, homeName, 173, width, false);
+        clockHomeName(c, home, 173, width, false);
       } else {
         c.setFreeFont(FontManager::getFont16pt());
         globePanelText(c, homeTime, 21, TFT_LIGHTGREY, width, true);
         c.setFreeFont(FontManager::getFont12pt());
-        clockHomeName(c, homeName, 2, width, true);
+        clockHomeName(c, home, 2, width, true);
       }
     }
     // Short weekday and UTC offset share a line: "So, UTC+9"

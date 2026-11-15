@@ -12,6 +12,7 @@
 - **Stuck?** Press "?" and the guest says it again slowly, or shows the order in pictures.
 - **Clear answer for huge lists**: a word list with more than 500 entries now gets its "split it up" message right away, even when the file is very large.
 - **StickS3 on the way**: Zitro's firmware now runs on the M5Stack StickS3 too, and its side button does double duty: click once for Button B, twice for Button C, three times for the setup page. The installer can't put it on a StickS3 yet.
+- **Leave the timer list in peace**: closing the timer list with the front button no longer starts a recording a second later.
 
 ## Fri 13 Nov, 2026
 

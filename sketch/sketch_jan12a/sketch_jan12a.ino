@@ -9124,6 +9124,9 @@ void loop() {
         drawScreen(MAIN_QUESTION);
       }
       resetToActiveState();
+      // wasClicked fires on release, but M5Unified settles the same click about 1 s later as a
+      // single or double click, which would start a recording here. Also swallow a second tap.
+      discardButtonA(800);
     }
     // Count down the time left every second (also follows the stick: landscape flip, portrait)
     if (inTimerListMode && !displaySleeping) {

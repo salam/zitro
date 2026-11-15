@@ -32,3 +32,7 @@ screenshots/Screenshot *
 
 # Real Wolfram answers: its terms do not allow passing them on
 tests/wolfram/fixtures/
+
+# IP locator data (scripts/make_ip_data.py): 20 MB, new every month, uploaded to zitro.spot only
+webpage2/api/ipdata/*
+!webpage2/api/ipdata/.htaccess

@@ -1,18 +1,23 @@
 #!/bin/bash
 # Builds and runs the world clock's host tests (no hardware needed). The time zone checks compare every
 # zone with this computer's own tz database, so they need one (macOS and Linux have it). The place lookup
-# needs php and python3. GEONAMES_CITIES names another cities file for the fold comparison.
+# and the IP locator need php and python3. GEONAMES_CITIES names another cities file for the fold comparison.
 set -e
 cd "$(dirname "$0")"
 TEMP="$(mktemp -d "${TMPDIR:-/tmp}/zitro_clock_test_XXXXXX")"
 trap 'rm -rf "$TEMP"' EXIT
 LIBRARIES="$(arduino-cli config get directories.user 2>/dev/null || echo "$HOME/Documents/Arduino")/libraries"
 
-c++ -std=c++17 -O1 -Wall -Wextra -fsanitize=address,undefined test_clock.cpp -o "$TEMP/clock"
-"$TEMP/clock"
-
+# The server's lookups first: the zone comparisons below depend on this computer's tz database
 python3 -I ../../scripts/make_place_data.py fixtures/cities.txt fixtures/admin1.txt fixtures/countries.txt /usr/share/zoneinfo test "$TEMP/places" >/dev/null
 php test_place.php "$TEMP/places"
+
+gzip -c fixtures/dbip.csv > "$TEMP/dbip.csv.gz"
+python3 -I ../../scripts/make_ip_data.py "$TEMP/dbip.csv.gz" fixtures/cities.txt fixtures/admin1.txt "$TEMP/places/zones.tsv" "$TEMP/ipdata" >/dev/null
+php test_locate.php "$TEMP/ipdata" "$TEMP/places/zones.tsv"
+
+c++ -std=c++17 -O1 -Wall -Wextra -fsanitize=address,undefined test_clock.cpp -o "$TEMP/clock"
+"$TEMP/clock"
 
 python3 -I - "${GEONAMES_CITIES:-fixtures/cities.txt}" "$TEMP/fold.tsv" ../../scripts/make_clock_data.py <<'PY'
 import importlib.util, sys

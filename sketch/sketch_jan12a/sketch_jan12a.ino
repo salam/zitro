@@ -4528,7 +4528,7 @@ bool printImage() {
       Serial.println("  ⚠ Image is PNG/GIF but printer requires JPEG");
       Serial.println("  ⚠ JPEGENC library creates JPEGs that Canon cannot render");
       Serial.println("  See docs/PRINTER_FINDINGS.md for solutions");
-      Serial.println("  Recommended: Use gpt-image-1.5 (creates JPEG) or external converter");
+      Serial.println("  Recommended: request JPEG from the image API (output_format jpeg) or use an external converter");
       return false;
     }
   }
@@ -7029,7 +7029,7 @@ bool generateImageWithFallback(const String &prompt) {
   ImageFetchResult result = generateImageWithModel(prompt, IMAGE_MODEL, "1024x1024", true, "jpeg", false);
 
   if (result == IMAGE_FETCH_ERROR) {
-    // Older model in case the account has no access to the current one
+    // Second model in case the first one fails or the account has no access to it
     Serial.println("Retrying with " IMAGE_MODEL_FALLBACK "...");
     result = generateImageWithModel(prompt, IMAGE_MODEL_FALLBACK, "1024x1024", true, "jpeg", false);
   }

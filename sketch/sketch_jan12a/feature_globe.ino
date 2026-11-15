@@ -16,6 +16,7 @@ static uint16_t globeLineCount = 0, globePointCount = 0;
 static uint16_t* globeLengths = nullptr;
 static int16_t* globeXyz = nullptr;
 static float globePin[3];
+static float globePinLat = 0, globePinLon = 0;  // The view puts the pin back in the middle every time it opens
 static GlobeSpin globeSpin;
 static uint16_t globeCoastRaw = 0;  // The coast's colour as the sprite stores it
 static uint16_t globeOceanRaw[GLOBE_LIGHT_STEPS + 1];  // Ocean from night to day, as the sprite stores it
@@ -207,6 +208,8 @@ static bool globeFetch(const char* title) {
   prefs.end();
   modelLabel = (english || !place.titleDe[0]) ? place.title : place.titleDe;
   globeUnitVector(place.lat, place.lon, globePin);
+  globePinLat = place.lat;
+  globePinLon = place.lon;
   globeFacing(place.lat, place.lon, modelRotation.m);
   Serial.printf("Globe lookup '%s': %s at %.3f, %.3f, %u points, %ld ms left\n", title, place.title, place.lat, place.lon,
                 globePointCount, (long)(deadline - millis()));
@@ -219,6 +222,7 @@ static bool globeBegin(M5Canvas& c) {
   globePreparePalette(c);
   globeSpinReset(globeSpin);
   globeHomeLoad();
+  globeFacing(globePinLat, globePinLon, modelRotation.m);  // Back from the text: the pin in the middle again
   globeLogStart = globeLogLastFrame = 0;
   globeLogFrames = globeLogDrawUs = globeLogDrawMaxUs = globeLogGapMaxUs = globeLogSegments = 0;
   return true;

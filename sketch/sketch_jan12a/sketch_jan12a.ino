@@ -755,6 +755,7 @@ const int SERIAL_LINE_MAX = 2048;  // Longest serial command: a provisioning lin
 void handleProvisionCommand(const String& json);
 extern float modelForcedRollDeg;  // Serial "roll <degrees>" (model_view.ino)
 void setGyroEnabled(bool on);
+void imuForgetStartZero(const char* when);
 void updateGyroPower();
 bool gyroReady();
 void sendSetupFont(const unsigned char* data, unsigned int len);
@@ -2716,6 +2717,7 @@ void enterLightSleep() {
 
   esp_sleep_disable_wakeup_source(ESP_SLEEP_WAKEUP_TIMER);
   M5.Imu.begin();  // Wake the motion sensor (sleeping since powerDownPeripherals)
+  imuForgetStartZero("wake");
   gyroPowerState = -1;
   setGyroEnabled(false);
 
@@ -3005,6 +3007,21 @@ void loadSleepTimeouts() {
 // The MPU6886 gyroscope draws most of the motion sensor's current, but only the roll gesture
 // (zoom in image view) needs it. Shake, auto-flip and rotate-to-toggle use the accelerometer.
 // So the gyro runs only while an image or equation is on screen.
+// M5Unified's Imu.begin() takes one single reading as the sensor's zero (when none is saved in NVS) and
+// subtracts it from every reading after. If the stick moves at that moment, as it does when a button press
+// wakes it, the motion stays in: a Plus2 lying still read 76 deg/s and 1.19 g, and every view that turns with
+// the hand spun by itself and couldn't be steered. The sensor's own zero is far better (0.1-0.4 deg/s
+// measured), so the library's is thrown away. Logs what it would have subtracted.
+void imuForgetStartZero(const char* when) {
+  M5.Imu.update();
+  const auto with = M5.Imu.getImuData();
+  M5.Imu.clearOffsetData();
+  const auto without = M5.Imu.getImuData();  // Same reading, nothing subtracted
+  Serial.printf("IMU zero from %s cleared: gyro %.1f,%.1f,%.1f dps, accel %.2f,%.2f,%.2f g\n", when,
+                without.gyro.x - with.gyro.x, without.gyro.y - with.gyro.y, without.gyro.z - with.gyro.z,
+                without.accel.x - with.accel.x, without.accel.y - with.accel.y, without.accel.z - with.accel.z);
+}
+
 void setGyroEnabled(bool on) {
   if (gyroPowerState == (on ? 1 : 0)) return;
 #if !ZITRO_STICKS3
@@ -8431,6 +8448,7 @@ void setup() {
   cfg.output_power = false;
 #endif
   M5.begin(cfg);
+  imuForgetStartZero("M5.begin");  // Before getLandscapeRotation() reads the accelerometer
   // Release the power latch held through deep sleep. Drive it high first so power stays on
   // when the hold lets go (writes are ignored while held).
 #if !ZITRO_STICKS3
@@ -8497,6 +8515,7 @@ void setup() {
 
   // Initialize IMU for orientation detection
   M5.Imu.begin();
+  imuForgetStartZero("setup");
   setGyroEnabled(false);  // Gyro only runs in image view (see updateGyroPower)
   Serial.println("IMU initialized");
 

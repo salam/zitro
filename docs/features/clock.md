@@ -17,7 +17,7 @@ Before this, "Wie spät ist es in Tokio?" went to the AI, which is never told th
 - View: the globe in the middle of the screen (radius `GLOBE_LEVEL_RADIUS` 48), the times around it, all live. The globe stays level and in place when the stick is turned in its own plane or held upright; only the text turns (requested 2026-11-15, see REQUIREMENTS.md, the 3D view's `levels`). Landscape: the city on the left, home on the right. Portrait: the city above the globe, home below.
   - the city's name on top (requested 2026-11-08: the footer alone was too small to tell whose time it is), then its time big in citrus, the difference to home ("+8 h", "-4:30 h", "="; below the time in landscape, beside it in portrait), and short weekday and UTC offset ("So, UTC+9"; bottom left in landscape, under the time in portrait);
   - when the city isn't home: the home name behind a little white house, and the home time big in grey (top right in landscape, under the globe in portrait). The same house marks home on the globe, under the pin and only on the near side (requested 2026-11-15);
-  - the globe starts with the city in the middle, north up, pin in citrus; arrow when it's out of sight;
+  - the globe starts with the city in the middle, north up, pin in citrus; arrow when it's out of sight; back from the text, the city is in the middle again (requested 2026-11-08);
   - day and night on the ocean as they are now (see below), and a small sun where the Sun stands overhead, if that side faces the viewer;
   - national capitals as white dots;
   - 24 faint lines at 7.5 + 15 n degrees: the nominal time zones. Real zone borders bend round countries; the lines show the idea, every time on screen comes from the real zone.

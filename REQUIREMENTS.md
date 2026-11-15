@@ -101,6 +101,7 @@
 - Deep sleep latches the power-hold pin (GPIO4, the Plus2 has no PMIC) with `gpio_hold_en` so Button A can still wake the device on battery; released after boot
 - Active reminder timers keep the device in light sleep with a timer wake-up instead of deep sleep
 - Motion sensor while awake: accelerometer always on (shake, auto-flip, rotate-to-toggle); gyroscope (PWR_MGMT_2 standby bits) only while an image is shown, for the roll-to-zoom gesture, or a 3D model, for turning it. Roll readings are ignored for 150 ms after the gyro powers up
+- Motion sensor zero: M5Unified's `Imu.begin()` (0.2.12 and 0.2.29) takes one single reading as the zero offset when none is saved in NVS and subtracts it from then on. `imuForgetStartZero()` clears it after `M5.begin()`, after the `Imu.begin()` in setup and after the one on every light-sleep wake, and logs what it would have subtracted (`IMU zero from <when> cleared: gyro x,y,z dps, accel x,y,z g`). The sensor's own zero is used instead: 0.1-0.4 deg/s measured on a Plus2, 0.25 deg/s on a StickS3, both well under the 3 deg/s still limit. Found 2026-11-08: a Plus2 lying still read 76 deg/s and 1.19 g, so the star map and the globes spun by themselves and couldn't be steered; after a restart it read 0.26 deg/s and 1.00 g. Serial `modelgyro` prints the per-axis mean and the library's offset, which must be 0
 
 ### Feature Toggles
 - **Search Related Images**: Enable/disable Wikipedia image search (default: on)

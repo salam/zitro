@@ -358,7 +358,7 @@ Ask where a place is: "Where is the Matterhorn?" or "Wo liegt Paris?". Zitro sho
 - **Lost the pin?** A yellow arrow shows which way it is.
 - **The little white house** is your home city, when it's on your side of the globe.
 - **Button B** zooms in, three steps.
-- **Button C** shows the written answer.
+- **Button C** shows the written answer. Go back to the globe and the pin is in the middle again.
 - **Button A** asks a new question.
 
 Zitro only shows a globe for places Wikipedia has a position for, on Earth. For anything else, such as Mars, you get the picture. "What does the Matterhorn look like?" also gets a picture.
@@ -374,7 +374,7 @@ Zitro shows the Earth turned to that city, with a yellow pin. The time there is 
 - **Turn the stick** to turn the globe; **flick** it to spin.
 - **Turn it like a steering wheel** or hold it upright: the globe stays put and the writing turns to be read.
 - **Button B** zooms in.
-- **Button C** shows the answer as text.
+- **Button C** shows the answer as text. Go back to the globe and the city is in the middle again.
 
 Zitro has 320 cities built in: every capital and the biggest cities of the world. For other places, such as "Wie spät ist es in Knoxville?", it asks the Zitro server, so those need WiFi. If several places share the name, you get the biggest, and you can say which one you mean: "Wie spät ist es in Paris in Texas?". Zitro always works out the time itself, summer time included, so it needs to have been online once to set its clock. For a place it can't find, it says so.
 
@@ -386,7 +386,7 @@ Or let Zitro find its home: tick **Find home through zitro.spot** on the setup p
 
 Ask "Wo ist die ISS gerade?" or "Where is the ISS?". Zitro shows the Earth with the space station where it is right now, lit by the Sun as it is this moment. The grey line is where it has just been, the yellow one where it will fly in the next 90 minutes. At the top right: how high and how fast it flies; at the bottom: where it is. The little white house is your home: see when the ISS flies over you. Watch closely: it moves, once round the Earth in about an hour and a half.
 
-- **Turn the stick** to turn the globe; **Button B** zooms; **Button C** shows the answer as text.
+- **Turn the stick** to turn the globe; **Button B** zooms; **Button C** shows the answer as text. Go back to the globe and the space station is in the middle again, where it is now.
 - **Turn it like a steering wheel** or hold it upright: the globe stays put and the writing turns to be read.
 
 Zitro gets the path from NASA through the Zitro server, so it needs WiFi. After three hours the path runs out: ask again.

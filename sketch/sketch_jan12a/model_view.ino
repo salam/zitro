@@ -311,6 +311,7 @@ void modelGyroNoise() {
   setGyroEnabled(true);
   delay(200);
   float peak = 0, sum = 0, ax = 0, ay = 0, az = 0;
+  float axis[3] = {0, 0, 0};
   int samples = 0;
   const unsigned long start = millis();
   while (millis() - start < 3000) {
@@ -321,11 +322,17 @@ void modelGyroNoise() {
     ax = imu.accel.x;
     ay = imu.accel.y;
     az = imu.accel.z;
+    axis[0] += imu.gyro.x;
+    axis[1] += imu.gyro.y;
+    axis[2] += imu.gyro.z;
     sum += m;
     samples++;
     delay(10);
   }
   Serial.printf("modelgyro samples=%d mean=%.2f peak=%.2f dps, still<%.1f active>=%.1f accel=%.2f,%.2f,%.2f\n", samples,
                 sum / samples, peak, MODEL_STILL_DPS, MODEL_ACTIVE_DPS, ax, ay, az);
+  // Per axis, and what the library still subtracts: 0 since imuForgetStartZero()
+  Serial.printf("modelgyro axes=%.2f,%.2f,%.2f dps libOffset=%ld,%ld,%ld\n", axis[0] / samples, axis[1] / samples,
+                axis[2] / samples, (long)M5.Imu.getOffsetData(3), (long)M5.Imu.getOffsetData(4), (long)M5.Imu.getOffsetData(5));
   updateGyroPower();
 }

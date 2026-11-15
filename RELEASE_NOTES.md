@@ -7,6 +7,8 @@
 
 ## Sun 15 Nov, 2026
 
+- **Steer the stars again**: the star map, the globe, the world clock and the ISS no longer spin by themselves after you wake Zitro. Turn the stick and they follow your hand, and stay put when you stop.
+- **Right back in the middle**: switch from the written answer back to the globe, the world clock or the ISS, and the place or the space station is in the middle again.
 - **Live anywhere**: your home city can now be any town, not only the 320 big cities. Say "Stelle meinen Wohnort auf Winterthur", or type it on the setup page: Zitro looks it up as soon as it's online, and keeps the time zone right even without WiFi.
 - **Let Zitro find its home**: tick "Wohnort über zitro.spot bestimmen" on the setup page and Zitro takes the town of its internet address as home. It stays off unless you switch it on.
 - **Turn the world clock any way you like**: hold the stick upright or turn it like a steering wheel. The globe stays exactly where it is, north up, and the writing turns so you can read it. The same for "Wo liegt …?" and the ISS.

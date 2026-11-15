@@ -20,6 +20,7 @@ static bool clockAtHome = false;  // The place shown is home: no second time, no
 static ClockRule clockHomeRule;    // Home's, whether a city of the table or a place (homeRule)
 static bool clockGerman = true;
 static GlobeSpin clockSpin;
+static float clockLat = 0, clockLon = 0;  // The view puts the place back in the middle every time it opens
 static float clockPin[3];
 static int16_t clockCapitalXyz[CLOCK_CITY_COUNT][3];  // Unit vectors x 2^14, filled once per lookup
 
@@ -104,6 +105,8 @@ static bool clockFetch(const char* query) {
   modelAnswerText = text;
   globeUnitVector(lat, lon, clockPin);
   globeFacing(lat, lon, modelRotation.m);
+  clockLat = lat;
+  clockLon = lon;
   for (int i = 0; i < CLOCK_CITY_COUNT; i++) {
     float v[3];
     globeUnitVector(CLOCK_CITIES[i].lat100 / 100.0f, CLOCK_CITIES[i].lon100 / 100.0f, v);
@@ -118,6 +121,7 @@ static bool clockBegin(M5Canvas& c) {
   globePreparePalette(c);
   globeSpinReset(clockSpin);
   globeHomeLoad();
+  globeFacing(clockLat, clockLon, modelRotation.m);  // Back from the text: the place in the middle again
   return true;
 }
 

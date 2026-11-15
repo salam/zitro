@@ -68,6 +68,10 @@ static bool issBegin(M5Canvas& c) {
   globePreparePalette(c);
   globeSpinReset(issSpin);
   globeHomeLoad();
+  // Back from the text: the station in the middle again, where it is now. Past the end of the track
+  // there's no position, so the globe stays as it was.
+  float lat, lon, alt;
+  if (issPositionAt(*issTrack, issNow(), lat, lon, alt)) globeFacing(lat, lon, modelRotation.m);
   return true;
 }
 

@@ -117,7 +117,7 @@ bool modelViewShow() {
     currentDisplayMode = SHOW_TEXT;
     modelResetRotateToggle = true;
     Serial.println("3D view: no memory for the sprite");
-    drawScreen("Not enough memory\nfor the 3D view.");
+    drawScreen(uiText("Zu wenig Speicher\nfür die 3D-Ansicht.", "Not enough memory\nfor the 3D view."));
     delay(1500);
     drawScreen(response);
     return false;

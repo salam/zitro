@@ -145,6 +145,7 @@ Zitro's firmware also runs on the StickS3, but the installer can't put it there 
 
 The StickS3 has a front button (A) and a side button (B). Its power button only switches the stick on and off, so Button B also takes over Button C's job:
 - Button A: the same as on the Plus2.
+- Where the Plus2 shows its "M5" key on screen, the StickS3 shows its own front button: a thin, upright blue key with no label.
 - Button B, one click: what Button B does on the Plus2. It counts once the stick has made sure no second click follows, so it reacts a moment later.
 - Button B, double click: what one click on Button C does on the Plus2: scroll down, next page of a fact sheet or timeline, text or picture, next timer, next printer.
 - Button B, three quick clicks: open the setup page, in the same places as three clicks on Button C.
@@ -524,7 +525,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
   - WiFi search in the background: the screen doesn't wait for it
   - AP setup mode (screen with SSID + IP, web setup page)
 - Home / idle
-  - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for a surprise."
+  - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for a surprise." On the StickS3 the key is a thin, upright blue key without a label, like its front button. In German: "Drück die [M5] Taste und stell eine Frage", "Schüttle mich!"
   - WiFi symbol in the top right corner while Zitro is still looking for WiFi: pulsing grey and white while it searches, grey when it found no known network
   - Battery indicator appears when low
   - Rotate icon appears when an image is available
@@ -535,6 +536,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
   - Transcribing (icon). Without WiFi yet, it waits here with the WiFi symbol
     - No known WiFi found: "No known WiFi found.", then the setup screen
   - Thinking (large robot icon) / Calculating / Creating image / Finding image
+  - These screens speak the stick's language (Settings → Language). In German, the default: "Ich verstehe...", "Ich überlege...", "Ich rechne...", "Ich male...", "Ich suche ein Bild...", "Nochmal von vorn...", and so on. The setup screen with the QR code stays in English.
   - Answer (text view)
   - Optional image view
     - Scroll controls

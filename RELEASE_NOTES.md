@@ -1,5 +1,10 @@
 # Release Notes
 
+## Sun 15 Nov, 2026
+
+- **Your button on screen (StickS3)**: the start screen, the tour, the vocabulary trainer and the shop now show the StickS3's own blue front button instead of "M5". Press the one you see.
+- **Zitro speaks your language while it works**: the start screen ("Drück die Taste und stell eine Frage"), "Ich verstehe...", "Ich überlege...", "Ich male..." and the other waiting messages now follow the language in the settings.
+
 ## Sat 14 Nov, 2026
 
 - **Wake up and ask right away**: Zitro no longer waits for WiFi before it is ready. Press the button, and while you speak, Zitro finds the network in the background.

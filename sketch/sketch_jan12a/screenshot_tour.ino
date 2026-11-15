@@ -129,7 +129,7 @@ static void tourPrintScreens() {
                          "Kitchen-Printer.local"};
 
   armCapture("23-print-searching", 0);
-  drawPrintStatus("Searching...", PRINT_BADGE_NONE);
+  drawPrintStatus(uiText("Ich suche...", "Searching..."), PRINT_BADGE_NONE);
   delay(300);
 
   printerCount = 1;
@@ -169,16 +169,16 @@ static void tourPrintScreens() {
   printMenuStep = PRINT_STEP_PRINTER;
 
   armCapture("26-print-printing", 0);
-  drawPrintStatus("Printing...", PRINT_BADGE_NONE);
+  drawPrintStatus(uiText("Drucke...", "Printing..."), PRINT_BADGE_NONE);
   delay(300);
   armCapture("27-print-sent", 0);
-  drawPrintStatus("Sent!", PRINT_BADGE_OK);
+  drawPrintStatus(uiText("Gesendet!", "Sent!"), PRINT_BADGE_OK);
   delay(300);
   armCapture("28-print-failed", 0);
-  drawPrintStatus("Print\nfailed", PRINT_BADGE_FAIL);
+  drawPrintStatus(uiText("Drucken\nging nicht", "Print\nfailed"), PRINT_BADGE_FAIL);
   delay(300);
   armCapture("29-print-none", 0);
-  drawPrintStatus("No printer\nfound", PRINT_BADGE_FAIL);
+  drawPrintStatus(uiText("Kein Drucker\ngefunden", "No printer\nfound"), PRINT_BADGE_FAIL);
   delay(300);
 
   // Portrait, Button A at the bottom
@@ -193,13 +193,13 @@ static void tourPrintScreens() {
   displayPrinterSelection();
   delay(300);
   armCapture("32-print-portrait-searching", 0);
-  drawPrintStatus("Searching...", PRINT_BADGE_NONE);
+  drawPrintStatus(uiText("Ich suche...", "Searching..."), PRINT_BADGE_NONE);
   delay(300);
   armCapture("33-print-portrait-sent", 0);
-  drawPrintStatus("Sent!", PRINT_BADGE_OK);
+  drawPrintStatus(uiText("Gesendet!", "Sent!"), PRINT_BADGE_OK);
   delay(300);
   armCapture("34-print-portrait-none", 0);
-  drawPrintStatus("No printer\nfound", PRINT_BADGE_FAIL);
+  drawPrintStatus(uiText("Kein Drucker\ngefunden", "No printer\nfound"), PRINT_BADGE_FAIL);
   delay(300);
 
   // Portrait, Button A on top
@@ -256,7 +256,7 @@ static void runScreenshotTour() {
     delay(300);
   }
   tourScreen("02-home", MAIN_QUESTION);
-  tourScreen("03-welcome-no-key", "Welcome to Zitro!\n\nAdd an AI key on\nthe setup page.");
+  tourScreen("03-welcome-no-key", uiText("Willkommen bei Zitro!\n\nTrag auf der Setup-Seite\neinen KI-Schlüssel ein.", "Welcome to Zitro!\n\nAdd an AI key on\nthe setup page."));
   armCapture("04-setup-mode", 0);
   drawSetupScreen();
   delay(300);
@@ -267,20 +267,20 @@ static void runScreenshotTour() {
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);
   delay(300);
   wifiIconTourLevel = 0;
-  tourScreen("06b-no-known-wifi", "No known WiFi\nfound.");
+  tourScreen("06b-no-known-wifi", uiText("Kein bekanntes\nWLAN gefunden.", "No known WiFi\nfound."));
 
   armCapture("07-recording", 0);
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);
   delay(300);
-  tourScreen("08-recording-restart", "Restarting...");
+  tourScreen("08-recording-restart", uiText("Nochmal von vorn...", "Restarting..."));
 
   armCapture("09-transcribing", 1);  // Middle frame of the pulse is the brightest
-  drawScreenWithIcon("Transcribing...", transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
+  drawScreenWithIcon(uiText("Ich verstehe...", "Transcribing..."), transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
   armCapture("10-thinking", 1);
-  drawScreenWithIcon("Thinking...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
+  drawScreenWithIcon(uiText("Ich überlege...", "Thinking..."), thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
 
   tourScreen("11-answer", wordWrap("Der Mond ist im Schnitt 384'400 km von der Erde entfernt. Licht braucht gut eine Sekunde.", 25));
-  tourScreen("12-couldnt-hear", "Couldn't hear.\nTry again.");
+  tourScreen("12-couldnt-hear", uiText("Nicht verstanden.\nVersuch es nochmal.", "Couldn't hear.\nTry again."));
   tourScreen("13-error-key-rejected", "API key rejected.\nTriple-press the\nside button for\nsettings.");
   tourScreen("14-hint-no-key", "No AI key set.\nTriple-press the\nside button for\nsettings.");
   tourScreen("15-hint-voice-key", "Voice needs an\nOpenAI or Zitro\nkey. Triple-press\nside button.");
@@ -298,12 +298,12 @@ static void runScreenshotTour() {
   tourTimerScreens();
 
   armCapture("20-night-lock", 1);
-  drawScreenWithIcon("Ich schlafe z z z", nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
+  drawScreenWithIcon(uiText("Ich schlafe z z z", "Sleeping z z z"), nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
   armCapture("21-opening-settings", 0);
   drawSetupScreen(true);
   delay(300);
   armCapture("22-mic-error", 1);
-  drawScreenWithIcon("Mic error", micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
+  drawScreenWithIcon(uiText("Mikrofehler", "Mic error"), micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
   tourPrintScreens();
 
   captureArmed = 0;

@@ -114,6 +114,8 @@
 - Setup hotspot (open WiFi) is named "zitro"; mDNS makes the setup page reachable at `zitro.local`. The WiFi QR code (`WIFI:T:nopass;S:zitro;P:;;`, QR version 3, 93x93 px) is made by `generate_wifi_qr.py` and `convert_wifi_qr.sh`
 - Setup page follows zitro.spot (webpage2/styles.css): paper palette, Sniglet headings, lemon-shaped citrus buttons. Sniglet is served from flash (`setup_fonts.h`, `/f/sniglet-400.woff2`, `/f/sniglet-800.woff2`, made by `scripts/make_setup_fonts.py`) because setup mode has no internet
 - Home screen (`drawHomeScreen()`, drawn whenever `MAIN_QUESTION` is shown): "[lemon] Press [M5] button" on one line: small citrus lemon (#f2b705, with leaf), then "Press", a keycap labeled "M5" like the stick's front button (rounded dark grey face with white outline, smaller DejaVu 12 text, 2 px mid-grey key side showing bottom and right), then "button"; "to ask a question"; half-line gap; shake icon (`shakeIcon`, phone slightly tilted) + "Shake for a surprise."
+  - On the StickS3 the key looks like its front button (`drawFrontKeycap()`): an upright blue pill with no label, face 7 px wide and as tall as the M5 key's face, corner radius 3, fill `0x3C7F`, the same 2 px mid-grey side bottom and right. The tour, the vocabulary trainer and the shop draw their keys with it too, so the StickS3 never shows "M5"
+  - In German (Settings → language DE, the default): "[lemon] Drück die [M5] Taste", "und stell eine Frage", shake icon + "Schüttle mich!" ("Schüttle für eine Überraschung." is 281 px wide, the screen 240)
 - WiFi search icon (see WiFi in the Background): three arcs over a dot, 17x14 px, drawn with primitives, top right at (WIDTH-21, 3), left of the battery indicator when that shows. Only on the home screen, the recording screen, and the screens that wait for WiFi ("Transcribing...", "Restoring..."). Pulses grey (90) to white and back every 1.4 s while searching, stays grey once a search found nothing, and is gone as soon as the connection stands
 - Setup screen: "SETUP: Connect to:" / zitro / "and open:" / underlined "zitro.local" / "Then press BUTTON" "to retry." (retry lines only with stored networks), WiFi QR code on the right. Opens at boot without stored networks or AI key, on request, or when a recorded question finds no known WiFi
 - "Opening settings" (Button C triple-press or voice request) uses the same QR screen with "Opening settings..." / "Connect to:" as its first lines, before the hotspot starts
@@ -173,6 +175,13 @@
 - Creating image status
 - Finding image status
 - No camera message
+- Status and error screens follow Settings → language (DE, the default, or EN). Every fixed text goes through `uiText(de, en)`; the vocabulary trainer uses its own `vt()`. German texts, each checked to fit its screen:
+  - Transcribing... → "Ich verstehe...", Thinking... → "Ich überlege...", Calculating... → "Ich rechne...", Creating image... → "Ich male...", Finding related image... → "Ich suche ein Bild...", Looking it up... → "Ich schlage nach..."
+  - Restarting... (recording) → "Nochmal von vorn...", Restoring image... → "Hole das Bild...", Restoring... (3D model) → "Hole das Modell...", Resetting... → "Setze zurück..."
+  - Mic error → "Mikrofehler", "No known WiFi found." → "Kein bekanntes WLAN gefunden.", "Couldn't hear. Try again." → "Nicht verstanden. Versuch es nochmal.", "Retrying WiFi connection..." → "Verbinde das WLAN nochmal...", "Connected!" → "Verbunden!", the welcome screen without an AI key, "Not enough memory for the 3D view." and the image errors
+  - Printing: "Ich suche...", "Drucke...", "Gesendet!", "Drucken ging nicht", "Kein Drucker gefunden", "Kein Bild"
+  - Texts that were German only now have English: "No timers running.", "All timers cleared.", "Sleeping z z z"
+  - Not yet: the setup screen (built-in font 2 has no umlauts), the image decode errors, and the error hints with "Triple-press the side button" (the button UI module owns that wording)
 
 ### Language-Specific Prompt Handling
 - German (DE): No prompt modification (system default)

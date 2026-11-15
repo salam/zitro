@@ -69,13 +69,13 @@ static void guidePressRow(M5Canvas& c, const char* before, const char* after, in
   c.setFreeFont(FontManager::getFont12pt());
   const String a = String(before) + " ";
   const String b = String(" ") + after;
-  const int capW = drawKeycap(c, "M5", 0, 0, true);
+  const int capW = drawFrontKeycap(c, 0, 0, true);
   int x = (WIDTH - (c.textWidth(a) + capW + c.textWidth(b))) / 2;
   c.setTextColor(TFT_WHITE);
   c.setTextDatum(ML_DATUM);
   c.drawString(a, x, cy);
   x += c.textWidth(a);
-  drawKeycap(c, "M5", x, cy);
+  drawFrontKeycap(c, x, cy);
   x += capW;
   c.setTextColor(TFT_WHITE);
   c.setTextDatum(ML_DATUM);

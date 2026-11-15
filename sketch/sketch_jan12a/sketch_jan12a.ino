@@ -8067,6 +8067,12 @@ void setup() {
   Serial.println("========================================\n");
 
   auto cfg = M5.config();
+#if ZITRO_STICKS3
+  // M5Unified switches on the 5V output for Grove/Hat by default. Zitro uses neither, and on the
+  // StickS3 that converter hums audibly the whole time it runs (found 2026-11-15 by switching the
+  // power rails off one at a time).
+  cfg.output_power = false;
+#endif
   M5.begin(cfg);
   // Release the power latch held through deep sleep. Drive it high first so power stays on
   // when the hold lets go (writes are ignored while held).
@@ -9083,6 +9089,7 @@ void handleButtonAClick(bool withAudio) {
 
 void loop() {
   M5.update();
+  speakerOffWhenQuiet();  // StickS3: no hum at rest (board.h). Before the early returns below.
   handleSerialCommands();
   gifAnimTick();
 

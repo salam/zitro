@@ -2,6 +2,7 @@
 
 ## Sun 15 Nov, 2026
 
+- **Quiet StickS3**: the soft hum while the StickS3 is on is gone. Zitro now leaves off a power converter for accessories it doesn't use, and switches the speaker on only to play a sound. Songs, answers and the timer sound as before.
 - **Your button on screen (StickS3)**: the start screen, the tour, the vocabulary trainer and the shop now show the StickS3's own blue front button instead of "M5". Press the one you see.
 - **Zitro speaks your language while it works**: the start screen ("Drück die Taste und stell eine Frage"), "Ich verstehe...", "Ich überlege...", "Ich male..." and the other waiting messages now follow the language in the settings.
 - **Watch Zitro find your WiFi**: when your question is ready before the WiFi is, a big WiFi symbol lights up wave by wave, shows which network Zitro is trying, and a lemon-yellow bar fills up until it's online.

@@ -369,7 +369,12 @@ void handleSerialCommands() {
       }
       Serial.printf("Mode %d, speaker %d\n", currentDisplayMode, M5.Speaker.getVolume());
     } else if (line == "speaker") {
-      Serial.printf("Speaker volume %d, tone sounding %d\n", M5.Speaker.getVolume(), M5.Speaker.isPlaying(1) ? 1 : 0);
+      Serial.printf("Speaker volume %d, tone sounding %d, running %d\n", M5.Speaker.getVolume(),
+                    M5.Speaker.isPlaying(1) ? 1 : 0, M5.Speaker.isRunning() ? 1 : 0);
+#if ZITRO_STICKS3
+      // The 5V output for Grove/Hat must stay off: its converter hums audibly (see setup)
+      Serial.printf("5V output %d\n", M5.Power.getExtOutput() ? 1 : 0);
+#endif
     } else if (line == "forget") {
       // So repeated "ask" runs can't copy each other's answers
       memoryClear();

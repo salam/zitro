@@ -224,13 +224,14 @@ static bool shopSpeak(const std::string& text, bool slow) {
                                   " at " + where[shopPlace] +
                                   ", talking to a child who is learning English. Speak British English clearly and a "
                                   "little slowly, cheerful.";
-  return speakTextVoiced(String(text.c_str()), style.c_str(), shopVoiceName(shopNow.person.voice));
+  return speakTextVoiced(String(text.c_str()), style.c_str(), shopVoiceName(shopNow.person.voice),
+                         slow ? TTS_STYLE_ENGLISH_SLOW : TTS_STYLE_ENGLISH);
 }
 
 // Zitro itself (not the person in the shop), slowly: the words of the shopping list
 static void shopNarrate(const std::string& text) {
   Serial.printf("Shop: hint '%s'\n", text.c_str());
-  if (shopVolume() > 0) speakTextVoiced(String(text.c_str()), SHOP_SLOW, "nova");
+  if (shopVolume() > 0) speakTextVoiced(String(text.c_str()), SHOP_SLOW, "nova", TTS_STYLE_ENGLISH_SLOW);
 }
 
 static void shopSetNote(const String& text) {

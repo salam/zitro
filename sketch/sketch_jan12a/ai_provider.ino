@@ -71,8 +71,8 @@ bool aiChatConfigured() {
   return c.url.length() > 0 && c.key.length() > 0 && c.model.length() > 0;
 }
 
-// Text-to-speech and image generation use the OpenAI API, and so does speech-to-text unless
-// Infomaniak transcribes it (sttEndpoint). Zitro subscribers get them through the relay; everyone
+// Image generation uses the OpenAI API, and so do speech-to-text and read-aloud unless Infomaniak
+// transcribes (sttEndpoint) or Azure reads aloud (ttsEndpoint). Zitro subscribers get them through the relay; everyone
 // else needs an OpenAI key, because Claude and most compatible providers offer no such endpoints.
 AudioEndpoint audioEndpoint() {
   AudioEndpoint e;
@@ -115,6 +115,29 @@ SttEndpoint sttEndpoint() {
   s.path = "/v1/audio/transcriptions";
   s.available = a.available;
   return s;
+}
+
+// Read-aloud: Azure Speech when the family picked it on the setup page, whatever answers the questions.
+// No quiet switch to OpenAI when the Azure key is missing: the family chose where the answers are read.
+TtsEndpoint ttsEndpoint() {
+  TtsEndpoint t;
+  t.available = false;
+  t.azure = false;
+  if (aiPref("ttsProv", "openai") == "azure") {
+    String region = aiPref("azRegion", AZURE_TTS_DEFAULT_REGION);
+    if (region.length() == 0) region = AZURE_TTS_DEFAULT_REGION;
+    t.azure = true;
+    t.host = region + ".tts.speech.microsoft.com";
+    t.key = aiPref("azKey");
+    t.voice = aiPref("azVoice");
+    t.available = t.key.length() > 0 && ttsValidAzureRegion(region.c_str());
+    return t;
+  }
+  AudioEndpoint a = audioEndpoint();
+  t.host = a.host;
+  t.key = a.key;
+  t.available = a.available;
+  return t;
 }
 
 

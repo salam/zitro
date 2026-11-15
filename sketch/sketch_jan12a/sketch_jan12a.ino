@@ -47,6 +47,9 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 // Requires JPEGENC library: https://github.com/bitbank2/JPEGENC
 // Uncomment the next line and install library to enable
 #define ENABLE_JPEG_CONVERSION
+
+// Sent to Wikipedia and Wikimedia, whose API policy asks for a client name and a way to reach its operator
+#define ZITRO_USER_AGENT "Zitro.spot/1.0 (https://zitro.spot; hello@zitro.spot)"
 #include <JPEGENC.h>
 
 // Alert sound for timer alarms
@@ -5397,8 +5400,8 @@ WikiResult searchWikipedia(const String &searchTerms) {
   Serial.println("URL: " + url);
   http.begin(client, url);
   http.setTimeout(15000);
-  http.addHeader("User-Agent", "AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
-  Serial.println("User-Agent: AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
+  http.addHeader("User-Agent", ZITRO_USER_AGENT);
+  Serial.println("User-Agent: " ZITRO_USER_AGENT);
 
   int httpCode = http.GET();
   Serial.printf("HTTP response code: %d\n", httpCode);
@@ -5413,7 +5416,7 @@ WikiResult searchWikipedia(const String &searchTerms) {
       Serial.println("Retrying Wikipedia request...");
       http.begin(client, url);
       http.setTimeout(15000);
-      http.addHeader("User-Agent", "AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
+      http.addHeader("User-Agent", ZITRO_USER_AGENT);
       httpCode = http.GET();
       Serial.printf("Retry HTTP response code: %d\n", httpCode);
     }
@@ -5450,7 +5453,7 @@ WikiResult searchWikipedia(const String &searchTerms) {
     // Retry once after delay
     http.begin(client, url);
     http.setTimeout(15000);
-    http.addHeader("User-Agent", "AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
+    http.addHeader("User-Agent", ZITRO_USER_AGENT);
     httpCode = http.GET();
     Serial.printf("Retry after rate limit - HTTP response code: %d\n", httpCode);
 
@@ -5510,7 +5513,7 @@ WikiResult searchWikipedia(const String &searchTerms) {
         Serial.println("Fetching links from: " + parseUrl);
         http.begin(client, parseUrl);
         http.setTimeout(15000);
-        http.addHeader("User-Agent", "AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
+        http.addHeader("User-Agent", ZITRO_USER_AGENT);
 
         int parseCode = http.GET();
         Serial.printf("Parse API HTTP response code: %d\n", parseCode);
@@ -5572,7 +5575,7 @@ WikiResult searchWikipedia(const String &searchTerms) {
               http.end(); // Close parse API connection
               http.begin(client, retryUrl);
               http.setTimeout(15000);
-              http.addHeader("User-Agent", "AIStick/1.0 (https://matthias.sala.ch/aistick; matthias@sala.ch)");
+              http.addHeader("User-Agent", ZITRO_USER_AGENT);
 
               int retryCode = http.GET();
               Serial.printf("Retry HTTP response code: %d\n", retryCode);

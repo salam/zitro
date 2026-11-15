@@ -39,6 +39,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "dino_core.h"   // Dinosaur fact sheets (feature_dino.ino); the main flow needs dinoMissLine
 #include "shake_core.h"  // What a shake can show besides a fact
 #include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
+#include "stt_core.h"    // Speech-to-text at Infomaniak: batch id, then poll the result
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -721,6 +722,10 @@ const char* setupPage = R"rawliteral(
             <option value="qwen3"><option value="mistral3"><option value="llama3"><option value="gemma3n">
           </datalist>
           <div class="info"><a href="https://manager.infomaniak.com" target="_blank">manager.infomaniak.com</a> → AI Tools</div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="ikSpeech">
+            <label for="ikSpeech" id="labelIkSpeech">Transcribe my voice at Infomaniak too (Switzerland)</label>
+          </div>
         </div>
 
         <div class="provider-fields" data-provider="custom">
@@ -830,8 +835,11 @@ const char* setupPage = R"rawliteral(
         labelApiKey: 'OpenAI API key', labelApiKeySpeech: 'OpenAI API key (for voice)',
         speechInfo: 'Needed for voice input, read-aloud and pictures.',
         speechInfoOther: 'This provider cannot hear or speak, so voice input, read-aloud and pictures still use OpenAI.',
+        labelIkSpeech: 'Transcribe my voice at Infomaniak too (Switzerland)',
+        speechInfoIk: 'Your voice is transcribed by Infomaniak in Switzerland. Read-aloud and pictures still use OpenAI: without an OpenAI key, Zitro answers in writing only.',
         saveAiBtn: 'Save AI settings', keySaved: 'saved', keyKeep: 'Saved key {k} - leave empty to keep',
         aiReady: 'Ready: answers and voice are set up.', aiNoSpeech: 'Answers are set up, but voice needs an OpenAI key.',
+        aiNoVoiceOut: 'Ready: answers and voice input are set up. Read-aloud and pictures need an OpenAI key.',
         deviceSettingsTitle: 'Device settings',
         labelMemory: 'Remember the last 10 minutes (follow-up questions)',
         labelLanguage: 'Language', labelHomeCity: 'Home city (time zone)', cityUnknown: 'Please pick a city from the list.', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
@@ -866,8 +874,11 @@ const char* setupPage = R"rawliteral(
         labelApiKey: 'OpenAI API-Schlüssel', labelApiKeySpeech: 'OpenAI API-Schlüssel (für Sprache)',
         speechInfo: 'Für Spracheingabe, Vorlesen und Bilder.',
         speechInfoOther: 'Dieser Anbieter kann nicht hören oder sprechen. Spracheingabe, Vorlesen und Bilder laufen weiter über OpenAI.',
+        labelIkSpeech: 'Spracheingabe auch bei Infomaniak (Schweiz)',
+        speechInfoIk: 'Deine Stimme wird bei Infomaniak in der Schweiz in Text umgewandelt. Vorlesen und Bilder laufen weiter über OpenAI: ohne OpenAI-Schlüssel antwortet Zitro nur schriftlich.',
         saveAiBtn: 'KI-Einstellungen speichern', keySaved: 'gespeichert', keyKeep: 'Gespeicherter Schlüssel {k} - leer lassen zum Behalten',
         aiReady: 'Bereit: Antworten und Sprache sind eingerichtet.', aiNoSpeech: 'Antworten sind eingerichtet, Sprache braucht einen OpenAI-Schlüssel.',
+        aiNoVoiceOut: 'Bereit: Antworten und Spracheingabe sind eingerichtet. Vorlesen und Bilder brauchen einen OpenAI-Schlüssel.',
         deviceSettingsTitle: 'Geräteeinstellungen',
         labelMemory: 'Die letzten 10 Minuten merken (Folgefragen)',
         labelLanguage: 'Sprache', labelHomeCity: 'Wohnort (Zeitzone)', cityUnknown: 'Bitte eine Stadt aus der Liste wählen.', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
@@ -924,7 +935,8 @@ const char* setupPage = R"rawliteral(
       var tr = t[currentLang];
       $('openaiKeyBox').classList.toggle('hidden', p === 'zitro');
       $('labelApiKey').textContent = p === 'openai' ? tr.labelApiKey : tr.labelApiKeySpeech;
-      $('speechInfo').textContent = p === 'openai' ? tr.speechInfo : tr.speechInfoOther;
+      $('speechInfo').textContent = p === 'openai' ? tr.speechInfo
+        : (p === 'infomaniak' && $('ikSpeech').checked ? tr.speechInfoIk : tr.speechInfoOther);
     };
 
     var startTutorial = function() {
@@ -961,11 +973,12 @@ const char* setupPage = R"rawliteral(
           $('lightSleep').value = (data.lightSleep || 90000) / 1000;
           $('deepSleep').value = (data.deepSleep || 180000) / 1000;
           BOOL_KEYS.forEach(function(k) { if (k in data) $(k).checked = data[k] === true; });
+          $('ikSpeech').checked = data.ikSpeech === true;
           updateProviderFields();
 
           var note = $('aiReadyNote');
           if (data.aiReady) {
-            note.textContent = data.speechReady ? tr.aiReady : tr.aiNoSpeech;
+            note.textContent = !data.speechReady ? tr.aiNoSpeech : (data.voiceOutReady === false ? tr.aiNoVoiceOut : tr.aiReady);
             note.classList.remove('hidden');
             note.classList.toggle('ok', !!data.speechReady);
           }
@@ -978,6 +991,7 @@ const char* setupPage = R"rawliteral(
     };
 
     $('provider').addEventListener('change', updateProviderFields);
+    $('ikSpeech').addEventListener('change', updateProviderFields);
 
     $('aiForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -985,6 +999,7 @@ const char* setupPage = R"rawliteral(
       var params = new URLSearchParams();
       params.append('provider', p);
       TEXT_KEYS.forEach(function(k) { params.append(k, $(k).value.trim()); });
+      params.append('ikSpeech', $('ikSpeech').checked ? '1' : '0');
       SECRET_KEYS.forEach(function(k) { if ($(k).value.trim()) params.append(k, $(k).value.trim()); });
       var mainKey = {zitro:'zitroKey', openai:'apiKey', anthropic:'claudeKey', infomaniak:'ikKey', custom:'customKey'}[p];
       if (firstRun && !$(mainKey).value.trim()) { alert(t[currentLang].needKey); return; }
@@ -1942,6 +1957,7 @@ void handleGetSettings() {
   for (const char* key : AI_TEXT_SETTING_KEYS) {
     doc[key] = settingsPrefs.getString(key, "");
   }
+  doc["ikSpeech"] = settingsPrefs.getBool("ikSpeech", false);
   // Only reveal whether a key exists plus its last 4 characters
   for (const char* key : SECRET_SETTING_KEYS) {
     String secret = settingsPrefs.getString(key, "");
@@ -1950,7 +1966,8 @@ void handleGetSettings() {
   settingsPrefs.end();
 
   doc["aiReady"] = aiChatConfigured();
-  doc["speechReady"] = audioEndpoint().available;
+  doc["speechReady"] = sttEndpoint().available;       // voice input
+  doc["voiceOutReady"] = audioEndpoint().available;   // read-aloud and pictures
 
   String json;
   serializeJson(doc, json);
@@ -2025,6 +2042,11 @@ void handleSaveSettings() {
     value.trim();
     if (strcmp(key, "customUrl") == 0 && value.length() > 0 && !value.startsWith("https://")) continue;
     if (value.length() <= 200) settingsPrefs.putString(key, value);
+  }
+  // Speech-to-text at Infomaniak (only used while Infomaniak answers, see sttEndpoint)
+  if (server.hasArg("ikSpeech")) {
+    const String v = server.arg("ikSpeech");
+    settingsPrefs.putBool("ikSpeech", v == "1" || v == "true" || v == "on");
   }
 
   // Empty key fields mean "keep the stored key"
@@ -2915,13 +2937,47 @@ void createWavHeaderRate(uint8_t* header, int dataSize, int sampleRate) {
 
 void createWavHeader(uint8_t* header, int dataSize) { createWavHeaderRate(header, dataSize, activeSampleRate); }
 
+// Infomaniak transcribes in batches: the upload returned batchId, now ask for the result until it is
+// ready (usually a second or two). One TLS connection is kept for all polls.
+static bool pollInfomaniakTranscript(const SttEndpoint& ep, const String& batchId, String& text, String& error) {
+  const String url = "https://" + ep.host + "/1/ai/" + ep.product + "/results/" + batchId;
+  WiFiClientSecure client;
+  client.setInsecure();
+  HTTPClient http;
+  http.setReuse(true);
+  const unsigned long start = millis();
+  while (millis() - start < 30000) {
+    delay(400);
+    http.begin(client, url);
+    http.addHeader("Authorization", "Bearer " + ep.key);
+    http.setTimeout(15000);
+    const int code = http.GET();
+    const String body = code > 0 ? http.getString() : String();
+    http.end();
+    if (code <= 0) continue;  // Network hiccup: try again until the time is up
+    std::string transcript;
+    const SttPoll state = sttParseInfomaniakResult(body.c_str(), transcript);
+    if (state == STT_POLL_PENDING) continue;
+    if (state == STT_POLL_FAILED) {
+      Serial.printf("ERROR: Infomaniak result HTTP %d: %s\n", code, body.substring(0, 300).c_str());
+      error = "No transcription";
+      return false;
+    }
+    text = transcript.c_str();
+    return true;
+  }
+  Serial.println("ERROR: Infomaniak transcription not ready in 30 s");
+  error = "Timeout";
+  return false;
+}
+
 // Sends recorded samples to speech-to-text. language ("en", "de") and prompt are optional (nullptr: not sent).
 // Returns false with a short error ("Timeout", "No transcription", ...) when there is no transcript.
 bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
                        String& text, String& error) {
   Serial.println("\n========== TRANSCRIBING ==========");
   
-  AudioEndpoint ep = audioEndpoint();
+  SttEndpoint ep = sttEndpoint();
   if (!ep.available) {
     Serial.println("ERROR: No speech key configured");
     error = "No speech key";
@@ -2958,8 +3014,15 @@ bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const 
   
   String bodyEnd = "\r\n--" + boundary + "\r\n";
   bodyEnd += "Content-Disposition: form-data; name=\"model\"\r\n\r\n";
-  bodyEnd += STT_MODEL "\r\n";
-  if (language && language[0]) {
+  bodyEnd += String(ep.infomaniak ? INFOMANIAK_STT_MODEL : STT_MODEL) + "\r\n";
+  if (ep.infomaniak) {
+    bodyEnd += "--" + boundary + "\r\n";
+    bodyEnd += "Content-Disposition: form-data; name=\"response_format\"\r\n\r\n";
+    bodyEnd += "json\r\n";
+  }
+  // Infomaniak's reference says a language translates the transcript: a German "Hund" in an English
+  // vocabulary round would come back as "dog". Not sent there until a test with a real account says otherwise.
+  if (language && language[0] && !ep.infomaniak) {
     bodyEnd += "--" + boundary + "\r\n";
     bodyEnd += "Content-Disposition: form-data; name=\"language\"\r\n\r\n";
     bodyEnd += String(language) + "\r\n";
@@ -2975,7 +3038,7 @@ bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const 
   Serial.printf("Content length: %d bytes (audio: %d bytes)\n", contentLength, audioDataSize);
 
   Serial.println("Sending request headers...");
-  client.print("POST /v1/audio/transcriptions HTTP/1.1\r\n");
+  client.print("POST " + ep.path + " HTTP/1.1\r\n");
   client.print("Host: " + ep.host + "\r\n");
   client.print("Authorization: Bearer " + ep.key + "\r\n");
   client.print("Content-Type: multipart/form-data; boundary=" + boundary + "\r\n");
@@ -3028,6 +3091,20 @@ bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const 
 
   Serial.println("Whisper response body:");
   Serial.println(response);
+
+  if (ep.infomaniak) {
+    int start = response.indexOf('{');
+    std::string batchId;
+    if (start < 0 || !sttParseBatchId(response.c_str() + start, batchId)) {
+      Serial.println("ERROR: No batch id from Infomaniak");
+      error = "No transcription";
+      return false;
+    }
+    if (!pollInfomaniakTranscript(ep, String(batchId.c_str()), text, error)) return false;
+    Serial.println("Transcription: " + text);
+    Serial.println("==================================\n");
+    return true;
+  }
 
   int jsonStart = response.indexOf('{');
   if (jsonStart < 0) {
@@ -8673,7 +8750,7 @@ void handleVoiceQuery(bool playAudio) {
   Serial.printf("Free heap before recording: %d bytes\n", ESP.getFreeHeap());
   resetToActiveState(); // Reset to active state
 
-  if (!aiChatConfigured() || !audioEndpoint().available) {
+  if (!aiChatConfigured() || !sttEndpoint().available) {
     lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     Serial.println("AI not fully configured (chat or speech key missing)");
     drawScreen(!aiChatConfigured()

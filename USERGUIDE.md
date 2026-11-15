@@ -9,10 +9,11 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 | **Zitro subscription** | Zitro key (`zk_...`) | Coming soon, shown but not selectable yet. One key for answers, voice and pictures. |
 | **OpenAI (ChatGPT)** | OpenAI API key | Default model `gpt-6-luna`; also `gpt-6.1-terra`, `gpt-6-astra`, `gpt-5.5`. |
 | **Anthropic (Claude)** | Claude API key + OpenAI API key | Default model `claude-opus-5-5`; also `claude-sonnet-5-5`, `claude-haiku-5-5`. |
-| **Infomaniak AI (Switzerland)** | API token (ai-tools scope), AI Tools product ID + OpenAI API key | Suggested model `qwen3`. Check the exact names your product offers in the Infomaniak Manager (or `GET /2/ai/{product}/openai/v1/models`). Voice and pictures still go to OpenAI. |
+| **Infomaniak AI (Switzerland)** | API token (ai-tools scope), AI Tools product ID + OpenAI API key (not needed for voice input if you tick the box below) | Suggested model `qwen3`. Check the exact names your product offers in the Infomaniak Manager (or `GET /2/ai/{product}/openai/v1/models`). Tick **Transcribe my voice at Infomaniak too (Switzerland)** and your voice is transcribed in Switzerland as well. Read-aloud and pictures still go to OpenAI. |
 | **Other (OpenAI-compatible)** | Base URL (https), API key, model + OpenAI API key | For example Mistral, Groq or OpenRouter. |
 
-- Voice input (speech-to-text), read-aloud and picture creation always run on OpenAI, or on the Zitro relay for subscribers. Claude, Infomaniak and most compatible providers can't hear or speak, so they need an OpenAI key as well. Without it, Zitro shows "Voice needs an OpenAI or Zitro key".
+- Voice input (speech-to-text), read-aloud and picture creation run on OpenAI, or on the Zitro relay for subscribers. Claude and most compatible providers can't hear or speak, so they need an OpenAI key as well. Without it, Zitro shows "Voice needs an OpenAI or Zitro key".
+- With Infomaniak you can keep your child's voice in Switzerland too: tick **Transcribe my voice at Infomaniak too (Switzerland)** on the AI tab. Zitro then uploads the recording to Infomaniak's Whisper and waits a second or two for the text. Read-aloud and pictures still need an OpenAI key; without one, Zitro answers in writing only. This option is new and hasn't been tried with a real Infomaniak account yet.
 - Keys are stored only on the device. The setup page never shows them again, only the last 4 characters. Leave a key field empty to keep the stored key.
 - Models: you can type any model name. The suggestions list the current models.
 

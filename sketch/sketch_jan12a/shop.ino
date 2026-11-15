@@ -86,14 +86,14 @@ static void shopPressRow(M5Canvas& c, int cy) {
   c.setFreeFont(FontManager::getFont12pt());
   const String a = String(st("Drück", "Press")) + " ";
   const String b = String(" ") + st("zum Starten", "to start");
-  const int capW = drawKeycap(c, "M5", 0, 0, true);
+  const int capW = drawFrontKeycap(c, 0, 0, true);
   c.setFreeFont(FontManager::getFont12pt());
   int x = (WIDTH - (c.textWidth(a) + capW + c.textWidth(b))) / 2;
   c.setTextColor(TFT_WHITE);
   c.setTextDatum(ML_DATUM);
   c.drawString(a, x, cy);
   x += c.textWidth(a);
-  drawKeycap(c, "M5", x, cy);
+  drawFrontKeycap(c, x, cy);
   x += capW;
   c.setFreeFont(FontManager::getFont12pt());
   c.setTextColor(TFT_WHITE);

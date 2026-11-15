@@ -299,14 +299,14 @@ bool wolframSwitchToPicture() {
   const bool wasInView = currentDisplayMode == SHOW_MODEL;
   const String query = wolframQuery;
   leaveModelView();  // TLS needs the memory
-  drawScreen("Calculating...");
+  drawScreen(uiText("Ich rechne...", "Calculating..."));
   if (audioBuffer) {
     free(audioBuffer);
     audioBuffer = nullptr;
   }
   if (!fetchWolframSimpleImage(query)) {
     Serial.println("Wolfram picture for printing: failed");
-    drawPrintStatus("No picture", PRINT_BADGE_FAIL);
+    drawPrintStatus(uiText("Kein Bild", "No picture"), PRINT_BADGE_FAIL);
     delay(2000);
     if (wasInView) {
       modelViewShow();

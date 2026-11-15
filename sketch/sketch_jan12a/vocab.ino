@@ -398,14 +398,14 @@ static void vocabPressRow(M5Canvas& c, const char* before, const char* after, in
   c.setFreeFont(FontManager::getFont12pt());
   const String a = String(before) + " ";
   const String b = String(" ") + after;
-  const int capW = drawKeycap(c, "M5", 0, 0, true);
+  const int capW = drawFrontKeycap(c, 0, 0, true);
   c.setFreeFont(FontManager::getFont12pt());
   int x = (WIDTH - (c.textWidth(a) + capW + c.textWidth(b))) / 2;
   c.setTextColor(TFT_WHITE);
   c.setTextDatum(ML_DATUM);
   c.drawString(a, x, cy);
   x += c.textWidth(a);
-  drawKeycap(c, "M5", x, cy);
+  drawFrontKeycap(c, x, cy);
   x += capW;
   c.setFreeFont(FontManager::getFont12pt());
   c.setTextColor(TFT_WHITE);
@@ -1089,10 +1089,10 @@ void vocabStop() {
 // ---------- The printed sheet ----------
 
 static void vocabRequestSheet() {
-  drawPrintStatus("Searching...", PRINT_BADGE_NONE);
+  drawPrintStatus(vt("Ich suche...", "Searching..."), PRINT_BADGE_NONE);
   discoverPrinters();
   if (printerCount == 0) {
-    drawPrintStatus("No printer\nfound", PRINT_BADGE_FAIL);
+    drawPrintStatus(vt("Kein Drucker\ngefunden", "No printer\nfound"), PRINT_BADGE_FAIL);
     delay(2500);
     vocabRedraw();
     return;
@@ -1258,7 +1258,7 @@ int vocabPrintSheet(PrinterInfo& printer) {
   int chosen = -1;
   for (int p = 0; p < pagesEach * 2; p++) {
     const bool solutions = p >= pagesEach;
-    drawPrintStatus(String("Printing...\n") + String(p + 1) + "/" + String(pagesEach * 2), PRINT_BADGE_NONE);
+    drawPrintStatus(String(vt("Drucke...\n", "Printing...\n")) + String(p + 1) + "/" + String(pagesEach * 2), PRINT_BADGE_NONE);
     lastActivityTime = millis();
     if (chosen >= 0) {
       if (vocabSheetPage(printer, attempts[chosen], p % pagesEach, pagesEach, solutions) != PWG_SEND_OK)

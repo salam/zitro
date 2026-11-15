@@ -368,6 +368,11 @@ bool deviceLanguageIsGerman() {
   return german;
 }
 
+// A text on the screen in the stick's language (settings: language)
+const char* uiText(const char* de, const char* en) {
+  return deviceLanguageIsGerman() ? de : en;
+}
+
 // The home city from the settings, or Zurich if it's missing or no longer in the table
 int clockHomeCity() {
   Preferences prefs;
@@ -1447,7 +1452,29 @@ int drawKeycap(M5Canvas &canvas, const String &label, int x, int cy, bool measur
   return w;
 }
 
-// Home screen: "[lemon] Press [M5] button", "to ask a question", then the shake hint with its icon
+// The front button as a keycap. Plus2: the "M5" key. StickS3: its front button is an upright blue
+// pill with no label, so the key is drawn that way, as tall as the Plus2's key face.
+// Spec: docs/superpowers/specs/2026-11-14-button-ui-module-design.md (5. Keycap and words)
+int drawFrontKeycap(M5Canvas &canvas, int x, int cy, bool measureOnly = false) {
+#if ZITRO_STICKS3
+  canvas.setFont(&fonts::DejaVu12);
+  const int faceH = canvas.fontHeight() + 4;  // as tall as drawKeycap's face
+  canvas.setFreeFont(FontManager::getFont12pt());
+  const int faceW = 7;
+  const int side = 2;  // visible side of the key
+  if (!measureOnly) {
+    int y = cy - (faceH + side) / 2;
+    canvas.fillRoundRect(x + side, y + side, faceW, faceH, 3, 0x7BEF);  // side of the key, mid grey
+    canvas.fillRoundRect(x, y, faceW, faceH, 3, 0x3C7F);                // key face, blue
+  }
+  return faceW + side;
+#else
+  return drawKeycap(canvas, "M5", x, cy, measureOnly);
+#endif
+}
+
+// Home screen: "[lemon] Press [M5] button", "to ask a question", then the shake hint with its icon.
+// In German: "Drück die [M5] Taste", "und stell eine Frage", "Schüttle mich!"
 void drawHomeScreen() {
   M5.Display.setRotation(getLandscapeRotation());
   M5Canvas canvas(&M5.Display);
@@ -1460,14 +1487,15 @@ void drawHomeScreen() {
   int blockH = 2 * lh + lh / 2 + lh;
   int y = (HEIGHT - blockH) / 2;
 
-  // Lemon, then "Press [M5] button" on the same line
+  // Lemon, then "Press [M5] button" ("Drück die [M5] Taste") on the same line
+  const bool german = deviceLanguageIsGerman();
   const int lemonW = 21;  // drawLemon() spans cx - 10 .. cx + 10
   const int lemonGap = 7;
-  String press = "Press ";
-  String after = " button";
+  String press = german ? "Drück die " : "Press ";
+  String after = german ? " Taste" : " button";
   int pressW = canvas.textWidth(press);
   int afterW = canvas.textWidth(after);
-  int capW = drawKeycap(canvas, "M5", 0, 0, true);
+  int capW = drawFrontKeycap(canvas, 0, 0, true);
   int x = (WIDTH - (lemonW + lemonGap + pressW + capW + afterW)) / 2;
   int cy = y + lh / 2;
   drawLemon(canvas, x + lemonW / 2, cy);
@@ -1475,7 +1503,7 @@ void drawHomeScreen() {
   canvas.setTextDatum(ML_DATUM);
   canvas.drawString(press, x, cy);
   x += pressW;
-  drawKeycap(canvas, "M5", x, cy);
+  drawFrontKeycap(canvas, x, cy);
   x += capW;
   canvas.setTextColor(TFT_WHITE);
   canvas.setTextDatum(ML_DATUM);
@@ -1483,11 +1511,11 @@ void drawHomeScreen() {
   y += lh;
 
   canvas.setTextDatum(MC_DATUM);
-  canvas.drawString("to ask a question", WIDTH / 2, y + lh / 2);
+  canvas.drawString(german ? "und stell eine Frage" : "to ask a question", WIDTH / 2, y + lh / 2);
   y += lh + lh / 2;
 
   // Shake icon + hint
-  String shake = "Shake for a surprise.";
+  String shake = german ? "Schüttle mich!" : "Shake for a surprise.";  // the longer German doesn't fit
   const int gap = 6;
   int rowW = SHAKEICON_WIDTH + gap + canvas.textWidth(shake);
   x = (WIDTH - rowW) / 2;
@@ -2160,7 +2188,7 @@ void drawSetupScreen(bool openingSettings) {
 void resetCredentials() {
   Serial.println("\n========== RESETTING CREDENTIALS ==========");
 
-  drawScreen("Resetting...");
+  drawScreen(uiText("Setze zurück...", "Resetting..."));
 
   prefs.begin("wifi", false);
   prefs.clear();
@@ -2504,7 +2532,7 @@ void handleDeepSleepWake() {
   // If we had an image, try to re-download it, once WiFi is back (searched since the logo)
   if (hasImage && currentImageUrl.length() > 0) {
     Serial.println("Attempting to re-download image...");
-    drawScreen("Restoring image...");
+    drawScreen(uiText("Hole das Bild...", "Restoring image..."));
 
     bool imageDownloaded = wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true) && downloadImage(currentImageUrl);
 
@@ -2546,7 +2574,7 @@ void handleDeepSleepWake() {
 
   // A 3D model is fetched again, like a picture. Most need WiFi; the built-in ones load without it.
   if (modelRefText.length() > 0) {
-    drawScreen("Restoring...");
+    drawScreen(uiText("Hole das Modell...", "Restoring..."));
     wifiWaitForLink(WIFI_QUESTION_WAIT_MS, true);
     ModelRef ref;
     const bool wasShowingModel = currentDisplayMode == SHOW_MODEL;
@@ -2797,7 +2825,7 @@ bool recordAudio(bool &cancelled) {
         // Button A during recording: one tap restarts, a second quick tap cancels
         if (M5.BtnA.wasPressed()) {
           micStop();
-          drawScreen("Restarting...");
+          drawScreen(uiText("Nochmal von vorn...", "Restarting..."));
           unsigned long tapTime = millis();
           bool secondTap = false;
           while (millis() - tapTime < MULTI_TAP_WINDOW) {
@@ -4930,7 +4958,7 @@ bool fetchWolframSimpleImage(const String &englishQuery) {
 
   // Show spinner while waiting for response
   int spinnerFrame = 0;
-  drawScreenWithSpinner("Calculating...", spinnerFrame);
+  drawScreenWithSpinner(uiText("Ich rechne...", "Calculating..."), spinnerFrame);
 
   int httpCode = http.GET();
   Serial.printf("Wolfram HTTP response code: %d\n", httpCode);
@@ -5138,7 +5166,7 @@ bool fetchWolframSimpleImage(const String &englishQuery) {
 
             if (bytesRead > lastSpinnerBytes && millis() - lastSpinnerUpdate >= 200) {
               spinnerFrame++;
-              drawScreenWithSpinner("Calculating...", spinnerFrame);
+              drawScreenWithSpinner(uiText("Ich rechne...", "Calculating..."), spinnerFrame);
               lastSpinnerBytes = bytesRead;
               lastSpinnerUpdate = millis();
               lastActivityTime = lastSpinnerUpdate;  // Prevent sleep during download
@@ -5212,7 +5240,7 @@ bool fetchWolframSimpleImage(const String &englishQuery) {
 
           if (bytesRead > lastSpinnerBytes && millis() - lastSpinnerUpdate >= 200) {
             spinnerFrame++;
-            drawScreenWithSpinner("Calculating...", spinnerFrame);
+            drawScreenWithSpinner(uiText("Ich rechne...", "Calculating..."), spinnerFrame);
             lastSpinnerBytes = bytesRead;
             lastSpinnerUpdate = millis();
             lastActivityTime = lastSpinnerUpdate;  // Prevent sleep during download
@@ -6109,7 +6137,7 @@ static void normalizeGrayscaleJpegSampling(uint8_t* data, int len) {
 bool handleImageRetrieval(const GPTResponse &gptResponse, const String &originalQuestion = "") {
   // Check if this is a Wolfram Alpha query (math/calculation)
   if (gptResponse.isWolfram) {
-    drawScreen("Calculating...");
+    drawScreen(uiText("Ich rechne...", "Calculating..."));
     Serial.println("Wolfram Alpha query detected");
 
     // Free audio buffer to make room for image
@@ -6154,7 +6182,7 @@ bool handleImageRetrieval(const GPTResponse &gptResponse, const String &original
   }
   // Check if user wants to create an image with image generation
   else if (gptResponse.createImage && gptResponse.imageQuery.length() > 0) {
-    drawScreenWithIcon("Creating image...", generateIcon, GENERATEICON_WIDTH, GENERATEICON_HEIGHT);
+    drawScreenWithIcon(uiText("Ich male...", "Creating image..."), generateIcon, GENERATEICON_WIDTH, GENERATEICON_HEIGHT);
     Serial.println("User requested image creation");
     Serial.println("Prompt: " + gptResponse.imageQuery);
 
@@ -6186,7 +6214,7 @@ bool handleImageRetrieval(const GPTResponse &gptResponse, const String &original
   }
   // Search Wikipedia for image using GPT's suggested query
   else if (gptResponse.imageQuery.length() > 0) {
-    drawScreen("Finding related image...");
+    drawScreen(uiText("Ich suche ein Bild...", "Finding related image..."));
     Serial.println("Using GPT's image query: " + gptResponse.imageQuery);
     WikiResult wikiResult = searchWikipedia(gptResponse.imageQuery);
 
@@ -6291,7 +6319,7 @@ static ImageFetchResult generateImageWithModel(const String &prompt, const Strin
   // Show spinner while waiting for response
   int spinnerFrame = 0;
   unsigned long lastSpinnerUpdate = millis();
-  drawScreenWithSpinner("Creating image...", spinnerFrame);
+  drawScreenWithSpinner(uiText("Ich male...", "Creating image..."), spinnerFrame);
 
   int httpCode = http.POST(body);
   Serial.printf("HTTP response code: %d\n", httpCode);
@@ -6327,7 +6355,7 @@ static ImageFetchResult generateImageWithModel(const String &prompt, const Strin
 
   // Update spinner - receiving response
   spinnerFrame++;
-  drawScreenWithSpinner("Creating image...", spinnerFrame);
+  drawScreenWithSpinner(uiText("Ich male...", "Creating image..."), spinnerFrame);
 
   // Get response stream and read base64 data directly
   WiFiClient* stream = http.getStreamPtr();
@@ -6493,7 +6521,7 @@ static ImageFetchResult generateImageWithModel(const String &prompt, const Strin
       // Update spinner only when data is arriving
       if (bytesRead != lastSpinnerBytes && millis() - lastSpinnerUpdate >= 200) {
         spinnerFrame++;
-        drawScreenWithSpinner("Creating image...", spinnerFrame);
+        drawScreenWithSpinner(uiText("Ich male...", "Creating image..."), spinnerFrame);
         lastSpinnerUpdate = millis();
         lastSpinnerBytes = bytesRead;
       }
@@ -7172,13 +7200,13 @@ void displayImage(bool isGeneratedImage) {
 
   if (!imageBuffer) {
     Serial.println("ERROR: imageBuffer is NULL");
-    drawScreen("No image\nbuffer");
+    drawScreen(uiText("Kein Platz\nfür das Bild", "No image\nbuffer"));
     return;
   }
 
   if (imageBufferSize == 0) {
     Serial.println("ERROR: imageBufferSize is 0");
-    drawScreen("Image size\nis zero");
+    drawScreen(uiText("Das Bild\nist leer", "Image size\nis zero"));
     return;
   }
 
@@ -7261,7 +7289,7 @@ void displayImage(bool isGeneratedImage) {
 
   if (!canvasCreated) {
     Serial.println("ERROR: Failed to create canvas sprite");
-    drawScreen("Canvas\nerror");
+    drawScreen(uiText("Anzeige-\nFehler", "Canvas\nerror"));
     return;
   }
 
@@ -8072,7 +8100,7 @@ void setup() {
   // No AI provider configured yet: open the setup page
   if (!aiChatConfigured()) {
     Serial.println("No AI provider configured - entering setup mode");
-    drawScreen("Welcome to Zitro!\n\nAdd an AI key on\nthe setup page.");
+    drawScreen(uiText("Willkommen bei Zitro!\n\nTrag auf der Setup-Seite\neinen KI-Schlüssel ein.", "Welcome to Zitro!\n\nAdd an AI key on\nthe setup page."));
     delay(2500);
     startAPMode();
     return;
@@ -8464,7 +8492,7 @@ void drawTimerListEntry(int displayIndex) {
   }
 
   if (realIndex < 0) {
-    drawScreen("Keine Timer aktiv.");
+    drawScreen(uiText("Keine Timer aktiv.", "No timers running."));
     return;
   }
 
@@ -8664,7 +8692,7 @@ void handleVoiceQuery(bool playAudio) {
       return;
     }
     lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
-    drawScreenWithIcon("Mic error", micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
+    drawScreenWithIcon(uiText("Mikrofehler", "Mic error"), micBrokenIcon, MICBROKENICON_WIDTH, MICBROKENICON_HEIGHT, 2);
     delay(2000);
     drawScreen(MAIN_QUESTION);
     return;
@@ -8672,7 +8700,7 @@ void handleVoiceQuery(bool playAudio) {
 
   Serial.printf("Free heap after recording: %d bytes\n", ESP.getFreeHeap());
 
-  drawScreenWithIcon("Transcribing...", transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
+  drawScreenWithIcon(uiText("Ich verstehe...", "Transcribing..."), transcribeIcon, TRANSCRIBEICON_WIDTH, TRANSCRIBEICON_HEIGHT);
 
   // Right after a wake WiFi may still be on its way: the question waits for it, with the icon
   // pulsing in the corner. No known network around: the setup screen, to add this one.
@@ -8680,7 +8708,7 @@ void handleVoiceQuery(bool playAudio) {
     lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
     serialTestQuestion = "";
     Serial.println("No known WiFi found - opening setup");
-    drawScreen("No known WiFi\nfound.");
+    drawScreen(uiText("Kein bekanntes\nWLAN gefunden.", "No known WiFi\nfound."));
     delay(2000);
     startAPMode();
     return;
@@ -8692,7 +8720,7 @@ void handleVoiceQuery(bool playAudio) {
   if (question.length() < 2 || question.startsWith("No ") || question.startsWith("Parse") || question.startsWith("Connection") || question.startsWith("Timeout")) {
     lastVoiceOutcome = GUIDE_VOICE_NOT_HEARD;
     Serial.println("Transcription failed or empty");
-    drawScreen("Couldn't hear.\nTry again.");
+    drawScreen(uiText("Nicht verstanden.\nVersuch es nochmal.", "Couldn't hear.\nTry again."));
     delay(2000);
     drawScreen(MAIN_QUESTION);
     return;
@@ -8709,7 +8737,7 @@ void handleVoiceQuery(bool playAudio) {
         normalizedQuestion.indexOf("setting") < 0) {
       lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
       Serial.println("Parental lock is ON and current time is restricted (8pm-6am)");
-      drawScreenWithIcon("Ich schlafe z z z", nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
+      drawScreenWithIcon(uiText("Ich schlafe z z z", "Sleeping z z z"), nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
       M5.Display.sleep();
       delay(3000);
       return;
@@ -8718,7 +8746,7 @@ void handleVoiceQuery(bool playAudio) {
 
   if (guideActive()) guideOnHeard(question);
 
-  drawScreenWithIcon("Thinking...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
+  drawScreenWithIcon(uiText("Ich überlege...", "Thinking..."), thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
   GPTResponse gptResponse = askGPT(question);
 
   // Handle voice-controlled settings changes
@@ -8849,7 +8877,7 @@ void handleVoiceQuery(bool playAudio) {
   bool musicLookupRan = false;
   bool dinoLookupRan = false;
   if (!gptResponse.createImage && !gptResponse.isWolfram && parseModelRef(gptResponse.model.c_str(), modelRef)) {
-    drawScreen("Looking it up...");
+    drawScreen(uiText("Ich schlage nach...", "Looking it up..."));
     fetchModel(modelRef);
     musicLookupRan = strcmp(modelRef.kind, "music") == 0;
     dinoLookupRan = strcmp(modelRef.kind, "dino") == 0;
@@ -9004,7 +9032,7 @@ void loop() {
     // Check for Button A press to retry WiFi connection
     if (M5.BtnA.wasPressed()) {
       Serial.println("Button A pressed - retrying WiFi connection...");
-      drawScreen("Retrying WiFi\nconnection...");
+      drawScreen(uiText("Verbinde das WLAN\nnochmal...", "Retrying WiFi\nconnection..."));
       delay(1000);
 
       // Stop AP mode
@@ -9017,7 +9045,7 @@ void loop() {
       // Try to reconnect
       if (connectToWiFi()) {
         Serial.println("WiFi connection successful!");
-        drawScreen("Connected!\n" + WiFi.SSID());
+        drawScreen(String(uiText("Verbunden!\n", "Connected!\n")) + WiFi.SSID());
         delay(2000);
         drawScreen(MAIN_QUESTION);
       } else {
@@ -9104,7 +9132,7 @@ void loop() {
         removeTimer(realIdx);
         if (timerCount <= 0) {
           inTimerListMode = false;
-          drawScreen("Alle Timer\ngeloescht.");
+          drawScreen(uiText("Alle Timer\ngelöscht.", "All timers\ncleared."));
           delay(1500);
           drawScreen(MAIN_QUESTION);
         } else {
@@ -9423,15 +9451,15 @@ void loop() {
       inPrinterSelectionMode = false;
       Serial.println("Printer and size selected, starting print...");
 
-      drawPrintStatus("Printing...", PRINT_BADGE_NONE);
+      drawPrintStatus(uiText("Drucke...", "Printing..."), PRINT_BADGE_NONE);
       resetToActiveState();
 
       bool success = printImage();
 
       if (success) {
-        drawPrintStatus("Sent!", PRINT_BADGE_OK);
+        drawPrintStatus(uiText("Gesendet!", "Sent!"), PRINT_BADGE_OK);
       } else {
-        drawPrintStatus("Print\nfailed", PRINT_BADGE_FAIL);
+        drawPrintStatus(uiText("Drucken\nging nicht", "Print\nfailed"), PRINT_BADGE_FAIL);
       }
 
       delay(3000);
@@ -9487,7 +9515,7 @@ void loop() {
       Serial.println("Button B long press: Starting printer discovery...");
       resetToActiveState();
 
-      drawPrintStatus("Searching...", PRINT_BADGE_NONE);
+      drawPrintStatus(uiText("Ich suche...", "Searching..."), PRINT_BADGE_NONE);
 
       discoverPrinters();
 
@@ -9497,7 +9525,7 @@ void loop() {
         inPrinterSelectionMode = true;
         displayPrinterSelection();
       } else {
-        drawPrintStatus("No printer\nfound", PRINT_BADGE_FAIL);
+        drawPrintStatus(uiText("Kein Drucker\ngefunden", "No printer\nfound"), PRINT_BADGE_FAIL);
         delay(3000);
 
         // Return to image display

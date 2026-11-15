@@ -33,10 +33,15 @@
   - `apiKey` (OpenAI), `claudeKey`, `ikKey` (Infomaniak token), `customKey`, `zitroKey`
   - Empty key fields on save keep the stored key
   - No key is compiled into the firmware
-- **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`
+- **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`, `ikSpeech` (bool, default off: speech-to-text at Infomaniak too)
 - Device enters setup mode (AP) at boot if the selected chat provider is not configured
 - Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-1.5`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
   - Non-OpenAI chat providers therefore also need `apiKey` for voice; the device shows a hint instead of recording when it's missing
+  - Exception: with provider `infomaniak` and `ikSpeech` on (setup page, AI tab: "Transcribe my voice at Infomaniak too (Switzerland)"), speech-to-text goes to Infomaniak, so the voice stays in Switzerland like the question. Voice input then needs no OpenAI key; read-aloud and pictures still do, and the setup page says so
+    - Upload: `POST https://api.infomaniak.com/1/ai/{ikProduct}/openai/audio/transcriptions`, multipart like OpenAI's, model `whisper`, `response_format=json`, `prompt` when given. No `language` field: Infomaniak's reference says a language translates the transcript (a German word in an English vocabulary round would come back in English)
+    - The reply is a `batch_id`; the stick asks `GET /1/ai/{ikProduct}/results/{batch_id}` every 0.4 s, at most 30 s, over one TLS connection. `pending`/`processing` waits, `success` carries the transcript in `data` (Whisper JSON as a string, or plain text), anything else is "No transcription"
+    - Product IDs must be digits (they go into the request line). Parsing lives in `stt_core.h`, host tests in `tests/stt/run.sh`
+    - Not yet tested against a live Infomaniak account
 
 ### AI Provider Layer (ai_provider.h / ai_provider.ino)
 - One entry point `aiChat(system, user, maxTokens, withMemory, jsonMode)` used by the main answer and the Wolfram translation

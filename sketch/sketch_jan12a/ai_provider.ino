@@ -71,9 +71,9 @@ bool aiChatConfigured() {
   return c.url.length() > 0 && c.key.length() > 0 && c.model.length() > 0;
 }
 
-// Speech-to-text, text-to-speech and image generation use the OpenAI API.
-// Zitro subscribers get them through the relay; everyone else needs an OpenAI key,
-// because Claude, Infomaniak and most compatible providers offer no such endpoints.
+// Text-to-speech and image generation use the OpenAI API, and so does speech-to-text unless
+// Infomaniak transcribes it (sttEndpoint). Zitro subscribers get them through the relay; everyone
+// else needs an OpenAI key, because Claude and most compatible providers offer no such endpoints.
 AudioEndpoint audioEndpoint() {
   AudioEndpoint e;
   e.available = false;
@@ -86,6 +86,35 @@ AudioEndpoint audioEndpoint() {
   }
   e.available = e.key.length() > 0;
   return e;
+}
+
+// Speech-to-text: Infomaniak when it answers the questions and its "ikSpeech" box is ticked,
+// so the voice stays in Switzerland too. Otherwise the same endpoint as read-aloud and pictures.
+SttEndpoint sttEndpoint() {
+  SttEndpoint s;
+  s.available = false;
+  s.infomaniak = false;
+  if (aiProvider() == AI_PROVIDER_INFOMANIAK) {
+    Preferences p;
+    p.begin("settings", true);
+    const bool ikSpeech = p.getBool("ikSpeech", false);
+    p.end();
+    if (ikSpeech) {
+      s.infomaniak = true;
+      s.host = INFOMANIAK_HOST;
+      s.key = aiPref("ikKey");
+      s.product = aiPref("ikProduct");
+      s.path = "/1/ai/" + s.product + "/openai/audio/transcriptions";
+      s.available = s.key.length() > 0 && sttValidProductId(s.product.c_str());
+      return s;
+    }
+  }
+  AudioEndpoint a = audioEndpoint();
+  s.host = a.host;
+  s.key = a.key;
+  s.path = "/v1/audio/transcriptions";
+  s.available = a.available;
+  return s;
 }
 
 

@@ -86,10 +86,22 @@ struct AudioEndpoint {
   String key;
 };
 
+// Where speech-to-text goes: the OpenAI-style endpoint above, or Infomaniak in Switzerland
+// (chat provider Infomaniak with "ikSpeech" on). Infomaniak works in batches, see stt_core.h.
+struct SttEndpoint {
+  bool available;
+  bool infomaniak;
+  String host;
+  String path;     // upload path
+  String key;
+  String product;  // Infomaniak AI Tools product ID
+};
+
 // Public API (implemented in ai_provider.ino)
 String aiProvider();
 bool aiChatConfigured();
 AudioEndpoint audioEndpoint();
+SttEndpoint sttEndpoint();
 ChatResult aiChat(const String& systemPrompt, const String& userText, int maxTokens, bool withMemory, bool jsonMode);
 bool memoryEnabled();
 void memoryAdd(const String& question, const String& answer);

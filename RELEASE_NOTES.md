@@ -6,6 +6,7 @@
 - **Zitro speaks your language while it works**: the start screen ("Drück die Taste und stell eine Frage"), "Ich verstehe...", "Ich überlege...", "Ich male..." and the other waiting messages now follow the language in the settings.
 - **Watch Zitro find your WiFi**: when your question is ready before the WiFi is, a big WiFi symbol lights up wave by wave, shows which network Zitro is trying, and a lemon-yellow bar fills up until it's online.
 - **Clear answer on the setup screen**: press the button to try your WiFi again and watch the search. Zitro says "Verbunden!" with your network's name when it worked.
+- **Keep your child's voice in Switzerland**: if Infomaniak answers your questions, tick "Transcribe my voice at Infomaniak too" in the settings. Zitro then turns speech into text at Infomaniak in Switzerland instead of at OpenAI. Read-aloud and pictures still use OpenAI.
 
 ## Sat 14 Nov, 2026
 

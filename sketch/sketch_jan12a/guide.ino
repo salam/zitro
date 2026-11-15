@@ -328,7 +328,7 @@ bool guideAutoStart() {
   prefs.begin("settings", true);
   const bool done = prefs.getBool("tourDone", false);
   prefs.end();
-  if (!guideShouldAutoStart(done, wakeFromDeepSleep, aiChatConfigured(), audioEndpoint().available)) return false;
+  if (!guideShouldAutoStart(done, wakeFromDeepSleep, aiChatConfigured(), sttEndpoint().available)) return false;
   guideStartNow();
   return true;
 }

@@ -37,7 +37,7 @@
   - No key is compiled into the firmware
 - **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`, `ikSpeech` (bool, default off: speech-to-text at Infomaniak too)
 - Device enters setup mode (AP) at boot if the selected chat provider is not configured
-- Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-1.5`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
+- Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-2.6-flare`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
   - Non-OpenAI chat providers therefore also need `apiKey` for voice; the device shows a hint instead of recording when it's missing
   - Exception: with provider `infomaniak` and `ikSpeech` on (setup page, AI tab: "Transcribe my voice at Infomaniak too (Switzerland)"), speech-to-text goes to Infomaniak, so the voice stays in Switzerland like the question. Voice input then needs no OpenAI key; read-aloud and pictures still do, and the setup page says so
     - Upload: `POST https://api.infomaniak.com/1/ai/{ikProduct}/openai/audio/transcriptions`, multipart like OpenAI's, model `whisper`, `response_format=json`, `prompt` when given. No `language` field: Infomaniak's reference says a language translates the transcript (a German word in an English vocabulary round would come back in English)
@@ -246,7 +246,7 @@
 3. **Downsample**: Factor-4 sampling to 256x256 (128KB in PSRAM)
 4. **Free**: Delete canvas sprite immediately (reclaim 2MB)
 5. **Re-encode**: RGB565→RGB888→JPEG at Q80 (~15-30KB in regular heap)
-6. **Fallback**: On error, retry with `gpt-image-1.5` (dall-e-2 was removed from the OpenAI API in May 2026)
+6. **Fallback**: On error, retry with `gpt-image-2.6-flare` (`gpt-image-1.5` shuts down on 2026-12-01; dall-e-2 was removed from the OpenAI API in May 2026)
 
 ## Memory Allocation Strategy
 - Input JPEG >200KB: Allocate in PSRAM using `ps_malloc()`

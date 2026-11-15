@@ -32,7 +32,7 @@
 #define STT_MODEL            "gpt-transcribe"
 #define TTS_MODEL            "gpt-4o-mini-tts"   // OpenAI shuts /v1/audio/speech down on 2027-01-06
 #define IMAGE_MODEL          "gpt-image-2.5-flare"
-#define IMAGE_MODEL_FALLBACK "gpt-image-1.5"
+#define IMAGE_MODEL_FALLBACK "gpt-image-2.6-flare"  // gpt-image-1.5 shuts down on 2026-12-01
 
 // Sliding-window conversation memory (RTC RAM only, survives deep sleep, never written to flash)
 #define MEMORY_WINDOW_SECONDS 600

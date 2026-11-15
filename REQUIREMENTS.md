@@ -347,6 +347,18 @@ Requested by the user on 2026-11-14: start faster after a wake, record right awa
 
 ---
 
+# Requirements for Website Languages
+
+- zitro.spot (`webpage2/`) speaks English, German, Europe's languages and the 7 most spoken languages worldwide: the 24 official EU languages, Romansh, Norwegian, Icelandic, Bosnian, Serbian (Latin script), Macedonian, Albanian, Turkish, Ukrainian, Belarusian, Russian, Luxembourgish, plus Chinese (simplified), Hindi, Arabic (right to left) and Bengali. The list lives in `scripts/site_i18n.py` (`LANGUAGES`)
+- Pages translated: index, learn, detox, create, compare, shop. The onboarding page and the word lists page (`/voci`) stay German and English like the stick
+- The English text stays in the HTML. Every text block that holds no other block and no element with an `id` gets `data-i18n="<key>"`; `alt`, `placeholder`, `aria-label`, `title` and the description/title meta tags get `data-i18n-a="<attr>:<key>"`. The key is FNV-1a (32 bit, over UTF-16) of the block's visible text plus its link targets, so a block whose text or links change gets a new key
+- `webpage2/i18n/en.json` lists every key with its English HTML, and the strings scripts show through `T('…')` / `window.zitroT('…')` (keyed by the English string, `{placeholders}` kept). `webpage2/i18n/<lang>.json` holds `{"lang", "dir", "t": {key: html}, "js": {english: text}}`
+- Elements that scripts hold (an `id` inside) are never replaced as a whole: their parts are translated one by one, so script.js and shop.js keep working on the live elements
+- `site.js` chooses the language: `?lang=xx`, then the saved choice (`localStorage` `zitroLang`), then the browser's languages (`no`/`nn` count as `nb`), else English. It downloads only that file (`cache: no-cache`), swaps the blocks and attributes, and sets `lang` and `dir` on `<html>`. Before swapping a block it recomputes the key from the live page; if it doesn't match (the page changed after the last extract), the block stays English. A small script in each page's head hides the page (class `i18n-wait`) until the translation is in, at most 2 s
+- Language picker: a globe with the language code in the header (globe only on phones), a native list on top, names in their own language. It offers only languages that have a file; `extract` writes that list into `site.js`
+- `python3 scripts/site_i18n.py extract` sets the keys and writes en.json and the language list. `check` fails when keys are out of date, a translation has an unknown key, its markup (tags, href, class, id, target, rel) differs from the English, it contains script, or a script string loses a placeholder; it prints how much of each language is translated. `todo <lang>` prints what a language lacks
+- Translations other than German were made by AI and haven't been reviewed by native speakers yet
+
 # Requirements for Website Cache Busting
 
 ## JavaScript Version Management

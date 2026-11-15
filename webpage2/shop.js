@@ -1,3 +1,6 @@
+// Translated text for the chosen language (site.js loads it); English when there is none
+const T = (s) => (window.zitroT ? window.zitroT(s) : s);
+
 // Shipping rates by country
 const shippingRates = {
     'US': 99.00,
@@ -51,7 +54,7 @@ function calculateShipping() {
         checkoutButton.classList.add('hidden');
         usShippingMessage.classList.remove('hidden');
         shippingCostEl.textContent = '$0.00';
-        shippingCountryEl.textContent = 'United States';
+        shippingCountryEl.textContent = T('United States');
         totalCostEl.textContent = '$50.00';
         return;
     }
@@ -77,7 +80,7 @@ orderForm.addEventListener('submit', async (e) => {
 
     // Disable button while processing
     checkoutButton.disabled = true;
-    checkoutButton.textContent = 'Processing...';
+    checkoutButton.textContent = T('Processing...');
 
     // Collect form data
     const formData = {
@@ -124,26 +127,28 @@ orderForm.addEventListener('submit', async (e) => {
             // }
 
             // For now, show success message
-            alert(`Order received!\n\nOrder ID: #${data.data.orderId}\nTotal: $${totalCost.toFixed(2)}\n\nWe'll contact you at ${formData.email} for payment details.`);
+            alert(T('Order received!\n\nOrder ID: #{id}\nTotal: {total}\n\nWe\'ll contact you at {email} for payment details.')
+                .replace('{id}', data.data.orderId).replace('{total}', '$' + totalCost.toFixed(2))
+                .replace('{email}', formData.email));
 
             // Reset form
             orderForm.reset();
             calculateShipping();
         } else {
-            alert('Error: ' + data.message);
+            alert(T('Error: {message}').replace('{message}', data.message));
         }
 
         // Reset button
         checkoutButton.disabled = false;
-        checkoutButton.textContent = 'Proceed to Payment';
+        checkoutButton.textContent = T('Proceed to Payment');
 
     } catch (error) {
         console.error('Error submitting order:', error);
-        alert('An error occurred. Please try again.');
+        alert(T('An error occurred. Please try again.'));
 
         // Reset button
         checkoutButton.disabled = false;
-        checkoutButton.textContent = 'Proceed to Payment';
+        checkoutButton.textContent = T('Proceed to Payment');
     }
 });
 
@@ -157,7 +162,7 @@ newsletterForm.addEventListener('submit', async (e) => {
 
     // Disable button and show loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Subscribing...';
+    submitBtn.textContent = T('Subscribing...');
 
     try {
         const response = await fetch('subscribe.php', {
@@ -171,7 +176,7 @@ newsletterForm.addEventListener('submit', async (e) => {
         if (data.success) {
             // Show success feedback
             newsletterEmail.value = '';
-            newsletterEmail.placeholder = 'Thanks for subscribing!';
+            newsletterEmail.placeholder = T('Thanks for subscribing!');
 
             setTimeout(() => {
                 newsletterEmail.placeholder = 'your@email.com';
@@ -179,13 +184,13 @@ newsletterForm.addEventListener('submit', async (e) => {
                 submitBtn.textContent = originalText;
             }, 3000);
         } else {
-            alert('Error: ' + data.message);
+            alert(T('Error: {message}').replace('{message}', data.message));
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
         }
     } catch (error) {
         console.error('Error subscribing to newsletter:', error);
-        alert('Failed to subscribe. Please try again.');
+        alert(T('Failed to subscribe. Please try again.'));
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
     }

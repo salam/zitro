@@ -28,15 +28,14 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 
 ## Project Website
 
-Visit the [Firebird landing page](webpage/index.html) for:
+[zitro.spot](https://zitro.spot) (folder `webpage2/`) has:
 - Product overview and feature showcase
-- Product comparison table vs other AI wearables (Ray-Ban Meta, Humane AI Pin, Rabbit R1, and more)
-- Download links for installers (macOS and Windows)
-- User testimonials and success stories
-- Direct access to GitHub repository
-- Information about the project creator
+- Product comparison table vs other AI gadgets (Meta glasses, Bee, Rabbit R1, and more)
+- The installer download and the shop
+- Pages for young minds, screen detox and creativity
+- Direct access to the GitHub repository
 
-The website is located in the `/webpage` folder and can be deployed to any static hosting service.
+The site is available in 40 languages: pick one with the globe at the top, or link to a page with `?lang=de` (or `fr`, `it`, …). It opens in your browser's language when that one is available. German was translated by hand; the others by AI, not yet checked by native speakers.
 
 ## macOS Installer
 

@@ -8,6 +8,8 @@
 - **Clear answer on the setup screen**: press the button to try your WiFi again and watch the search. Zitro says "Verbunden!" with your network's name when it worked.
 - **Keep your child's voice in Switzerland**: if Infomaniak answers your questions, tick "Transcribe my voice at Infomaniak too" in the settings. Zitro then turns speech into text at Infomaniak in Switzerland instead of at OpenAI. Read-aloud and pictures still use OpenAI.
 - **A kind word, then a real person**: when a child tells Zitro about something sad or scary, Zitro answers gently and suggests talking to a parent or a teacher. If it sounds serious, it names the free children's helpline, 147 in Switzerland.
+- **zitro.spot speaks your language**: the website now comes in German and 38 more languages, from Romansh to Arabic and Chinese. Tap the globe at the top, or just open the site: it picks your browser's language.
+- **Honest about checking**: the page for young minds now says clearly that the answer's sentence comes from the AI and gets checked in a book or with a grown-up, and where your voice and questions go.
 
 ## Sat 14 Nov, 2026
 

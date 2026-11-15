@@ -26,6 +26,10 @@ Every development build shows its feature keywords, commit and build time under 
 
 Release firmware must be built with `ZITRO_RELEASE=1` in the environment, so it shows the logo alone; `installer/rebuild_installer.sh` sets it. Any other script that builds firmware for users has to set it too.
 
+## Website Languages (zitro.spot, webpage2/)
+
+The pages are English; `webpage2/i18n/<lang>.json` holds the translations, keyed by each text block's English text and links. After changing any text on index, learn, detox, create, compare or shop (or a `T('…')` string in site.js, script.js, shop.js), run `python3 scripts/site_i18n.py extract` and then `python3 scripts/site_i18n.py check`. A changed sentence then shows in English in every language until it is translated again (`python3 scripts/site_i18n.py todo <lang>` lists what's missing). See REQUIREMENTS.md, "Requirements for Website Languages".
+
 ## Website Cache Busting
 
 When modifying JavaScript files in the webpage/ directory (script.js, shop.js), ALWAYS update the version parameter in the corresponding HTML files to force browser cache refresh:

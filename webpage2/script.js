@@ -1,3 +1,6 @@
+// Translated text for the chosen language (site.js loads it); English when there is none
+const T = (s) => (window.zitroT ? window.zitroT(s) : s);
+
 // DOM Elements
 const downloadBtn = document.getElementById('downloadBtn');
 const downloadBtnTop = document.getElementById('downloadBtnTop');
@@ -65,7 +68,7 @@ downloadForm.addEventListener('submit', async (e) => {
 
     // Disable button and show loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
+    submitBtn.textContent = T('Sending...');
 
     try {
         const response = await fetch('send-download.php', {
@@ -85,13 +88,13 @@ downloadForm.addEventListener('submit', async (e) => {
             emailForm.classList.add('hidden');
             successMessage.classList.remove('hidden');
         } else {
-            alert('Error: ' + data.message);
+            alert(T('Error: {message}').replace('{message}', data.message));
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
         }
     } catch (error) {
         console.error('Error submitting download request:', error);
-        alert('Failed to send download link. Please try again.');
+        alert(T('Failed to send download link. Please try again.'));
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
     }
@@ -107,7 +110,7 @@ newsletterForm.addEventListener('submit', async (e) => {
 
     // Disable button and show loading state
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Subscribing...';
+    submitBtn.textContent = T('Subscribing...');
 
     try {
         const response = await fetch('subscribe.php', {
@@ -121,7 +124,7 @@ newsletterForm.addEventListener('submit', async (e) => {
         if (data.success) {
             // Show success feedback
             newsletterEmail.value = '';
-            newsletterEmail.placeholder = 'Thanks for subscribing!';
+            newsletterEmail.placeholder = T('Thanks for subscribing!');
 
             setTimeout(() => {
                 newsletterEmail.placeholder = 'your@email.com';
@@ -129,13 +132,13 @@ newsletterForm.addEventListener('submit', async (e) => {
                 submitBtn.textContent = originalText;
             }, 3000);
         } else {
-            alert('Error: ' + data.message);
+            alert(T('Error: {message}').replace('{message}', data.message));
             submitBtn.disabled = false;
             submitBtn.textContent = originalText;
         }
     } catch (error) {
         console.error('Error subscribing to newsletter:', error);
-        alert('Failed to subscribe. Please try again.');
+        alert(T('Failed to subscribe. Please try again.'));
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
     }
@@ -152,11 +155,11 @@ async function fetchGitHubStars() {
             const stars = data.stargazers_count;
             starCount.textContent = `★ ${stars.toLocaleString()}`;
         } else {
-            starCount.textContent = '★ Star us!';
+            starCount.textContent = T('★ Star us!');
         }
     } catch (error) {
         console.error('Error fetching GitHub stars:', error);
-        starCount.textContent = '★ Star us!';
+        starCount.textContent = T('★ Star us!');
     }
 }
 

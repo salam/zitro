@@ -40,6 +40,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "shake_core.h"  // What a shake can show besides a fact
 #include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
 #include "stt_core.h"    // Speech-to-text at Infomaniak: batch id, then poll the result
+#include "care_core.h"   // Worries: send the child to people, helpline by home city
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -4895,6 +4896,8 @@ GPTResponse askGPT(const String &question) {
   for (int i = 0; i < EDU_FEATURE_COUNT; i++) {
     if (EDU_FEATURES[i]->promptRule) systemPrompt += String(" ") + EDU_FEATURES[i]->promptRule;
   }
+  // Worries and sadness: send the child to people; the helpline follows the home city (care_core.h)
+  systemPrompt += " " + String(careRuleText(CLOCK_ZONES[CLOCK_CITIES[clockHomeCity()].zone].iana).c_str());
 
   // Language: EN answers are requested explicitly (German is the prompt's default)
   String userText = question;

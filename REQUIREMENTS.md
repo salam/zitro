@@ -197,6 +197,12 @@
 - English (EN): Appends " Answer in English." to user queries
 - The device introduces itself as "Zitro" in the system prompt
 
+### Worries and sadness (main prompt, `care_core.h`)
+- When a child shares worries, sadness, fear, loneliness, conflict, exclusion, bullying, pain, or that someone hurts it, Zitro answers briefly, warmly and seriously, without a diagnosis, without claiming feelings or friendship, and sends it to a person it trusts (parents, teacher, school social worker; with pain, parents or a doctor). This follows the Zurich KI-Playbook's advice on "KI als Freund" and "KI als Coach"
+- If it sounds serious (someone hurts the child, great fear, self-harm, not wanting to live), Zitro names the free children's helpline of the home city's country and, in acute danger, 112. The number comes from a table in the firmware, chosen by the home city's time zone, never from the AI's memory: Switzerland `Europe/Zurich` 147 (Pro Juventute), Austria `Europe/Vienna` 147 (Rat auf Draht), Germany `Europe/Berlin` 116 111 (Nummer gegen Kummer). Elsewhere no number: get an adult right away
+- Such answers name no other phone numbers and show no picture (`image_query` empty, `create_image` false). Ordinary questions about emergency numbers are answered as before
+- Host tests: `tests/care/run.sh`. Checked on 2026-11-15 against `gpt-6-luna` with the real prompt: worries get a trusted person and, when serious, 147 and 112; "Bist du mein Freund?" no longer gets "Ja"
+
 ## Voice-Controlled Settings
 - All settings (except API key) are configurable through voice commands
 - Uses GPT to detect setting change intent from natural language

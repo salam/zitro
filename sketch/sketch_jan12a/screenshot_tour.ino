@@ -405,6 +405,11 @@ void handleSerialCommands() {
       Serial.printf("sleeptest hasImage=%d buffer=%d bytes mode=%d\n", hasImage, imageBufferSize, currentDisplayMode);
     } else if (line == "modelgyro") {
       modelGyroNoise();
+    } else if (line.startsWith("roll ")) {
+      // Globe views: as if the stick were turned this many degrees clockwise ("roll off": the real one)
+      const String arg = line.substring(5);
+      modelForcedRollDeg = arg == "off" ? NAN : arg.toFloat();
+      Serial.printf("roll %s\n", arg.c_str());
     } else if (line.startsWith("modelbench ")) {
       modelBench(line.substring(11).toInt());
       redrawPreviousResult();

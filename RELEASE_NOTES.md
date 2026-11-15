@@ -7,6 +7,9 @@
 
 ## Sun 15 Nov, 2026
 
+- **Turn the world clock any way you like**: hold the stick upright or turn it like a steering wheel. The globe stays exactly where it is, north up, and the writing turns so you can read it. The same for "Wo liegt …?" and the ISS.
+- **Find your home on the globe**: a little white house marks your home city on the world clock, the globe and the ISS view. See how far away Tokyo is, or when the ISS flies over you.
+- **StickS3 welcome on zitro.spot**: "Get Zitro" now asks whether you have a StickS3 or a PLUS2, the shop lets you pick either stick pre-flashed (the yellow PLUS2 or the gray StickS3), and every page's footer names both.
 - **Read aloud from Switzerland**: pick Microsoft Azure Speech under "Read-aloud" in the settings, and Zitro reads its answers from Azure's data centre in Zurich. Choose a voice that speaks German and English, or one with a Swiss accent. English practice keeps a British accent, with a different voice for every guest in the shop.
 - **Quiet StickS3**: the soft hum while the StickS3 is on is gone. Zitro now leaves off a power converter for accessories it doesn't use, and switches the speaker on only to play a sound. Songs, answers and the timer sound as before.
 - **Pictures keep coming after 1 December**: when Zitro's first picture try fails, it now asks OpenAI's newer picture model instead of the old one, which OpenAI switches off on 1 December.

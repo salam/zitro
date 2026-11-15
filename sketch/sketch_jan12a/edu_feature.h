@@ -33,6 +33,10 @@ struct EduFeature {
   // They come in as zoom (buttonB nullptr) or none, and the written answer (buttonC nullptr) or none.
   // Button A always shows the microphone. nullptr: keep those.
   void (*hints)(int& kindB, int& kindC);
+  // True: the picture stays level when the stick turns in its own plane, the text reads upright in all four
+  // ways (see levelStep in model_core.h). frame() draws the picture through modelLevelMatrix() at the sprite's
+  // rotation 0, then turns the sprite to modelReadingTurn for its text. False: the view stays as it opened.
+  bool levels;
 };
 
 // One per kind. All are registered in feature_registry.ino.
@@ -52,6 +56,7 @@ extern uint8_t modelZoomStep;   // 0, 1 or 2
 extern float modelGyroDps[3];   // Hand motion in screen axes, degrees per second; 0 when the gyro is off
 extern bool modelViewRedraw;    // True for one frame when the button tabs went away: a view that keeps its picture redraws
 extern bool modelIdleTurning;   // True when nothing is turned by hand: a view may move by itself
+extern int modelReadingTurn;    // Views that level: the sprite rotation that reads upright now (0 to 3)
 
 // Shared helpers
 String eduUrlEncode(const char* s);
@@ -61,3 +66,7 @@ bool eduHttpGetWithHeader(const String& url, unsigned long deadline, char* buffe
                           size_t& bodyLength, const char* headerName, const char* headerValue, const char* caCert);
 // Draws the bottom line: modelLabel and modelSourceName. reserveRight keeps room for a legend.
 void eduDrawFooter(M5Canvas& c, int reserveRight);
+// Views that level: modelRotation turned by the stick's roll, for drawing the picture
+void modelLevelMatrix(float out[9]);
+// Views that level: a point of the sprite's buffer in the reading frame (the sprite at modelReadingTurn)
+void modelToReading(M5Canvas& c, int bx, int by, int& rx, int& ry);

@@ -35,14 +35,21 @@ static void globePreparePalette(M5Canvas& c) {
   }
 }
 
-// The text column left of the globe in the world clock and the ISS view
+// The text column beside the globe in the world clock and the ISS view
 static const uint16_t GLOBE_PANEL_W = 112;
 
-// Text on the left, on black so it stays readable when the zoomed globe runs under it
-static void globePanelText(M5Canvas& c, const char* text, int y, uint16_t color, int width = GLOBE_PANEL_W) {
+// The globe views keep the globe in the middle of the screen at this size, so it stays exactly where it is
+// whichever way the stick is turned (EduFeature.levels). It fits between the top and the bottom line.
+static const int GLOBE_LEVEL_RADIUS = 48;
+static const int GLOBE_HOME_SIZE = 11;  // The home's little house, wide and high
+
+// Text on black so it stays readable when the zoomed globe runs under it. Left-aligned at x, or right-aligned
+// with its end at x. indent leaves room in front of it (for the house); returns the text's own left edge.
+static int globePanelText(M5Canvas& c, const char* text, int y, uint16_t color, int width = GLOBE_PANEL_W,
+                          bool right = false, int indent = 0) {
   String s = text;
-  if (c.textWidth(s) > width) {
-    while (s.length() > 1 && c.textWidth(s + "...") > width) {
+  if (c.textWidth(s) > width - indent) {
+    while (s.length() > 1 && c.textWidth(s + "...") > width - indent) {
       int cut = s.length() - 1;
       while (cut > 0 && ((uint8_t)s[cut] & 0xC0) == 0x80) cut--;
       s.remove(cut);
@@ -50,9 +57,50 @@ static void globePanelText(M5Canvas& c, const char* text, int y, uint16_t color,
     s += "...";
   }
   const int w = c.textWidth(s), h = c.fontHeight();
-  c.fillRect(0, y, w + 6, h, TFT_BLACK);
+  const int x = right ? c.width() - 3 - w : 3 + indent;
+  c.fillRect(right ? x - indent - 3 : 0, y, w + indent + 6, h, TFT_BLACK);
   c.setTextColor(color);
-  c.drawString(s, 3, y);
+  c.drawString(s, x, y);
+  return x;
+}
+
+// A little white house with a black rim, its middle at x, y: home on the globe and in front of its name
+static void globeDrawHome(M5Canvas& c, int x, int y) {
+  const int half = GLOBE_HOME_SIZE / 2;  // 5
+  const int top = y - half, eaves = y - 1, bottom = y + half;
+  // Rim
+  c.fillTriangle(x - half - 1, eaves + 1, x + half + 1, eaves + 1, x, top - 1, TFT_BLACK);
+  c.fillRect(x - half + 1, eaves, 2 * half - 1, bottom - eaves + 2, TFT_BLACK);
+  // Roof, walls and the door
+  c.fillTriangle(x - half, eaves, x + half, eaves, x, top, TFT_WHITE);
+  c.fillRect(x - half + 2, eaves, 2 * half - 3, bottom - eaves + 1, TFT_WHITE);
+  c.fillRect(x - 1, y + 1, 2, bottom - y, TFT_BLACK);
+}
+
+// Home from the settings, as a unit vector: read when a globe view opens, not every frame
+static float globeHome[3] = {0, 0, 1};
+
+static void globeHomeLoad() {
+  const int city = clockHomeCity();
+  globeUnitVector(CLOCK_CITIES[city].lat100 / 100.0f, CLOCK_CITIES[city].lon100 / 100.0f, globeHome);
+}
+
+// Home on the globe: where to draw the house, in the sprite's buffer. False if it's round the back or off screen.
+static bool globeHomeAt(const float m[9], int cx, int cy, int radius, int& x, int& y) {
+  const float* v = globeHome;
+  const float z = m[6] * v[0] + m[7] * v[1] + m[8] * v[2];
+  if (z < 0.05f) return false;
+  x = cx + (int)lroundf((m[0] * v[0] + m[1] * v[1] + m[2] * v[2]) * radius);
+  y = cy - (int)lroundf((m[3] * v[0] + m[4] * v[1] + m[5] * v[2]) * radius);
+  return x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT;
+}
+
+// The house at home, upright for the viewer: call with the sprite at modelReadingTurn
+static void globeDrawHomeOnGlobe(M5Canvas& c, const float m[9], int cx, int cy, int radius) {
+  int x, y, rx, ry;
+  if (!globeHomeAt(m, cx, cy, radius, x, y)) return;
+  modelToReading(c, x, y, rx, ry);
+  globeDrawHome(c, rx, ry);
 }
 
 // The Sun's direction in screen axes now. False without a clock: then it's all day.
@@ -69,16 +117,17 @@ static bool globeSunNow(const float m[9], float sun[3]) {
 // Ocean with day and night, then the coast. Shared with the world clock. Returns coast pieces drawn.
 static uint32_t globeShadeUs = 0;  // Last frame's shading time, for the serial log
 
-static uint32_t globeDrawEarth(M5Canvas& c, int cx, int cy, int radius, int bodyHeight) {
+// m: the globe's turn as drawn (modelLevelMatrix). The sprite at rotation 0: this writes its buffer directly.
+static uint32_t globeDrawEarth(M5Canvas& c, const float m[9], int cx, int cy, int radius, int bodyHeight) {
   uint16_t* buffer = (uint16_t*)c.getBuffer();
   float sun[3];
   const uint32_t shadeStart = micros();
-  const bool lit = globeSunNow(modelRotation.m, sun);
+  const bool lit = globeSunNow(m, sun);
   globeShadeDisc(buffer, WIDTH, bodyHeight, cx, cy, radius, lit ? sun : nullptr, globeOceanRaw);
   globeShadeUs = micros() - shadeStart;
   c.drawCircle(cx, cy, radius, c.color565(0x3A, 0x6E, 0xA8));
   int32_t q[9];
-  globeRotationToQ14(modelRotation.m, q);
+  globeRotationToQ14(m, q);
   const uint16_t raw = globeCoastRaw;
   return globeForEachSegment(globeLengths, globeLineCount, globeXyz, q, cx, cy, radius,
                              [=](int x0, int y0, int x1, int y1) {
@@ -168,6 +217,7 @@ static bool globeBegin(M5Canvas& c) {
   if (!globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
   globePreparePalette(c);
   globeSpinReset(globeSpin);
+  globeHomeLoad();
   globeLogStart = globeLogLastFrame = 0;
   globeLogFrames = globeLogDrawUs = globeLogDrawMaxUs = globeLogGapMaxUs = globeLogSegments = 0;
   return true;
@@ -182,27 +232,48 @@ static void globeDrawPin(M5Canvas& c, int x, int y, uint16_t color) {
   c.fillCircle(x, headY, 2, TFT_BLACK);
 }
 
+// The pin, or the arrow towards it, and the house at home. Comes in with the sprite at rotation 0, leaves it at
+// modelReadingTurn: the arrow is drawn in the buffer's axes, the pin and the house upright for the viewer.
+// marker: draws the pin's own symbol at a point of the reading frame; nullptr draws the citrus pin.
+static void globeDrawMarkers(M5Canvas& c, const float m[9], const float where[3], int cx, int cy, int radius,
+                             bool home, void (*marker)(M5Canvas&, int, int) = nullptr) {
+  GlobePinView pin;
+  globeLocatePin(m, where, cx, cy, radius, WIDTH, HEIGHT, pin);
+  const float z = m[6] * where[0] + m[7] * where[1] + m[8] * where[2];
+  int rx = 0, ry = 0;
+  modelToReading(c, pin.x, pin.y, rx, ry);
+  c.setRotation(modelReadingTurn);
+  // In the reading frame the pin's head is above its tip: it has to fit there
+  const int head = marker ? 4 : GLOBE_PIN_HEIGHT;
+  const bool shown = z >= 0 && rx >= 0 && rx < c.width() && ry >= head && ry < c.height();
+  const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
+  if (!shown) {
+    c.setRotation(0);
+    c.fillTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], citrus);
+    c.drawTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], TFT_BLACK);
+    c.setRotation(modelReadingTurn);
+  }
+  // The house under the pin: where both are at one place, the pin is what was asked for
+  if (home) globeDrawHomeOnGlobe(c, m, cx, cy, radius);
+  if (shown) {
+    if (marker) marker(c, rx, ry);
+    else globeDrawPin(c, rx, ry, citrus);
+  }
+}
+
 static void globeFrame(M5Canvas& c, float dt) {
   const uint32_t startUs = micros();
   float turn[3];
   globeSpinStep(globeSpin, modelGyroDps, dt, turn);
   mat3Rotate(modelRotation, turn[0], turn[1], turn[2]);
 
-  const int bodyHeight = HEIGHT - EDU_FOOTER_HEIGHT;
-  const int cx = WIDTH / 2, cy = bodyHeight / 2;
-  const int radius = (int)(bodyHeight * 0.47f * GLOBE_ZOOMS[modelZoomStep]);
+  float m[9];
+  modelLevelMatrix(m);
+  const int cx = WIDTH / 2, cy = HEIGHT / 2;
+  const int radius = (int)(GLOBE_LEVEL_RADIUS * GLOBE_ZOOMS[modelZoomStep]);
   c.fillSprite(TFT_BLACK);
-  const uint32_t segments = globeDrawEarth(c, cx, cy, radius, bodyHeight);
-
-  GlobePinView pin;
-  globeLocatePin(modelRotation.m, globePin, cx, cy, radius, WIDTH, bodyHeight, pin);
-  const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
-  if (pin.onScreen) {
-    globeDrawPin(c, pin.x, pin.y, citrus);
-  } else {
-    c.fillTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], citrus);
-    c.drawTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], TFT_BLACK);
-  }
+  const uint32_t segments = globeDrawEarth(c, m, cx, cy, radius, HEIGHT);
+  globeDrawMarkers(c, m, globePin, cx, cy, radius, true);
   eduDrawFooter(c, 0);
 
   const uint32_t endUs = micros();
@@ -231,4 +302,4 @@ const EduFeature FEATURE_GLOBE = {
     "auf der Erde liegt (z.B. 'Wo ist das Matterhorn?' ergibt 'globe:Matterhorn', 'Wo liegt Paris?' ergibt 'globe:Paris'). "
     "Andere Fragen zu einem Ort ('Wie sieht das Matterhorn aus?', 'Wie hoch ist das Matterhorn?') bekommen kein globe. "
     "Nenne nur den Titel, nie Koordinaten oder Zahlen.",
-    true, globeFetch, globeUnload, globeBegin, globeFrame, nullptr, nullptr, nullptr, nullptr};
+    true, globeFetch, globeUnload, globeBegin, globeFrame, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true};

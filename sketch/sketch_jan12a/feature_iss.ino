@@ -9,7 +9,6 @@
 static const char ISS_URL[] = "https://zitro.spot/api/iss.php";
 static const size_t ISS_REPLY_LIMIT = 16 * 1024;
 static const int ISS_PAST_S = 45 * 60, ISS_AHEAD_S = 90 * 60;  // Track drawn behind and ahead
-static const int ISS_PANEL_W = 122;
 
 static IssTrack* issTrack = nullptr;
 static bool issGerman = true;
@@ -68,12 +67,13 @@ static bool issBegin(M5Canvas& c) {
   if (!issTrack || !globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
   globePreparePalette(c);
   globeSpinReset(issSpin);
+  globeHomeLoad();
   return true;
 }
 
 // The track from t0 to t1 as a line on the near side of the globe
-static void issDrawTrack(M5Canvas& c, double t0, double t1, int cx, int cy, int radius, int bodyHeight, uint16_t color) {
-  const float* m = modelRotation.m;
+static void issDrawTrack(M5Canvas& c, const float m[9], double t0, double t1, int cx, int cy, int radius, int bodyHeight,
+                         uint16_t color) {
   bool lastSeen = false;
   int lastX = 0, lastY = 0;
   for (double t = t0; t <= t1; t += 30) {
@@ -109,48 +109,52 @@ static void issFrame(M5Canvas& c, float dt) {
   globeSpinStep(issSpin, modelGyroDps, dt, turn);
   mat3Rotate(modelRotation, turn[0], turn[1], turn[2]);
 
-  const int bodyHeight = HEIGHT - EDU_FOOTER_HEIGHT;
-  const int cx = 180, cy = bodyHeight / 2;  // A little further right than the clock: the lines are longer
-  const int radius = (int)(bodyHeight * 0.47f * GLOBE_ZOOMS[modelZoomStep]);
+  // In the middle of the screen, as the world clock: the globe stays put, the text turns (EduFeature.levels)
+  float m[9];
+  modelLevelMatrix(m);
+  const int cx = WIDTH / 2, cy = HEIGHT / 2;
+  const int radius = (int)(GLOBE_LEVEL_RADIUS * GLOBE_ZOOMS[modelZoomStep]);
   c.fillSprite(TFT_BLACK);
-  globeDrawEarth(c, cx, cy, radius, bodyHeight);
+  globeDrawEarth(c, m, cx, cy, radius, HEIGHT);
 
   const double now = issNow();
-  issDrawTrack(c, now - ISS_PAST_S, now, cx, cy, radius, bodyHeight, c.color565(0x80, 0x80, 0x80));
-  issDrawTrack(c, now, now + ISS_AHEAD_S, cx, cy, radius, bodyHeight, c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B));
+  issDrawTrack(c, m, now - ISS_PAST_S, now, cx, cy, radius, HEIGHT, c.color565(0x80, 0x80, 0x80));
+  issDrawTrack(c, m, now, now + ISS_AHEAD_S, cx, cy, radius, HEIGHT, c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B));
 
   float lat = 0, lon = 0, alt = 0;
   const bool known = issPositionAt(*issTrack, now, lat, lon, alt);
+  if (known) {
+    float v[3];
+    globeUnitVector(lat, lon, v);
+    globeDrawMarkers(c, m, v, cx, cy, radius, true, issDrawStation);
+  } else {
+    c.setRotation(modelReadingTurn);
+    globeDrawHomeOnGlobe(c, m, cx, cy, radius);  // Only home: no station, and no arrow
+  }
+
+  // From here the sprite reads upright. Landscape: what and how fast in the top corners, where in the bottom
+  // ones. Portrait: above and below the globe. Bottom lines first, as in the clock.
+  const bool portrait = c.height() > c.width();
+  const int width = portrait ? c.width() - 6 : GLOBE_PANEL_W;
   c.setTextDatum(textdatum_t::top_left);
   c.setTextSize(1);
   c.setFreeFont(FontManager::getFont12pt());
   if (known) {
-    float v[3];
-    globeUnitVector(lat, lon, v);
-    GlobePinView where;
-    globeLocatePin(modelRotation.m, v, cx, cy, radius, WIDTH, bodyHeight, where);
-    const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
-    if (where.onScreen) {
-      issDrawStation(c, where.x, where.y);
-    } else {
-      c.fillTriangle(where.arrow[0], where.arrow[1], where.arrow[2], where.arrow[3], where.arrow[4], where.arrow[5], citrus);
-      c.drawTriangle(where.arrow[0], where.arrow[1], where.arrow[2], where.arrow[3], where.arrow[4], where.arrow[5], TFT_BLACK);
-    }
-    // Bottom line first, as in the clock: each box may reach into the line above
     char line[32], number[16];
     issFormatCoordinate(line, sizeof(line), lon, false, issGerman);
-    globePanelText(c, line, 96, TFT_LIGHTGREY, ISS_PANEL_W);
+    if (portrait) globePanelText(c, line, 194, TFT_LIGHTGREY, width);
+    else globePanelText(c, line, 96, TFT_LIGHTGREY, width, true);
     issFormatCoordinate(line, sizeof(line), lat, true, issGerman);
-    globePanelText(c, line, 77, TFT_LIGHTGREY, ISS_PANEL_W);
+    globePanelText(c, line, portrait ? 173 : 96, TFT_LIGHTGREY, width);
     issFormatThousands(number, sizeof(number), issTrack->speedKmh);
     snprintf(line, sizeof(line), "%s km/h", number);
-    globePanelText(c, line, 52, TFT_WHITE, ISS_PANEL_W);
+    globePanelText(c, line, portrait ? 50 : 21, TFT_WHITE, width, !portrait);
     snprintf(line, sizeof(line), issGerman ? "%d km hoch" : "%d km up", (int)lroundf(alt));
-    globePanelText(c, line, 33, TFT_WHITE, ISS_PANEL_W);
+    globePanelText(c, line, portrait ? 33 : 2, TFT_WHITE, width, !portrait);
   } else {
     // Past the end of the track: no position is better than a wrong one
-    globePanelText(c, issGerman ? "Frag nochmals," : "Ask again,", 33, TFT_WHITE, ISS_PANEL_W);
-    globePanelText(c, issGerman ? "die Bahn ist alt." : "the track is old.", 52, TFT_WHITE, ISS_PANEL_W);
+    globePanelText(c, issGerman ? "die Bahn ist alt." : "the track is old.", portrait ? 50 : 96, TFT_WHITE, width);
+    globePanelText(c, issGerman ? "Frag nochmals," : "Ask again,", portrait ? 33 : 77, TFT_WHITE, width);
   }
   c.setFreeFont(FontManager::getFont16pt());
   globePanelText(c, "ISS", 2, c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B));
@@ -164,4 +168,4 @@ const EduFeature FEATURE_ISS = {
     "Position nicht: nenne in 'answer' nie Ort, Hoehe oder Geschwindigkeit, schreibe nur 'Ich schaue, wo die ISS "
     "gerade ist.' oder 'Let me look where the ISS is.'. Allgemeine Fragen zu Satellitenbahnen ('Was ist ein "
     "geostationaerer Satellit?') bleiben bei PHYSIK satellites. image_query bleibt leer.",
-    true, issFetch, issUnload, issBegin, issFrame, nullptr, nullptr, nullptr, nullptr};
+    true, issFetch, issUnload, issBegin, issFrame, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true};

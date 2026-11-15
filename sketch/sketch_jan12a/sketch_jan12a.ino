@@ -573,6 +573,7 @@ void modelGyroNoise();
 extern bool modelResetRotateToggle;
 const int SERIAL_LINE_MAX = 2048;  // Longest serial command: a provisioning line (see provisioning.ino)
 void handleProvisionCommand(const String& json);
+extern float modelForcedRollDeg;  // Serial "roll <degrees>" (model_view.ino)
 void setGyroEnabled(bool on);
 void updateGyroPower();
 bool gyroReady();

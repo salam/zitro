@@ -39,7 +39,8 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 [zitro.spot](https://zitro.spot) (folder `webpage2/`) has:
 - Product overview and feature showcase
 - Product comparison table vs other AI gadgets (Meta glasses, Bee, Rabbit R1, and more)
-- The installer download and the shop
+- Get Zitro: say which stick you have, the M5Stack StickS3 or the M5StickC PLUS2, and get the installer link by e-mail. The StickS3 gets its own installer
+- The shop, with Zitro pre-flashed on either stick: pick the yellow PLUS2 or the gray StickS3 when you order
 - Pages for young minds, screen detox and creativity
 - Direct access to the GitHub repository
 
@@ -352,8 +353,10 @@ The recipes come from Wikibooks, written by volunteers. They aren't all written 
 Ask where a place is: "Where is the Matterhorn?" or "Wo liegt Paris?". Zitro shows the Earth with a yellow pin on that place.
 
 - **Turn the stick** to turn the globe.
+- **Turn it like a steering wheel**, or hold it upright: the globe stays exactly where it is, north up, and only the writing turns so you can read it.
 - **Flick it quickly** and the globe keeps spinning, then slows down. Move the stick again to stop it.
 - **Lost the pin?** A yellow arrow shows which way it is.
+- **The little white house** is your home city, when it's on your side of the globe.
 - **Button B** zooms in, three steps.
 - **Button C** shows the written answer.
 - **Button A** asks a new question.
@@ -366,9 +369,10 @@ The dark side of the globe is where it's night right now.
 
 Ask for the time: "Wie spät ist es in Tokio?", "What time is it in New York?", or just "Wie spät ist es?".
 
-Zitro shows the Earth turned to that city, with a yellow pin. The time there is big at the top left, your own time below it, and how many hours apart they are. The dark side of the Earth is where it's night right now, and a little sun marks where the Sun stands straight overhead. Faint lines show the time zones, 15 degrees each.
+Zitro shows the Earth turned to that city, with a yellow pin. The time there is big at the top left, with how many hours it is ahead or behind. Your own time is on the right, next to a little white house, which also marks your home on the globe. Held upright, the city's time is above the globe and yours below. The dark side of the Earth is where it's night right now, and a little sun marks where the Sun stands straight overhead. Faint lines show the time zones, 15 degrees each.
 
 - **Turn the stick** to turn the globe; **flick** it to spin.
+- **Turn it like a steering wheel** or hold it upright: the globe stays put and the writing turns to be read.
 - **Button B** zooms in.
 - **Button C** shows the answer as text.
 
@@ -378,9 +382,10 @@ Set your own city on the setup page under **Home city**, or say "Stelle meinen W
 
 #### ISS live
 
-Ask "Wo ist die ISS gerade?" or "Where is the ISS?". Zitro shows the Earth with the space station where it is right now, lit by the Sun as it is this moment. The grey line is where it has just been, the yellow one where it will fly in the next 90 minutes. On the left: how high and how fast it flies, and where it is. Watch closely: it moves, once round the Earth in about an hour and a half.
+Ask "Wo ist die ISS gerade?" or "Where is the ISS?". Zitro shows the Earth with the space station where it is right now, lit by the Sun as it is this moment. The grey line is where it has just been, the yellow one where it will fly in the next 90 minutes. At the top right: how high and how fast it flies; at the bottom: where it is. The little white house is your home: see when the ISS flies over you. Watch closely: it moves, once round the Earth in about an hour and a half.
 
 - **Turn the stick** to turn the globe; **Button B** zooms; **Button C** shows the answer as text.
+- **Turn it like a steering wheel** or hold it upright: the globe stays put and the writing turns to be read.
 
 Zitro gets the path from NASA through the Zitro server, so it needs WiFi. After three hours the path runs out: ask again.
 

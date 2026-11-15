@@ -242,6 +242,98 @@ inline void gyroToScreen(int rotation, float gx, float gy, float gz, float out[3
   out[2] = gz;
 }
 
+// Views that stay level (the globes): turned like a steering wheel, the stick turns around the picture, which
+// keeps north up for the viewer and stays exactly where it is. Only the text snaps to the nearest of the four
+// ways to read it.
+//
+// The roll is measured against the landscape rotation locked when the view opened: 0 held that way, positive
+// turned clockwise as the viewer sees it, in radians. Gravity alone sets it. Lying flat, gravity can't tell
+// which way is up, and the roll holds. The gyro isn't used: an offset in it (the Plus2's start-up zero) would
+// turn the picture by itself.
+static const float LEVEL_FLAT_G = 0.35f;          // Less gravity in the screen's plane: lying flat, hold the roll
+static const float LEVEL_FULL_G = 0.6f;           // From this much on, gravity sets the roll at full pace
+static const float LEVEL_SHAKE_G = 0.35f;         // Off 1 g by more than this: the hand moves, not the gravity
+static const float LEVEL_FOLLOW = 0.3f;           // Share of the way to gravity's roll per frame (25 per second)
+static const float LEVEL_SNAP_RAD = 0.96f;        // 55 degrees: the text turns once the stick is this far round
+static const float LEVEL_QUARTER = (float)M_PI / 2;
+
+struct LevelState {
+  float roll;    // Radians, -pi to pi
+  bool known;    // False until gravity has said which way is up
+  int quarter;   // The sprite's own rotation that reads upright: 0 to 3
+};
+
+inline float levelWrap(float a) {
+  while (a > (float)M_PI) a -= 2 * (float)M_PI;
+  while (a <= -(float)M_PI) a += 2 * (float)M_PI;
+  return a;
+}
+
+inline void levelReset(LevelState& s) {
+  s.roll = 0;
+  s.known = false;
+  s.quarter = 0;
+}
+
+// The sprite rotation that reads upright at this roll, held until the stick is LEVEL_SNAP_RAD past it
+inline void levelSnap(LevelState& s, bool force) {
+  const float off = levelWrap(s.roll + s.quarter * LEVEL_QUARTER);
+  if (!force && fabsf(off) <= LEVEL_SNAP_RAD) return;
+  s.quarter = (((int)lroundf(-s.roll / LEVEL_QUARTER)) % 4 + 4) % 4;
+}
+
+// One frame. up: what the accelerometer reads in the screen's axes (x right, y up, z towards the viewer), in g;
+// at rest that's straight up.
+inline void levelStep(LevelState& s, const float up[3]) {
+  if (!isfinite(up[0]) || !isfinite(up[1]) || !isfinite(up[2])) return;
+  const float plane = sqrtf(up[0] * up[0] + up[1] * up[1]);
+  const float total = sqrtf(plane * plane + up[2] * up[2]);
+  if (plane >= LEVEL_FLAT_G && fabsf(total - 1.0f) <= LEVEL_SHAKE_G) {
+    const float target = atan2f(-up[0], up[1]);
+    if (!s.known) {
+      s.roll = target;
+      s.known = true;
+      levelSnap(s, true);
+      return;
+    }
+    float weight = (plane - LEVEL_FLAT_G) / (LEVEL_FULL_G - LEVEL_FLAT_G);
+    if (weight > 1) weight = 1;
+    s.roll = levelWrap(s.roll + LEVEL_FOLLOW * weight * levelWrap(target - s.roll));
+  }
+  levelSnap(s, false);
+}
+
+// The picture's turn: the globe's own (upright) rotation, turned by the roll so north stays up for the viewer
+inline void levelMatrix(const float m[9], float roll, float out[9]) {
+  const float c = cosf(roll), s = sinf(roll);
+  for (int j = 0; j < 3; j++) {
+    out[j] = c * m[j] - s * m[3 + j];
+    out[3 + j] = s * m[j] + c * m[3 + j];
+    out[6 + j] = m[6 + j];
+  }
+}
+
+// Hand motion as the upright picture sees it. The in-plane part is the roll, which levelMatrix already shows,
+// so it doesn't also turn the globe.
+inline void levelGyro(const float in[3], float roll, float out[3]) {
+  const float c = cosf(roll), s = sinf(roll);
+  const float x = c * in[0] + s * in[1], y = -s * in[0] + c * in[1];
+  out[0] = x;
+  out[1] = y;
+  out[2] = 0;
+}
+
+// A pixel of the sprite's buffer (bw x bh) as the sprite's rotation q addresses it: LovyanGFX's Panel_Sprite
+// maps reading coordinates to the buffer like this (drawPixelPreclipped), and this is its inverse.
+inline void levelToReading(int q, float bx, float by, int bw, int bh, float& rx, float& ry) {
+  switch (q & 3) {
+    case 1: rx = by;          ry = bw - 1 - bx; break;
+    case 2: rx = bw - 1 - bx; ry = bh - 1 - by; break;
+    case 3: rx = bh - 1 - by; ry = bx;          break;
+    default: rx = bx;         ry = by;          break;
+  }
+}
+
 // Sorts indices far first (lowest z). Insertion sort: nearly sorted from frame to frame.
 inline void sortByDepth(const float* z, uint8_t* order, uint16_t n) {
   for (uint16_t i = 1; i < n; i++) {

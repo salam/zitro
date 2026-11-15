@@ -21,7 +21,6 @@ static bool clockGerman = true;
 static GlobeSpin clockSpin;
 static float clockPin[3];
 static int16_t clockCapitalXyz[CLOCK_CITY_COUNT][3];  // Unit vectors x 2^14, filled once per lookup
-static const int CLOCK_GLOBE_CX = 168;                 // The globe sits right, the times left
 
 static void clockUnload() {
   globeUnload();
@@ -101,16 +100,16 @@ static bool clockBegin(M5Canvas& c) {
   if ((clockCity < 0 && !clockIsPlace) || !globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
   globePreparePalette(c);
   globeSpinReset(clockSpin);
+  globeHomeLoad();
   return true;
 }
 
 // Nominal time zones: the 24 meridians at 7.5 + 15 n degrees. Real borders bend round countries; the
 // stripes show the idea, the times on screen come from the real zones.
-static void clockDrawZoneLines(M5Canvas& c, int cx, int cy, int radius, int bodyHeight) {
+static void clockDrawZoneLines(M5Canvas& c, const float m[9], int cx, int cy, int radius, int bodyHeight) {
   uint16_t* buffer = (uint16_t*)c.getBuffer();
   c.drawPixel(0, 0, c.color565(0x2A, 0x4A, 0x70));
   const uint16_t raw = buffer[0];
-  const float* m = modelRotation.m;
   for (int z = 0; z < 24; z++) {
     const float lon = -172.5f + 15.0f * z;
     int lastX = 0, lastY = 0;
@@ -129,20 +128,37 @@ static void clockDrawZoneLines(M5Canvas& c, int cx, int cy, int radius, int body
   }
 }
 
+// How far the city is ahead (+) or behind (-) of home: "+8 h", "-3:30 h", "="
+static void clockFormatGap(char* out, size_t size, int32_t gap) {
+  const int32_t a = gap < 0 ? -gap : gap;
+  if (gap == 0) snprintf(out, size, "=");
+  else if (a % 3600) snprintf(out, size, "%c%d:%02d h", gap < 0 ? '-' : '+', (int)(a / 3600), (int)(a % 3600 / 60));
+  else snprintf(out, size, "%c%d h", gap < 0 ? '-' : '+', (int)(a / 3600));
+}
+
+// Home's name with the little house in front, as on the globe
+static void clockHomeName(M5Canvas& c, const char* name, int y, int width, bool right) {
+  const int indent = GLOBE_HOME_SIZE + 4;
+  const int x = globePanelText(c, name, y, TFT_WHITE, width, right, indent);
+  globeDrawHome(c, x - indent + GLOBE_HOME_SIZE / 2, y + c.fontHeight() / 2);
+}
+
 static void clockFrame(M5Canvas& c, float dt) {
   float turn[3];
   globeSpinStep(clockSpin, modelGyroDps, dt, turn);
   mat3Rotate(modelRotation, turn[0], turn[1], turn[2]);
 
-  const int bodyHeight = HEIGHT - EDU_FOOTER_HEIGHT;
-  const int cx = CLOCK_GLOBE_CX, cy = bodyHeight / 2;
-  const int radius = (int)(bodyHeight * 0.47f * GLOBE_ZOOMS[modelZoomStep]);
+  // The globe in the buffer's own axes, in the middle of the screen: there it stays put however the stick
+  // is turned, and only the text turns to be read (EduFeature.levels)
+  float m[9];
+  modelLevelMatrix(m);
+  const int cx = WIDTH / 2, cy = HEIGHT / 2;
+  const int radius = (int)(GLOBE_LEVEL_RADIUS * GLOBE_ZOOMS[modelZoomStep]);
   c.fillSprite(TFT_BLACK);
-  globeDrawEarth(c, cx, cy, radius, bodyHeight);
-  clockDrawZoneLines(c, cx, cy, radius, bodyHeight);
+  globeDrawEarth(c, m, cx, cy, radius, HEIGHT);
+  clockDrawZoneLines(c, m, cx, cy, radius, HEIGHT);
 
   // Capitals as dots, white by day, grey by night: the shading already tells which
-  const float* m = modelRotation.m;
   const uint16_t dot = c.color565(0xF0, 0xF0, 0xF0);
   for (int i = 0; i < CLOCK_CITY_COUNT; i++) {
     if (!CLOCK_CITIES[i].capital || i == clockCity) continue;
@@ -151,67 +167,68 @@ static void clockFrame(M5Canvas& c, float dt) {
     if (z < 0.05f) continue;
     const int x = cx + (int)lroundf((m[0] * v[0] + m[1] * v[1] + m[2] * v[2]) / GLOBE_Q14 * radius);
     const int y = cy - (int)lroundf((m[3] * v[0] + m[4] * v[1] + m[5] * v[2]) / GLOBE_Q14 * radius);
-    if (x >= 0 && x < WIDTH && y >= 0 && y < bodyHeight) c.drawPixel(x, y, dot);
+    if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) c.drawPixel(x, y, dot);
   }
 
   // Where the Sun is overhead, if that side faces us
   float sun[3];
   if (globeSunNow(m, sun) && sun[2] > 0.4f) {  // Not right at the rim, where it looks like it sits beside the globe
     const int sx = cx + (int)lroundf(sun[0] * radius), sy = cy - (int)lroundf(sun[1] * radius);
-    if (sx >= 0 && sx < WIDTH && sy >= 0 && sy < bodyHeight) {
+    if (sx >= 0 && sx < WIDTH && sy >= 0 && sy < HEIGHT) {
       c.fillCircle(sx, sy, 3, c.color565(0xFF, 0xE0, 0x60));
       c.drawCircle(sx, sy, 5, c.color565(0xFF, 0xE0, 0x60));
     }
   }
 
-  GlobePinView pin;
-  globeLocatePin(m, clockPin, cx, cy, radius, WIDTH, bodyHeight, pin);
-  const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
-  if (pin.onScreen) {
-    globeDrawPin(c, pin.x, pin.y, citrus);
-  } else {
-    c.fillTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], citrus);
-    c.drawTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], TFT_BLACK);
-  }
-
-  // The times, live
   const int64_t now = (int64_t)time(nullptr);
   ClockDate d, h;
   int32_t offset = 0, homeOffset = 0;
-  c.setTextDatum(textdatum_t::top_left);
-  c.setTextSize(1);
   bool timeKnown = true;
   if (clockIsPlace) clockRuleTime(clockPlace.rule, now, d, offset);
   else timeKnown = clockCityTime(clockCity, now, d, offset);
+  const bool away = clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset);
+
+  // The pin and, somewhere else, the house at home. From here on the sprite reads upright.
+  globeDrawMarkers(c, m, clockPin, cx, cy, radius, away);
+  const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
+
+  // The times, live. Landscape: the city on the left, home on the right. Portrait: the city above the globe,
+  // home below it. Bottom lines first: each line's black box may reach into the top of the one below.
   if (timeKnown) {
-    char line[48], zone[16];
-    // Bottom line first: each line's black box may reach into the descenders of the one above
-    c.setFreeFont(FontManager::getFont12pt());
-    const bool away = clockHome != clockCity && clockCityTime(clockHome, now, h, homeOffset);
+    const bool portrait = c.height() > c.width();
+    const int width = portrait ? c.width() - 6 : GLOBE_PANEL_W;
+    char line[48], zone[16], gapText[16] = "", homeTime[8];
+    c.setTextDatum(textdatum_t::top_left);
+    c.setTextSize(1);
     if (away) {
-      snprintf(line, sizeof(line), "%02d:%02d", h.hour, h.minute);
-      globePanelText(c, line, 96, TFT_LIGHTGREY);
-      globePanelText(c, clockCityName(clockHome, clockGerman), 75, TFT_WHITE);
+      clockFormatGap(gapText, sizeof(gapText), offset - homeOffset);
+      snprintf(homeTime, sizeof(homeTime), "%02d:%02d", h.hour, h.minute);
+      const char* homeName = clockCityName(clockHome, clockGerman);
+      if (portrait) {
+        c.setFreeFont(FontManager::getFont16pt());
+        globePanelText(c, homeTime, 192, TFT_LIGHTGREY, width);
+        c.setFreeFont(FontManager::getFont12pt());
+        clockHomeName(c, homeName, 173, width, false);
+      } else {
+        c.setFreeFont(FontManager::getFont16pt());
+        globePanelText(c, homeTime, 21, TFT_LIGHTGREY, width, true);
+        c.setFreeFont(FontManager::getFont12pt());
+        clockHomeName(c, homeName, 2, width, true);
+      }
     }
     // Short weekday and UTC offset share a line: "So, UTC+9"
     static const char* const shortDe[7] = {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"};
     static const char* const shortEn[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     clockFormatOffset(zone, sizeof(zone), offset);
     snprintf(line, sizeof(line), "%s, %s", clockGerman ? shortDe[d.weekday] : shortEn[d.weekday], zone);
-    globePanelText(c, line, 52, TFT_LIGHTGREY);
-    char gapText[16] = "";
-    if (away) {
-      // How far the city is ahead (+) or behind (-) of home, next to its time
-      const int32_t gap = offset - homeOffset;
-      const int32_t a = gap < 0 ? -gap : gap;
-      if (gap == 0) snprintf(gapText, sizeof(gapText), "=");
-      else if (a % 3600) snprintf(gapText, sizeof(gapText), "%c%d:%02d h", gap < 0 ? '-' : '+', (int)(a / 3600), (int)(a % 3600 / 60));
-      else snprintf(gapText, sizeof(gapText), "%c%d h", gap < 0 ? '-' : '+', (int)(a / 3600));
-    }
+    c.setFreeFont(FontManager::getFont12pt());
+    globePanelText(c, line, portrait ? 49 : 96, TFT_LIGHTGREY, width);
+    if (gapText[0] && !portrait) globePanelText(c, gapText, 52, TFT_LIGHTGREY, width);
     c.setFreeFont(FontManager::getFont16pt());
     snprintf(line, sizeof(line), "%02d:%02d", d.hour, d.minute);
-    globePanelText(c, line, 21, citrus);
-    if (gapText[0]) {
+    globePanelText(c, line, 21, citrus, width);
+    if (gapText[0] && portrait) {
+      // Next to the time, where there's room
       const int x = 3 + c.textWidth(line) + 6;
       c.setFreeFont(FontManager::getFont12pt());
       c.fillRect(x - 2, 27, c.textWidth(gapText) + 4, c.fontHeight() - 2, TFT_BLACK);
@@ -222,9 +239,9 @@ static void clockFrame(M5Canvas& c, float dt) {
     c.setFreeFont(FontManager::getFont12pt());
     if (clockIsPlace) {
       // "Knoxville, TN"; if that doesn't fit, the name matters more than the region
-      globePanelText(c, c.textWidth(clockPlace.label) <= GLOBE_PANEL_W ? clockPlace.label : clockPlace.name, 2, TFT_WHITE);
+      globePanelText(c, c.textWidth(clockPlace.label) <= width ? clockPlace.label : clockPlace.name, 2, TFT_WHITE, width);
     } else {
-      globePanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE);
+      globePanelText(c, clockCityName(clockCity, clockGerman), 2, TFT_WHITE, width);
     }
   }
   eduDrawFooter(c, 0);
@@ -240,4 +257,4 @@ const EduFeature FEATURE_CLOCK = {
     "'clock:Paris, Texas'). Du kennst die Uhrzeit NICHT: nenne in 'answer' nie eine "
     "Uhrzeit, ein Datum oder eine Zeitverschiebung, schreibe nur 'Ich schaue auf die Weltuhr.' oder 'Let me check the "
     "world clock.'. Zitro rechnet die Zeit selbst. image_query bleibt leer.",
-    true, clockFetch, clockUnload, clockBegin, clockFrame, nullptr, nullptr, nullptr, nullptr};
+    true, clockFetch, clockUnload, clockBegin, clockFrame, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, true};

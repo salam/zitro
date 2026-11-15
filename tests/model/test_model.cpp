@@ -153,6 +153,149 @@ static void testGyroAxes() {
   CHECK(s[2] == 10);
 }
 
+// LovyanGFX's Panel_Sprite::drawPixelPreclipped: reading coordinates to the buffer, rotation r
+static void spriteToBuffer(int r, int x, int y, int bw, int bh, int& bx, int& by) {
+  const int w = (r & 1) ? bh : bw, h = (r & 1) ? bw : bh;
+  if ((1u << r) & 0b10010110) y = h - (y + 1);
+  if (r & 2) x = w - (x + 1);
+  if (r & 1) { const int t = x; x = y; y = t; }
+  bx = x;
+  by = y;
+}
+
+// Gravity's up in the screen's axes when the stick is turned clockwise by roll from the locked landscape
+static void upAt(float roll, float out[3], float tilt = 0) {
+  const float plane = cosf(tilt);
+  out[0] = -sinf(roll) * plane;
+  out[1] = cosf(roll) * plane;
+  out[2] = sinf(tilt);
+}
+
+static void testLevel() {
+  const int bw = 240, bh = 135;
+  // The inverse of the sprite's own mapping, for every rotation and pixel
+  int wrong = 0;
+  for (int q = 0; q < 4; q++) {
+    const int w = (q & 1) ? bh : bw, h = (q & 1) ? bw : bh;
+    for (int y = 0; y < h; y += 7) {
+      for (int x = 0; x < w; x += 5) {
+        int bx, by;
+        float rx, ry;
+        spriteToBuffer(q, x, y, bw, bh, bx, by);
+        levelToReading(q, bx, by, bw, bh, rx, ry);
+        if (bx < 0 || bx >= bw || by < 0 || by >= bh || rx != x || ry != y) wrong++;
+      }
+    }
+    // The middle of the buffer is the middle of every reading frame: the globe stays put
+    float rx, ry;
+    levelToReading(q, (bw - 1) / 2.0f, (bh - 1) / 2.0f, bw, bh, rx, ry);
+    NEAR(rx, (w - 1) / 2.0f, 1e-4);
+    NEAR(ry, (h - 1) / 2.0f, 1e-4);
+  }
+  CHECK(wrong == 0);
+
+  // Held at each quarter turn: the text's up is gravity's up, and the globe's north too
+  for (int k = 0; k < 4; k++) {
+    const float roll = levelWrap(k * LEVEL_QUARTER);
+    float up[3];
+    upAt(roll, up);
+    LevelState s;
+    levelReset(s);
+    levelStep(s, up);
+    CHECK(s.known);
+    NEAR(levelWrap(s.roll - roll), 0, 1e-4);
+    // Reading frame: one pixel up, in the buffer (y down)
+    const int q = s.quarter;
+    const int w = (q & 1) ? bh : bw, h = (q & 1) ? bw : bh;
+    int x0, y0, x1, y1;
+    spriteToBuffer(q, w / 2, h / 2, bw, bh, x0, y0);
+    spriteToBuffer(q, w / 2, h / 2 - 1, bw, bh, x1, y1);
+    NEAR(x1 - x0, up[0], 1e-4);
+    NEAR(y0 - y1, up[1], 1e-4);  // Buffer y runs down, gravity's up y runs up
+    float m[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1}, d[9];
+    levelMatrix(m, s.roll, d);
+    NEAR(d[1], up[0], 1e-4);  // North (0, 1, 0) on screen
+    NEAR(d[4], up[1], 1e-4);
+  }
+
+  // The text holds its way until the stick is 55 degrees round, then snaps; the same on the way back
+  LevelState s;
+  levelReset(s);
+  float up[3];
+  upAt(0, up);
+  levelStep(s, up);
+  CHECK(s.quarter == 0);
+  for (int deg = 0; deg <= 50; deg += 5) {
+    upAt(deg * (float)M_PI / 180, up);
+    for (int i = 0; i < 40; i++) levelStep(s, up);
+  }
+  CHECK(s.quarter == 0);
+  NEAR(s.roll, 50 * M_PI / 180, 0.01);
+  upAt(60 * (float)M_PI / 180, up);
+  for (int i = 0; i < 40; i++) levelStep(s, up);
+  CHECK(s.quarter == 3);
+  upAt(40 * (float)M_PI / 180, up);
+  for (int i = 0; i < 40; i++) levelStep(s, up);
+  CHECK(s.quarter == 3);
+  upAt(30 * (float)M_PI / 180, up);
+  for (int i = 0; i < 40; i++) levelStep(s, up);
+  CHECK(s.quarter == 0);
+  // Upside down, across the wrap at 180 degrees
+  upAt(179 * (float)M_PI / 180, up);
+  for (int i = 0; i < 60; i++) levelStep(s, up);
+  CHECK(s.quarter == 2);
+  upAt(-179 * (float)M_PI / 180, up);
+  for (int i = 0; i < 60; i++) levelStep(s, up);
+  CHECK(s.quarter == 2);
+  NEAR(fabsf(s.roll), M_PI, 0.03);
+
+  // Lying flat, gravity can't tell which way is up: the roll and the text hold
+  LevelState flat;
+  levelReset(flat);
+  upAt(1.2f, up);
+  levelStep(flat, up);
+  float lying[3] = {0.05f, -0.1f, 1};
+  for (int i = 0; i < 250; i++) levelStep(flat, lying);
+  NEAR(flat.roll, 1.2, 1e-6);
+  CHECK(flat.quarter == 3);
+  // Opened lying flat: landscape as locked, until gravity says otherwise
+  LevelState opened;
+  levelReset(opened);
+  levelStep(opened, lying);
+  CHECK(!opened.known && opened.quarter == 0 && opened.roll == 0);
+  // A shake (far from 1 g) doesn't swing it
+  LevelState shaken;
+  levelReset(shaken);
+  upAt(0, up);
+  levelStep(shaken, up);
+  float shake[3] = {-2.5f, 0.3f, 0.2f};
+  for (int i = 0; i < 10; i++) levelStep(shaken, shake);
+  NEAR(shaken.roll, 0, 1e-6);
+  // Tilted back 60 degrees, gravity in the plane is half: it still sets the roll, more slowly
+  LevelState tilted;
+  levelReset(tilted);
+  upAt(0, up, 1.05f);
+  levelStep(tilted, up);
+  upAt(0.5f, up, 1.05f);
+  for (int i = 0; i < 100; i++) levelStep(tilted, up);
+  NEAR(tilted.roll, 0.5, 0.01);
+  // Bad numbers change nothing
+  float bad[3] = {NAN, 1, 0};
+  levelStep(tilted, bad);
+  NEAR(tilted.roll, 0.5, 0.01);
+
+  // Hand motion in the upright picture's axes: a tilt about the stick's own x axis, held in portrait
+  // (turned 90 degrees clockwise), is a tilt about the picture's y axis; the in-plane turn is dropped
+  float g[3] = {10, 0, 7}, o[3];
+  levelGyro(g, (float)M_PI / 2, o);
+  NEAR(o[0], 0, 1e-4);
+  NEAR(o[1], -10, 1e-4);
+  CHECK(o[2] == 0);
+  levelGyro(g, 0, o);
+  NEAR(o[0], 10, 1e-6);
+  NEAR(o[1], 0, 1e-6);
+}
+
 static void testButtonRules() {
   // Rotation 3: buttons on the left, Button C on top, Button B below
   CHECK(imageScrollDirection(3, true) == -1);
@@ -183,7 +326,7 @@ static void testButtonRules() {
 
 int main(int argc, char** argv) {
   fixtureDir = argc > 1 ? argv[1] : "fixtures";
-  testRefs(); testSdf(); testMath(); testElements(); testButtonRules(); testGyroAxes();
+  testRefs(); testSdf(); testMath(); testElements(); testButtonRules(); testGyroAxes(); testLevel();
   printf("%d checks, %d failures\n", checks, failures);
   if (failures == 0) printf("All model tests passed\n");
   return failures == 0 ? 0 : 1;

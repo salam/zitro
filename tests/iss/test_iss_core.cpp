@@ -78,6 +78,56 @@ int main() {
   issNoAnswer(out, sizeof out, true, true);
   CHECK(strstr(out, "Zitro-Server") != nullptr);
 
+  // Places: the real reply with ?places=1 (tests/iss/fixtures/track_places.json, made from the NASA file)
+  static IssTrack p;
+  CHECK(parse(readFile("fixtures/track_places.json"), p));
+  CHECK(p.placeCount == 52 && p.placeChanges == 81);
+  CHECK(strcmp(issPlaceAt(p, (double)p.t0, true), "Nordpazifik") == 0);
+  CHECK(strcmp(issPlaceAt(p, (double)p.t0 + 109.9, false), "North Pacific") == 0);
+  CHECK(strcmp(issPlaceAt(p, (double)p.t0 + 110, true), "S\xC3\xBC" "dpazifik") == 0);
+  CHECK(strcmp(issPlaceAt(p, (double)p.t0 + 1135, true), "Chile") == 0);
+  CHECK(issPlaceAt(p, (double)p.t0 + 1140, true) == nullptr);   // A stretch without a name (-1)
+  CHECK(strcmp(issPlaceAt(p, (double)p.t0 + 1150, true), "Chile") == 0);
+  CHECK(issPlaceAt(p, (double)p.t0 - 1, true) == nullptr);      // Before the track
+  CHECK(issPlaceAt(p, (double)p.t0 + 60.0 * 225 + 1, true) == nullptr);  // After it, like the position
+  CHECK(issPlaceAt(t, (double)t.t0 + 30, true) == nullptr);     // A reply without places
+  // \u escapes are read too
+  std::string esc = R"({"t0":1794122880,"step":60,"lat":[0,0,0,0,0,0,0,0,0,0],"lon":[0,1,2,3,4,5,6,7,8,9],)"
+                    R"("alt":[420,420,420,420,420,420,420,420,420,420],"speed_kmh":27500,"period_min":92.9,)";
+  CHECK(parse(esc + R"("places":[["Südpazifik","South Pacific"]],"place_t":[0],"place_i":[0]})", p));
+  CHECK(p.placeCount == 1 && strcmp(issPlaceAt(p, 1794122880.0 + 5, true), "S\xC3\xBC" "dpazifik") == 0);
+  // Bad place data: the track still counts, the places are dropped
+  const char* badPlaces[] = {
+      R"("places":[["A","A"]],"place_t":[0,0],"place_i":[0,0]})",           // Times not increasing
+      R"("places":[["A","A"]],"place_t":[0],"place_i":[1]})",               // Index past the names
+      R"("places":[["A","A"]],"place_t":[0],"place_i":[-2]})",
+      R"("places":[["A","A"]],"place_t":[0,600],"place_i":[0,0]})",         // After the end of the track
+      R"("places":[["A","A"]],"place_t":[-5],"place_i":[0]})",
+      R"("places":[["A","A"]],"place_t":[0,10],"place_i":[0]})",            // Lengths differ
+      R"("places":[["A"]],"place_t":[0],"place_i":[0]})",                   // Not a pair
+      R"("places":[["","A"]],"place_t":[0],"place_i":[0]})",                // Empty name
+      R"("places":[["A\u0007B","A"]],"place_t":[0],"place_i":[0]})",        // Control character
+      R"("places":[["中","A"]],"place_t":[0],"place_i":[0]})",          // Not in the stick's font
+      R"("places":[["0123456789012345678901234567890123456789012345678","A"]],"place_t":[0],"place_i":[0]})",  // 49 bytes
+      R"("places":"Korsika","place_t":[0],"place_i":[0]})",
+      R"("places":[["A","A"]],"place_t":["0"],"place_i":[0]})",
+  };
+  for (const char* b : badPlaces) {
+    CHECK(parse(esc + b, p));
+    CHECK(p.placeCount == 0 && p.placeChanges == 0);
+    CHECK(issPlaceAt(p, 1794122880.0 + 5, true) == nullptr);
+  }
+  std::string many = esc + R"("places":[)";
+  for (int i = 0; i <= ISS_MAX_PLACES; i++) many += i ? R"(,["A","A"])" : R"(["A","A"])";
+  many += R"(],"place_t":[0],"place_i":[0]})";
+  CHECK(parse(many, p) && p.placeCount == 0);                       // More names than the stick keeps
+
+  // The answer names the place under the ISS when there is one
+  issAnswer(out, sizeof out, true, 42.2f, 9.1f, 420.0f, 27600, 92.7f, "Korsika");
+  CHECK(strcmp(out, "Die ISS fliegt gerade 420 km hoch bei 42,2\xC2\xB0 N, 9,1\xC2\xB0 O, mit 27 600 km/h. Eine Runde um die Erde dauert 93 Minuten. Unter ihr liegt gerade: Korsika.") == 0);
+  issAnswer(out, sizeof out, false, 42.2f, 9.1f, 420.0f, 27600, 92.7f, "Corsica");
+  CHECK(strcmp(out, "The ISS is 420 km up right now, at 42.2\xC2\xB0 N, 9.1\xC2\xB0 E, flying 27 600 km/h. One trip around the Earth takes 93 minutes. Right below it: Corsica.") == 0);
+
   printf("iss core: %d checks, %d failures\n", checks, failures);
   return failures ? 1 : 0;
 }

@@ -65,5 +65,65 @@ check(iss_track($oem, $oem['stop']) === null, 'refuses past the data');
 check(iss_parse_oem("garbage\n") === null, 'garbage refused');
 check(iss_parse_oem("") === null, 'empty refused');
 
+// Place names: the real grid from scripts/make_iss_places.py
+$places = iss_places_open(__DIR__ . '/../../webpage2/data/iss');
+check($places !== null, 'place grid opens');
+function place(array &$places, float $lat, float $lon): string {
+    $i = iss_place_at($places, $lat, $lon);
+    return $i === 0 ? '' : $places['names'][$i][0] . ' / ' . $places['names'][$i][1];
+}
+foreach ([
+    [42.15, 9.10, 'Korsika / Corsica'],             // An island of a country with more land elsewhere
+    [61.20, -149.90, 'Alaska / Alaska'],            // A state of a big federal country
+    [-30.0, -120.0, 'Südpazifik / South Pacific'],  // The hand-made ocean halves
+    [30.0, -40.0, 'Nordatlantik / North Atlantic'],
+    [47.37, 8.54, 'Kanton Zürich / Zürich'],         // A canton
+    [48.86, 2.35, 'Frankreich / France'],            // A country without states shown
+    [53.35, -6.26, 'Irland / Ireland'],              // An island shared by two countries: the country
+    [-1.0, 33.0, 'Victoriasee / Lake Victoria'],     // A big lake
+    [42.0, 50.5, 'Kaspisches Meer / Caspian Sea'],
+    [34.0, 18.0, 'Mittelmeer / Mediterranean Sea'],
+    [32.08, 34.78, 'Israel / Israel'],               // A disputed whole country keeps its name
+    [44.95, 34.10, ''],                              // Krim: a disputed region inside a country, no name
+    [34.08, 74.80, ''],                              // Kashmir
+    [48.00, 37.80, ''],                              // Donezk
+    [90.0, 0.0, place($places, 89.99, 0.0)],         // The edges of the grid don't fail
+    [-90.0, 180.0, place($places, -89.99, 179.99)],
+] as [$la, $lo, $want]) {
+    $got = place($places, $la, $lo);
+    check($got === $want, "place at $la, $lo: '$got', expected '$want'");
+}
+
+// Along the track: changes every 10 s at most, inside the track, indices that point into the names
+$track = iss_track($oem, $now, 2700, 10800, 60, $places);
+check(isset($track['places'], $track['place_t'], $track['place_i']), 'track has places');
+$n = count($track['place_t']);
+check($n > 5 && $n === count($track['place_i']), "place changes $n");
+check($track['place_t'][0] === 0, 'first change at the start');
+$tLast = ($track['step'] ?? 60) * (count($track['lat']) - 1);
+for ($i = 1; $i < $n; $i++) check($track['place_t'][$i] > $track['place_t'][$i - 1] && $track['place_t'][$i] <= $tLast, "change $i in order");
+foreach ($track['place_i'] as $k) check($k >= -1 && $k < count($track['places']), "index $k");
+foreach ($track['places'] as $pl) check(is_string($pl[0]) && $pl[0] !== '' && is_string($pl[1]) && $pl[1] !== '' && strlen($pl[0]) <= 47 && strlen($pl[1]) <= 47, 'name pair');
+// Without the flag the reply is exactly what sticks from before it know
+$plain = iss_track($oem, $now);
+check(!isset($plain['places']) && !isset($plain['place_t']), 'no places without the flag');
+$withNow = $track; unset($withNow['places'], $withNow['place_t'], $withNow['place_i']);
+check($withNow === $plain, 'the rest of the reply is the same');
+
+// Reply size over every start the fixture allows, for the stick's buffer (ISS_REPLY_LIMIT)
+$largest = 0; $mostChanges = 0; $mostNames = 0; $slowest = 0;
+for ($t = $oem['start'] + 2700; $t + 10800 <= $oem['stop']; $t += 1800) {
+    $start = microtime(true);
+    $r = iss_track($oem, $t, 2700, 10800, 60, $places);
+    $slowest = max($slowest, microtime(true) - $start);
+    $r['now'] = (int)$t;
+    $largest = max($largest, strlen(json_encode($r, JSON_UNESCAPED_SLASHES)));
+    $mostChanges = max($mostChanges, count($r['place_t'] ?? []));
+    $mostNames = max($mostNames, count($r['places'] ?? []));
+    check(isset($r['places']), "places at $t");
+}
+printf("  replies with places: largest %d bytes, at most %d changes and %d names, slowest %.0f ms\n", $largest, $mostChanges, $mostNames, $slowest * 1000);
+check($largest < 14 * 1024, "largest reply $largest bytes fits the stick's 24 KB with room");
+
 echo "iss: $checks checks, $failures failures\n";
 exit($failures ? 1 : 0);

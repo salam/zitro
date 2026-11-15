@@ -6,9 +6,15 @@
 // Comes after feature_globe.ino in the build and reuses its coastline, day and night, spin and panel.
 #include "iss_core.h"
 
-static const char ISS_URL[] = "https://zitro.spot/api/iss.php";
-static const size_t ISS_REPLY_LIMIT = 16 * 1024;
+// places=1: also the place under the ISS along the track (Natural Earth, see docs/features/iss.md)
+static const char ISS_URL[] = "https://zitro.spot/api/iss.php?places=1";
+static const size_t ISS_REPLY_LIMIT = 24 * 1024;  // Measured at most 9.1 KB with places (tests/iss/test_iss.php)
 static const int ISS_PAST_S = 45 * 60, ISS_AHEAD_S = 90 * 60;  // Track drawn behind and ahead
+// The place line, above the latitude: a citrus arrow pointing down, then the name. M5GFX puts the 10 pt
+// baseline 18 px under y, capitals from y + 5 to y + 19, descenders to y + 23.
+static const int ISS_Y_PLACE_LANDSCAPE = 77, ISS_Y_PLACE_PORTRAIT = 154;  // Portrait: over the globe's bottom 13 rows at most
+static const int ISS_PLACE_X = 13, ISS_PLACE_BOX_H = 21;
+static const int ISS_TICKER_PX_S = 30, ISS_TICKER_PAUSE_MS = 1500, ISS_TICKER_GAP = 24;
 
 static IssTrack* issTrack = nullptr;
 static bool issGerman = true;
@@ -54,12 +60,15 @@ static bool issFetch(const char* query) {
   }
   free(issTrack);
   issTrack = track;
-  issAnswer(text, sizeof(text), issGerman, lat, lon, alt, issTrack->speedKmh, issTrack->periodMin);
+  issAnswer(text, sizeof(text), issGerman, lat, lon, alt, issTrack->speedKmh, issTrack->periodMin,
+            issPlaceAt(*issTrack, (double)now, issGerman));
   modelAnswerText = text;
   modelLabel = issGerman ? "ISS live" : "ISS live";
+  modelSourceName = issTrack->placeCount > 0 ? "NASA, Natural Earth" : "NASA";
   globeFacing(lat, lon, modelRotation.m);
-  Serial.printf("ISS lookup: %.2f, %.2f, %.0f km, %d points from %lld\n", lat, lon, alt, issTrack->count,
-                (long long)issTrack->t0);
+  Serial.printf("ISS lookup: %.2f, %.2f, %.0f km, %d points from %lld, %d places, %d changes, %u bytes\n", lat, lon,
+                alt, issTrack->count, (long long)issTrack->t0, issTrack->placeCount, issTrack->placeChanges,
+                (unsigned)length);
   return true;
 }
 
@@ -95,6 +104,33 @@ static void issDrawTrack(M5Canvas& c, const float m[9], double t0, double t1, in
     lastY = y;
     lastSeen = seen;
   }
+}
+
+// The place under the ISS: a citrus arrow pointing down, then the name as the source spells it, in white on a
+// black box over the globe. A name too long for its width scrolls slowly, after a pause at its start.
+static void issDrawPlace(M5Canvas& c, const char* name, int y, int width) {
+  static const char* shown = nullptr;
+  static unsigned long since = 0;
+  if (name != shown) {
+    shown = name;
+    since = millis();
+  }
+  const int room = width - (ISS_PLACE_X - 3), textWidth = c.textWidth(name);
+  c.fillRect(0, y, ISS_PLACE_X + min(textWidth, room) + 3, ISS_PLACE_BOX_H, TFT_BLACK);
+  c.fillTriangle(3, y + 8, 9, y + 8, 6, y + 15, c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B));
+  c.setTextColor(TFT_WHITE);
+  if (textWidth <= room) {
+    c.drawString(name, ISS_PLACE_X, y);
+    return;
+  }
+  const int period = textWidth + ISS_TICKER_GAP;
+  const unsigned long cycle = ISS_TICKER_PAUSE_MS + (unsigned long)period * 1000 / ISS_TICKER_PX_S;
+  const unsigned long t = (millis() - since) % cycle;
+  const int offset = t < (unsigned long)ISS_TICKER_PAUSE_MS ? 0 : (int)((t - ISS_TICKER_PAUSE_MS) * ISS_TICKER_PX_S / 1000);
+  c.setClipRect(ISS_PLACE_X, y, room, ISS_PLACE_BOX_H + 3);
+  c.drawString(name, ISS_PLACE_X - offset, y);
+  c.drawString(name, ISS_PLACE_X - offset + period, y);
+  c.clearClipRect();
 }
 
 // A tiny space station: body and two solar wings
@@ -150,6 +186,9 @@ static void issFrame(M5Canvas& c, float dt) {
     else globePanelText(c, line, 96, TFT_LIGHTGREY, width, true);
     issFormatCoordinate(line, sizeof(line), lat, true, issGerman);
     globePanelText(c, line, portrait ? 173 : 96, TFT_LIGHTGREY, width);
+    // What's below, over the latitude. No name there: no line, never a guess.
+    const char* place = issPlaceAt(*issTrack, now, issGerman);
+    if (place) issDrawPlace(c, place, portrait ? ISS_Y_PLACE_PORTRAIT : ISS_Y_PLACE_LANDSCAPE, width);
     issFormatThousands(number, sizeof(number), issTrack->speedKmh);
     snprintf(line, sizeof(line), "%s km/h", number);
     globePanelText(c, line, portrait ? 50 : 21, TFT_WHITE, width, !portrait);

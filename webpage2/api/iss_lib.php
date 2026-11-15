@@ -9,6 +9,9 @@
 const ISS_MU = 398600.4418;          // Earth GM, km^3/s^2 (IERS 2010)
 const ISS_WGS84_A = 6378.137;        // km
 const ISS_WGS84_F = 1 / 298.257223563;
+const ISS_PLACE_STEP = 10;          // Seconds between place lookups along the track: about 77 km of ground
+const ISS_PLACE_MAX_NAMES = 160;      // Measured at most 106 in 3 h 45 (tests/iss); more, or more changes, and the reply has no places
+const ISS_PLACE_MAX_CHANGES = 300;    // Measured at most 138
 
 // Reads the state vectors and the header. Returns ['created' => string, 'start' => unix, 'stop' => unix,
 // 'states' => [[t, x, y, z, vx, vy, vz], ...]] sorted by time, or null if the file isn't usable.
@@ -141,8 +144,9 @@ function iss_ground_point(array $states, float $t): ?array {
 }
 
 // The reply for the stick: the track from $before seconds ago to $after seconds ahead, every $step seconds,
-// plus speed and orbit time now. Null if the data doesn't cover that time.
-function iss_track(array $oem, float $now, int $before = 2700, int $after = 10800, int $step = 60): ?array {
+// plus speed and orbit time now. Null if the data doesn't cover that time. With $places (iss_places_open),
+// also the place under the ISS along the track (iss_track_places).
+function iss_track(array $oem, float $now, int $before = 2700, int $after = 10800, int $step = 60, ?array &$places = null): ?array {
     $t0 = floor(($now - $before) / $step) * $step;
     $t1 = $now + $after;
     if ($t0 < $oem['start'] || $t1 > $oem['stop']) return null;
@@ -158,7 +162,7 @@ function iss_track(array $oem, float $now, int $before = 2700, int $after = 1080
     $r = sqrt($s[0] ** 2 + $s[1] ** 2 + $s[2] ** 2);
     $v = sqrt($s[3] ** 2 + $s[4] ** 2 + $s[5] ** 2);
     $a = 1 / (2 / $r - $v * $v / ISS_MU);  // Vis-viva: the orbit's size from where and how fast
-    return [
+    $out = [
         'source' => 'NASA JSC ISS trajectory data (OEM)',
         'created' => $oem['created'],
         't0' => (int)$t0,
@@ -169,4 +173,66 @@ function iss_track(array $oem, float $now, int $before = 2700, int $after = 1080
         'speed_kmh' => (int)round($v * 3600),
         'period_min' => round(2 * M_PI * sqrt($a ** 3 / ISS_MU) / 60, 1),
     ];
+    if ($places !== null) $out += iss_track_places($oem, $places, $t0, $t0 + (count($lat) - 1) * $step);
+    return $out;
+}
+
+// The place grid from scripts/make_iss_places.py (webpage2/data/iss): names, and for each row of cells
+// runs of (count, name index). Null if the files are missing or don't fit together.
+function iss_places_open(string $dir): ?array {
+    $json = @file_get_contents($dir . '/places.json');
+    $bin = @file_get_contents($dir . '/places.bin');
+    $meta = is_string($json) ? json_decode($json, true) : null;
+    if (!is_array($meta) || !is_array($meta['names'] ?? null) || !is_string($bin) || strlen($bin) < 12 || substr($bin, 0, 4) !== 'ISSP') return null;
+    $h = unpack('vversion/vcols/vrows', $bin, 4);
+    if ($h['version'] !== 1 || $h['cols'] < 1 || $h['rows'] < 1 || strlen($bin) < 12 + 4 * $h['rows']) return null;
+    return ['names' => $meta['names'], 'bin' => $bin, 'cols' => $h['cols'], 'rows' => $h['rows'],
+            'offsets' => array_values(unpack('V' . $h['rows'], $bin, 12)), 'decoded' => []];
+}
+
+// The name index under a point, 0 for none. Rows are decoded once and kept in $places.
+function iss_place_at(array &$places, float $lat, float $lon): int {
+    $rows = $places['rows'];
+    $cols = $places['cols'];
+    $r = min($rows - 1, max(0, (int)floor((90 - $lat) / 180 * $rows)));
+    $c = min($cols - 1, max(0, (int)floor(fmod($lon + 540, 360) / 360 * $cols)));
+    if (!isset($places['decoded'][$r])) {
+        $runs = [];
+        $pos = $places['offsets'][$r];
+        $end = $r + 1 < $rows ? $places['offsets'][$r + 1] : strlen($places['bin']);
+        $x = 0;
+        while ($pos + 4 <= $end && $x < $cols) {
+            $run = unpack('vn/vid', $places['bin'], $pos);
+            $pos += 4;
+            $x += $run['n'];
+            $runs[] = [$x, $run['id']];
+        }
+        $places['decoded'][$r] = $runs;
+    }
+    foreach ($places['decoded'][$r] as [$upTo, $id]) {
+        if ($c < $upTo) return $id < count($places['names']) ? $id : 0;
+    }
+    return 0;
+}
+
+// The place under the ISS from $t0 to $t1, looked up every ISS_PLACE_STEP seconds and sent as changes:
+// 'place_t' seconds after $t0, 'place_i' an index into 'places' ([German, English]) or -1 for no place.
+// Nothing if the ISS passes more places than the stick keeps: no place is better than a cut-off list.
+function iss_track_places(array $oem, array &$places, float $t0, float $t1): array {
+    $used = [];
+    $times = $indices = [];
+    $last = -1;
+    for ($t = $t0; $t <= $t1; $t += ISS_PLACE_STEP) {
+        $p = iss_ground_point($oem['states'], $t);
+        $id = $p === null ? 0 : iss_place_at($places, $p[0], $p[1]);
+        if ($id === $last) continue;
+        $last = $id;
+        if ($id !== 0 && !isset($used[$id])) $used[$id] = count($used);
+        $times[] = (int)round($t - $t0);
+        $indices[] = $id === 0 ? -1 : $used[$id];
+    }
+    if (count($used) > ISS_PLACE_MAX_NAMES || count($times) > ISS_PLACE_MAX_CHANGES) return [];
+    $names = [];
+    foreach ($used as $id => $_) $names[] = $places['names'][$id];
+    return ['places' => $names, 'place_t' => $times, 'place_i' => $indices];
 }

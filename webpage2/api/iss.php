@@ -1,7 +1,9 @@
 <?php
 // GET https://zitro.spot/api/iss.php: where the ISS is now and its track around now, for the stick's live
 // ISS view (sketch/sketch_jan12a/feature_iss.ino). Computed from NASA's own ephemeris, which this keeps
-// in a cache next to it and refreshes at most every 12 hours. No input is read from the request.
+// in a cache next to it and refreshes at most every 12 hours. The only input read from the request is the
+// flag places=1: with it, the reply also names the place under the ISS along the track (Natural Earth,
+// webpage2/data/iss). Sticks from before it don't send the flag and get the reply they know.
 require_once __DIR__ . '/iss_lib.php';
 
 const ISS_SOURCE_URL = 'https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.txt';
@@ -64,7 +66,9 @@ function iss_load(float $now): ?array {
 $now = microtime(true);
 $oem = iss_load($now);
 if ($oem === null) iss_fail(503, 'no trajectory data');
-$track = iss_track($oem, $now);
+$places = null;
+if (($_GET['places'] ?? null) === '1') $places = iss_places_open(__DIR__ . '/../data/iss');  // Missing: no places
+$track = iss_track($oem, $now, 2700, 10800, 60, $places);
 if ($track === null) iss_fail(503, 'trajectory data does not cover now');
 $track['now'] = (int)$now;
-echo json_encode($track, JSON_UNESCAPED_SLASHES);
+echo json_encode($track, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);  // Place names as UTF-8, not \u escapes

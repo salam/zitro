@@ -1,0 +1,4516 @@
+{
+"about": "Place names under the ISS for webpage2/api/iss.php. Made by scripts/make_iss_places.py from Natural Earth 5.1.2 (public domain). Index 0 is no place.",
+"cell_deg": 0.25,
+"cols": 1440,
+"rows": 720,
+"sources": [
+{
+"file": "ne_10m_geography_marine_polys.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_geography_marine_polys.geojson",
+"sha256": "53f865e8ffa966cdd402145c82c5cd14ee7ce974cd0eb9a3f59f03a4cfd2d66c"
+},
+{
+"file": "ne_10m_admin_0_countries.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_admin_0_countries.geojson",
+"sha256": "239eec57ac17f100a11e2536cffc56752c318b50ae765b0918ff7aab4ce8f255"
+},
+{
+"file": "ne_10m_admin_1_states_provinces.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_admin_1_states_provinces.geojson",
+"sha256": "22d0e3ad85eb3e27f17cabf8ba2d50e554fbc27a87796ff891d958185da62fb5"
+},
+{
+"file": "ne_10m_geography_regions_polys.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_geography_regions_polys.geojson",
+"sha256": "b7b26e50ea917d3696aec87f932def2bf5f890f5770e441d59c162c6f4c92a77"
+},
+{
+"file": "ne_10m_lakes.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_lakes.geojson",
+"sha256": "2d036f53dedec578001c5c30c2959ee7d4eebc1306900fa4367c49929ec8f2d9"
+},
+{
+"file": "ne_10m_admin_0_disputed_areas.geojson",
+"url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_10m_admin_0_disputed_areas.geojson",
+"sha256": "9cafef8b7dfb6b164dc58f218f981f4ace9f716f6c03795d4c62d1ac9f3d50f5"
+}
+],
+"disputed_blank": [
+"Abchasien",
+"Abu Musa",
+"Abyei",
+"Aksai Chin",
+"Arunachal Pradesh",
+"Asad Jammu und Kaschmir",
+"Aves",
+"Bajo-Nuevo-Bank",
+"Bara Hotii",
+"Bassas da India",
+"Belize",
+"Bergkarabach",
+"Bhutan (Landzunge Chumbi)",
+"Bhutan (nordwestliche Täler)",
+"Britisches Territorium im Indischen Ozean",
+"Ceuta",
+"Corner of Artigas",
+"Demchok",
+"Demilitarisierte Zone",
+"Diego Garcia NSF",
+"Doumeira",
+"Dragonja",
+"Europa",
+"Gazastreifen",
+"Gibraltar",
+"Gilgit-Baltistan",
+"Golanhöhen",
+"Guantanamo Bay Naval Base",
+"Guayana Esequiba",
+"Hala'ib-Dreieck",
+"Hans-Insel",
+"Ilemi-Dreieck",
+"Isla Brasilera",
+"Isla del Perejil",
+"Islas Chafarinas",
+"Juan de Nova",
+"Junagadh",
+"Kaschmir",
+"Krim",
+"Kurilen",
+"Liancourt-Felsen",
+"Matthew- und Hunterinseln",
+"Mayotte",
+"Mbane Island",
+"Melilla",
+"Navassa",
+"Niemandsland (Fort Latrun)",
+"Niemandsland (Jerusalem)",
+"Nordborneo",
+"Northern Limit Line",
+"Olivenza",
+"Om Parvat",
+"Ostjerusalem",
+"Paracel-Inseln",
+"Peñón de Alhucemas",
+"Peñón de Vélez de la Gomera",
+"Quellgebiet der Lawa",
+"Quellgebiet des Corantijn",
+"Rockall",
+"Samdu",
+"Sanafir",
+"Sapodilla Cayes",
+"Scarborough-Riff",
+"Schebaa-Farmen",
+"Senkaku-Inseln",
+"Serranilla Bank",
+"Shaksgam-Tal",
+"Skopus",
+"Swains Island",
+"Südliche Sandwichinseln",
+"Südossetien",
+"Tirpani",
+"Transnistrien",
+"Tromelin",
+"UN-Pufferzone in Zypern",
+"United Nations Disengagement Observer Force",
+"Volksrepublik Donezk",
+"Volksrepublik Lugansk",
+"Vukovarska Ada",
+"Wake",
+"Westsahara",
+"Îles Glorieuses",
+"Šarengradska Ada"
+],
+"disputed_whole_countries_named": [
+"Baikonur",
+"Bir Tawil",
+"Falklandinseln",
+"Israel",
+"Kosovo",
+"Republik China",
+"Siachen-Gletscher",
+"Somaliland",
+"Südgeorgien",
+"Südpatagonisches Eisfeld",
+"Türkische Republik Nordzypern",
+"Westjordanland",
+"Westsahara"
+],
+"names": [
+[
+"",
+""
+],
+[
+"Südpazifik",
+"South Pacific"
+],
+[
+"Nordpazifik",
+"North Pacific"
+],
+[
+"Indischer Ozean",
+"Indian Ocean"
+],
+[
+"Südatlantik",
+"South Atlantic"
+],
+[
+"Nordatlantik",
+"North Atlantic"
+],
+[
+"Südlicher Ozean",
+"Southern Ocean"
+],
+[
+"Philippinensee",
+"Philippine Sea"
+],
+[
+"Arktischer Ozean",
+"Arctic Ocean"
+],
+[
+"Arabisches Meer",
+"Arabian Sea"
+],
+[
+"Korallenmeer",
+"Coral Sea"
+],
+[
+"Tasmansee",
+"Tasman Sea"
+],
+[
+"Südchinesisches Meer",
+"South China Sea"
+],
+[
+"Sargassosee",
+"Sargasso Sea"
+],
+[
+"Karibisches Meer",
+"Caribbean Sea"
+],
+[
+"Beringmeer",
+"Bering Sea"
+],
+[
+"Golf von Bengalen",
+"Bay of Bengal"
+],
+[
+"Rossmeer",
+"Ross Sea"
+],
+[
+"Mittelmeer",
+"Mediterranean Sea"
+],
+[
+"Europäisches Nordmeer",
+"Norwegian Sea"
+],
+[
+"Ochotskisches Meer",
+"Sea of Okhotsk"
+],
+[
+"Golf von Mexiko",
+"Gulf of Mexico"
+],
+[
+"Straße von Mosambik",
+"Mozambique Channel"
+],
+[
+"Barentssee",
+"Barents Sea"
+],
+[
+"Weddell-Meer",
+"Weddell Sea"
+],
+[
+"Große Australische Bucht",
+"Great Australian Bight"
+],
+[
+"Grönlandsee",
+"Greenland Sea"
+],
+[
+"Japanisches Meer",
+"Sea of Japan"
+],
+[
+"Labradorsee",
+"Labrador Sea"
+],
+[
+"Lakkadivensee",
+"Laccadive Sea"
+],
+[
+"Karasee",
+"Kara Sea"
+],
+[
+"Hudson Bay",
+"Hudson Bay"
+],
+[
+"Salomonensee",
+"Solomon Sea"
+],
+[
+"Bandasee",
+"Banda Sea"
+],
+[
+"Arafurasee",
+"Arafura Sea"
+],
+[
+"Ostchinesisches Meer",
+"East China Sea"
+],
+[
+"Davisstraße",
+"Davis Strait"
+],
+[
+"Golf von Guinea",
+"Gulf of Guinea"
+],
+[
+"Andamanensee",
+"Andaman Sea"
+],
+[
+"Ostsibirische See",
+"East Siberian Sea"
+],
+[
+"Javasee",
+"Java Sea"
+],
+[
+"Nordwestpassage",
+"Northwest Passage"
+],
+[
+"Nordsee",
+"North Sea"
+],
+[
+"Celebessee",
+"Celebes Sea"
+],
+[
+"Rotes Meer",
+"Red Sea"
+],
+[
+"Baffin Bay",
+"Baffin Bay"
+],
+[
+"Golf von Alaska",
+"Gulf of Alaska"
+],
+[
+"Schwarzes Meer",
+"Black Sea"
+],
+[
+"Beaufortsee",
+"Beaufort Sea"
+],
+[
+"Laptewsee",
+"Laptev Sea"
+],
+[
+"Timorsee",
+"Timor Sea"
+],
+[
+"Kaspisches Meer",
+"Caspian Sea"
+],
+[
+"Gelbes Meer",
+"Yellow Sea"
+],
+[
+"Davissee",
+"Davis Sea"
+],
+[
+"Great Barrier Reef",
+"Great Barrier Reef"
+],
+[
+"Tschuktschensee",
+"Chukchi Sea"
+],
+[
+"Bismarcksee",
+"Bismarck Sea"
+],
+[
+"Sulusee",
+"Sulu Sea"
+],
+[
+"Golf von Thailand",
+"Gulf of Thailand"
+],
+[
+"Golf von Carpentaria",
+"Gulf of Carpentaria"
+],
+[
+"Golf von Aden",
+"Gulf of Aden"
+],
+[
+"Persischer Golf",
+"Persian Gulf"
+],
+[
+"Sankt-Lorenz-Golf",
+"Gulf of Saint Lawrence"
+],
+[
+"Bellingshausen-See",
+"Bellingshausen Sea"
+],
+[
+"Molukkensee",
+"Molucca Sea"
+],
+[
+"Tyrrhenisches Meer",
+"Tyrrhenian Sea"
+],
+[
+"Biskaya",
+"Bay of Biscay"
+],
+[
+"Ostsee",
+"Baltic Sea"
+],
+[
+"Foxe Basin",
+"Foxe Basin"
+],
+[
+"Straße von Malakka",
+"Strait of Malacca"
+],
+[
+"Straße von Makassar",
+"Makassar Strait"
+],
+[
+"Golf von Kalifornien",
+"Gulf of California"
+],
+[
+"Ionisches Meer",
+"Ionian Sea"
+],
+[
+"Hudsonstraße",
+"Hudson Strait"
+],
+[
+"Bahía de Campeche",
+"Bay of Campeche"
+],
+[
+"Seramsee",
+"Ceram Sea"
+],
+[
+"Adriatisches Meer",
+"Adriatic Sea"
+],
+[
+"Schelichow-Bucht",
+"Shelikhov Gulf"
+],
+[
+"Bottnischer Meerbusen",
+"Gulf of Bothnia"
+],
+[
+"Ägäisches Meer",
+"Aegean Sea"
+],
+[
+"Golf von Tonkin",
+"Gulf of Tonkin"
+],
+[
+"Floressee",
+"Flores Sea"
+],
+[
+"Golf von Oman",
+"Gulf of Oman"
+],
+[
+"Bass-Straße",
+"Bass Strait"
+],
+[
+"Prydz Bay",
+"Prydz Bay"
+],
+[
+"Sawusee",
+"Savu Sea"
+],
+[
+"Anadyrgolf",
+"Gulf of Anadyr"
+],
+[
+"Ärmelkanal",
+"English Channel"
+],
+[
+"Amundsensee",
+"Amundsen Sea"
+],
+[
+"Weißes Meer",
+"White Sea"
+],
+[
+"Koreastraße",
+"Korea Strait"
+],
+[
+"Floridastraße",
+"Florida Strait"
+],
+[
+"McMurdo-Sund",
+"McMurdo Sound"
+],
+[
+"Balearen-Meer",
+"Balearic Sea"
+],
+[
+"Golf von Bohai",
+"Bohai Sea"
+],
+[
+"Kretisches Meer",
+"Sea of Crete"
+],
+[
+"Amundsen-Golf",
+"Amundsen Gulf"
+],
+[
+"Bransfieldstraße",
+"Bransfield Strait"
+],
+[
+"Golf von Maine",
+"Gulf of Maine"
+],
+[
+"James Bay",
+"James Bay"
+],
+[
+"Yana Bay",
+"Yana Bay"
+],
+[
+"Bristol Bay",
+"Bristol Bay"
+],
+[
+"Große Syrte",
+"Gulf of Sidra"
+],
+[
+"Golf von Tomini",
+"Gulf of Tomini"
+],
+[
+"Viscount-Melville-Sund",
+"Viscount Melville Sound"
+],
+[
+"Alborán-Meer",
+"Alboran Sea"
+],
+[
+"Bucht von Benin",
+"Bight of Benin"
+],
+[
+"Golf von Boothia",
+"Gulf of Boothia"
+],
+[
+"Obbusen",
+"Gulf of Ob"
+],
+[
+"Irische See",
+"Irish Sea"
+],
+[
+"Ungava Bay",
+"Ungava Bay"
+],
+[
+"Formosastraße",
+"Taiwan Strait"
+],
+[
+"Dänemarkstraße",
+"Denmark Strait"
+],
+[
+"Hebridensee",
+"Sea of the Hebrides"
+],
+[
+"Balisee",
+"Bali Sea"
+],
+[
+"Halmaherasee",
+"Halmahera Sea"
+],
+[
+"Golf von Papua",
+"Gulf of Papua"
+],
+[
+"McClure Strait",
+"M'Clure Strait"
+],
+[
+"Mindanaosee",
+"Bohol Sea"
+],
+[
+"Gulf Saint Vincent",
+"Gulf St Vincent"
+],
+[
+"Sankt-Lorenz-Strom",
+"Saint Lawrence River"
+],
+[
+"Asowsches Meer",
+"Sea of Azov"
+],
+[
+"George-VI-Sund",
+"George VI Sound"
+],
+[
+"Lincolnsee",
+"Lincoln Sea"
+],
+[
+"Golf von Mannar",
+"Gulf of Mannar"
+],
+[
+"Queen Charlotte Sound",
+"Queen Charlotte Sound"
+],
+[
+"Skagerrak",
+"Skagerrak"
+],
+[
+"Río de la Plata",
+"Río de la Plata"
+],
+[
+"Bucht von Bonny",
+"Bight of Biafra"
+],
+[
+"Karaginski-Bucht",
+"Karaginsky Gulf"
+],
+[
+"Golf von Martaban",
+"Gulf of Martaban"
+],
+[
+"Finnischer Meerbusen",
+"Gulf of Finland"
+],
+[
+"Golf von Panamá",
+"Gulf of Panama"
+],
+[
+"Melville-Bucht",
+"Melville Bay"
+],
+[
+"Sibuyan-See",
+"Sibuyan Sea"
+],
+[
+"Kane Basin",
+"Kane Basin"
+],
+[
+"Hecate-Straße",
+"Hecate Strait"
+],
+[
+"Joseph Bonaparte Gulf",
+"Joseph Bonaparte Gulf"
+],
+[
+"Norton-Sund",
+"Norton Sound"
+],
+[
+"Torres-Straße",
+"Torres Strait"
+],
+[
+"Golf San Jorge",
+"San Jorge Gulf"
+],
+[
+"Uchiura-Bucht",
+"Uchiura Bay"
+],
+[
+"Wrigleygolf",
+"Wrigley Gulf"
+],
+[
+"Cumberland Sound",
+"Cumberland Sound"
+],
+[
+"Jonessund",
+"Jones Sound"
+],
+[
+"Golf von Corcovado",
+"Gulf of Corcovado"
+],
+[
+"Sulzberger Bay",
+"Sulzberger Bay"
+],
+[
+"Marguerite Bay",
+"Marguerite Bay"
+],
+[
+"Seto-Inlandsee",
+"Seto Inland Sea"
+],
+[
+"Kattegat",
+"Kattegat"
+],
+[
+"Lützow-Holm-Bucht",
+"Lützow-Holm Bay"
+],
+[
+"Golf von Khambhat",
+"Gulf of Khambhat"
+],
+[
+"Udabucht",
+"Uda Gulf"
+],
+[
+"Bristolkanal",
+"Bristol Channel"
+],
+[
+"Cook Inlet",
+"Tikahtnu Inlet"
+],
+[
+"Salish Sea",
+"Salish Sea"
+],
+[
+"Visayas-See",
+"Visayan Sea"
+],
+[
+"Rigaischer Meerbusen",
+"Gulf of Riga"
+],
+[
+"Golfo San Matías",
+"San Matías Gulf"
+],
+[
+"Golfo de Tehuantepec",
+"Gulf of Tehuantepec"
+],
+[
+"Geographe Bay",
+"Geographe Bay"
+],
+[
+"Peacock-Sund",
+"Peacock Sound"
+],
+[
+"Golfe du Lion",
+"Gulf of Lion"
+],
+[
+"Kara-Bogas-Gol",
+"Garabogazköl"
+],
+[
+"Gulf of Buli",
+"Buli Bay"
+],
+[
+"Bay of Fundy",
+"Bay of Fundy"
+],
+[
+"Golf von Honduras",
+"Gulf of Honduras"
+],
+[
+"Vincennes Bay",
+"Vincennes Bay"
+],
+[
+"Chatangagolf",
+"Khatanga Gulf"
+],
+[
+"Jenisseigolf",
+"Yenisei Gulf"
+],
+[
+"Sachalin-Bucht",
+"Sakhalin Gulf"
+],
+[
+"Bay of Plenty",
+"Bay of Plenty"
+],
+[
+"Palkstraße",
+"Palk Strait"
+],
+[
+"Magellanstraße",
+"Strait of Magellan"
+],
+[
+"Kangertittivaq",
+"Scoresby Sound"
+],
+[
+"Bahía Grande",
+"Bahía Grande"
+],
+[
+"Samar-See",
+"Samar Sea"
+],
+[
+"Ligurisches Meer",
+"Ligurian Sea"
+],
+[
+"Vestfjord",
+"Vestfjorden"
+],
+[
+"Diskobucht",
+"Disko Bay"
+],
+[
+"Maracaibo-See",
+"Lake Maracaibo"
+],
+[
+"Chesapeake Bay",
+"Chesapeake Bay"
+],
+[
+"Dampierstraße",
+"Dampier Strait"
+],
+[
+"Kotzebue-Sund",
+"Kotzebue Sound"
+],
+[
+"Marmarameer",
+"Sea of Marmara"
+],
+[
+"Golf von Guayaquil",
+"Gulf of Guayaquil"
+],
+[
+"Wilkizkistraße",
+"Vilkitsky Strait"
+],
+[
+"Storfjorden",
+"Storfjorden"
+],
+[
+"Golf von Sues",
+"Gulf of Suez"
+],
+[
+"Amazonas",
+"Amazon"
+],
+[
+"Lagoa dos Patos (Entensee)",
+"Patos Lagoon"
+],
+[
+"Mackenzie Bay",
+"Mackenzie Bay"
+],
+[
+"Porpoise Bay",
+"Porpoise Bay"
+],
+[
+"Gulf of Kau",
+"Kao Bay"
+],
+[
+"Prinz-William-Sund",
+"Prince William Sound"
+],
+[
+"Uummannaq Fjord",
+"Uummannaq fjord"
+],
+[
+"Baía de Marajó",
+"Marajó Bay"
+],
+[
+"Frobisher-Bucht",
+"Frobisher Bay"
+],
+[
+"Golf von Penas",
+"Gulf of Penas"
+],
+[
+"Olenekskiy Zaliv",
+"Olenyok Gulf"
+],
+[
+"Golf von Gabès",
+"Gulf of Gabès"
+],
+[
+"Prince Albert Sound",
+"Prince Albert Sound"
+],
+[
+"Golf von Masira",
+"Gulf of Masirah"
+],
+[
+"Golf von Kronotsky",
+"Kronotsky Gulf"
+],
+[
+"Hangzhou-Bucht",
+"Hangzhouwan"
+],
+[
+"Shark Bay",
+"Shark Bay"
+],
+[
+"Tschaunbucht",
+"Chaunskaya Bay"
+],
+[
+"Ostkoreabucht",
+"East Korea Bay"
+],
+[
+"Golf von Kamchatka",
+"Kamchatka Gulf"
+],
+[
+"Prince of Wales Strait",
+"Prince of Wales Strait"
+],
+[
+"Bahía de São Marcos",
+"Baía de São Marcos"
+],
+[
+"Golf von Kachchh",
+"Gulf of Kutch"
+],
+[
+"Golf von Davao",
+"Davao Gulf"
+],
+[
+"Eclipse Sound",
+"Eclipse Sound"
+],
+[
+"Laptew-Straße",
+"Dmitry Laptev Strait"
+],
+[
+"Bucht von Tayabas",
+"Tayabas Bay"
+],
+[
+"Pamlico Sound",
+"Pamlico Sound"
+],
+[
+"Murchison Sound",
+"Murchison Sound"
+],
+[
+"Hall-Becken",
+"Hall Basin"
+],
+[
+"Boca Grande",
+"Boca Grande"
+],
+[
+"Tsugaru-Straße",
+"Tsugaru Strait"
+],
+[
+"Cookstraße",
+"Cook Strait"
+],
+[
+"Mecklenburger Bucht",
+"Bay of Mecklenburg"
+],
+[
+"Tatarensund",
+"Strait of Tartary"
+],
+[
+"Königin-Charlotte-Straße",
+"Queen Charlotte Strait"
+],
+[
+"Bahía Inútil",
+"Inútil Bay"
+],
+[
+"Dixon Entrance",
+"Dixon Entrance"
+],
+[
+"Ronne Entrance",
+"Ronne Entrance"
+],
+[
+"Golf von Leyte",
+"Leyte Gulf"
+],
+[
+"Hamilton Inlet",
+"Hamilton Inlet"
+],
+[
+"Belle-Isle-Straße",
+"Strait of Belle Isle"
+],
+[
+"Golf von Ragay",
+"Ragay Gulf"
+],
+[
+"Jangtsekiang",
+"Yangtze"
+],
+[
+"Straße von Singapur",
+"Singapore Strait"
+],
+[
+"Massachusetts Bay",
+"Massachusetts Bay"
+],
+[
+"Canal do Norte",
+"Canal do Norte"
+],
+[
+"Hadley Bay",
+"Hadley Bay"
+],
+[
+"Golf von Akaba",
+"Gulf of Aqaba"
+],
+[
+"Fury-und-Hecla-Straße",
+"Fury and Hecla Strait"
+],
+[
+"Kennedy-Kanal",
+"Kennedy Channel"
+],
+[
+"Wager Bay",
+"Wager Bay"
+],
+[
+"Straße von Surigao",
+"Surigao Strait"
+],
+[
+"Bali-Straße",
+"Bali Strait"
+],
+[
+"Golf von Liddon",
+"Liddon Gulf"
+],
+[
+"Long Island Sound",
+"Long Island Sound"
+],
+[
+"Canal do Sul",
+"Canal do Sul"
+],
+[
+"Baie d'Antongil",
+"Antongil Bay"
+],
+[
+"Bahía Blanca",
+"Bahía Blanca"
+],
+[
+"Robeson-Kanal",
+"Robeson Channel"
+],
+[
+"Albemarle Sound",
+"Albemarle Sound"
+],
+[
+"Seno Otway",
+"Seno Otway"
+],
+[
+"Hainanstraße",
+"Qiongzhou Strait"
+],
+[
+"Trondheimfjord",
+"Trondheimsfjord"
+],
+[
+"Smithsund",
+"Smith Sound"
+],
+[
+"Bathurst Inlet",
+"Bathurst Inlet"
+],
+[
+"Öresund",
+"Øresund"
+],
+[
+"Delaware Bay",
+"Delaware Bay"
+],
+[
+"Seno Skyring",
+"Seno Skyring"
+],
+[
+"Minto Inlet",
+"Minto Inlet"
+],
+[
+"Wattenmeer",
+"Wadden Sea"
+],
+[
+"Golf von Urabá",
+"Gulf of Urabá"
+],
+[
+"Darnley Bay",
+"Darnley Bay"
+],
+[
+"Husky Lakes",
+"Husky Lakes"
+],
+[
+"Lake Pontchartrain",
+"Lake Pontchartrain"
+],
+[
+"Wynniatt Bay",
+"Wynniatt Bay"
+],
+[
+"Kurisches Haff",
+"Kaliningrad"
+],
+[
+"Guba Gusinaya",
+"Guba Gusinaya"
+],
+[
+"Boknafjord",
+"Boknafjord"
+],
+[
+"Richard Collinson Inlet",
+"Richard Collinson Inlet"
+],
+[
+"Sognefjord",
+"Sognefjord"
+],
+[
+"Bucht von San Francisco",
+"San Francisco Bay"
+],
+[
+"Sherman Basin",
+"Sherman Basin"
+],
+[
+"Baird Inlet",
+"Baird Inlet"
+],
+[
+"Bras d'Or Lake",
+"Bras d'Or Lake"
+],
+[
+"Goldsmith Channel",
+"Goldsmith Channel"
+],
+[
+"Monterey Bay",
+"Monterey Bay"
+],
+[
+"Ozero Mogotoyevo",
+"Lake Mogotoyevo"
+],
+[
+"Canal Perigoso",
+"Canal Perigoso"
+],
+[
+"Franklin Bay",
+"Franklin Bay"
+],
+[
+"Dardanellen",
+"Dardanelles"
+],
+[
+"Indonesien",
+"Indonesia"
+],
+[
+"Malaysia",
+"Malaysia"
+],
+[
+"Chile",
+"Chile"
+],
+[
+"Bolivien",
+"Bolivia"
+],
+[
+"Peru",
+"Peru"
+],
+[
+"Republik Zypern",
+"Cyprus"
+],
+[
+"Israel",
+"Israel"
+],
+[
+"Palästina",
+"Palestine"
+],
+[
+"Libanon",
+"Lebanon"
+],
+[
+"Äthiopien",
+"Ethiopia"
+],
+[
+"Südsudan",
+"South Sudan"
+],
+[
+"Somalia",
+"Somalia"
+],
+[
+"Kenia",
+"Kenya"
+],
+[
+"Malawi",
+"Malawi"
+],
+[
+"Tansania",
+"Tanzania"
+],
+[
+"Syrien",
+"Syria"
+],
+[
+"Somaliland",
+"Somaliland"
+],
+[
+"Frankreich",
+"France"
+],
+[
+"Suriname",
+"Suriname"
+],
+[
+"Guyana",
+"Guyana"
+],
+[
+"Südkorea",
+"South Korea"
+],
+[
+"Nordkorea",
+"North Korea"
+],
+[
+"Marokko",
+"Morocco"
+],
+[
+"Westsahara",
+"Western Sahara"
+],
+[
+"Costa Rica",
+"Costa Rica"
+],
+[
+"Nicaragua",
+"Nicaragua"
+],
+[
+"Republik Kongo",
+"Republic of the Congo"
+],
+[
+"Demokratische Republik Kongo",
+"Democratic Republic of the Congo"
+],
+[
+"Bhutan",
+"Bhutan"
+],
+[
+"Ukraine",
+"Ukraine"
+],
+[
+"Belarus",
+"Belarus"
+],
+[
+"Namibia",
+"Namibia"
+],
+[
+"Südafrika",
+"South Africa"
+],
+[
+"Oman",
+"Oman"
+],
+[
+"Usbekistan",
+"Uzbekistan"
+],
+[
+"Kasachstan",
+"Kazakhstan"
+],
+[
+"Tadschikistan",
+"Tajikistan"
+],
+[
+"Litauen",
+"Lithuania"
+],
+[
+"Uruguay",
+"Uruguay"
+],
+[
+"Mongolei",
+"Mongolia"
+],
+[
+"Tschechien",
+"Czech Republic"
+],
+[
+"Estland",
+"Estonia"
+],
+[
+"Lettland",
+"Latvia"
+],
+[
+"Norwegen",
+"Norway"
+],
+[
+"Schweden",
+"Sweden"
+],
+[
+"Finnland",
+"Finland"
+],
+[
+"Vietnam",
+"Vietnam"
+],
+[
+"Kambodscha",
+"Cambodia"
+],
+[
+"Luxemburg",
+"Luxembourg"
+],
+[
+"Vereinigte Arabische Emirate",
+"United Arab Emirates"
+],
+[
+"Belgien",
+"Belgium"
+],
+[
+"Georgien",
+"Georgia"
+],
+[
+"Nordmazedonien",
+"North Macedonia"
+],
+[
+"Albanien",
+"Albania"
+],
+[
+"Aserbaidschan",
+"Azerbaijan"
+],
+[
+"Kosovo",
+"Kosovo"
+],
+[
+"Türkei",
+"Turkey"
+],
+[
+"Spanien",
+"Spain"
+],
+[
+"Laos",
+"Laos"
+],
+[
+"Kirgisistan",
+"Kyrgyzstan"
+],
+[
+"Armenien",
+"Armenia"
+],
+[
+"Dänemark",
+"Denmark"
+],
+[
+"Libyen",
+"Libya"
+],
+[
+"Tunesien",
+"Tunisia"
+],
+[
+"Rumänien",
+"Romania"
+],
+[
+"Ungarn",
+"Hungary"
+],
+[
+"Slowakei",
+"Slovakia"
+],
+[
+"Polen",
+"Poland"
+],
+[
+"Irland",
+"Ireland"
+],
+[
+"Vereinigtes Königreich",
+"United Kingdom"
+],
+[
+"Griechenland",
+"Greece"
+],
+[
+"Sambia",
+"Zambia"
+],
+[
+"Sierra Leone",
+"Sierra Leone"
+],
+[
+"Guinea",
+"Guinea"
+],
+[
+"Liberia",
+"Liberia"
+],
+[
+"Zentralafrikanische Republik",
+"Central African Republic"
+],
+[
+"Sudan",
+"Sudan"
+],
+[
+"Dschibuti",
+"Djibouti"
+],
+[
+"Eritrea",
+"Eritrea"
+],
+[
+"Irak",
+"Iraq"
+],
+[
+"Italien",
+"Italy"
+],
+[
+"Iran",
+"Iran"
+],
+[
+"Niederlande",
+"Netherlands"
+],
+[
+"Elfenbeinküste",
+"Ivory Coast"
+],
+[
+"Serbien",
+"Serbia"
+],
+[
+"Mali",
+"Mali"
+],
+[
+"Senegal",
+"Senegal"
+],
+[
+"Nigeria",
+"Nigeria"
+],
+[
+"Benin",
+"Benin"
+],
+[
+"Angola",
+"Angola"
+],
+[
+"Kroatien",
+"Croatia"
+],
+[
+"Slowenien",
+"Slovenia"
+],
+[
+"Katar",
+"Qatar"
+],
+[
+"Saudi-Arabien",
+"Saudi Arabia"
+],
+[
+"Botswana",
+"Botswana"
+],
+[
+"Simbabwe",
+"Zimbabwe"
+],
+[
+"Pakistan",
+"Pakistan"
+],
+[
+"Bulgarien",
+"Bulgaria"
+],
+[
+"Thailand",
+"Thailand"
+],
+[
+"Haiti",
+"Haiti"
+],
+[
+"Dominikanische Republik",
+"Dominican Republic"
+],
+[
+"Tschad",
+"Chad"
+],
+[
+"Kuwait",
+"Kuwait"
+],
+[
+"El Salvador",
+"El Salvador"
+],
+[
+"Guatemala",
+"Guatemala"
+],
+[
+"Osttimor",
+"East Timor"
+],
+[
+"Brunei",
+"Brunei"
+],
+[
+"Algerien",
+"Algeria"
+],
+[
+"Mosambik",
+"Mozambique"
+],
+[
+"Eswatini",
+"Eswatini"
+],
+[
+"Burundi",
+"Burundi"
+],
+[
+"Ruanda",
+"Rwanda"
+],
+[
+"Myanmar",
+"Myanmar"
+],
+[
+"Bangladesch",
+"Bangladesh"
+],
+[
+"Afghanistan",
+"Afghanistan"
+],
+[
+"Montenegro",
+"Montenegro"
+],
+[
+"Bosnien und Herzegowina",
+"Bosnia and Herzegovina"
+],
+[
+"Uganda",
+"Uganda"
+],
+[
+"Kuba",
+"Cuba"
+],
+[
+"Honduras",
+"Honduras"
+],
+[
+"Ecuador",
+"Ecuador"
+],
+[
+"Kolumbien",
+"Colombia"
+],
+[
+"Paraguay",
+"Paraguay"
+],
+[
+"Portugal",
+"Portugal"
+],
+[
+"Republik Moldau",
+"Moldova"
+],
+[
+"Turkmenistan",
+"Turkmenistan"
+],
+[
+"Jordanien",
+"Jordan"
+],
+[
+"Nepal",
+"Nepal"
+],
+[
+"Lesotho",
+"Lesotho"
+],
+[
+"Kamerun",
+"Cameroon"
+],
+[
+"Gabun",
+"Gabon"
+],
+[
+"Niger",
+"Niger"
+],
+[
+"Burkina Faso",
+"Burkina Faso"
+],
+[
+"Togo",
+"Togo"
+],
+[
+"Ghana",
+"Ghana"
+],
+[
+"Guinea-Bissau",
+"Guinea-Bissau"
+],
+[
+"Belize",
+"Belize"
+],
+[
+"Panama",
+"Panama"
+],
+[
+"Venezuela",
+"Venezuela"
+],
+[
+"Papua-Neuguinea",
+"Papua New Guinea"
+],
+[
+"Ägypten",
+"Egypt"
+],
+[
+"Jemen",
+"Yemen"
+],
+[
+"Mauretanien",
+"Mauritania"
+],
+[
+"Äquatorialguinea",
+"Equatorial Guinea"
+],
+[
+"Gambia",
+"The Gambia"
+],
+[
+"Hongkong",
+"Hong Kong"
+],
+[
+"Türkische Republik Nordzypern",
+"Turkish Republic of Northern Cyprus"
+],
+[
+"Siachen-Gletscher",
+"Siachen Glacier"
+],
+[
+"Baikonur",
+"Baikonur"
+],
+[
+"Südpatagonisches Eisfeld",
+"Southern Patagonian Ice Field"
+],
+[
+"Bir Tawil",
+"Bir Tawil"
+],
+[
+"Antarktika",
+"Antarctica"
+],
+[
+"Grönland",
+"Greenland"
+],
+[
+"Fidschi",
+"Fiji"
+],
+[
+"Neuseeland",
+"New Zealand"
+],
+[
+"Neukaledonien",
+"New Caledonia"
+],
+[
+"Madagaskar",
+"Madagascar"
+],
+[
+"Philippinen",
+"Philippines"
+],
+[
+"Sri Lanka",
+"Sri Lanka"
+],
+[
+"Curaçao",
+"Curaçao"
+],
+[
+"Bahamas",
+"The Bahamas"
+],
+[
+"Japan",
+"Japan"
+],
+[
+"Saint-Pierre und Miquelon",
+"Saint Pierre and Miquelon"
+],
+[
+"Island",
+"Iceland"
+],
+[
+"Französisch-Polynesien",
+"French Polynesia"
+],
+[
+"Grenada",
+"Grenada"
+],
+[
+"Barbados",
+"Barbados"
+],
+[
+"Dominica",
+"Dominica"
+],
+[
+"Puerto Rico",
+"Puerto Rico"
+],
+[
+"Jamaika",
+"Jamaica"
+],
+[
+"Komoren",
+"Comoros"
+],
+[
+"Malta",
+"Malta"
+],
+[
+"Isle of Man",
+"Isle of Man"
+],
+[
+"Färöer",
+"Faroe Islands"
+],
+[
+"Singapur",
+"Singapore"
+],
+[
+"Salomonen",
+"Solomon Islands"
+],
+[
+"Südgeorgien und die Südlichen Sandwichinseln",
+"South Georgia and the South Sandwich Islands"
+],
+[
+"Falklandinseln",
+"Falkland Islands"
+],
+[
+"Vanuatu",
+"Vanuatu"
+],
+[
+"Niue",
+"Niue"
+],
+[
+"Palau",
+"Palau"
+],
+[
+"Guam",
+"Guam"
+],
+[
+"Nördliche Marianen",
+"Northern Mariana Islands"
+],
+[
+"Bahrain",
+"Bahrain"
+],
+[
+"Entre Ríos",
+"Entre Ríos"
+],
+[
+"Salta",
+"Salta"
+],
+[
+"Jujuy",
+"Jujuy"
+],
+[
+"Xinjiang",
+"Xinjiang"
+],
+[
+"Autonomes Gebiet Tibet",
+"Tibet"
+],
+[
+"Arunachal Pradesh",
+"Arunachal Pradesh"
+],
+[
+"Rio Grande do Sul",
+"Rio Grande do Sul"
+],
+[
+"Innere Mongolei",
+"Inner Mongolia"
+],
+[
+"Gansu",
+"Gansu"
+],
+[
+"Republik Altai",
+"Altai Republic"
+],
+[
+"Sachsen",
+"Saxony"
+],
+[
+"Bayern",
+"Bavaria"
+],
+[
+"Pskow",
+"Pskov"
+],
+[
+"Rheinland-Pfalz",
+"Rhineland-Palatinate"
+],
+[
+"Saarland",
+"Saarland"
+],
+[
+"Krasnodar",
+"Krasnodar Krai"
+],
+[
+"Karatschai-Tscherkessien",
+"Karachay-Cherkess Republic"
+],
+[
+"Kabardino-Balkarien",
+"Kabardino-Balkaria"
+],
+[
+"Nordossetien-Alanien",
+"Republic of North Ossetia-Alania"
+],
+[
+"Inguschetien",
+"Republic of Ingushetia"
+],
+[
+"Tschetschenien",
+"Chechen Republic"
+],
+[
+"Dagestan",
+"Republic of Dagestan"
+],
+[
+"Yunnan",
+"Yunnan"
+],
+[
+"Roraima",
+"Roraima"
+],
+[
+"Pará",
+"Pará"
+],
+[
+"Schleswig-Holstein",
+"Schleswig-Holstein"
+],
+[
+"Acre",
+"Acre"
+],
+[
+"Niederösterreich",
+"Lower Austria"
+],
+[
+"Oberösterreich",
+"Upper Austria"
+],
+[
+"Burgenland",
+"Burgenland"
+],
+[
+"Kanton Wallis",
+"Valais"
+],
+[
+"Kanton Tessin",
+"Ticino"
+],
+[
+"Kanton Graubünden",
+"Grisons"
+],
+[
+"Vorarlberg",
+"Vorarlberg"
+],
+[
+"Tirol",
+"Tyrol"
+],
+[
+"Niedersachsen",
+"Lower Saxony"
+],
+[
+"Nordrhein-Westfalen",
+"North Rhine-Westphalia"
+],
+[
+"Murmansk",
+"Murmansk"
+],
+[
+"Republik Karelien",
+"Karelia"
+],
+[
+"Leningrad",
+"Leningrad"
+],
+[
+"Amapá",
+"Amapá"
+],
+[
+"Sikkim",
+"Sikkim"
+],
+[
+"Westbengalen",
+"West Bengal"
+],
+[
+"Assam",
+"Assam"
+],
+[
+"Salzburg",
+"Salzburg"
+],
+[
+"Kärnten",
+"Carinthia"
+],
+[
+"Uttarakhand",
+"Uttarakhand"
+],
+[
+"Formosa",
+"Formosa"
+],
+[
+"Misiones",
+"Misiones"
+],
+[
+"Chaco",
+"Chaco"
+],
+[
+"Corrientes",
+"Corrientes"
+],
+[
+"Mato Grosso do Sul",
+"Mato Grosso do Sul"
+],
+[
+"Paraná",
+"Paraná"
+],
+[
+"Santa Catarina",
+"Santa Catarina"
+],
+[
+"Baden-Württemberg",
+"Baden-Württemberg"
+],
+[
+"Kanton Thurgau",
+"Thurgau"
+],
+[
+"Kanton Zürich",
+"Zürich"
+],
+[
+"Kanton Aargau",
+"Aargau"
+],
+[
+"Kanton St. Gallen",
+"St. Gallen"
+],
+[
+"Kanton Solothurn",
+"Solothurn"
+],
+[
+"Kanton Jura",
+"Jura"
+],
+[
+"Kanton Waadt",
+"Vaud"
+],
+[
+"Kanton Neuenburg",
+"Neuchâtel"
+],
+[
+"Steiermark",
+"Styria"
+],
+[
+"Brandenburg",
+"Brandenburg"
+],
+[
+"Mecklenburg-Vorpommern",
+"Mecklenburg-Western Pomerania"
+],
+[
+"Kaliningrad",
+"Kaliningrad"
+],
+[
+"Smolensk",
+"Smolensk"
+],
+[
+"Brjansk",
+"Bryansk"
+],
+[
+"Kursk",
+"Kursk"
+],
+[
+"Belgorod",
+"Belgorod"
+],
+[
+"Woronesch",
+"Voronezh"
+],
+[
+"Rostow",
+"Rostov"
+],
+[
+"Burjatien",
+"Republic of Buryatia"
+],
+[
+"Tuwa",
+"Tuva Republic"
+],
+[
+"Transbaikalien",
+"Zabaykalsky Krai"
+],
+[
+"Heilongjiang",
+"Heilongjiang"
+],
+[
+"Amur",
+"Amur"
+],
+[
+"Jüdische",
+"Jewish"
+],
+[
+"Chabarowsk",
+"Khabarovsk Krai"
+],
+[
+"Primorje",
+"Primorsky Krai"
+],
+[
+"Jilin",
+"Jilin"
+],
+[
+"Liaoning",
+"Liaoning"
+],
+[
+"Nagaland",
+"Nagaland"
+],
+[
+"Manipur",
+"Manipur"
+],
+[
+"Mizoram",
+"Mizoram"
+],
+[
+"Guangxi",
+"Guangxi"
+],
+[
+"Tripura",
+"Tripura"
+],
+[
+"Meghalaya",
+"Meghalaya"
+],
+[
+"Washington",
+"Washington"
+],
+[
+"British Columbia",
+"British Columbia"
+],
+[
+"Idaho",
+"Idaho"
+],
+[
+"Montana",
+"Montana"
+],
+[
+"Alberta",
+"Alberta"
+],
+[
+"Saskatchewan",
+"Saskatchewan"
+],
+[
+"North Dakota",
+"North Dakota"
+],
+[
+"Manitoba",
+"Manitoba"
+],
+[
+"Minnesota",
+"Minnesota"
+],
+[
+"Ontario",
+"Ontario"
+],
+[
+"Michigan",
+"Michigan"
+],
+[
+"Ohio",
+"Ohio"
+],
+[
+"Pennsylvania",
+"Pennsylvania"
+],
+[
+"New York",
+"New York"
+],
+[
+"Québec",
+"Quebec"
+],
+[
+"Vermont",
+"Vermont"
+],
+[
+"New Hampshire",
+"New Hampshire"
+],
+[
+"Maine",
+"Maine"
+],
+[
+"New Brunswick",
+"New Brunswick"
+],
+[
+"Arizona",
+"Arizona"
+],
+[
+"Sonora",
+"Sonora"
+],
+[
+"Baja California",
+"Baja California"
+],
+[
+"Kalifornien",
+"California"
+],
+[
+"New Mexico",
+"New Mexico"
+],
+[
+"Chihuahua",
+"Chihuahua"
+],
+[
+"Texas",
+"Texas"
+],
+[
+"Coahuila",
+"Coahuila"
+],
+[
+"Tamaulipas",
+"Tamaulipas"
+],
+[
+"Nuevo León",
+"Nuevo León"
+],
+[
+"Quintana Roo",
+"Quintana Roo"
+],
+[
+"Campeche",
+"Campeche"
+],
+[
+"Tabasco",
+"Tabasco"
+],
+[
+"Chiapas",
+"Chiapas"
+],
+[
+"Amazonas",
+"Amazonas"
+],
+[
+"Rondônia",
+"Rondônia"
+],
+[
+"Mato Grosso",
+"Mato Grosso"
+],
+[
+"Catamarca",
+"Catamarca"
+],
+[
+"La Rioja",
+"La Rioja"
+],
+[
+"San Juan",
+"San Juan"
+],
+[
+"Mendoza",
+"Mendoza"
+],
+[
+"Neuquén",
+"Neuquén"
+],
+[
+"Chubut",
+"Chubut"
+],
+[
+"Río Negro",
+"Río Negro"
+],
+[
+"Santa Cruz",
+"Santa Cruz"
+],
+[
+"Tierra del Fuego",
+"Tierra del Fuego"
+],
+[
+"Tjumen",
+"Tyumen"
+],
+[
+"Kurgan",
+"Kurgan"
+],
+[
+"Omsk",
+"Omsk"
+],
+[
+"Nowosibirsk",
+"Novosibirsk"
+],
+[
+"Tscheljabinsk",
+"Chelyabinsk"
+],
+[
+"Orenburg",
+"Orenburg"
+],
+[
+"Saratow",
+"Saratov"
+],
+[
+"Astrachan",
+"Astrakhan"
+],
+[
+"Wolgograd",
+"Volgograd"
+],
+[
+"Punjab",
+"Punjab"
+],
+[
+"Rajasthan",
+"Rajasthan"
+],
+[
+"Gujarat",
+"Gujarat"
+],
+[
+"Alaska",
+"Alaska"
+],
+[
+"Yukon",
+"Yukon"
+],
+[
+"Guangdong",
+"Guangdong"
+],
+[
+"Himachal Pradesh",
+"Himachal Pradesh"
+],
+[
+"Bihar",
+"Bihar"
+],
+[
+"Uttar Pradesh",
+"Uttar Pradesh"
+],
+[
+"Buenos Aires",
+"Buenos Aires"
+],
+[
+"Maranhão",
+"Maranhão"
+],
+[
+"Piauí",
+"Piauí"
+],
+[
+"Ceará",
+"Ceará"
+],
+[
+"Rio Grande do Norte",
+"Rio Grande do Norte"
+],
+[
+"Paraíba",
+"Paraíba"
+],
+[
+"Pernambuco",
+"Pernambuco"
+],
+[
+"Alagoas",
+"Alagoas"
+],
+[
+"Sergipe",
+"Sergipe"
+],
+[
+"Bahia",
+"Bahia"
+],
+[
+"Espírito Santo",
+"Espírito Santo"
+],
+[
+"Rio de Janeiro",
+"Rio de Janeiro"
+],
+[
+"São Paulo",
+"São Paulo"
+],
+[
+"Western Australia",
+"Western Australia"
+],
+[
+"Northern Territory",
+"Northern Territory"
+],
+[
+"South Australia",
+"South Australia"
+],
+[
+"Queensland",
+"Queensland"
+],
+[
+"New South Wales",
+"New South Wales"
+],
+[
+"Victoria",
+"Victoria"
+],
+[
+"Andhra Pradesh",
+"Andhra Pradesh"
+],
+[
+"Colima",
+"Colima"
+],
+[
+"Nayarit",
+"Nayarit"
+],
+[
+"Fujian",
+"Fujian"
+],
+[
+"Baja California Sur",
+"Baja California Sur"
+],
+[
+"Sinaloa",
+"Sinaloa"
+],
+[
+"Louisiana",
+"Louisiana"
+],
+[
+"Mississippi",
+"Mississippi"
+],
+[
+"Alabama",
+"Alabama"
+],
+[
+"Florida",
+"Florida"
+],
+[
+"Georgia",
+"Georgia"
+],
+[
+"South Carolina",
+"South Carolina"
+],
+[
+"North Carolina",
+"North Carolina"
+],
+[
+"Virginia",
+"Virginia"
+],
+[
+"Maryland",
+"Maryland"
+],
+[
+"Delaware",
+"Delaware"
+],
+[
+"New Jersey",
+"New Jersey"
+],
+[
+"Connecticut",
+"Connecticut"
+],
+[
+"Rhode Island",
+"Rhode Island"
+],
+[
+"Massachusetts",
+"Massachusetts"
+],
+[
+"Yucatán",
+"Yucatán"
+],
+[
+"Veracruz",
+"Veracruz"
+],
+[
+"Jalisco",
+"Jalisco"
+],
+[
+"Michoacán",
+"Michoacán"
+],
+[
+"Guerrero",
+"Guerrero"
+],
+[
+"Oaxaca",
+"Oaxaca"
+],
+[
+"Zhejiang",
+"Zhejiang"
+],
+[
+"Shanghai",
+"Shanghai"
+],
+[
+"Jiangsu",
+"Jiangsu"
+],
+[
+"Oregon",
+"Oregon"
+],
+[
+"Nunavut",
+"Nunavut"
+],
+[
+"Neufundland und Labrador",
+"Newfoundland and Labrador"
+],
+[
+"Nova Scotia",
+"Nova Scotia"
+],
+[
+"Odisha",
+"Odisha"
+],
+[
+"Shandong",
+"Shandong"
+],
+[
+"Hebei",
+"Hebei"
+],
+[
+"Tianjin",
+"Tianjin"
+],
+[
+"Magadan",
+"Magadan"
+],
+[
+"Dadra und Nagar Haveli und Daman und Diu",
+"Dadra and Nagar Haveli and Daman and Diu"
+],
+[
+"Maharashtra",
+"Maharashtra"
+],
+[
+"Goa",
+"Goa"
+],
+[
+"Karnataka",
+"Karnataka"
+],
+[
+"Kerala",
+"Kerala"
+],
+[
+"Puducherry",
+"Puducherry"
+],
+[
+"Tamil Nadu",
+"Tamil Nadu"
+],
+[
+"Sachalin",
+"Sakhalin"
+],
+[
+"Autonomer Kreis der Tschuktschen",
+"Chukotka Autonomous Okrug"
+],
+[
+"Autonomer Kreis der Jamal-Nenzen",
+"Yamalo-Nenets Autonomous Okrug"
+],
+[
+"Autonomer Kreis der Nenzen",
+"Nenets Autonomous Okrug"
+],
+[
+"Nordwest-Territorien",
+"Northwest Territories"
+],
+[
+"Sacha",
+"Sakha Republic"
+],
+[
+"Sankt Petersburg",
+"Saint Petersburg"
+],
+[
+"Archangelsk",
+"Arkhangelsk"
+],
+[
+"Krasnojarsk",
+"Krasnoyarsk Krai"
+],
+[
+"Freie Hansestadt Bremen",
+"Free Hanseatic Bremen"
+],
+[
+"Hamburg",
+"Hamburg"
+],
+[
+"Kalmückien",
+"Republic of Kalmykia"
+],
+[
+"Tasmanien",
+"Tasmania"
+],
+[
+"Kamtschatka",
+"Kamchatka Krai"
+],
+[
+"Macquarieinsel",
+"Macquarie Island"
+],
+[
+"Kanton Bern",
+"Bern"
+],
+[
+"Kanton Luzern",
+"Lucerne"
+],
+[
+"Kanton Zug",
+"Zug"
+],
+[
+"Kanton Uri",
+"Uri"
+],
+[
+"Kanton Schwyz",
+"Schwyz"
+],
+[
+"Kanton Glarus",
+"Glarus"
+],
+[
+"Kanton Nidwalden",
+"Nidwalden"
+],
+[
+"Kanton Freiburg",
+"Fribourg"
+],
+[
+"Kanton Obwalden",
+"Obwalden"
+],
+[
+"Jharkhand",
+"Jharkhand"
+],
+[
+"Delhi",
+"Delhi"
+],
+[
+"Madhya Pradesh",
+"Madhya Pradesh"
+],
+[
+"Utah",
+"Utah"
+],
+[
+"Wyoming",
+"Wyoming"
+],
+[
+"Nevada",
+"Nevada"
+],
+[
+"Colorado",
+"Colorado"
+],
+[
+"South Dakota",
+"South Dakota"
+],
+[
+"Nebraska",
+"Nebraska"
+],
+[
+"Kansas",
+"Kansas"
+],
+[
+"Oklahoma",
+"Oklahoma"
+],
+[
+"Iowa",
+"Iowa"
+],
+[
+"Missouri",
+"Missouri"
+],
+[
+"Kanton Appenzell Innerrhoden",
+"Appenzell Innerrhoden"
+],
+[
+"Hessen",
+"Hesse"
+],
+[
+"Thüringen",
+"Thuringia"
+],
+[
+"Sachsen-Anhalt",
+"Saxony-Anhalt"
+],
+[
+"Berlin",
+"Berlin"
+],
+[
+"Peking",
+"Beijing"
+],
+[
+"Sichuan",
+"Sichuan"
+],
+[
+"Chongqing",
+"Chongqing"
+],
+[
+"Guizhou",
+"Guizhou"
+],
+[
+"Hunan",
+"Hunan"
+],
+[
+"Ningxia",
+"Ningxia"
+],
+[
+"Shaanxi",
+"Shaanxi"
+],
+[
+"Qinghai",
+"Qinghai"
+],
+[
+"Shanxi",
+"Shanxi"
+],
+[
+"Jiangxi",
+"Jiangxi"
+],
+[
+"Henan",
+"Henan"
+],
+[
+"Hubei",
+"Hubei"
+],
+[
+"Anhui",
+"Anhui"
+],
+[
+"Goiás",
+"Goiás"
+],
+[
+"Bundesdistrikt",
+"Federal"
+],
+[
+"Minas Gerais",
+"Minas Gerais"
+],
+[
+"Tocantins",
+"Tocantins"
+],
+[
+"Australian Capital Territory",
+"Australian Capital Territory"
+],
+[
+"Santa Fe",
+"Santa Fe"
+],
+[
+"Tucumán",
+"Tucumán"
+],
+[
+"Santiago del Estero",
+"Santiago del Estero"
+],
+[
+"San Luis",
+"San Luis"
+],
+[
+"La Pampa",
+"La Pampa"
+],
+[
+"Córdoba",
+"Córdoba"
+],
+[
+"Baschkortostan",
+"Bashkortostan"
+],
+[
+"Swerdlowsk",
+"Sverdlovsk"
+],
+[
+"Autonomer Kreis der Chanten und Mansen/Jugra",
+"Khanty-Mansi Autonomous Okrug"
+],
+[
+"Lipezk",
+"Lipetsk"
+],
+[
+"Tambow",
+"Tambov"
+],
+[
+"Tomsk",
+"Tomsk"
+],
+[
+"Tatarstan",
+"Republic of Tatarstan"
+],
+[
+"Uljanowsk",
+"Ulyanovsk"
+],
+[
+"Pensa",
+"Penza"
+],
+[
+"Kemerowo",
+"Kemerovo"
+],
+[
+"Orjol",
+"Oryol"
+],
+[
+"Irkutsk",
+"Irkutsk"
+],
+[
+"Chakassien",
+"Republic of Khakassia"
+],
+[
+"Mordwinien",
+"Republic of Mordovia"
+],
+[
+"Kaluga",
+"Kaluga"
+],
+[
+"Kostroma",
+"Kostroma"
+],
+[
+"Jaroslawl",
+"Yaroslavl"
+],
+[
+"Wladimir",
+"Vladimir"
+],
+[
+"Rjasan",
+"Ryazan"
+],
+[
+"Iwanowo",
+"Ivanovo"
+],
+[
+"Nischni Nowgorod",
+"Nizhny Novgorod"
+],
+[
+"Tula",
+"Tula"
+],
+[
+"Tschuwaschien",
+"Chuvash Republic"
+],
+[
+"Wologda",
+"Vologda"
+],
+[
+"Nowgorod",
+"Novgorod"
+],
+[
+"Twer",
+"Tver"
+],
+[
+"Moskau",
+"Moscow"
+],
+[
+"Mari El",
+"Mari El Republic"
+],
+[
+"Kirow",
+"Kirov"
+],
+[
+"Udmurtien",
+"Udmurt Republic"
+],
+[
+"Republik Komi",
+"Komi Republic"
+],
+[
+"Perm",
+"Perm Krai"
+],
+[
+"Samara",
+"Samara"
+],
+[
+"Stawropol",
+"Stavropol Krai"
+],
+[
+"Adygeja",
+"Republic of Adygea"
+],
+[
+"México",
+"State of Mexico"
+],
+[
+"Puebla",
+"Puebla"
+],
+[
+"Morelos",
+"Morelos"
+],
+[
+"Querétaro",
+"Querétaro"
+],
+[
+"Hidalgo",
+"Hidalgo"
+],
+[
+"Guanajuato",
+"Guanajuato"
+],
+[
+"San Luis Potosí",
+"San Luis Potosí"
+],
+[
+"Zacatecas",
+"Zacatecas"
+],
+[
+"Aguascalientes",
+"Aguascalientes"
+],
+[
+"Durango",
+"Durango"
+],
+[
+"Tlaxcala",
+"Tlaxcala"
+],
+[
+"Mexiko-Stadt",
+"Mexico"
+],
+[
+"Chhattisgarh",
+"Chhattisgarh"
+],
+[
+"Haryana",
+"Haryana"
+],
+[
+"Telangana",
+"Telangana"
+],
+[
+"Wisconsin",
+"Wisconsin"
+],
+[
+"Illinois",
+"Illinois"
+],
+[
+"Kentucky",
+"Kentucky"
+],
+[
+"Arkansas",
+"Arkansas"
+],
+[
+"Tennessee",
+"Tennessee"
+],
+[
+"West Virginia",
+"West Virginia"
+],
+[
+"Indiana",
+"Indiana"
+],
+[
+"Mindanao",
+"Mindanao"
+],
+[
+"Sewernaja Semlja",
+"Severnaya Zemlya"
+],
+[
+"Franz-Josef-Land",
+"Franz Josef Land"
+],
+[
+"Hokkaidō",
+"Hokkaidō"
+],
+[
+"Banksinsel",
+"Banks Island"
+],
+[
+"Andamanen",
+"Andaman Islands"
+],
+[
+"Galapagosinseln",
+"Galapagos Islands"
+],
+[
+"Tasmanien",
+"Mainland Tasmania"
+],
+[
+"Alexanderarchipel",
+"Alexander Archipelago"
+],
+[
+"Devon Island",
+"Devon Island"
+],
+[
+"Nikobaren",
+"Nicobar Islands"
+],
+[
+"Alexander-I.-Insel",
+"Alexander Island"
+],
+[
+"Sulu-Archipel",
+"Sulu Archipelago"
+],
+[
+"Berkner-Insel",
+"Berkner Island"
+],
+[
+"Samoainseln",
+"Samoan Islands"
+],
+[
+"Southampton Island",
+"Southampton Island"
+],
+[
+"Axel Heiberg Island",
+"Axel Heiberg Island"
+],
+[
+"Santa-Cruz-Inseln",
+"Santa Cruz Islands"
+],
+[
+"Melville Island",
+"Melville Island"
+],
+[
+"Südliche Shetlandinseln",
+"South Shetland Islands"
+],
+[
+"Marajó",
+"Marajó"
+],
+[
+"Spitzbergen",
+"Spitsbergen"
+],
+[
+"Neubritannien",
+"New Britain"
+],
+[
+"Taiwan",
+"Taiwan"
+],
+[
+"Kyūshū",
+"Kyushu"
+],
+[
+"Balearische Inseln",
+"Balearic Islands"
+],
+[
+"Insel Hainan",
+"Hainan Island"
+],
+[
+"Marquesas",
+"Marquesas Islands"
+],
+[
+"Prince-of-Wales-Insel",
+"Prince of Wales Island"
+],
+[
+"Vancouver Island",
+"Vancouver Island"
+],
+[
+"Musandam",
+"Mergui Archipelago"
+],
+[
+"Kykladen",
+"Cyclades"
+],
+[
+"Sizilien",
+"Sicily"
+],
+[
+"Izu-Inseln",
+"Izu Islands"
+],
+[
+"Sardinien",
+"Sardinia"
+],
+[
+"Somerset Island",
+"Somerset Island"
+],
+[
+"Babuyan-Insel",
+"Babuyan Island"
+],
+[
+"Kotelny-Insel",
+"Kotelny"
+],
+[
+"Tanimbar-Inseln",
+"Tanimbar Islands"
+],
+[
+"New Georgia",
+"New Georgia"
+],
+[
+"Peloponnes",
+"Peloponnese"
+],
+[
+"Sakishima-Inseln",
+"Sakishima Islands"
+],
+[
+"Loyalitätsinseln",
+"Loyalty Islands"
+],
+[
+"Shikoku",
+"Shikoku"
+],
+[
+"Kanalinseln",
+"Channel Islands of California"
+],
+[
+"Halmahera",
+"Halmahera Island"
+],
+[
+"Louisiade-Archipel",
+"Louisiade Archipelago"
+],
+[
+"Seram",
+"Seram Island"
+],
+[
+"Aru-Inseln",
+"Aru Islands Regency"
+],
+[
+"Bathurst Island",
+"Bathurst Island"
+],
+[
+"Prince Patrick Island",
+"Prince Patrick Island"
+],
+[
+"Oktoberrevolutions-Insel",
+"October Revolution Island"
+],
+[
+"Flores",
+"Flores"
+],
+[
+"Nordostland",
+"Nordaustlandet"
+],
+[
+"Sumbawa",
+"Sumbawa"
+],
+[
+"Kerguelen",
+"Kerguelen Islands"
+],
+[
+"Juan-Fernández-Inseln",
+"Juan Fernández Islands"
+],
+[
+"Dahlak-Archipel",
+"Dahlak Archipelago"
+],
+[
+"Riau-Inseln",
+"Riau Islands"
+],
+[
+"Negros",
+"Negros"
+],
+[
+"King William Island",
+"King William Island"
+],
+[
+"Samar",
+"Samar"
+],
+[
+"D'Entrecasteaux-Inseln",
+"D'Entrecasteaux Islands"
+],
+[
+"Haida Gwaii",
+"Haida Gwaii"
+],
+[
+"Bangka",
+"Bangka Island"
+],
+[
+"Thurston-Insel",
+"Thurston Island"
+],
+[
+"Panay",
+"Panay"
+],
+[
+"Äußere Hebriden",
+"Outer Hebrides"
+],
+[
+"Bolschewik-Insel",
+"Bolshevik Island"
+],
+[
+"Viti Levu",
+"Viti Levu"
+],
+[
+"Yos-Sudarso-Insel",
+"Kolepom"
+],
+[
+"Palawan",
+"Palawan Island"
+],
+[
+"Sumba",
+"Sumba"
+],
+[
+"Bylot-Insel",
+"Bylot Island"
+],
+[
+"Ionische Inseln",
+"Ionian Islands"
+],
+[
+"Hawaiʻi",
+"Hawaii"
+],
+[
+"Marshall-Archipel",
+"Marshall Archipelago"
+],
+[
+"Kap-Breton-Insel",
+"Cape Breton Island"
+],
+[
+"Mindoro",
+"Mindoro"
+],
+[
+"Komsomolez-Insel",
+"Komsomolets Island"
+],
+[
+"Kommandeurinseln",
+"Commander Islands"
+],
+[
+"Shetland",
+"Shetland Islands"
+],
+[
+"Prince Charles Island",
+"Prince Charles Island"
+],
+[
+"Bougainville",
+"Bougainville Island"
+],
+[
+"Kodiak-Insel",
+"Kodiak Island"
+],
+[
+"Korsika",
+"Corsica"
+],
+[
+"Tapón del Darién",
+"Darien Gap"
+],
+[
+"Chiloé",
+"Chiloé Island"
+],
+[
+"Buru",
+"Buru"
+],
+[
+"Diskoinsel",
+"Disko Island"
+],
+[
+"Kreta",
+"Crete"
+],
+[
+"Ōsumi-Inseln",
+"Ōsumi Islands"
+],
+[
+"Anticosti",
+"Anticosti Island"
+],
+[
+"Bissagos-Archipel",
+"Bijagós Islands"
+],
+[
+"Roosevelt-Insel",
+"Roosevelt Island"
+],
+[
+"Biscoe-Inseln",
+"Biscoe Islands"
+],
+[
+"Wrangelinsel",
+"Wrangel Island"
+],
+[
+"Schantar-Inseln",
+"Shantar Islands"
+],
+[
+"Neuirland",
+"New Ireland"
+],
+[
+"Belcherinseln",
+"Belcher Islands"
+],
+[
+"Cornwallis Island",
+"Cornwallis Island"
+],
+[
+"Seeland",
+"Zealand"
+],
+[
+"Leyte",
+"Leyte"
+],
+[
+"Ostfalkland",
+"East Falkland"
+],
+[
+"Sangihe-Inseln",
+"Sangihe Islands"
+],
+[
+"Neusibirien",
+"New Siberia"
+],
+[
+"Wellington",
+"Wellington Island"
+],
+[
+"Vanua Levu",
+"Vanua Levu"
+],
+[
+"Friesische Inseln",
+"Frisian Islands"
+],
+[
+"Coats Island",
+"Coats Island"
+],
+[
+"Guadalcanal",
+"Guadalcanal"
+],
+[
+"Prinz-Edward-Insel",
+"Prince Edward Island"
+],
+[
+"Calamian-Inseln",
+"Calamian Islands"
+],
+[
+"Edgeøya",
+"Edgeøya"
+],
+[
+"Bali",
+"Bali"
+],
+[
+"Ljachow-Inseln",
+"Bolshoy Lyakhovsky Island"
+],
+[
+"Siple-Insel",
+"Siple Island"
+],
+[
+"Andros",
+"Andros"
+],
+[
+"Orkney",
+"Orkney Islands"
+],
+[
+"Carney-Insel",
+"Carney Island"
+],
+[
+"Kolgujew",
+"Kolguyev Island"
+],
+[
+"Isabela",
+"Isabela Island"
+],
+[
+"Westfalkland",
+"West Falkland"
+],
+[
+"Lombok",
+"Lombok"
+],
+[
+"Belitung",
+"Billiton"
+],
+[
+"Känguru-Insel",
+"Kangaroo Island"
+],
+[
+"Trinidad",
+"Trinidad"
+],
+[
+"Madura",
+"Madura Island"
+],
+[
+"Sankt-Lorenz-Insel",
+"St. Lawrence Island"
+],
+[
+"Espiritu Santo",
+"Espiritu Santo"
+],
+[
+"Nias",
+"Nias"
+],
+[
+"Unimak Island",
+"Unimak Island"
+],
+[
+"Vesterålen",
+"Vesterålen"
+],
+[
+"Nunivak",
+"Nunivak Island"
+],
+[
+"Malaita",
+"Malaita"
+],
+[
+"Siberut",
+"Siberut"
+],
+[
+"Santa Isabel",
+"Santa Isabel Island"
+],
+[
+"Bohol",
+"Bohol"
+],
+[
+"Adelaide-Insel",
+"Adelaide Island"
+],
+[
+"Mallorca",
+"Mallorca"
+],
+[
+"Chuuk",
+"Chuuk Lagoon"
+],
+[
+"Südgeorgien",
+"South Georgia"
+],
+[
+"Sokotra",
+"Socotra"
+],
+[
+"Long Island",
+"Long Island"
+],
+[
+"Lau-Inseln",
+"Lau Group"
+],
+[
+"Latady-Insel",
+"Latady Island"
+],
+[
+"Waigatsch",
+"Vaygach Island"
+],
+[
+"Mansel Island",
+"Mansel Island"
+],
+[
+"Balleny-Inseln",
+"Balleny Islands"
+],
+[
+"Makira",
+"Makira"
+],
+[
+"Spaatz-Insel",
+"Spaatz Island"
+],
+[
+"Taliabu",
+"Taliabu"
+],
+[
+"Gotland",
+"Gotland"
+],
+[
+"Choiseul",
+"Choiseul Island"
+],
+[
+"Akimiski Island",
+"Akimiski Island"
+],
+[
+"Saaremaa",
+"Saaremaa"
+],
+[
+"Prinz-Georg-Land",
+"Zemlya Georga"
+],
+[
+"Réunion",
+"Réunion"
+],
+[
+"Biak",
+"Biak"
+],
+[
+"Ross-Insel",
+"Ross Island"
+],
+[
+"Wetar",
+"Wetar"
+],
+[
+"Bäreninsel",
+"Batu Islands"
+],
+[
+"Morotai",
+"Morotai"
+],
+[
+"Groote Eylandt",
+"Groote Eylandt"
+],
+[
+"Malakula",
+"Malakula"
+],
+[
+"Paramuschir",
+"Paramushir"
+],
+[
+"Alor",
+"Alor"
+],
+[
+"Teneriffa",
+"Tenerife"
+],
+[
+"Bely",
+"Bely Island"
+],
+[
+"Anvers-Insel",
+"Anvers Island"
+],
+[
+"Aion",
+"Ayon Island"
+],
+[
+"Bioko",
+"Bioko"
+],
+[
+"Maui",
+"Maui"
+],
+[
+"Südliche Orkneyinseln",
+"South Orkney Islands"
+],
+[
+"James-Ross-Insel",
+"James Ross Island"
+],
+[
+"Karaginski",
+"Karaginsky Island"
+],
+[
+"Mauritius",
+"Mauritius Island"
+],
+[
+"Jejudo",
+"Chuk-to"
+],
+[
+"Manus",
+"Manus Island"
+],
+[
+"Bolschoi Begitschew",
+"Bolshoy Begichev Island"
+],
+[
+"Charcot-Insel",
+"Charcot Island"
+],
+[
+"Middle Andaman Island",
+"Middle Andaman"
+],
+[
+"Savaiʻi",
+"Savai'i"
+],
+[
+"Oʻahu",
+"Oahu"
+],
+[
+"Fraser Island",
+"Fraser Island"
+],
+[
+"Natuna Besar",
+"Natuna Besar"
+],
+[
+"Fuerteventura",
+"Fuerteventura"
+],
+[
+"Simeuluë",
+"Simeulue"
+],
+[
+"Graham-Bell-Insel",
+"Graham Bell Island"
+],
+[
+"Lesbos",
+"Lesbos"
+],
+[
+"Stewart Island",
+"Stewart Island / Rakiura"
+],
+[
+"Gran Canaria",
+"Gran Canaria"
+],
+[
+"Sansibar-Archipel",
+"Zanzibar Archipelago"
+],
+[
+"Kauaʻi",
+"Kauai"
+],
+[
+"Urup",
+"Urup"
+],
+[
+"Rhodos",
+"Rhodes"
+],
+[
+"South Andaman Island",
+"South Andaman Island"
+],
+[
+"Farwell-Insel",
+"Farwell Island"
+],
+[
+"Okinawa Hontō",
+"Okinawa Island"
+],
+[
+"King George Island",
+"King George Island"
+],
+[
+"Flinders Island",
+"Flinders Island"
+],
+[
+"Lofoten",
+"Lofoten"
+],
+[
+"Joinville Island",
+"Joinville Island"
+],
+[
+"North Andaman Island",
+"North Andaman Island"
+],
+[
+"Mill-Insel",
+"Mill Island"
+],
+[
+"Beringinsel",
+"Bering Island"
+],
+[
+"Groß Nikobar",
+"Great Nicobar Island"
+],
+[
+"Prinz-Edward-Inseln",
+"Prince Edward Islands"
+],
+[
+"Upolu",
+"Upolu"
+],
+[
+"King Island",
+"King Island"
+],
+[
+"Tahiti",
+"Tahiti"
+],
+[
+"Ljachow-Inseln",
+"Maly Lyakhovsky Island"
+],
+[
+"Mornington Island",
+"Mornington Island"
+],
+[
+"Atka Island",
+"Atka Island"
+],
+[
+"Santa Cruz",
+"Santa Cruz Island"
+],
+[
+"Grande Comore",
+"Grande Comore"
+],
+[
+"Santiago",
+"Santiago"
+],
+[
+"Hearst-Insel",
+"Hearst Island"
+],
+[
+"Brabant-Insel",
+"Brabant Island"
+],
+[
+"Erromango",
+"Erromango"
+],
+[
+"São Tomé",
+"São Tomé Island"
+],
+[
+"Südpagai",
+"South Pagai"
+],
+[
+"Grand Bahama",
+"Grand Bahama"
+],
+[
+"Efate",
+"Efate"
+],
+[
+"Santo Antão",
+"Santo Antão"
+],
+[
+"Amami-Ōshima",
+"Amami Ōshima"
+],
+[
+"Livingston-Insel",
+"Livingston Island"
+],
+[
+"Adak Island",
+"Adak Island"
+],
+[
+"La Palma",
+"La Palma"
+],
+[
+"Molokaʻi",
+"Molokaʻi"
+],
+[
+"Rennell",
+"Rennell Island"
+],
+[
+"Boa Vista",
+"Boa Vista"
+],
+[
+"Ibiza",
+"Ibiza"
+],
+[
+"Fasta Åland",
+"Fasta Åland"
+],
+[
+"Tanna",
+"Tanna"
+],
+[
+"Aucklandinseln",
+"Auckland Islands"
+],
+[
+"Ko Phuket",
+"Phuket"
+],
+[
+"Batu-Inseln",
+"Batu Islands"
+],
+[
+"Kiritimati",
+"Kiritimati"
+],
+[
+"Onekotan",
+"Onekotan"
+],
+[
+"Kadavu",
+"Kadavu Island"
+],
+[
+"Fogo",
+"Fogo"
+],
+[
+"Jan Mayen",
+"Jan Mayen"
+],
+[
+"Heard",
+"Heard Island"
+],
+[
+"Mussau",
+"Mussau Island"
+],
+[
+"Enggano",
+"Enggano Island"
+],
+[
+"Elephant Island",
+"Elephant Island"
+],
+[
+"St.-Matthew-Insel",
+"St. Matthew Island"
+],
+[
+"Nuku Hiva",
+"Nuku Hiva"
+],
+[
+"Schmidt-Insel",
+"Schmidt Island"
+],
+[
+"Uschakow-Insel",
+"Ushakov Island"
+],
+[
+"Inseln des Arktischen Instituts",
+"Arkticheskiy Institut Islands"
+],
+[
+"Lānaʻi",
+"Lanai"
+],
+[
+"Burke Island",
+"Burke Island"
+],
+[
+"São Nicolau",
+"São Nicolau"
+],
+[
+"Wiese-Insel",
+"Vize Island"
+],
+[
+"Kvitøya",
+"Kvitøya"
+],
+[
+"Bäreninsel",
+"Bear Island"
+],
+[
+"Príncipe",
+"Príncipe"
+],
+[
+"Ua Pou",
+"Ua Pu"
+],
+[
+"Niau",
+"Niau"
+],
+[
+"Starbuck",
+"Starbuck Island"
+],
+[
+"Großer Bärensee",
+"Great Bear Lake"
+],
+[
+"Großer Sklavensee",
+"Great Slave Lake"
+],
+[
+"McLeod Bay",
+"McLeod Bay"
+],
+[
+"Winnipegsee",
+"Lake Winnipeg"
+],
+[
+"Eriesee",
+"Lake Erie"
+],
+[
+"Ontariosee",
+"Lake Ontario"
+],
+[
+"St. Clair",
+"Lake Saint Clair"
+],
+[
+"Okeechobeesee",
+"Lake Okeechobee"
+],
+[
+"Nicaraguasee",
+"Lago de Nicaragua"
+],
+[
+"Oberer",
+"Lake Superior"
+],
+[
+"Michigansee",
+"Lake Michigan"
+],
+[
+"Huronsee",
+"Lake Huron"
+],
+[
+"Ladogasee",
+"Lake Ladoga"
+],
+[
+"Balchaschsee",
+"Lake Balkhash"
+],
+[
+"Baikalsee",
+"Lake Baikal"
+],
+[
+"Albertsee",
+"Lake Albert"
+],
+[
+"Malawisee",
+"Lake Malawi"
+],
+[
+"Tanganjikasee",
+"Lake Tanganyika"
+],
+[
+"Victoriasee",
+"Lake Victoria"
+],
+[
+"Tschadsee",
+"Lake Chad"
+],
+[
+"Vänern",
+"Vänern"
+],
+[
+"Onegasee",
+"Lake Onega"
+],
+[
+"Tanasee",
+"Lake Tana"
+],
+[
+"Titicacasee",
+"Lago Titicaca"
+],
+[
+"Lake Eyre North",
+"Lake Eyre North"
+],
+[
+"Großer Salzsee",
+"Great Salt Lake"
+],
+[
+"Merín",
+"Lagoa Mirim"
+],
+[
+"Westlicher Aralsee",
+"South Aral Sea"
+],
+[
+"Nördlicher Aralsee",
+"North Aral Sea"
+]
+]
+}

@@ -15,7 +15,9 @@ Usage: python3 -I scripts/make_clock_data.py <ne_10m_populated_places.geojson> <
 import hashlib
 import json
 import os
+import struct
 import sys
+import time
 import unicodedata
 
 # Places whose TIMEZONE field is empty in Natural Earth. Each is the zone the city itself lies in.
@@ -98,6 +100,183 @@ def screen_name(name):
     return "".join(out)
 
 
+def tzif_transitions(path):
+    """The explicit transitions of a TZif v2+ file (RFC 8536): UTC times and the UTC offset from each on."""
+    with open(path, "rb") as f:
+        data = f.read()
+    if not data.startswith(b"TZif") or data[4:5] == b"\0":
+        raise SystemExit(f"{path}: not a TZif file of version 2 or later")
+
+    def counts(at):
+        return struct.unpack(">6l", data[at + 20:at + 44])  # isut, isstd, leap, time, type, char
+
+    isut, isstd, leap, times, types, chars = counts(0)
+    at = 44 + times * 5 + types * 6 + chars + leap * 8 + isstd + isut  # Past the 32-bit block
+    isut, isstd, leap, times, types, chars = counts(at)
+    at += 44
+    when = struct.unpack(f">{times}q", data[at:at + 8 * times])
+    at += 8 * times
+    index = data[at:at + times]
+    at += times
+    offsets = [struct.unpack(">lBB", data[at + 6 * i:at + 6 * i + 6])[0] for i in range(types)]
+    return list(when), [offsets[i] for i in index]
+
+
+def _days_from_civil(y, m, d):
+    y -= m <= 2
+    era = y // 400
+    yoe = y - era * 400
+    doy = (153 * (m + (-3 if m > 2 else 9)) + 2) // 5 + d - 1
+    doe = yoe * 365 + yoe // 4 - yoe // 100 + doy
+    return era * 146097 + doe - 719468
+
+
+def _parse_posix(rule):
+    """A POSIX TZ string as clock_core.h reads it: (std offset, dst offset or None, start, end), offsets east."""
+    pos = 0
+
+    def name():
+        nonlocal pos
+        if rule[pos] == "<":
+            pos = rule.index(">", pos) + 1
+        else:
+            while pos < len(rule) and rule[pos].isalpha():
+                pos += 1
+
+    def seconds():
+        nonlocal pos
+        sign = 1
+        if rule[pos] in "+-":
+            sign = -1 if rule[pos] == "-" else 1
+            pos += 1
+        parts = [0, 0, 0]
+        for i in range(3):
+            start = pos
+            while pos < len(rule) and rule[pos].isdigit():
+                pos += 1
+            parts[i] = int(rule[start:pos])
+            if i < 2 and pos < len(rule) and rule[pos] == ":":
+                pos += 1
+            else:
+                break
+        return sign * (parts[0] * 3600 + parts[1] * 60 + parts[2])
+
+    def transition():
+        nonlocal pos
+        end = rule.find(",", pos)
+        part = rule[pos:] if end < 0 else rule[pos:end]
+        pos += len(part)
+        date, _, time = part.partition("/")
+        at = 7200
+        if time:
+            sign = -1 if time.startswith("-") else 1
+            fields = [int(x) for x in time.lstrip("+-").split(":")] + [0, 0]
+            at = sign * (fields[0] * 3600 + fields[1] * 60 + fields[2])
+        return date, at
+
+    name()
+    std = -seconds()
+    if pos >= len(rule):
+        return std, None, None, None
+    name()
+    dst = std + 3600
+    if rule[pos] != ",":
+        dst = -seconds()
+    pos += 1
+    start = transition()
+    pos += 1
+    end = transition()
+    return std, dst, start, end
+
+
+def _transition_day(date, year):
+    if date.startswith("M"):
+        month, week, weekday = (int(x) for x in date[1:].split("."))
+        first = _days_from_civil(year, month, 1)
+        day = first + (weekday - (first + 4) % 7) % 7 + 7 * (week - 1)
+        length = [31, 28 + (year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)), 31, 30, 31, 30, 31, 31, 30, 31,
+                  30, 31][month - 1]
+        while day >= first + length:
+            day -= 7
+        return day
+    if date.startswith("J"):
+        n = int(date[1:])
+        leap = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+        return _days_from_civil(year, 1, 1) + n - 1 + (1 if leap and n >= 60 else 0)
+    return _days_from_civil(year, 1, 1) + int(date)
+
+
+def posix_changes(rule, first_year, last_year):
+    """The UTC times at which a POSIX rule changes the offset, and the offset from then on."""
+    std, dst, start, end = _parse_posix(rule)
+    if dst is None:
+        return []
+    changes = []
+    for year in range(first_year, last_year + 1):
+        changes.append((_transition_day(start[0], year) * 86400 + start[1] - std, dst))
+        changes.append((_transition_day(end[0], year) * 86400 + end[1] - dst, std))
+    return sorted(changes)
+
+
+def _offset_at(changes, before, t):
+    offset = before
+    for when, after in changes:
+        if when > t:
+            break
+        offset = after
+    return offset
+
+
+EXCEPTION_YEARS = 6  # How far ahead exceptions are kept: the data is made again long before that
+
+
+def zone_until(zoneinfo, zone, rule, start):
+    """Where the tz database's own transitions in the next EXCEPTION_YEARS after `start` differ from what the
+    zone's POSIX rule says (as Cuba keeping summer time through the winter of 2026/27): the offsets the stick
+    uses instead, as "until:offset;until:offset" (UTC seconds, seconds east). Before each `until` its offset
+    holds; from the last one on, the rule. Empty when the rule is right all that time.
+    """
+    when, offsets = tzif_transitions(os.path.join(zoneinfo, zone))
+    horizon = start + EXCEPTION_YEARS * 365 * 86400
+    if not when or when[-1] <= start:
+        return ""
+    explicit = list(zip(when, offsets))
+    last = min(when[-1], horizon)
+    years = range(time.gmtime(start).tm_year - 1, time.gmtime(last).tm_year + 2)
+    rule_changes = posix_changes(rule, years[0], years[-1])
+    std = _parse_posix(rule)[0]
+    breaks = sorted({start} | {t for t, _ in explicit if start < t <= last} | {t for t, _ in rule_changes if start < t <= last})
+    rule_before = _offset_at(rule_changes, std, start - 400 * 86400)
+    tz_before = offsets[0]
+    wrong = [t for t in breaks if _offset_at(explicit, tz_before, t) != _offset_at(rule_changes, rule_before, t)]
+    if not wrong:
+        return ""
+    # From the first break after the last wrong one, the rule is right for good
+    right_from = min(t for t in breaks + [last + 1] if t > wrong[-1])
+    segments, at = [], start
+    for t, _ in explicit:
+        if at < t < right_from:
+            segments.append((t, _offset_at(explicit, tz_before, at)))
+            at = t
+    segments.append((right_from, _offset_at(explicit, tz_before, at)))
+    if len(segments) > 4:
+        raise SystemExit(f"{zone}: {len(segments)} exceptions to its rule, the stick keeps 4")
+    return ";".join(f"{u}:{o}" for u, o in segments)
+
+
+def zone_note(start):
+    return f", exceptions from {time.strftime('%Y-%m-%d', time.gmtime(start))}"
+
+
+def zone_rows(zones):
+    """CLOCK_ZONES' rows: {iana, posix} or, with exceptions to the rule, {iana, posix, until}"""
+    rows = []
+    for iana, posix, until in zones:
+        extra = f", {c_string(until)}" if until else ""
+        rows.append(f"    {{{c_string(iana)}, {c_string(posix)}{extra}}},")
+    return rows
+
+
 def posix_rule(zoneinfo, zone):
     path = os.path.join(zoneinfo, zone)
     with open(path, "rb") as f:
@@ -145,6 +324,7 @@ def main():
     digest = hashlib.sha256(raw).hexdigest()
     version_path = os.path.join(zoneinfo, "+VERSION")
     tz_version = open(version_path).read().strip() if os.path.exists(version_path) else "unknown"
+    start = int(time.time()) // 86400 * 86400  # Exceptions to a zone's rule count from today
     places = [feat["properties"] for feat in json.loads(raw)["features"]]
     chosen = [p for p in places if keep(p)]
     chosen.sort(key=lambda p: (-(p["POP_MAX"] or 0), p["NAME"]))
@@ -158,7 +338,8 @@ def main():
             raise SystemExit(f"{p['NAME']} ({p['ISO_A2']}): no time zone, add it to ZONE_FIXES")
         if zone not in zone_index:
             zone_index[zone] = len(zones)
-            zones.append((zone, posix_rule(zoneinfo, zone)))
+            rule = posix_rule(zoneinfo, zone)
+            zones.append((zone, rule, zone_until(zoneinfo, zone, rule, start)))
         en = screen_name(p["NAME_EN"] or p["NAME"])
         de = screen_name(p["NAME_DE"] or en)
         lat, lon = float(p["LATITUDE"]), float(p["LONGITUDE"])
@@ -201,7 +382,7 @@ def main():
     lines = []
     lines.append("// Generated by scripts/make_clock_data.py. Do not edit by hand.")
     lines.append(f"// Cities: Natural Earth ne_10m_populated_places (public domain), sha256 {digest}")
-    lines.append(f"// Time zones: IANA tz database {tz_version}, POSIX rules from the TZif files")
+    lines.append(f"// Time zones: IANA tz database {tz_version}, POSIX rules from the TZif files" + zone_note(start))
     lines.append(f"// {len(cities)} cities, {len(zones)} zones, {len(keys)} names")
     lines.append("#pragma once")
     lines.append("#include <stdint.h>")
@@ -209,6 +390,7 @@ def main():
     lines.append("struct ClockZone {")
     lines.append("  const char* iana;   // e.g. Europe/Zurich")
     lines.append("  const char* posix;  // TZ rule with daylight saving time, e.g. CET-1CEST,M3.5.0,M10.5.0/3")
+    lines.append("  const char* until;  // Fixed offsets before the rule, see clockParseUntil: usually \"\"")
     lines.append("};")
     lines.append("struct ClockCity {")
     lines.append("  const char* en;  // Name in English, UTF-8")
@@ -229,8 +411,7 @@ def main():
     lines.append("};")
     lines.append("")
     lines.append("static const ClockZone CLOCK_ZONES[] = {")
-    for iana, posix in zones:
-        lines.append(f"    {{{c_string(iana)}, {c_string(posix)}}},")
+    lines += zone_rows(zones)
     lines.append("};")
     lines.append(f"static const int CLOCK_ZONE_COUNT = {len(zones)};")
     lines.append("")

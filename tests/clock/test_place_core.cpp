@@ -59,6 +59,30 @@ static void testReplies() {
   CHECK(clockUtcOffset(p.rule, utcOf(2026, 7, 1, 12, 0)) == -4 * 3600);
 
   CHECK(!strcmp(p.region, "TN") && !strcmp(p.zone, "America/New_York") && !strcmp(p.posix, "EST5EDT,M3.2.0,M11.1.0"));
+  CHECK(p.until[0] == 0 && p.rule.fixedCount == 0);
+  // A zone with an exception to its rule (Havana, tz 2026f)
+  const std::string havana =
+      "{\"found\":true,\"name\":\"Havana\",\"region\":\"CU\",\"country\":\"CU\",\"lat\":23.133,\"lon\":-82.383,"
+      "\"zone\":\"America/Havana\",\"rule\":\"CST5CDT,M3.2.0/0,M11.1.0/1\",\"source\":\"GeoNames\",\"until\":\"1805000400:-14400\"}";
+  CHECK(parse(havana, p) == CLOCK_PLACE_FOUND && !strcmp(p.until, "1805000400:-14400") && p.rule.fixedCount == 1);
+  CHECK(clockUtcOffset(p.rule, utcOf(2026, 12, 1, 12, 0)) == -4 * 3600);
+  {
+    ClockHomeRecord r;
+    ClockPlace back;
+    clockHomeFromPlace(p, "havana", 0, r);
+    CHECK(clockHomeToPlace(r, sizeof(r), back) && back.rule.fixedCount == 1 && !strcmp(back.until, "1805000400:-14400"));
+    strcpy(r.until, "nonsense");
+    CHECK(!clockHomeToPlace(r, sizeof(r), back));
+  }
+  {
+    std::string bad = havana;
+    bad.replace(bad.find("1805000400:-14400"), 17, "soon");
+    CHECK(parse(bad, p) == CLOCK_PLACE_BAD);
+    bad = havana;
+    bad.replace(bad.find("1805000400:-14400"), 17, std::string(60, '1'));
+    CHECK(parse(bad, p) == CLOCK_PLACE_BAD);
+  }
+  CHECK(parse(GOOD, p) == CLOCK_PLACE_FOUND);
 
   CHECK(parse("{\"found\":false}", p) == CLOCK_PLACE_UNKNOWN);
 
@@ -138,9 +162,12 @@ static void testServerZones(const char* path) {
   while (std::getline(file, line)) {
     const size_t tab = line.find('\t');
     CHECK(tab != std::string::npos);
-    const std::string iana = line.substr(0, tab), posix = line.substr(tab + 1);
+    const std::string iana = line.substr(0, tab), rest = line.substr(tab + 1);
+    const size_t tab2 = rest.find('\t');
+    const std::string posix = rest.substr(0, tab2), until = tab2 == std::string::npos ? "" : rest.substr(tab2 + 1);
+    CHECK(until.size() < 48);
     ClockRule r;
-    const bool parsed = clockParseRule(posix.c_str(), r);
+    const bool parsed = clockParseRule(posix.c_str(), r) && clockParseUntil(until.c_str(), r);
     CHECK(parsed);
     CHECK(posix.size() < 64);
     if (!parsed) {

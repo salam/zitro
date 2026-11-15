@@ -46,8 +46,10 @@ function locate_place(string $dir, string $zonesPath, int $number): ?array {
     $zones = file($zonesPath, FILE_IGNORE_NEW_LINES);
     $zone = $zones === false ? null : ($zones[$p['zone']] ?? null);
     if ($zone === null || $p['name'] === '') return null;
-    [$iana, $rule] = explode("\t", $zone);
-    return [
+    $columns = explode("\t", $zone);
+    [$iana, $rule] = $columns;
+    $until = $columns[2] ?? '';  // Fixed offsets before the rule (clockParseUntil), for a few zones
+    $place = [
         'found' => true,
         'name' => $p['name'],
         'region' => $p['region'],
@@ -58,4 +60,6 @@ function locate_place(string $dir, string $zonesPath, int $number): ?array {
         'rule' => $rule,
         'source' => 'DB-IP',
     ];
+    if ($until !== '') $place['until'] = $until;
+    return $place;
 }

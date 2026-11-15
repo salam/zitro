@@ -47,8 +47,10 @@ function place_find(string $dir, string $name, string $hint = ''): ?array {
     $zones = file($dir . '/zones.tsv', FILE_IGNORE_NEW_LINES);
     $zone = $zones === false ? null : ($zones[(int)$hit[6]] ?? null);
     if ($zone === null) return null;
-    [$iana, $rule] = explode("\t", $zone);
-    return [
+    $columns = explode("\t", $zone);
+    [$iana, $rule] = $columns;
+    $until = $columns[2] ?? '';  // Fixed offsets before the rule (clockParseUntil), for a few zones
+    $place = [
         'found' => true,
         'name' => $hit[1],
         'region' => $hit[2] === 'US' ? $hit[3] : $hit[2],  // Only US state codes say something everywhere
@@ -59,4 +61,6 @@ function place_find(string $dir, string $name, string $hint = ''): ?array {
         'rule' => $rule,
         'source' => 'GeoNames',
     ];
+    if ($until !== '') $place['until'] = $until;
+    return $place;
 }

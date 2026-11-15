@@ -65,11 +65,39 @@ static void testRules() {
 }
 
 // Every zone in the table against this computer's tz database, every 3 hours for four years
+// Fixed offsets before the rule: Cuba kept summer time through the winter of 2026/27
+static void testUntil() {
+  ClockRule r;
+  CHECK(clockParseRule("CST5CDT,M3.2.0/0,M11.1.0/1", r));
+  CHECK(clockUtcOffset(r, utcOf(2026, 12, 1, 12, 0)) == -5 * 3600);  // The rule alone: winter time
+  CHECK(clockParseUntil("1805000400:-14400", r) && r.fixedCount == 1);
+  CHECK(clockUtcOffset(r, utcOf(2026, 12, 1, 12, 0)) == -4 * 3600);  // Still summer time
+  CHECK(clockUtcOffset(r, 1805000400 - 1) == -4 * 3600);
+  CHECK(clockUtcOffset(r, 1805000400) == -4 * 3600);                 // From here the rule: its own summer time
+  CHECK(clockUtcOffset(r, utcOf(2027, 12, 1, 12, 0)) == -5 * 3600);
+  char lib[16];
+  CHECK(clockLibraryFixed(r, utcOf(2026, 12, 1, 12, 0), lib, sizeof(lib)) && strcmp(lib, "LST4") == 0);
+  CHECK(!clockLibraryFixed(r, 1805000400, lib, sizeof(lib)));
+  // Several, half hours, east of UTC
+  CHECK(clockParseUntil("1800000000:19800;1810000000:-12600", r) && r.fixedCount == 2);
+  CHECK(clockUtcOffset(r, 1799999999) == 19800 && clockUtcOffset(r, 1800000000) == -12600);
+  CHECK(clockLibraryFixed(r, 1700000000, lib, sizeof(lib)) && strcmp(lib, "LST-5:30") == 0);
+  CHECK(clockLibraryFixed(r, 1805000000, lib, sizeof(lib)) && strcmp(lib, "LST3:30") == 0);
+  // Empty is none; anything else odd is refused
+  CHECK(clockParseUntil("", r) && r.fixedCount == 0);
+  CHECK(clockParseUntil(nullptr, r) && r.fixedCount == 0);
+  for (const char* bad : {"x", "1805000400", "1805000400:", ":-14400", "1805000400:-14400;", "1805000400:-14400x",
+                          "1805000400:-90000", "1805000400:-14400;1800000000:0", "0:3600", "-5:3600",
+                          "1:0;2:0;3:0;4:0;5:0"}) {
+    CHECK(!clockParseUntil(bad, r));
+  }
+}
+
 static void testZonesAgainstSystem() {
   int compared = 0, wrong = 0;
   for (int z = 0; z < CLOCK_ZONE_COUNT; z++) {
     ClockRule r;
-    CHECK(clockParseRule(CLOCK_ZONES[z].posix, r));
+    CHECK(clockZoneRule(z, r));
     char lib[64];
     CHECK(clockLibraryRule(CLOCK_ZONES[z].posix, lib, sizeof(lib)));
     std::string tz = std::string(":") + CLOCK_ZONES[z].iana;
@@ -198,6 +226,7 @@ static void testAnswer() {
 int main() {
   testCalendar();
   testRules();
+  testUntil();
   testZonesAgainstSystem();
   testNames();
   testSun();

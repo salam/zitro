@@ -37,6 +37,7 @@ inline int speakerVolume(int volume) {
 
 // On the StickS3 the microphone and the speaker share one codec and its I2S pins, so only one
 // of them runs at a time. The Plus2 has separate parts and keeps its speaker running.
+// micStop() leaves the StickS3's speaker off: the next sound starts it (speakerOffWhenQuiet).
 inline bool micStart() {
 #if ZITRO_STICKS3
   M5.Speaker.end();
@@ -46,8 +47,26 @@ inline bool micStart() {
 
 inline void micStop() {
   M5.Mic.end();
+}
+
+// The StickS3 hummed quietly whenever it was on (reported 2026-11-14), and its speaker never rested:
+// M5Unified switches the amplifier on (power chip GPIO3) in M5.Speaker.begin() and off only in
+// M5.Speaker.end(), and keeps the codec's I2S clocks running between sounds. So on the StickS3 the
+// speaker runs only around a sound. Call this every loop: it stops the speaker once nothing has
+// sounded for SPEAKER_IDLE_OFF_MS. Each sound starts it again, as the sound sites call
+// M5.Speaker.begin() and M5Unified 0.2.29 starts it by itself on playRaw() and tone() too. The wait
+// keeps it on between a song's notes and Geiger clicks. The Plus2's speaker is a buzzer that is
+// silent at rest, so it keeps running.
+const unsigned long SPEAKER_IDLE_OFF_MS = 3000;
+
+inline void speakerOffWhenQuiet() {
 #if ZITRO_STICKS3
-  M5.Speaker.begin();
+  static unsigned long quietSince = 0;
+  if (!M5.Speaker.isRunning() || M5.Speaker.isPlaying()) {
+    quietSince = millis();
+    return;
+  }
+  if (millis() - quietSince >= SPEAKER_IDLE_OFF_MS) M5.Speaker.end();
 #endif
 }
 

@@ -152,6 +152,7 @@ The StickS3 has a front button (A) and a side button (B). Its power button only 
 - Holding Button B works as on the Plus2. Where holding B has no job, it does what holding C does: in music, back to the text.
 - Coloured note heads in music (a double click of Button B on the Plus2) can't be switched on the StickS3, because a double click there is Button C.
 - The speaker volume stops at 75 %: louder can restart the StickS3 when it runs on battery.
+- The Grove and Hat ports get no power from the StickS3: the converter that feeds them hummed quietly the whole time, and Zitro uses neither.
 
 ### Gestures
 - Shake: a surprise, no voice playback. Half the time a fact, otherwise a scene, a shape, a star map or the time in a big city, all built in, so it works without WiFi. Switch it off in the settings ("Schuetteln aus").

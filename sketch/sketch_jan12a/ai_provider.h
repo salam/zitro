@@ -97,11 +97,22 @@ struct SttEndpoint {
   String product;  // Infomaniak AI Tools product ID
 };
 
+// Where read-aloud goes: Azure Speech in the region the family picked (setup page, "ttsProv" = "azure"),
+// or the OpenAI-style endpoint above. Azure takes SSML and answers with the same raw PCM, see tts_core.h.
+struct TtsEndpoint {
+  bool available;
+  bool azure;
+  String host;
+  String key;
+  String voice;    // Azure: the family's voice for answers, empty for the default
+};
+
 // Public API (implemented in ai_provider.ino)
 String aiProvider();
 bool aiChatConfigured();
 AudioEndpoint audioEndpoint();
 SttEndpoint sttEndpoint();
+TtsEndpoint ttsEndpoint();
 ChatResult aiChat(const String& systemPrompt, const String& userText, int maxTokens, bool withMemory, bool jsonMode);
 bool memoryEnabled();
 void memoryAdd(const String& question, const String& answer);

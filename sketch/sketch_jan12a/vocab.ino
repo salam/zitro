@@ -900,7 +900,7 @@ static void vocabSay(const String& text, bool english) {
   const int volume = p.getInt("volume", 210);
   p.end();
   if (volume <= 0) return;
-  speakTextStyled(text, english ? VOCAB_SAY_ENGLISH : nullptr);
+  speakTextStyled(text, english ? VOCAB_SAY_ENGLISH : nullptr, english ? TTS_STYLE_ENGLISH : TTS_STYLE_GERMAN);
 }
 
 static void vocabAnswer() {

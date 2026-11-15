@@ -12,8 +12,16 @@ Zitro can answer with different AI providers. Pick one on the setup page under *
 | **Infomaniak AI (Switzerland)** | API token (ai-tools scope), AI Tools product ID + OpenAI API key (not needed for voice input if you tick the box below) | Suggested model `qwen3`. Check the exact names your product offers in the Infomaniak Manager (or `GET /2/ai/{product}/openai/v1/models`). Tick **Transcribe my voice at Infomaniak too (Switzerland)** and your voice is transcribed in Switzerland as well. Read-aloud and pictures still go to OpenAI. |
 | **Other (OpenAI-compatible)** | Base URL (https), API key, model + OpenAI API key | For example Mistral, Groq or OpenRouter. |
 
-- Voice input (speech-to-text), read-aloud and picture creation run on OpenAI, or on the Zitro relay for subscribers. Claude and most compatible providers can't hear or speak, so they need an OpenAI key as well. Without it, Zitro shows "Voice needs an OpenAI or Zitro key".
+- Voice input (speech-to-text), read-aloud and picture creation run on OpenAI, or on the Zitro relay for subscribers, unless you pick other services below. Claude and most compatible providers can't hear or speak, so they need an OpenAI key as well. Without it, Zitro shows "Voice needs an OpenAI or Zitro key".
 - With Infomaniak you can keep your child's voice in Switzerland too: tick **Transcribe my voice at Infomaniak too (Switzerland)** on the AI tab. Zitro then uploads the recording to Infomaniak's Whisper and waits a second or two for the text. Read-aloud and pictures still need an OpenAI key; without one, Zitro answers in writing only. This option is new and hasn't been tried with a real Infomaniak account yet.
+- **Read-aloud from Switzerland (Microsoft Azure):** under **Read-aloud** on the AI tab you can pick **Microsoft Azure Speech (Switzerland)** instead of OpenAI, with any AI that answers. OpenAI switches off the voices Zitro uses today on 6 January 2027, so Azure keeps Zitro talking after that.
+  1. Sign in at [portal.azure.com](https://portal.azure.com) (a Microsoft account with a payment card).
+  2. Create a **Speech** resource in the region **Switzerland North** (Zurich). The standard tier costs about $15 per million characters, roughly 0.2 cents for a 20-word answer; Azure also has a free tier with a monthly allowance.
+  3. Copy **Key 1** from *Keys and Endpoint* into **Azure Speech key**. Leave **Region** at `switzerlandnorth` unless you created the resource elsewhere.
+  4. **Voice**: the default, `de-DE-SeraphinaMultilingualNeural`, reads German, English and other languages and hears the language from the answer. `de-CH-LeniNeural` or `de-CH-JanNeural` speak with a Swiss accent but read only German.
+  - English practice (vocabulary trainer, shop game) always uses English voices with a British accent, a different one for each person in the shop.
+  - With Infomaniak answering, its box for voice input ticked and Azure reading aloud, only pictures still need OpenAI.
+  - If the Azure key is missing, Zitro answers in writing; the setup page tells you what's missing. This option is new and hasn't been tried with a real Azure account yet.
 - Keys are stored only on the device. The setup page never shows them again, only the last 4 characters. Leave a key field empty to keep the stored key.
 - Models: you can type any model name. The suggestions list the current models.
 

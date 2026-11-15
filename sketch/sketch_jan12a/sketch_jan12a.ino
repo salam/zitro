@@ -41,6 +41,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
 #include "stt_core.h"    // Speech-to-text at Infomaniak: batch id, then poll the result
 #include "care_core.h"   // Worries: send the child to people, helpline by home city
+#include "tts_core.h"    // Read-aloud at Azure Speech: voices, SSML
 #include <SPIFFS.h>
 
 // Optional: Enable JPEG conversion for GIF/PNG images when printing
@@ -518,8 +519,9 @@ void vocabRedraw();
 void vocabSerial(const String& line);
 bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
                        String& text, String& error);
-bool speakTextStyled(const String &text, const char* instructions);
-bool speakTextVoiced(const String &text, const char* instructions, const char* voice);
+bool speakTextStyled(const String &text, const char* instructions, TtsStyle style = TTS_STYLE_ANSWER);
+bool speakTextVoiced(const String &text, const char* instructions, const char* voice,
+                     TtsStyle style = TTS_STYLE_ANSWER);
 bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, int& samples, bool& cancelled,
                   void (*progress)(int secondsDone, int seconds));
 bool shopActive();
@@ -748,6 +750,27 @@ const char* setupPage = R"rawliteral(
           <div class="info"><a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a></div>
         </div>
 
+        <div id="ttsBox">
+          <label for="ttsProv" id="labelTtsProv">Read-aloud</label>
+          <select id="ttsProv">
+            <option value="openai" id="optTtsOpenai">OpenAI (or the Zitro key)</option>
+            <option value="azure" id="optTtsAzure">Microsoft Azure Speech (Switzerland)</option>
+          </select>
+          <div id="azureFields" class="hidden">
+            <label for="azKey" id="labelAzKey">Azure Speech key</label>
+            <input type="password" id="azKey" placeholder="Key 1 of the Speech resource" autocomplete="off">
+            <label for="azRegion" id="labelAzRegion">Region</label>
+            <input id="azRegion" placeholder="switzerlandnorth">
+            <label for="azVoice" id="labelAzVoice">Voice</label>
+            <input id="azVoice" list="azVoices" placeholder="de-DE-SeraphinaMultilingualNeural">
+            <datalist id="azVoices">
+              <option value="de-DE-SeraphinaMultilingualNeural"><option value="de-DE-FlorianMultilingualNeural"><option value="de-CH-LeniNeural"><option value="de-CH-JanNeural">
+            </datalist>
+            <div class="info" id="azInfo">Azure reads the answers aloud in the region you enter: switzerlandnorth is Zurich. Create a Speech resource there in the Azure portal and paste its Key 1. The voice reads German, English and other languages; de-CH-LeniNeural has a Swiss accent but reads only German.</div>
+            <div class="info"><a href="https://portal.azure.com" target="_blank">portal.azure.com</a> → Speech</div>
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-accent" id="saveAiBtn">Save AI settings</button>
       </form>
     </div>
@@ -819,8 +842,8 @@ const char* setupPage = R"rawliteral(
     var currentLang = 'EN';
     var firstRun = false;
     var BOOL_KEYS = ['memory','searchImg','useWolfram','localQuotes','parentLock','shakeRandom','tripleAudio','autoAudio','moveZoom','moveToggle'];
-    var SECRET_KEYS = ['apiKey','claudeKey','ikKey','customKey','zitroKey'];
-    var TEXT_KEYS = ['oaModel','claudeModel','ikModel','ikProduct','customUrl','customModel'];
+    var SECRET_KEYS = ['apiKey','claudeKey','ikKey','customKey','zitroKey','azKey'];
+    var TEXT_KEYS = ['oaModel','claudeModel','ikModel','ikProduct','customUrl','customModel','azRegion','azVoice'];
 
     var t = {
       EN: {
@@ -844,6 +867,14 @@ const char* setupPage = R"rawliteral(
         saveAiBtn: 'Save AI settings', keySaved: 'saved', keyKeep: 'Saved key {k} - leave empty to keep',
         aiReady: 'Ready: answers and voice are set up.', aiNoSpeech: 'Answers are set up, but voice needs an OpenAI key.',
         aiNoVoiceOut: 'Ready: answers and voice input are set up. Read-aloud and pictures need an OpenAI key.',
+        aiNoPictures: 'Ready: answers, voice input and read-aloud are set up. Pictures need an OpenAI key.',
+        aiNoAzure: 'Ready: answers and voice input are set up. Read-aloud needs the Azure Speech key and region.',
+        labelTtsProv: 'Read-aloud', optTtsOpenai: 'OpenAI (or the Zitro key)', optTtsAzure: 'Microsoft Azure Speech (Switzerland)',
+        labelAzKey: 'Azure Speech key', labelAzRegion: 'Region', labelAzVoice: 'Voice',
+        azInfo: 'Azure reads the answers aloud in the region you enter: switzerlandnorth is Zurich. Create a Speech resource there in the Azure portal and paste its Key 1. The voice reads German, English and other languages; de-CH-LeniNeural has a Swiss accent but reads only German.',
+        speechInfoAz: 'Needed for voice input and pictures.',
+        speechInfoOtherAz: 'This provider cannot hear, so voice input and pictures still use OpenAI.',
+        speechInfoIkAz: 'Your voice is transcribed by Infomaniak in Switzerland, and Azure reads the answers aloud. Only pictures still use OpenAI: without an OpenAI key, Zitro makes no pictures.',
         deviceSettingsTitle: 'Device settings',
         labelMemory: 'Remember the last 10 minutes (follow-up questions)',
         labelLanguage: 'Language', labelHomeCity: 'Home city (time zone)', cityUnknown: 'Please pick a city from the list.', labelRecordSec: 'Recording duration (seconds)', labelSampleRate: 'Audio quality',
@@ -883,6 +914,14 @@ const char* setupPage = R"rawliteral(
         saveAiBtn: 'KI-Einstellungen speichern', keySaved: 'gespeichert', keyKeep: 'Gespeicherter Schlüssel {k} - leer lassen zum Behalten',
         aiReady: 'Bereit: Antworten und Sprache sind eingerichtet.', aiNoSpeech: 'Antworten sind eingerichtet, Sprache braucht einen OpenAI-Schlüssel.',
         aiNoVoiceOut: 'Bereit: Antworten und Spracheingabe sind eingerichtet. Vorlesen und Bilder brauchen einen OpenAI-Schlüssel.',
+        aiNoPictures: 'Bereit: Antworten, Spracheingabe und Vorlesen sind eingerichtet. Bilder brauchen einen OpenAI-Schlüssel.',
+        aiNoAzure: 'Bereit: Antworten und Spracheingabe sind eingerichtet. Vorlesen braucht den Azure-Speech-Schlüssel und die Region.',
+        labelTtsProv: 'Vorlesen', optTtsOpenai: 'OpenAI (oder der Zitro-Schlüssel)', optTtsAzure: 'Microsoft Azure Speech (Schweiz)',
+        labelAzKey: 'Azure-Speech-Schlüssel', labelAzRegion: 'Region', labelAzVoice: 'Stimme',
+        azInfo: 'Azure liest die Antworten in der eingetragenen Region vor: switzerlandnorth ist Zürich. Dort im Azure-Portal eine Speech-Ressource anlegen und deren Key 1 einfügen. Die Stimme liest Deutsch, Englisch und andere Sprachen; de-CH-LeniNeural spricht mit Schweizer Akzent, aber nur Deutsch.',
+        speechInfoAz: 'Für Spracheingabe und Bilder.',
+        speechInfoOtherAz: 'Dieser Anbieter kann nicht hören. Spracheingabe und Bilder laufen weiter über OpenAI.',
+        speechInfoIkAz: 'Deine Stimme wird bei Infomaniak in der Schweiz in Text umgewandelt, Azure liest die Antworten vor. Nur Bilder laufen weiter über OpenAI: ohne OpenAI-Schlüssel malt Zitro keine Bilder.',
         deviceSettingsTitle: 'Geräteeinstellungen',
         labelMemory: 'Die letzten 10 Minuten merken (Folgefragen)',
         labelLanguage: 'Sprache', labelHomeCity: 'Wohnort (Zeitzone)', cityUnknown: 'Bitte eine Stadt aus der Liste wählen.', labelRecordSec: 'Aufnahmedauer (Sekunden)', labelSampleRate: 'Audioqualität',
@@ -939,8 +978,11 @@ const char* setupPage = R"rawliteral(
       var tr = t[currentLang];
       $('openaiKeyBox').classList.toggle('hidden', p === 'zitro');
       $('labelApiKey').textContent = p === 'openai' ? tr.labelApiKey : tr.labelApiKeySpeech;
-      $('speechInfo').textContent = p === 'openai' ? tr.speechInfo
-        : (p === 'infomaniak' && $('ikSpeech').checked ? tr.speechInfoIk : tr.speechInfoOther);
+      var az = $('ttsProv').value === 'azure';
+      $('azureFields').classList.toggle('hidden', !az);
+      $('speechInfo').textContent = p === 'openai' ? (az ? tr.speechInfoAz : tr.speechInfo)
+        : (p === 'infomaniak' && $('ikSpeech').checked ? (az ? tr.speechInfoIkAz : tr.speechInfoIk)
+          : (az ? tr.speechInfoOtherAz : tr.speechInfoOther));
     };
 
     var startTutorial = function() {
@@ -978,11 +1020,14 @@ const char* setupPage = R"rawliteral(
           $('deepSleep').value = (data.deepSleep || 180000) / 1000;
           BOOL_KEYS.forEach(function(k) { if (k in data) $(k).checked = data[k] === true; });
           $('ikSpeech').checked = data.ikSpeech === true;
+          $('ttsProv').value = data.ttsProv === 'azure' ? 'azure' : 'openai';
           updateProviderFields();
 
           var note = $('aiReadyNote');
           if (data.aiReady) {
-            note.textContent = !data.speechReady ? tr.aiNoSpeech : (data.voiceOutReady === false ? tr.aiNoVoiceOut : tr.aiReady);
+            note.textContent = !data.speechReady ? tr.aiNoSpeech
+              : (data.readAloudReady === false ? (data.ttsProv === 'azure' ? tr.aiNoAzure : tr.aiNoVoiceOut)
+                : (data.picturesReady === false ? tr.aiNoPictures : tr.aiReady));
             note.classList.remove('hidden');
             note.classList.toggle('ok', !!data.speechReady);
           }
@@ -996,6 +1041,7 @@ const char* setupPage = R"rawliteral(
 
     $('provider').addEventListener('change', updateProviderFields);
     $('ikSpeech').addEventListener('change', updateProviderFields);
+    $('ttsProv').addEventListener('change', updateProviderFields);
 
     $('aiForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -1004,6 +1050,7 @@ const char* setupPage = R"rawliteral(
       params.append('provider', p);
       TEXT_KEYS.forEach(function(k) { params.append(k, $(k).value.trim()); });
       params.append('ikSpeech', $('ikSpeech').checked ? '1' : '0');
+      params.append('ttsProv', $('ttsProv').value);
       SECRET_KEYS.forEach(function(k) { if ($(k).value.trim()) params.append(k, $(k).value.trim()); });
       var mainKey = {zitro:'zitroKey', openai:'apiKey', anthropic:'claudeKey', infomaniak:'ikKey', custom:'customKey'}[p];
       if (firstRun && !$(mainKey).value.trim()) { alert(t[currentLang].needKey); return; }
@@ -1939,9 +1986,10 @@ void handleSave() {
 }
 
 // Secret API keys stored in Preferences ("settings" namespace). Never sent back to the browser.
-static const char* const SECRET_SETTING_KEYS[] = {"apiKey", "claudeKey", "ikKey", "customKey", "zitroKey"};
+static const char* const SECRET_SETTING_KEYS[] = {"apiKey", "claudeKey", "ikKey", "customKey", "zitroKey", "azKey"};
 // Plain-text AI settings editable on the setup page
-static const char* const AI_TEXT_SETTING_KEYS[] = {"oaModel", "claudeModel", "ikModel", "ikProduct", "customUrl", "customModel"};
+static const char* const AI_TEXT_SETTING_KEYS[] = {"oaModel", "claudeModel", "ikModel", "ikProduct", "customUrl", "customModel",
+                                                   "azRegion", "azVoice"};
 
 void handleGetSettings() {
   Serial.println("Serving settings JSON");
@@ -1962,6 +2010,7 @@ void handleGetSettings() {
     doc[key] = settingsPrefs.getString(key, "");
   }
   doc["ikSpeech"] = settingsPrefs.getBool("ikSpeech", false);
+  doc["ttsProv"] = settingsPrefs.getString("ttsProv", "openai");
   // Only reveal whether a key exists plus its last 4 characters
   for (const char* key : SECRET_SETTING_KEYS) {
     String secret = settingsPrefs.getString(key, "");
@@ -1971,7 +2020,8 @@ void handleGetSettings() {
 
   doc["aiReady"] = aiChatConfigured();
   doc["speechReady"] = sttEndpoint().available;       // voice input
-  doc["voiceOutReady"] = audioEndpoint().available;   // read-aloud and pictures
+  doc["readAloudReady"] = ttsEndpoint().available;
+  doc["picturesReady"] = audioEndpoint().available;
 
   String json;
   serializeJson(doc, json);
@@ -2045,7 +2095,19 @@ void handleSaveSettings() {
     String value = server.arg(key);
     value.trim();
     if (strcmp(key, "customUrl") == 0 && value.length() > 0 && !value.startsWith("https://")) continue;
+    // The Azure region goes into a host name, the voice into SSML
+    if (strcmp(key, "azRegion") == 0) {
+      value.toLowerCase();
+      value.replace(" ", "");
+      if (value.length() > 0 && !ttsValidAzureRegion(value.c_str())) continue;
+    }
+    if (strcmp(key, "azVoice") == 0 && value.length() > 0 && !ttsValidAzureVoice(value.c_str())) continue;
     if (value.length() <= 200) settingsPrefs.putString(key, value);
+  }
+  // Read-aloud at OpenAI (or the Zitro relay) or at Azure Speech, see ttsEndpoint
+  if (server.hasArg("ttsProv")) {
+    const String v = server.arg("ttsProv");
+    if (v == "openai" || v == "azure") settingsPrefs.putString("ttsProv", v);
   }
   // Speech-to-text at Infomaniak (only used while Infomaniak answers, see sttEndpoint)
   if (server.hasArg("ikSpeech")) {
@@ -7817,109 +7879,74 @@ void replayLastAudio() {
 
 // Reads text aloud. instructions: how gpt-4o-mini-tts should speak (nullptr: the usual friendly voice for a child)
 // voice: one of the gpt-4o-mini-tts voices ("nova", ...); the shop game gives every guest its own
-bool speakTextVoiced(const String &text, const char* instructions, const char* voice) {
-  modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
-  Serial.println("\n========== TEXT-TO-SPEECH ==========");
-  Serial.println("Text: " + text);
-
-  WiFiClientSecure client;
+// Sends one read-aloud request and reads the response headers. Returns the HTTP status, or 0 when the
+// connection or the headers failed. On 200 the client is ready to read the body, framed as the headers say.
+static int ttsSend(WiFiClientSecure& client, const String& host, const String& head, const String& body,
+                   bool& chunked, long& contentLength) {
+  chunked = false;
+  contentLength = -1;
   client.setInsecure();
   client.setTimeout(60);
-
-  AudioEndpoint ep = audioEndpoint();
-  if (!ep.available) {
-    Serial.println("ERROR: TTS needs an OpenAI or Zitro key");
-    return false;
-  }
-
-  Serial.println("TTS: Connecting to " + ep.host + "...");
-  if (!client.connect(ep.host.c_str(), 443)) {
+  Serial.println("TTS: Connecting to " + host + "...");
+  if (!client.connect(host.c_str(), 443)) {
     Serial.println("ERROR: TTS connection failed");
-    return false;
+    return 0;
   }
-
-  // Build JSON request body
-  // Using PCM format - no header, just raw 16-bit little-endian PCM at 24kHz mono
-  // gpt-4o-mini-tts takes speaking-style instructions instead of a speed parameter
-  String jsonBody = "{\"model\":\"" TTS_MODEL "\",\"input\":\""
-    + escapeJson(text)
-    + "\",\"voice\":\"" + String(voice && voice[0] ? voice : "nova") + "\",\"instructions\":\""
-    + escapeJson(instructions ? instructions : "Speak slightly slowly and clearly, warm and friendly, for a child.")
-    + "\",\"response_format\":\"pcm\"}";
-
-  // Send HTTP POST request
   Serial.println("TTS: Sending request...");
-  client.print("POST /v1/audio/speech HTTP/1.1\r\n");
-  client.print("Host: " + ep.host + "\r\n");
-  client.print("Authorization: Bearer " + ep.key + "\r\n");
-  client.print("Content-Type: application/json\r\n");
-  client.print("Content-Length: " + String(jsonBody.length()) + "\r\n");
-  client.print("Connection: close\r\n\r\n");
-  client.print(jsonBody);
+  client.print(head);
+  client.print(body);
 
-  // Read response headers
   Serial.println("TTS: Reading response headers...");
-  bool headersComplete = false;
-  String headerLine;
   int httpCode = 0;
-
-  while (client.connected()) {
-    if (client.available()) {
-      headerLine = client.readStringUntil('\n');
-      Serial.println("  " + headerLine);
-
-      // Parse HTTP response code from first line
-      if (httpCode == 0 && headerLine.startsWith("HTTP/")) {
-        int spaceIdx = headerLine.indexOf(' ');
-        if (spaceIdx > 0) {
-          httpCode = headerLine.substring(spaceIdx + 1, spaceIdx + 4).toInt();
-          Serial.printf("TTS: HTTP response code: %d\n", httpCode);
-        }
-      }
-
-      // Log important headers
-      if (headerLine.startsWith("Content-Length:")) {
-        Serial.println("  >>> " + headerLine);
-      }
-      if (headerLine.startsWith("Transfer-Encoding:")) {
-        Serial.println("  >>> " + headerLine);
-      }
-      if (headerLine.startsWith("Content-Type:")) {
-        Serial.println("  >>> " + headerLine);
-      }
-
-      // Empty line marks end of headers
-      if (headerLine == "\r" || headerLine == "") {
-        headersComplete = true;
-        break;
-      }
+  const unsigned long started = millis();
+  while (client.connected() || client.available()) {
+    if (!client.available()) {
+      if (millis() - started > 60000) break;
+      delay(1);
+      continue;
+    }
+    const String line = client.readStringUntil('\n');
+    Serial.println("  " + line);
+    if (httpCode == 0 && line.startsWith("HTTP/")) {
+      const int sp = line.indexOf(' ');
+      if (sp > 0) httpCode = line.substring(sp + 1, sp + 4).toInt();
+    }
+    std::string value;
+    if (ttsHeaderValue(line.c_str(), "Transfer-Encoding", value)) {
+      String v(value.c_str());
+      v.toLowerCase();
+      chunked = v.indexOf("chunked") >= 0;
+    }
+    if (ttsHeaderValue(line.c_str(), "Content-Length", value)) contentLength = atol(value.c_str());
+    if (line == "\r" || line == "") {
+      Serial.printf("TTS: HTTP %d, %s\n", httpCode, chunked ? "chunked" : "with length or until close");
+      return httpCode;
     }
   }
+  Serial.println("ERROR: TTS response headers incomplete");
+  return 0;
+}
 
-  if (!headersComplete || httpCode != 200) {
-    Serial.printf("ERROR: TTS request failed (code: %d)\n", httpCode);
-    client.stop();
-    return false;
-  }
-
-M5.Speaker.end();
-delay(10);
-M5.Speaker.begin();
-
-  // Now read PCM audio data - handle chunked transfer encoding
-  Serial.println("TTS: Reading PCM audio data (chunked encoding)...");
-
-  // Reserve space for roughly 200KB (typical size for short answers)
-  const int MAX_AUDIO_SIZE = 200000;
-  uint8_t* audioBuffer = (uint8_t*)malloc(MAX_AUDIO_SIZE);
-
-  if (!audioBuffer) {
-    Serial.println("ERROR: Failed to allocate audio buffer");
-    client.stop();
-    return false;
-  }
-
+// Reads the raw PCM body into buf (chunked, with a Content-Length, or until the server closes).
+// Returns the number of bytes read; audio longer than the buffer is cut.
+static int ttsReadBody(WiFiClientSecure& client, uint8_t* buf, int cap, bool chunked, long contentLength) {
   int totalBytesRead = 0;
+  if (!chunked) {
+    const long want = (contentLength >= 0 && contentLength < cap) ? contentLength : cap;
+    unsigned long lastData = millis();
+    while (totalBytesRead < want && (client.connected() || client.available())) {
+      const int n = client.read(buf + totalBytesRead, want - totalBytesRead);
+      if (n > 0) {
+        totalBytesRead += n;
+        lastData = millis();
+      } else {
+        if (millis() - lastData > 15000) break;
+        delay(1);
+      }
+    }
+    if (contentLength > cap) Serial.println("WARNING: Audio longer than the buffer, cut");
+    return totalBytesRead;
+  }
 
   // Decode chunked transfer encoding
   while (client.connected() || client.available()) {
@@ -7949,13 +7976,13 @@ M5.Speaker.begin();
     // Read chunk data
     int bytesRead = 0;
     while (bytesRead < chunkSize && (client.connected() || client.available())) {
-      if (totalBytesRead + bytesRead >= MAX_AUDIO_SIZE) {
+      if (totalBytesRead + bytesRead >= cap) {
         Serial.println("ERROR: Audio buffer full");
         break;
       }
 
-      int toRead = min((int)(chunkSize - bytesRead), MAX_AUDIO_SIZE - totalBytesRead - bytesRead);
-      int n = client.read(audioBuffer + totalBytesRead + bytesRead, toRead);
+      int toRead = min((int)(chunkSize - bytesRead), cap - totalBytesRead - bytesRead);
+      int n = client.read(buf + totalBytesRead + bytesRead, toRead);
       if (n > 0) {
         bytesRead += n;
       } else {
@@ -7970,6 +7997,90 @@ M5.Speaker.begin();
     client.read();  // \r
     client.read();  // \n
   }
+  return totalBytesRead;
+}
+
+// Reads text aloud: OpenAI (or the Zitro relay) with speaking-style instructions, or Azure Speech with
+// SSML (tts_core.h). Both send raw 16-bit PCM at 24 kHz, mono. style tells Azure which voice, accent and pace
+// fit; OpenAI gets the same from the instructions.
+bool speakTextVoiced(const String &text, const char* instructions, const char* voice, TtsStyle style) {
+  modelViewEnd();  // Reading aloud needs the memory; the screen keeps its last frame
+  Serial.println("\n========== TEXT-TO-SPEECH ==========");
+  Serial.println("Text: " + text);
+
+  TtsEndpoint ep = ttsEndpoint();
+  if (!ep.available) {
+    Serial.println(ep.azure ? "ERROR: TTS needs the Azure Speech key and region"
+                            : "ERROR: TTS needs an OpenAI or Zitro key");
+    return false;
+  }
+
+  WiFiClientSecure client;
+  bool chunked = false;
+  long contentLength = -1;
+  int httpCode = 0;
+
+  if (ep.azure) {
+    std::string azVoice = ttsAzureVoice(style, voice, ep.voice.c_str());
+    for (int attempt = 0; attempt < 2; attempt++) {
+      const std::string ssml = ttsAzureSsml(text.c_str(), azVoice, style);
+      const String head = "POST /cognitiveservices/v1 HTTP/1.1\r\n"
+                          "Host: " + ep.host + "\r\n"
+                          "Ocp-Apim-Subscription-Key: " + ep.key + "\r\n"
+                          "Content-Type: application/ssml+xml\r\n"
+                          "X-Microsoft-OutputFormat: " AZURE_TTS_FORMAT "\r\n"
+                          "User-Agent: " ZITRO_USER_AGENT "\r\n"
+                          "Content-Length: " + String((unsigned)ssml.size()) + "\r\n"
+                          "Connection: close\r\n\r\n";
+      Serial.printf("TTS: Azure, voice %s\n", azVoice.c_str());
+      httpCode = ttsSend(client, ep.host, head, String(ssml.c_str()), chunked, contentLength);
+      if (httpCode != 400 || azVoice == ttsAzureFallbackVoice(style)) break;
+      // The region may not offer this voice: once more with a plain one that every region has
+      client.stop();
+      azVoice = ttsAzureFallbackVoice(style);
+      Serial.printf("TTS: Voice refused, trying %s\n", azVoice.c_str());
+    }
+  } else {
+    // Using PCM format - no header, just raw 16-bit little-endian PCM at 24kHz mono
+    // gpt-4o-mini-tts takes speaking-style instructions instead of a speed parameter
+    String jsonBody = "{\"model\":\"" TTS_MODEL "\",\"input\":\""
+      + escapeJson(text)
+      + "\",\"voice\":\"" + String(voice && voice[0] ? voice : "nova") + "\",\"instructions\":\""
+      + escapeJson(instructions ? instructions : "Speak slightly slowly and clearly, warm and friendly, for a child.")
+      + "\",\"response_format\":\"pcm\"}";
+    const String head = "POST /v1/audio/speech HTTP/1.1\r\n"
+                        "Host: " + ep.host + "\r\n"
+                        "Authorization: Bearer " + ep.key + "\r\n"
+                        "Content-Type: application/json\r\n"
+                        "Content-Length: " + String(jsonBody.length()) + "\r\n"
+                        "Connection: close\r\n\r\n";
+    httpCode = ttsSend(client, ep.host, head, jsonBody, chunked, contentLength);
+  }
+
+  if (httpCode != 200) {
+    Serial.printf("ERROR: TTS request failed (code: %d)\n", httpCode);
+    client.stop();
+    return false;
+  }
+
+M5.Speaker.end();
+delay(10);
+M5.Speaker.begin();
+
+  // Now read the PCM audio data
+  Serial.println("TTS: Reading PCM audio data...");
+
+  // Reserve space for roughly 200KB (typical size for short answers)
+  const int MAX_AUDIO_SIZE = 200000;
+  uint8_t* audioBuffer = (uint8_t*)malloc(MAX_AUDIO_SIZE);
+
+  if (!audioBuffer) {
+    Serial.println("ERROR: Failed to allocate audio buffer");
+    client.stop();
+    return false;
+  }
+
+  int totalBytesRead = ttsReadBody(client, audioBuffer, MAX_AUDIO_SIZE, chunked, contentLength);
 
   client.stop();
 
@@ -8022,7 +8133,9 @@ M5.Speaker.begin();
   return true;
 }
 
-bool speakTextStyled(const String &text, const char* instructions) { return speakTextVoiced(text, instructions, "nova"); }
+bool speakTextStyled(const String &text, const char* instructions, TtsStyle style) {
+  return speakTextVoiced(text, instructions, "nova", style);
+}
 bool speakText(const String &text) { return speakTextStyled(text, nullptr); }
 
 // Development builds: scripts/zitro_build_info.sh defines this at build time, so every session can

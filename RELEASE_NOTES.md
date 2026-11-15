@@ -2,6 +2,7 @@
 
 ## Sun 15 Nov, 2026
 
+- **Read aloud from Switzerland**: pick Microsoft Azure Speech under "Read-aloud" in the settings, and Zitro reads its answers from Azure's data centre in Zurich. Choose a voice that speaks German and English, or one with a Swiss accent. English practice keeps a British accent, with a different voice for every guest in the shop.
 - **Quiet StickS3**: the soft hum while the StickS3 is on is gone. Zitro now leaves off a power converter for accessories it doesn't use, and switches the speaker on only to play a sound. Songs, answers and the timer sound as before.
 - **Pictures keep coming after 1 December**: when Zitro's first picture try fails, it now asks OpenAI's newer picture model instead of the old one, which OpenAI switches off on 1 December.
 - **Your button on screen (StickS3)**: the start screen, the tour, the vocabulary trainer and the shop now show the StickS3's own blue front button instead of "M5". Press the one you see.

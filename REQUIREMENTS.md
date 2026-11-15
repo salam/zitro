@@ -32,18 +32,27 @@
 ### API and Authentication
 - **AI provider** (`provider`): `zitro`, `openai` (default), `anthropic`, `infomaniak`, `custom`
 - **Keys** (Preferences, never returned to the browser; only the last 4 characters are shown):
-  - `apiKey` (OpenAI), `claudeKey`, `ikKey` (Infomaniak token), `customKey`, `zitroKey`
+  - `apiKey` (OpenAI), `claudeKey`, `ikKey` (Infomaniak token), `customKey`, `zitroKey`, `azKey` (Azure Speech)
   - Empty key fields on save keep the stored key
   - No key is compiled into the firmware
-- **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`, `ikSpeech` (bool, default off: speech-to-text at Infomaniak too)
+- **Provider options**: `oaModel`, `claudeModel`, `ikModel`, `ikProduct` (Infomaniak product ID), `customUrl` (must be https), `customModel`, `ikSpeech` (bool, default off: speech-to-text at Infomaniak too), `ttsProv` (`openai` default, or `azure`), `azRegion` (default `switzerlandnorth`), `azVoice` (default `de-DE-SeraphinaMultilingualNeural`)
 - Device enters setup mode (AP) at boot if the selected chat provider is not configured
-- Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-2.6-flare`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
+- Speech-to-text (`gpt-transcribe`), text-to-speech (`gpt-4o-mini-tts`, unless Azure reads aloud, see below) and image generation (`gpt-image-2.5-flare`, fallback `gpt-image-2.6-flare`) use the OpenAI API, or the Zitro relay when `provider` is `zitro`
   - Non-OpenAI chat providers therefore also need `apiKey` for voice; the device shows a hint instead of recording when it's missing
   - Exception: with provider `infomaniak` and `ikSpeech` on (setup page, AI tab: "Transcribe my voice at Infomaniak too (Switzerland)"), speech-to-text goes to Infomaniak, so the voice stays in Switzerland like the question. Voice input then needs no OpenAI key; read-aloud and pictures still do, and the setup page says so
     - Upload: `POST https://api.infomaniak.com/1/ai/{ikProduct}/openai/audio/transcriptions`, multipart like OpenAI's, model `whisper`, `response_format=json`, `prompt` when given. No `language` field: Infomaniak's reference says a language translates the transcript (a German word in an English vocabulary round would come back in English)
     - The reply is a `batch_id`; the stick asks `GET /1/ai/{ikProduct}/results/{batch_id}` every 0.4 s, at most 30 s, over one TLS connection. `pending`/`processing` waits, `success` carries the transcript in `data` (Whisper JSON as a string, or plain text), anything else is "No transcription"
     - Product IDs must be digits (they go into the request line). Parsing lives in `stt_core.h`, host tests in `tests/stt/run.sh`
     - Not yet tested against a live Infomaniak account
+  - Read-aloud can go to Microsoft Azure Speech instead (setup page, AI tab, "Read-aloud": `ttsProv` = `azure`), whatever answers the questions. OpenAI retires every model `/v1/audio/speech` can use on 2027-01-06, and its successor only works over WebRTC/WebSocket
+    - `POST https://{azRegion}.tts.speech.microsoft.com/cognitiveservices/v1` with `Ocp-Apim-Subscription-Key`, `User-Agent`, SSML, `X-Microsoft-OutputFormat: raw-24khz-16bit-mono-pcm`: the same raw PCM as OpenAI's, played the same way. Azure processes the speech in the resource's region (`switzerlandnorth` is Zurich)
+    - Answers: the family's `azVoice`; the default multilingual voice detects the language of the answer. `de-CH-LeniNeural`/`de-CH-JanNeural` have a Swiss accent but read only German
+    - English practice (vocabulary trainer, shop game): a multilingual English voice per shop person (no "Turbo" voices, Switzerland North has none) with `<lang xml:lang='en-GB'>` for a British accent; German vocabulary words get `<lang xml:lang='de-DE'>` on a multilingual family voice ("Hand" alone could pass for English). `<lang>` holds `<prosody>`, as Azure's SSML reference allows. Pace by `prosody rate`: answers -5 %, vocabulary words -10 %, slow shop hints -20 % (small, the stick buffers about 4 s of audio)
+    - When Azure refuses a voice (HTTP 400), one more try with a plain voice every region has: `de-CH-LeniNeural` for answers, `en-GB-SoniaNeural` for English
+    - No quiet switch to OpenAI when the Azure key is missing: Zitro answers in writing, and the setup page says read-aloud needs the Azure key
+    - `azRegion` must be lowercase letters and digits (spaces are removed, letters lowered on save), `azVoice` letters, digits, `-` and `:`; both are checked again before use. Logic in `tts_core.h`, host tests in `tests/tts/run.sh`
+    - The response is read chunked, with a Content-Length, or until the server closes; header names in any case
+    - Not yet tested against a live Azure Speech resource
 - Wikipedia and Wikimedia requests (search, page summary, picture download) send `User-Agent: Zitro.spot/1.0 (https://zitro.spot; hello@zitro.spot)` (`ZITRO_USER_AGENT`): Wikimedia's API policy asks for a client name and a way to reach its operator. No personal address goes out
 
 ### AI Provider Layer (ai_provider.h / ai_provider.ino)

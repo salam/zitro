@@ -716,6 +716,7 @@ void showAnswer(GPTResponse& gptResponse, const String& question, bool playAudio
 void showTimerList(bool playAudio);
 String noTimersText();
 bool noTimersShown();
+void drawNoTimersTab(M5Canvas &canvas);
 void goHomeScreen();
 bool showSurprise();
 void openSettings();
@@ -1717,6 +1718,8 @@ void drawScreen(const String &text) {
   }
 
   if (guideActive() && guideState.step == GUIDE_ANSWER) guideDecorateScreen(canvas);
+
+  if (text == noTimersText()) drawNoTimersTab(canvas);
 
   captureCanvas(canvas);
 
@@ -9241,6 +9244,12 @@ String noTimersText() {
 // "Keine Timer aktiv." is on screen: a passing note, where B goes back to the home screen
 bool noTimersShown() {
   return currentDisplayMode == SHOW_TEXT && response == noTimersText();
+}
+
+// "Keine Timer aktiv." is a passing note: B's tab shows that B goes back to the home screen. A asks something new
+// here as everywhere, so it has no tab (Matthias, 2026-11-16: "still shows no button GUI")
+void drawNoTimersTab(M5Canvas &canvas) {
+  drawButtonHints(canvas, M5.Display.getRotation(), HINT_NONE, HINT_BACK, HINT_NONE);
 }
 
 // The home screen, as after switching on: no answer kept. B goes here from a passing note such as "Keine Timer

@@ -173,7 +173,7 @@ The StickS3 has a front button (A) and a side button (B). Its power button only 
 
 ### Home menu
 Press Button B once on the home screen, or on a written answer, and a menu opens. Each press of Button B moves to the next row right away, Button A chooses. To close it, hold Button B or choose "Menü schliessen". Pressing B twice quickly just moves two rows, and Button C does nothing here. Each row has a small picture: a timer, a flag for the tour, a parcel for the surprise, gears for the settings, and one for each of the 16 things to try. Holding B to close it never resets the WiFi, however long you hold. At the top:
-- **Timer anzeigen** (Show timers): your running timers, or "Keine Timer aktiv." (press B there to go back to the start screen).
+- **Timer anzeigen** (Show timers): your running timers, or "Keine Timer aktiv." (press B there to go back to the start screen; the tab with ◀ next to B shows it).
 - **Tour starten** (Start the tour): the guided tour.
 - **Überraschung** (Surprise): a surprise, as when you shake Zitro.
 - **Wörter üben** (Practise words): the word trainer, with the list you practised last.

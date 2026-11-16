@@ -526,7 +526,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
 - After inactivity: display sleep ~30s, light sleep ~90s, deep sleep ~180s. The three times can be changed on the Settings tab and are used right away.
 - Before sleeping, Zitro switches off WiFi, the screen, the motion sensor, the microphone and the speaker to save battery.
 - Press Button A to wake. Deep sleep reboots and restores the last response if possible.
-- Zitro doesn't wait for WiFi when it wakes: you can ask right away while it looks for the network in the background. A WiFi symbol pulses grey and white in the top right corner meanwhile, and disappears once Zitro is connected. If your question is ready before the WiFi is, Zitro shows a big WiFi page with the network it's trying and a progress bar, then answers as soon as it's online.
+- Zitro doesn't wait for WiFi when it wakes: you can ask right away while it looks for the network in the background. A WiFi symbol pulses grey and white in the top right corner meanwhile. Once Zitro is connected, it gets a green tick for a moment and fades away. If your question is ready before the WiFi is, Zitro shows a big WiFi page with the network it's trying and a progress bar, then answers as soon as it's online.
 - With a reminder timer running, Zitro stays in light sleep (not deep sleep) so the alarm can ring on time; this uses more battery.
 
 ## User interface hierarchy
@@ -537,7 +537,7 @@ The numbers come straight from Wolfram|Alpha, unchanged, and a long number carri
   - AP setup mode (screen with SSID + IP, web setup page)
 - Home / idle
   - "[lemon] Press [M5] button to ask a question" (M5 drawn as a key), tilted-phone shake icon + "Shake for a surprise." On the StickS3 the key is a thin, upright blue key without a label, like its front button. In German: "Drück die [M5] Taste und stell eine Frage", "Schüttle mich!"
-  - WiFi symbol in the top right corner while Zitro is still looking for WiFi: pulsing grey and white while it searches, grey when it found no known network
+  - WiFi symbol in the top right corner while Zitro is still looking for WiFi: pulsing grey and white while it searches, grey when it found no known network. When it is connected: the WiFi symbol with a green tick, which fades away after about a second
   - Battery indicator appears when low
   - Rotate icon appears when an image is available
 - Question flow
@@ -686,7 +686,7 @@ Characters display correctly without conversion - umlauts and special characters
 - Light sleep starts after about 90 seconds, deep sleep after about 3 minutes.
 - Press Button A to wake and show the previous result.
 - Wait at least 2 seconds, then press Button A again to start a new recording. The press that wakes Zitro never starts a recording by itself.
-- You don't need to wait for WiFi. Zitro looks for it in the background: first the network it used last, then all networks around in one go, the strongest known one first. While it searches, a WiFi symbol pulses grey and white in the top right corner of the home and recording screens. When it's connected, the symbol disappears. If you finish your question before that, Zitro waits with "Transcribing..." until it is connected.
+- You don't need to wait for WiFi. Zitro looks for it in the background: first the network it used last, then all networks around in one go, the strongest known one first. While it searches, a WiFi symbol pulses grey and white in the top right corner of the home and recording screens. When it's connected, the symbol shows a green tick for a moment, then fades away. If you finish your question before that, Zitro waits with "Transcribing..." until it is connected.
 - No known network around (at a friend's, say)? The symbol stays grey and Zitro tries again every 30 seconds. Ask a question anyway, and Zitro opens the setup screen so you can add the network.
 - Deep sleep restarts and restores the last answer, with its picture or 3D model if it can. Pictures Zitro drew are kept on the stick for this; other pictures and models are fetched again. A Wolfram picture isn't kept, so that answer comes back without it.
 

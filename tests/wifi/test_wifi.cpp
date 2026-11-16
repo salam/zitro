@@ -261,6 +261,29 @@ static void testPulse() {
   CHECK(wifiPulseLevel(0xFFFFFFFFu) >= WIFI_ICON_GREY);
 }
 
+// The connected icon: full for a moment, then fading to nothing, never brighter on the way, gone
+// after about a second
+static void testDoneFade() {
+  CHECK(wifiDoneLevel(0) == 255);
+  CHECK(wifiDoneLevel(WIFI_DONE_HOLD_MS) == 255);
+  CHECK(wifiDoneLevel(WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS) == 0);
+  CHECK(wifiDoneLevel(WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS + 5000) == 0);
+  CHECK(wifiDoneLevel(0xFFFFFFFFu) == 0);
+  const uint8_t half = wifiDoneLevel(WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS / 2);
+  CHECK(half > 100 && half < 155);
+  CHECK(wifiDoneLevel(WIFI_DONE_HOLD_MS + 1) > 240);  // the fade starts gently
+  CHECK(wifiDoneLevel(WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS - 1) < 15);  // and ends gently
+  uint8_t last = 255;
+  bool neverUp = true;
+  for (uint32_t t = 0; t <= WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS + 100; t++) {
+    const uint8_t v = wifiDoneLevel(t);
+    if (v > last) neverUp = false;
+    last = v;
+  }
+  CHECK(neverUp);
+  CHECK(WIFI_DONE_HOLD_MS + WIFI_DONE_FADE_MS <= 1500);  // quick
+}
+
 // The WiFi page's bar: steps for the remembered network, the scan and each network found, creeping
 // within a step but never reaching its end, never going back, full once connected
 static void testProgressSteps() {
@@ -369,6 +392,7 @@ int main() {
   testLostConnection();
   testStop();
   testPulse();
+  testDoneFade();
   testProgressSteps();
   testProgressWithoutFastJoin();
   testProgressHoldsAndNeverGoesBack();

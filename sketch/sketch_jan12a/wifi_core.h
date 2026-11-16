@@ -193,6 +193,29 @@ inline uint8_t wifiPulseLevel(uint32_t now) {
   return (uint8_t)(WIFI_ICON_GREY + (255 - WIFI_ICON_GREY) * up / half);
 }
 
+// The connected icon (a WiFi symbol with a green tick) that takes the searching icon's place once the
+// connection stands: full for WIFI_DONE_HOLD_MS, then it fades out over WIFI_DONE_FADE_MS
+static const uint32_t WIFI_DONE_HOLD_MS = 600;
+static const uint32_t WIFI_DONE_FADE_MS = 500;
+
+// What the top right corner shows
+enum WifiCorner : uint8_t {
+  WIFI_CORNER_NONE,
+  WIFI_CORNER_SEARCHING,  // three arcs over a dot, pulsing (grey and still once nothing was found)
+  WIFI_CORNER_CONNECTED,  // the WiFi symbol with the green tick, fading out
+};
+
+// Its brightness, 255 .. 0, elapsed ms after the connection. The fade follows a smoothstep, so it
+// starts and ends gently; 0 once it is over.
+inline uint8_t wifiDoneLevel(uint32_t elapsed) {
+  if (elapsed <= WIFI_DONE_HOLD_MS) return 255;
+  elapsed -= WIFI_DONE_HOLD_MS;
+  if (elapsed >= WIFI_DONE_FADE_MS) return 0;
+  const uint64_t f = WIFI_DONE_FADE_MS;
+  const uint64_t r = WIFI_DONE_FADE_MS - elapsed;  // what is left of the fade
+  return (uint8_t)(255 * (3 * r * r * f - 2 * r * r * r) / (f * f * f));
+}
+
 // What the screen shows while something waits for the connection (wifiWaitForLink)
 enum WifiWaitShow : uint8_t {
   WIFI_SHOW_NOTHING,  // the screen stays as it is: a request already under way

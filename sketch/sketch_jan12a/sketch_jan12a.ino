@@ -40,6 +40,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "dino_core.h"   // Dinosaur fact sheets (feature_dino.ino); the main flow needs dinoMissLine
 #include "shake_core.h"  // What a shake can show besides a fact
 #include "wifi_core.h"   // Finding WiFi in the background (wifi_link.ino)
+#include "wifi_done_icon.h"  // Its corner icon once connected: WiFi with a green tick
 #include "stt_core.h"    // Speech-to-text at Infomaniak: batch id, then poll the result
 #include "care_core.h"   // Worries: send the child to people, helpline by home city
 #include "tts_core.h"    // Read-aloud at Azure Speech: voices, SSML
@@ -676,6 +677,7 @@ void wifiIconDrawInto(M5Canvas& canvas);
 void wifiIconScreenAllows();
 void wifiIconOnScreenDraw();
 extern uint8_t wifiIconTourLevel;
+extern uint8_t wifiDoneTourLevel;
 void gifAnimStart(float scale);
 bool gifAnimResume(float scale);
 void gifAnimTick();
@@ -1806,7 +1808,7 @@ void drawHomeScreen() {
   canvas.drawString(shake, x + SHAKEICON_WIDTH + gap, cy);
 
   drawBatteryIndicator(canvas);
-  wifiIconDrawInto(canvas);  // While WiFi is still being searched
+  wifiIconDrawInto(canvas);  // While WiFi is still being searched, then its tick
   captureCanvas(canvas);
   wifiIconScreenAllows();
   canvas.pushSprite(0, 0);
@@ -1933,7 +1935,7 @@ void drawProgress(int secondsRemaining) {
 
   // Draw battery indicator
   drawBatteryIndicator(canvas);
-  wifiIconDrawInto(canvas);  // While WiFi is still being searched
+  wifiIconDrawInto(canvas);  // While WiFi is still being searched, then its tick
 
   captureCanvas(canvas);
   wifiIconScreenAllows();

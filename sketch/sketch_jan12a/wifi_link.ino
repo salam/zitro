@@ -1,7 +1,8 @@
 // The WiFi connection, found in the background (order and timings in wifi_core.h). Nothing here
 // waits except wifiWaitForLink(): the screens and recording go on while Zitro searches, and a corner
-// icon pulses grey to white on the home and recording screens until the connection stands. What
-// can't go on without WiFi (a recorded question, the setup screen's retry) waits on the WiFi page.
+// icon pulses grey to white on the home and recording screens until the connection stands. Then it
+// turns into a WiFi symbol with a green tick for a moment, which fades out. What can't go on without
+// WiFi (a recorded question, the setup screen's retry) waits on the WiFi page.
 // wifiBackgroundTick() runs from loop() and from the recording loop.
 
 static WifiMachine wifiMachine;
@@ -25,14 +26,19 @@ static unsigned long wifiScanTriedAt = 0;
 
 static const uint32_t WIFI_SCAN_MS_PER_CHANNEL = 120;  // 13 channels: about 1.6 s for one scan
 
-// The searching icon
+// The corner icon: searching, then the tick once connected
 static bool wifiIconScreenOk = false;  // the screen shown has room for it (home, recording, waiting)
-static bool wifiIconDrawn = false;
+static WifiCorner wifiIconShown = WIFI_CORNER_NONE;
 static unsigned long wifiIconLastDraw = 0;
-static int wifiIconX = 0, wifiIconY = 0;
-uint8_t wifiIconTourLevel = 0;  // the screenshot tour shows the icon at this brightness (0: off)
+static int wifiIconX = 0, wifiIconY = 0;      // the searching icon
+static int wifiCornerX = 0, wifiCornerY = 0;  // the tick's box, which covers the searching icon too
+uint8_t wifiIconTourLevel = 0;  // the screenshot tour shows the searching icon at this brightness (0: off)
+uint8_t wifiDoneTourLevel = 0;  // the same for the tick
 static const int WIFI_ICON_W = 17;
 static const int WIFI_ICON_H = 14;
+static bool wifiDoneOn = false;  // the tick plays: the connection came while the searching icon showed
+static unsigned long wifiDoneAt = 0;
+static bool wifiInWait = false;  // in wifiWaitForLink(): its caller draws what comes next at once
 
 // The WiFi page
 static bool wifiPageUp = false;      // the searching page is on screen: its frames may be drawn
@@ -130,6 +136,10 @@ static void wifiOnUp() {
     moveNetworkToFront(wifiJoining);  // Tried first by name next time the remembered one is gone
   }
   wifiJoining = -1;
+  // The searching icon turns into the tick. Not in a wait: what comes next (a download) would stop
+  // the fade halfway.
+  wifiDoneAt = millis();
+  wifiDoneOn = wifiIconScreenOk && wifiIconShown == WIFI_CORNER_SEARCHING && !displaySleeping && !wifiInWait;
   // NTP, in the home city's time zone with its real daylight saving rules
   startNtpWithHomeTimeZone();
 }
@@ -209,7 +219,8 @@ void wifiLinkStop() {
   wifiStop(wifiMachine);
   wifiJoining = -1;
   wifiIconScreenOk = false;
-  wifiIconDrawn = false;
+  wifiIconShown = WIFI_CORNER_NONE;
+  wifiDoneOn = false;
   WiFi.scanDelete();
 }
 
@@ -217,11 +228,21 @@ bool wifiLinkUp() {
   return wifiMachine.phase == WIFI_UP && WiFi.status() == WL_CONNECTED;
 }
 
-// =============== THE SEARCHING ICON ===============
+// =============== THE CORNER ICON ===============
 
-static bool wifiIconWanted() {
-  if (wifiIconTourLevel > 0) return true;
-  return !apMode && wifiMachine.phase != WIFI_IDLE && wifiMachine.phase != WIFI_UP;
+// Searching while the search runs (and grey once it found nothing), then the tick until it has faded
+static WifiCorner wifiCornerWanted() {
+  if (wifiIconTourLevel > 0) return WIFI_CORNER_SEARCHING;
+  if (wifiDoneTourLevel > 0) return WIFI_CORNER_CONNECTED;
+  if (apMode || wifiMachine.phase == WIFI_IDLE) return WIFI_CORNER_NONE;
+  if (wifiMachine.phase != WIFI_UP) return WIFI_CORNER_SEARCHING;
+  if (wifiDoneOn && wifiDoneLevel(millis() - wifiDoneAt) > 0) return WIFI_CORNER_CONNECTED;
+  return WIFI_CORNER_NONE;
+}
+
+static uint8_t wifiDoneIconLevel() {
+  if (wifiDoneTourLevel > 0) return wifiDoneTourLevel;
+  return wifiDoneLevel(millis() - wifiDoneAt);
 }
 
 // Grey to white while searching, grey and still once a search found nothing
@@ -241,18 +262,43 @@ static void drawWifiSymbol(M5Canvas& c, int x, int y, uint8_t level) {
   c.fillArc(cx, cy, 11, 12, 225, 315, color);
 }
 
-// Top right; left of the battery when that shows (below 35 %, see drawBatteryIndicator)
+// The tick (wifi_done_icon.h) at x, y, scaled to level. Its black pixels are left out: it lies on black.
+static void drawWifiDoneIcon(M5Canvas& c, int x, int y, uint8_t level) {
+  for (int j = 0; j < WIFI_DONE_H; j++) {
+    for (int i = 0; i < WIFI_DONE_W; i++) {
+      const uint8_t* px = &wifiDoneIcon[(j * WIFI_DONE_W + i) * 3];
+      const uint8_t r = pgm_read_byte(px), g = pgm_read_byte(px + 1), b = pgm_read_byte(px + 2);
+      if ((r | g | b) == 0) continue;
+      c.drawPixel(x + i, y + j, c.color565(r * level / 255, g * level / 255, b * level / 255));
+    }
+  }
+}
+
+// Top right; left of the battery when that shows (below 35 %, see drawBatteryIndicator). The tick is
+// larger: 2 px further right and 1 px higher than the searching icon, its badge hanging below it.
 static void wifiIconPlace() {
   const bool battery = M5.Power.getBatteryLevel() < 35;
-  wifiIconX = battery ? WIDTH - 25 - 6 - WIFI_ICON_W : WIDTH - 4 - WIFI_ICON_W;
+  const int right = battery ? WIDTH - 25 - 6 : WIDTH - 4;  // where the searching icon ends
+  wifiIconX = right - WIFI_ICON_W;
   wifiIconY = 3;
+  wifiCornerX = right + 2 - WIFI_DONE_W;
+  wifiCornerY = 2;
+}
+
+// The corner's icon into c, with the tick's box at x, y
+static void wifiCornerDraw(M5Canvas& c, int x, int y, WifiCorner look) {
+  if (look == WIFI_CORNER_SEARCHING) {
+    drawWifiSymbol(c, x + wifiIconX - wifiCornerX, y + wifiIconY - wifiCornerY, wifiIconLevel());
+  } else if (look == WIFI_CORNER_CONNECTED) {
+    drawWifiDoneIcon(c, x, y, wifiDoneIconLevel());
+  }
 }
 
 // Called by the home and recording screens before they push their canvas
 void wifiIconDrawInto(M5Canvas& canvas) {
   wifiIconPlace();
-  wifiIconDrawn = wifiIconWanted();
-  if (wifiIconDrawn) drawWifiSymbol(canvas, wifiIconX, wifiIconY, wifiIconLevel());
+  wifiIconShown = wifiCornerWanted();
+  wifiCornerDraw(canvas, wifiCornerX, wifiCornerY, wifiIconShown);
   wifiIconLastDraw = millis();
 }
 
@@ -268,19 +314,20 @@ void wifiIconOnScreenDraw() {
   wifiPageUp = false;
 }
 
+// One frame of the corner, in the tick's box, so a change of icon leaves nothing of the other behind
 static void wifiIconTick() {
   if (!wifiIconScreenOk || displaySleeping) return;
-  const bool wanted = wifiIconWanted();
-  if (!wanted && !wifiIconDrawn) return;
-  if (wanted && millis() - wifiIconLastDraw < 40) return;
+  const WifiCorner wanted = wifiCornerWanted();
+  if (wanted == WIFI_CORNER_NONE && wifiIconShown == WIFI_CORNER_NONE) return;
+  if (wanted == wifiIconShown && millis() - wifiIconLastDraw < 40) return;
   wifiIconLastDraw = millis();
   M5Canvas c(&M5.Display);
-  c.createSprite(WIFI_ICON_W, WIFI_ICON_H);
+  c.createSprite(WIFI_DONE_W, WIFI_DONE_H);
   c.fillSprite(TFT_BLACK);
-  if (wanted) drawWifiSymbol(c, 0, 0, wifiIconLevel());  // else: black, the connection stands
-  c.pushSprite(wifiIconX, wifiIconY);
+  wifiCornerDraw(c, 0, 0, wanted);  // nothing: black, the tick has faded
+  c.pushSprite(wifiCornerX, wifiCornerY);
   c.deleteSprite();
-  wifiIconDrawn = wanted;
+  wifiIconShown = wanted;
 }
 
 // The search and the icon, from loop() and from anything that waits a while (recording)
@@ -474,7 +521,7 @@ void wifiPageTourShot(WifiPageLook look, const String& ssid, int next, int count
 static bool wifiWaitLoop(uint32_t maxMs, WifiWaitShow show) {
   if (show == WIFI_SHOW_ICON) {
     wifiIconPlace();
-    wifiIconDrawn = false;
+    wifiIconShown = WIFI_CORNER_NONE;
     wifiIconScreenOk = true;
   }
   if (show == WIFI_SHOW_PAGE) {
@@ -485,7 +532,7 @@ static bool wifiWaitLoop(uint32_t maxMs, WifiWaitShow show) {
   while (millis() - start < maxMs) {
     wifiBackgroundTick();
     if (wifiMachine.phase == WIFI_UP) {
-      wifiIconTick();  // takes the icon away
+      wifiIconTick();  // takes the icon away (no tick in a wait, see wifiOnUp)
       return true;
     }
     if (wifiMachine.phase == WIFI_NONE) return false;
@@ -504,12 +551,14 @@ bool wifiWaitForLink(uint32_t maxMs, WifiWaitShow show) {
   if (wifiNetworkCount == 0) loadWiFiCredentials();
   if (wifiNetworkCount == 0) return false;
   if (wifiMachine.phase == WIFI_IDLE) wifiRadioOn();
+  wifiInWait = true;
   if (wifiMachine.phase == WIFI_UP && WiFi.status() != WL_CONNECTED) {
     wifiRun(wifiStart(wifiMachine, millis(), true));  // lost and not noticed yet
   } else {
     wifiRun(wifiKick(wifiMachine, millis(), wifiCanFast()));
   }
   const bool up = wifiMachine.phase == WIFI_UP || wifiWaitLoop(maxMs, show);
+  wifiInWait = false;
   wifiPageUp = false;  // no more frames: the caller draws what comes next
   return up;
 }

@@ -510,7 +510,7 @@ Requested by the user on 2026-11-15: "Beim Hauptscreen der Button B soll das Men
 
 - **Opening:** one click of Button B on any `SHOW_TEXT` screen (`buttonBClicked()`, both sticks): the home screen and every written answer, where B had no job. Or serial `home`.
   - Not the home screen alone, because `response` keeps the last answer: after one answer, the home screen can't be told apart from it.
-  - Except on "Keine Timer aktiv." (`noTimersShown()`): a passing note, where B goes back to the home screen (`goHomeScreen()`: no answer kept). The note also drops the last answer's picture and 3D view, so no rotate or cube hint shows on it. User, 2026-11-16
+  - Except on "Keine Timer aktiv." (`noTimersShown()`): a passing note, where B goes back to the home screen (`goHomeScreen()`: no answer kept). The note also drops the last answer's picture and 3D view, so no rotate or cube hint shows on it. User, 2026-11-16. Its only tab is B's, ◀ (`HINT_BACK`), drawn by `drawScreen()` for that text (`drawNoTimersTab()`); A asks something new here as everywhere and has no tab (user, 2026-11-16: "still shows no button GUI")
   - The button module (`feature/button-ui`) will open it through `homeMenuOpen()` with its own press reader.
 - **Code:** `home_menu.ino`. Rows, questions and presses are pure in `home_menu_core.h`, with host tests in `tests/home_menu/run.sh`. While it is open, `loop()` hands over to `homeMenuTick()` after the shop block, as for the trainer.
 - **Rows:**

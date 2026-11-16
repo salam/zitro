@@ -44,8 +44,19 @@ static const uint16_t GLOBE_PANEL_W = 112;
 static const int GLOBE_LEVEL_RADIUS = 48;
 static const int GLOBE_HOME_SIZE = 11;  // The home's little house, wide and high
 
-// Text on black so it stays readable when the zoomed globe runs under it. Left-aligned at x, or right-aligned
-// with its end at x. indent leaves room in front of it (for the house); returns the text's own left edge.
+// Text with a thin black rim: readable over the globe without hiding any of it. A black box behind it would
+// cut notches out of the centred globe and wipe the top of the line below.
+static void globeOutlinedString(M5Canvas& c, const char* s, int x, int y, uint16_t color) {
+  static const int8_t AROUND[8][2] = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
+  c.setTextColor(TFT_BLACK);
+  for (const auto& d : AROUND) c.drawString(s, x + d[0], y + d[1]);
+  c.setTextColor(color);
+  c.drawString(s, x, y);
+}
+
+// A line of the panel beside or above the globe, with "..." if it's wider than width. Left-aligned, or
+// right-aligned to the screen's edge. indent leaves room in front of it (for the house); returns the text's own
+// left edge.
 static int globePanelText(M5Canvas& c, const char* text, int y, uint16_t color, int width = GLOBE_PANEL_W,
                           bool right = false, int indent = 0) {
   String s = text;
@@ -57,11 +68,8 @@ static int globePanelText(M5Canvas& c, const char* text, int y, uint16_t color, 
     }
     s += "...";
   }
-  const int w = c.textWidth(s), h = c.fontHeight();
-  const int x = right ? c.width() - 3 - w : 3 + indent;
-  c.fillRect(right ? x - indent - 3 : 0, y, w + indent + 6, h, TFT_BLACK);
-  c.setTextColor(color);
-  c.drawString(s, x, y);
+  const int x = right ? c.width() - 3 - c.textWidth(s) : 3 + indent;
+  globeOutlinedString(c, s.c_str(), x, y, color);
   return x;
 }
 
@@ -258,8 +266,13 @@ static void globeDrawMarkers(M5Canvas& c, const float m[9], const float where[3]
     c.drawTriangle(pin.arrow[0], pin.arrow[1], pin.arrow[2], pin.arrow[3], pin.arrow[4], pin.arrow[5], TFT_BLACK);
     c.setRotation(modelReadingTurn);
   }
-  // The house under the pin: where both are at one place, the pin is what was asked for
-  if (home) globeDrawHomeOnGlobe(c, m, cx, cy, radius);
+  // The house under the pin. Where it would sit on the pin's tip (at the first zoom: within some 900 km of
+  // home), it stays away: it would blur where the pin points, and the pin is what was asked for.
+  int hx = 0, hy = 0;
+  const int touch = GLOBE_HOME_SIZE / 2 + 2;
+  const bool homeAtPin = shown && globeHomeAt(m, cx, cy, radius, hx, hy) && abs(hx - pin.x) <= touch &&
+                         abs(hy - pin.y) <= touch;
+  if (home && !homeAtPin) globeDrawHomeOnGlobe(c, m, cx, cy, radius);
   if (shown) {
     if (marker) marker(c, rx, ry);
     else globeDrawPin(c, rx, ry, citrus);

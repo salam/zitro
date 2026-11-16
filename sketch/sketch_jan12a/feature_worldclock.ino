@@ -116,11 +116,17 @@ static bool clockFetch(const char* query) {
   return true;
 }
 
+// Frame times for the serial log, as the globe has them: what the text costs beside the globe
+static unsigned long clockLogStart = 0;
+static uint32_t clockLogFrames = 0, clockLogDrawUs = 0, clockLogTextUs = 0;
+
 static bool clockBegin(M5Canvas& c) {
   if ((clockCity < 0 && !clockIsPlace) || !globeXyz || !c.getBuffer() || c.getColorDepth() != lgfx::rgb565_2Byte) return false;
   globePreparePalette(c);
   globeSpinReset(clockSpin);
   globeHomeLoad();
+  clockLogStart = 0;
+  clockLogFrames = clockLogDrawUs = clockLogTextUs = 0;
   globeFacing(clockLat, clockLon, modelRotation.m);  // Back from the text: the place in the middle again
   return true;
 }
@@ -165,6 +171,7 @@ static void clockHomeName(M5Canvas& c, const char* name, int y, int width, bool 
 }
 
 static void clockFrame(M5Canvas& c, float dt) {
+  const uint32_t startUs = micros();
   float turn[3];
   globeSpinStep(clockSpin, modelGyroDps, dt, turn);
   mat3Rotate(modelRotation, turn[0], turn[1], turn[2]);
@@ -215,7 +222,8 @@ static void clockFrame(M5Canvas& c, float dt) {
   const uint16_t citrus = c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B);
 
   // The times, live. Landscape: the city on the left, home on the right. Portrait: the city above the globe,
-  // home below it. Bottom lines first: each line's black box may reach into the top of the one below.
+  // home below it.
+  const uint32_t textStart = micros();
   if (timeKnown) {
     const bool portrait = c.height() > c.width();
     const int width = portrait ? c.width() - 6 : GLOBE_PANEL_W;
@@ -253,9 +261,7 @@ static void clockFrame(M5Canvas& c, float dt) {
       // Next to the time, where there's room
       const int x = 3 + c.textWidth(line) + 6;
       c.setFreeFont(FontManager::getFont12pt());
-      c.fillRect(x - 2, 27, c.textWidth(gapText) + 4, c.fontHeight() - 2, TFT_BLACK);
-      c.setTextColor(TFT_LIGHTGREY);
-      c.drawString(gapText, x, 28);
+      globeOutlinedString(c, gapText, x, 28, TFT_LIGHTGREY);
     }
     // The city's name on top, so it's clear whose time this is
     c.setFreeFont(FontManager::getFont12pt());
@@ -267,6 +273,20 @@ static void clockFrame(M5Canvas& c, float dt) {
     }
   }
   eduDrawFooter(c, 0);
+
+  const uint32_t endUs = micros();
+  clockLogDrawUs += endUs - startUs;
+  clockLogTextUs += endUs - textStart;
+  clockLogFrames++;
+  const unsigned long nowMs = millis();
+  if (!clockLogStart) clockLogStart = nowMs;
+  if (nowMs - clockLogStart >= GLOBE_LOG_EVERY_MS) {
+    Serial.printf("clock fps=%.1f drawUs avg=%u textUs avg=%u zoom=%u turn=%d\n",
+                  clockLogFrames * 1000.0f / (nowMs - clockLogStart), (unsigned)(clockLogDrawUs / clockLogFrames),
+                  (unsigned)(clockLogTextUs / clockLogFrames), modelZoomStep, modelReadingTurn);
+    clockLogStart = nowMs;
+    clockLogFrames = clockLogDrawUs = clockLogTextUs = 0;
+  }
 }
 
 const EduFeature FEATURE_CLOCK = {

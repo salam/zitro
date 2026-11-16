@@ -2,6 +2,7 @@
 
 ## Mon 16 Nov, 2026
 
+- **The whole globe, every way round**: on the world clock and the ISS, the writing now has a thin dark edge instead of black boxes, so it no longer cuts corners out of the Earth, whichever way you hold the stick. "422 km hoch" fits whole, the speed under it is no longer cut off when held upright, and the bottom line no longer runs off the screen for places like Zürich. Right next to the pin, the little house steps aside, so you see where the pin points.
 - **See when you're online**: once Zitro finds your WiFi, the little symbol in the corner shows a green tick, then gently fades away.
 - **A menu on the start screen**: press B on the start screen to see your timers, start the tour, get a surprise, practise words or open the settings. Every row has its own little picture, from gears and a parcel to a T-Rex. Below the line, 16 things to try are waiting, from Orion and the ISS to the T-Rex, a 3D heart and "Twinkle Twinkle". They open right away, without asking the AI.
 - **Menus that follow one button**: in the start menu, the word trainer's menu and the shop's menu, each press of the side button moves down a row right away. Hold it to go back. No more waiting, and the setup page no longer opens by accident.

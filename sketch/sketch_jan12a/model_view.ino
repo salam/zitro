@@ -269,37 +269,29 @@ void modelViewTick() {
 void eduDrawFooter(M5Canvas& c, int reserveRight) {
   static String cachedLabel, cachedSource, cachedText;
   static int cachedReserve = -1, cachedWidth = -1;
+  static bool cachedSmall = true;
   const int width = c.width(), height = c.height();  // The reading frame: views that level turn the sprite
-  bool ascii = true;
-  for (unsigned int i = 0; i < modelLabel.length(); i++) {
-    if ((uint8_t)modelLabel[i] >= 0x80) ascii = false;  // The small font only knows ASCII
-  }
-  if (ascii) {
-    c.setFont(&fonts::DejaVu9);
-  } else {
-    c.setFreeFont(FontManager::getFont12pt());  // Names with umlauts or Greek letters
-  }
-  c.setTextSize(1);
+  // The small font only knows ASCII: names with umlauts or Greek letters get the bigger one
+  auto useFont = [&c](bool small) {
+    if (small) c.setFont(&fonts::DejaVu9);
+    else c.setFreeFont(FontManager::getFont12pt());
+    c.setTextSize(1);
+  };
   if (cachedLabel != modelLabel || cachedSource != modelSourceName || cachedReserve != reserveRight ||
       cachedWidth != width) {
     cachedLabel = modelLabel;
     cachedSource = modelSourceName;
     cachedReserve = reserveRight;
     cachedWidth = width;
-    const String source = modelSourceName.length() > 0 ? " - " + modelSourceName : String("");
-    const int room = width - reserveRight - 6;
-    String name = modelLabel;
-    if (c.textWidth((name + source).c_str()) > room) {
-      while (name.length() > 1 && c.textWidth((name + "..." + source).c_str()) > room) {
-        // Never cut in the middle of a UTF-8 character
-        int cut = name.length() - 1;
-        while (cut > 0 && ((uint8_t)name[cut] & 0xC0) == 0x80) cut--;
-        name.remove(cut);
-      }
-      name += "...";
-    }
-    cachedText = name + source;
+    const bool labelAscii = eduIsAscii(modelLabel.c_str());
+    useFont(labelAscii);
+    char text[160];
+    const bool withLabel = eduFooterFit(modelLabel.c_str(), modelSourceName.c_str(), width - reserveRight - 6,
+                                        [&c](const char* t) { return (int)c.textWidth(t); }, text, sizeof(text));
+    cachedText = text;
+    cachedSmall = withLabel ? labelAscii : eduIsAscii(text);
   }
+  useFont(cachedSmall);
   c.fillRect(0, height - EDU_FOOTER_HEIGHT, width, EDU_FOOTER_HEIGHT, TFT_BLACK);
   c.setTextDatum(textdatum_t::baseline_left);
   c.setTextColor(TFT_LIGHTGREY);

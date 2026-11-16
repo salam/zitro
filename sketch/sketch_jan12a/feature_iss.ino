@@ -116,20 +116,20 @@ static void issDrawPlace(M5Canvas& c, const char* name, int y, int width) {
     since = millis();
   }
   const int room = width - (ISS_PLACE_X - 3), textWidth = c.textWidth(name);
-  c.fillRect(0, y, ISS_PLACE_X + min(textWidth, room) + 3, ISS_PLACE_BOX_H, TFT_BLACK);
+  // No box behind it, like the other lines: the little arrow gets its own black rim instead
+  c.fillTriangle(2, y + 7, 10, y + 7, 6, y + 17, TFT_BLACK);
   c.fillTriangle(3, y + 8, 9, y + 8, 6, y + 15, c.color565(GLOBE_PIN_R, GLOBE_PIN_G, GLOBE_PIN_B));
-  c.setTextColor(TFT_WHITE);
   if (textWidth <= room) {
-    c.drawString(name, ISS_PLACE_X, y);
+    globeOutlinedString(c, name, ISS_PLACE_X, y, TFT_WHITE);
     return;
   }
   const int period = textWidth + ISS_TICKER_GAP;
   const unsigned long cycle = ISS_TICKER_PAUSE_MS + (unsigned long)period * 1000 / ISS_TICKER_PX_S;
   const unsigned long t = (millis() - since) % cycle;
   const int offset = t < (unsigned long)ISS_TICKER_PAUSE_MS ? 0 : (int)((t - ISS_TICKER_PAUSE_MS) * ISS_TICKER_PX_S / 1000);
-  c.setClipRect(ISS_PLACE_X, y, room, ISS_PLACE_BOX_H + 3);
-  c.drawString(name, ISS_PLACE_X - offset, y);
-  c.drawString(name, ISS_PLACE_X - offset + period, y);
+  c.setClipRect(ISS_PLACE_X - 1, y - 1, room + 1, ISS_PLACE_BOX_H + 3);
+  globeOutlinedString(c, name, ISS_PLACE_X - offset, y, TFT_WHITE);
+  globeOutlinedString(c, name, ISS_PLACE_X - offset + period, y, TFT_WHITE);
   c.clearClipRect();
 }
 
@@ -173,11 +173,14 @@ static void issFrame(M5Canvas& c, float dt) {
   }
 
   // From here the sprite reads upright. Landscape: what and how fast in the top corners, where in the bottom
-  // ones. Portrait: above and below the globe. Bottom lines first, as in the clock.
+  // ones. Portrait: above and below the globe.
   const bool portrait = c.height() > c.width();
   const int width = portrait ? c.width() - 6 : GLOBE_PANEL_W;
   c.setTextDatum(textdatum_t::top_left);
   c.setTextSize(1);
+  // Landscape: the top right only shares its rows with the short "ISS", so "422 km hoch" fits whole
+  c.setFreeFont(FontManager::getFont16pt());
+  const int topWidth = portrait ? width : c.width() - 6 - c.textWidth("ISS") - 8;
   c.setFreeFont(FontManager::getFont12pt());
   if (known) {
     char line[32], number[16];
@@ -191,9 +194,9 @@ static void issFrame(M5Canvas& c, float dt) {
     if (place) issDrawPlace(c, place, portrait ? ISS_Y_PLACE_PORTRAIT : ISS_Y_PLACE_LANDSCAPE, width);
     issFormatThousands(number, sizeof(number), issTrack->speedKmh);
     snprintf(line, sizeof(line), "%s km/h", number);
-    globePanelText(c, line, portrait ? 50 : 21, TFT_WHITE, width, !portrait);
+    globePanelText(c, line, portrait ? 50 : 21, TFT_WHITE, topWidth, !portrait);
     snprintf(line, sizeof(line), issGerman ? "%d km hoch" : "%d km up", (int)lroundf(alt));
-    globePanelText(c, line, portrait ? 33 : 2, TFT_WHITE, width, !portrait);
+    globePanelText(c, line, portrait ? 33 : 2, TFT_WHITE, topWidth, !portrait);
   } else {
     // Past the end of the track: no position is better than a wrong one
     globePanelText(c, issGerman ? "die Bahn ist alt." : "the track is old.", portrait ? 50 : 96, TFT_WHITE, width);

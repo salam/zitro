@@ -3,6 +3,10 @@
 ## Mon 16 Nov, 2026
 
 - **See when you're online**: once Zitro finds your WiFi, the little symbol in the corner shows a green tick, then gently fades away.
+- **A menu on the start screen**: press B on the start screen to see your timers, start the tour, get a surprise, practise words or open the settings. Every row has its own little picture, from gears and a parcel to a T-Rex. Below the line, 16 things to try are waiting, from Orion and the ISS to the T-Rex, a 3D heart and "Twinkle Twinkle". They open right away, without asking the AI.
+- **Menus that follow one button**: in the start menu, the word trainer's menu and the shop's menu, each press of the side button moves down a row right away. Hold it to go back. No more waiting, and the setup page no longer opens by accident.
+- **Changed your mind?** Press the side button while Zitro is listening, and the recording stops. Back where you were.
+- **Quick way home**: on "Keine Timer aktiv.", press the side button to go back to the start screen.
 - **The right time in Havana**: Cuba keeps its summer time this winter, and Zitro's world clock now knows. Other countries' one-off changes like this come through from now on.
 - **See what the ISS flies over**: a yellow arrow next to the station's numbers now shows what's right below it, from Korsika and Alaska to the South Pacific. Ask "Wo ist die ISS?" and watch the names change as it flies.
 - **An installer that never gets stuck**: if a plugged-in device doesn't answer, the installer stops after a few seconds and tells you what to do, instead of waiting forever.

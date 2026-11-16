@@ -32,6 +32,14 @@ bool recordSpeech(int rate, int seconds, bool stopOnSilence, int16_t*& buffer, i
       M5.Mic.record(buffer + pos, chunk, rate);
       while (M5.Mic.isRecording()) {
         M5.update();
+        if (M5.BtnB.wasPressed()) {  // B cancels, as for a question (recordAudio)
+          micStop();
+          releaseButtonBAfterCancel();
+          cancelled = true;
+          free(buffer);
+          buffer = nullptr;
+          return false;
+        }
         if (M5.BtnA.wasPressed()) {
           micStop();
           const unsigned long tap = millis();

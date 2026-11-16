@@ -70,6 +70,7 @@ enum ImageFetchResult { IMAGE_FETCH_OK, IMAGE_FETCH_TOO_LARGE, IMAGE_FETCH_NEEDS
 #include "fonts/PrimaryFont10pt.h"
 #include "fonts/PrimaryFont14pt.h"
 #include "guide_core.h"
+#include "home_menu_core.h"
 
 // FontManager class for smart UTF-8 font rendering
 class FontManager {
@@ -226,6 +227,7 @@ Mat3 modelRotation;
 uint8_t modelZoomStep = 0;
 bool modelForceNoMemory = false;  // Serial "modelnomem 1": tests the out-of-memory path
 String serialTestQuestion;  // Serial "ask <question>": stands in for the recording
+bool buttonBHeldForMenu = false;  // Holding B closed the home menu: the same press isn't a WiFi reset too
 String modelPubChemHost = "pubchem.ncbi.nlm.nih.gov";  // Serial "modelhost": tests a dead server
 bool isWolframImage = false;  // Flag to track if current image is from Wolfram Alpha
 int wolframScrollOffset = 0;  // Vertical scroll offset for Wolfram images
@@ -391,6 +393,7 @@ const char* uiText(const char* de, const char* en) {
 bool wifiLinkUp();     // wifi_link.ino
 bool guideActive();    // guide.ino
 bool vocabActive();    // vocab.ino
+bool vocabListActive();
 bool shopActive();     // shop.ino
 ClockPlaceResult clockAskServer(const char* query, ClockPlace& out);  // feature_worldclock.ino
 
@@ -646,6 +649,8 @@ extern const uint8_t micBrokenIcon[60];
 int getLandscapeRotation();
 void displayImage(bool isGeneratedImage = false);
 void discardButtonA(unsigned long quietMs);
+void forgetButtonBClicks();
+void releaseButtonBAfterCancel();
 bool inWakeCooldown();
 void displayPrinterSelection();
 void drawPrintSizeMenu();
@@ -707,6 +712,20 @@ void vocabTick();
 void vocabStop();
 void vocabRedraw();
 void vocabSerial(const String& line);
+void showAnswer(GPTResponse& gptResponse, const String& question, bool playAudio);
+void showTimerList(bool playAudio);
+String noTimersText();
+bool noTimersShown();
+void goHomeScreen();
+bool showSurprise();
+void openSettings();
+void showNightLockAndSleep();
+bool homeMenuActive();
+void homeMenuOpen();
+void homeMenuStop();
+void homeMenuRedraw();
+void homeMenuTick();
+void homeMenuSerial(const String& line);
 bool transcribeSamples(const int16_t* samples, int count, int sampleRate, const char* language, const char* prompt,
                        String& text, String& error);
 bool speakTextStyled(const String &text, const char* instructions, TtsStyle style = TTS_STYLE_ANSWER);
@@ -2568,6 +2587,7 @@ void saveStateToPreferences() {
   if (guideActive()) guideStop(false);
   if (vocabActive()) vocabStop();
   if (shopActive()) shopStop();
+  if (homeMenuActive()) homeMenuStop();
 
   Serial.println("\n========== SAVING STATE ==========");
 
@@ -3084,6 +3104,24 @@ void discardButtonA(unsigned long quietMs) {
   M5.BtnA.setState(millis(), m5::Button_Class::state_nochange);
 }
 
+// Forget Button B's clicks so far, without waiting: a menu that took them as "next" mustn't see them come back as a
+// single, double or triple press (the setup page) once it has closed
+void forgetButtonBClicks() {
+  buttonForgetClicks(M5.BtnB, millis());  // home_menu_core.h, tested against M5Unified's button code
+}
+
+// After Button B has cancelled a recording (Matthias, 2026-11-16): waits for its release (at most 5 s) and forgets the
+// press, so it doesn't open the home menu once the recording has stopped, and a long hold doesn't reset the WiFi
+void releaseButtonBAfterCancel() {
+  const unsigned long start = millis();
+  while (M5.BtnB.isPressed() && millis() - start < 5000) {
+    M5.update();
+    delay(10);
+  }
+  if (M5.BtnB.isPressed()) buttonBHeldForMenu = true;
+  forgetButtonBClicks();
+}
+
 // True for WAKE_COOLDOWN ms after waking from any sleep stage
 bool inWakeCooldown() {
   return timeWokeFromSleep != 0 && millis() - timeWokeFromSleep < WAKE_COOLDOWN;
@@ -3101,6 +3139,10 @@ void redrawPreviousResult() {
   }
   if (shopActive()) {
     shopRedraw();
+    return;
+  }
+  if (homeMenuActive()) {
+    homeMenuRedraw();
     return;
   }
   if (response.length() > 0 && !response.startsWith("Press BUTTON")) {
@@ -3155,6 +3197,15 @@ bool recordAudio(bool &cancelled) {
       while (M5.Mic.isRecording()) {
         M5.update();  // Update button states
         wifiBackgroundTick();  // WiFi may still be on its way after a wake
+
+        // Button B during recording cancels it: back to where the question started
+        if (M5.BtnB.wasPressed()) {
+          micStop();
+          Serial.println("\n*** BUTTON B PRESSED - RECORDING CANCELLED ***");
+          releaseButtonBAfterCancel();
+          cancelled = true;
+          return false;
+        }
 
         // Button A during recording: one tap restarts, a second quick tap cancels
         if (M5.BtnA.wasPressed()) {
@@ -9133,6 +9184,58 @@ void checkTimers() {
   }
 }
 
+// The night lock's answer: the sleeping moon, then the display off. The power state goes along, so the next press
+// wakes the stick as from any dark screen (before, the panel was off while the stick still counted as awake).
+void showNightLockAndSleep() {
+  drawScreenWithIcon(uiText("Ich schlafe z z z", "Sleeping z z z"), nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
+  M5.Display.sleep();
+  delay(3000);
+  displaySleeping = true;
+  currentPowerState = POWER_DISPLAY_SLEEP;
+}
+
+// The timer list, or "Keine Timer aktiv." without timers: for a spoken "Welche Timer laufen?" and the home menu
+void showTimerList(bool playAudio) {
+  Serial.println("List timers requested");
+  M5.Display.setRotation(getLandscapeRotation());
+  currentDisplayMode = SHOW_TEXT;
+  if (timerCount > 0) {
+    inTimerListMode = true;
+    timerListIndex = 0;
+    drawTimerListEntry(0);
+  } else {
+    String noTimers = noTimersText();
+    response = noTimers;
+    // The note replaces the last answer, so its picture or 3D view goes too (no rotate or cube hint on it)
+    hasImage = false;
+    hasModel = false;
+    drawScreen(noTimers);
+    if (playAudio) speakText(noTimers);
+  }
+  resetToActiveState();
+}
+
+String noTimersText() {
+  return uiText("Keine Timer aktiv.", "No timers running.");
+}
+
+// "Keine Timer aktiv." is on screen: a passing note, where B goes back to the home screen
+bool noTimersShown() {
+  return currentDisplayMode == SHOW_TEXT && response == noTimersText();
+}
+
+// The home screen, as after switching on: no answer kept. B goes here from a passing note such as "Keine Timer
+// aktiv." (Matthias, 2026-11-16)
+void goHomeScreen() {
+  response = "";
+  hasImage = false;
+  hasModel = false;
+  currentDisplayMode = SHOW_TEXT;
+  M5.Display.setRotation(getLandscapeRotation());
+  drawScreen(MAIN_QUESTION);
+  resetToActiveState();
+}
+
 void handleVoiceQuery(bool playAudio) {
   // Recording and the AI need the memory, and this question's answer is what comes next
   modelViewEnd();
@@ -9218,9 +9321,7 @@ void handleVoiceQuery(bool playAudio) {
         normalizedQuestion.indexOf("setting") < 0) {
       lastVoiceOutcome = GUIDE_VOICE_BLOCKED;
       Serial.println("Parental lock is ON and current time is restricted (8pm-6am)");
-      drawScreenWithIcon(uiText("Ich schlafe z z z", "Sleeping z z z"), nightIcon, NIGHTICON_WIDTH, NIGHTICON_HEIGHT);
-      M5.Display.sleep();
-      delay(3000);
+      showNightLockAndSleep();
       return;
     }
   }
@@ -9315,20 +9416,7 @@ void handleVoiceQuery(bool playAudio) {
   }
 
   if (gptResponse.listTimers) {
-    Serial.println("List timers requested");
-    M5.Display.setRotation(getLandscapeRotation());
-    currentDisplayMode = SHOW_TEXT;
-    if (timerCount > 0) {
-      inTimerListMode = true;
-      timerListIndex = 0;
-      drawTimerListEntry(0);
-    } else {
-      String noTimers = "Keine Timer aktiv.";
-      response = noTimers;
-      drawScreen(noTimers);
-      if (playAudio) speakText(noTimers);
-    }
-    resetToActiveState();
+    showTimerList(playAudio);
     return;
   }
 
@@ -9345,6 +9433,12 @@ void handleVoiceQuery(bool playAudio) {
     return;
   }
 
+  showAnswer(gptResponse, question, playAudio);
+}
+
+// Shows an answer: its view or picture, the text, the memory of the conversation and the read-aloud. A spoken
+// question and the home menu's example questions (home_menu.ino) both end here.
+void showAnswer(GPTResponse& gptResponse, const String& question, bool playAudio) {
   response = wordWrap(gptResponse.answer, 25);
   Serial.println("Final display text:");
   Serial.println(response);
@@ -9479,6 +9573,123 @@ void handleButtonAClick(bool withAudio) {
   discardButtonA(0);
 }
 
+// A surprise, as shaking gives one: half the time a built-in scene, shape, star map or clock, else a fact with
+// its picture. True where the shake block used to end the loop pass (a scene opened, or no fact found).
+bool showSurprise() {
+  resetToActiveState();
+
+  // Half the time a scene, a shape, a star map or the time somewhere instead of a fact. All built in,
+  // so it opens at once. If it can't (no memory, no clock yet), the fact comes as before.
+  if (random(0, 2) == 0 && openShakeMedia()) {
+    Serial.println("\n*** SHAKE INTERACTION COMPLETE (media) ***\n");
+    return true;
+  }
+
+  // Wake display if sleeping (though check above prevents this)
+  if (displaySleeping) {
+    M5.Display.wakeup();
+    displaySleeping = false;
+  }
+
+  // Show thinking message (brief)
+  drawScreenWithIcon("...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
+
+  // Use pre-generated surprise responses instead of calling GPT
+  // For shake gesture, we only use instruction 0 (learning facts) with all 5 question types
+  int questionIndex = random(0, 5);
+  int instructionIndex = 0;  // Always use instruction 0 for shake (learning facts)
+
+  Serial.printf("Shake gesture: selecting random fact for instruction %d, question %d\n", instructionIndex, questionIndex);
+
+  // Get a random surprise response from the data arrays
+  int responseIndex = getRandomSurpriseIndex(instructionIndex, questionIndex);
+
+  if (responseIndex < 0) {
+    Serial.println("ERROR: No surprise response found!");
+    response = "Keine\nUeberraschung\nverfuegbar.";
+    drawScreen(response);
+    resetToActiveState();
+    Serial.println("\n*** SHAKE INTERACTION FAILED ***\n");
+    return true;  // as before: the loop pass ends here
+  }
+
+  SurpriseResponse surpriseResp = getSurpriseResponse(responseIndex);
+
+  // Read answer and wiki query from PROGMEM, using language-appropriate field
+  // Check preferences for language setting (defaults to German if not set)
+  Preferences langPrefs;
+  langPrefs.begin("settings", true);  // Read-only
+  String deviceLanguage = langPrefs.getString("language", "DE");
+  langPrefs.end();
+
+  const char* answerField = (deviceLanguage == "EN") ? surpriseResp.answerEN : surpriseResp.answerDE;
+  String answer = readProgmemString(answerField);
+  String wikiQuery = readProgmemString(surpriseResp.wikiQuery);
+
+  Serial.printf("Selected response index %d\n", responseIndex);
+  Serial.printf("Answer: %s\n", answer.c_str());
+  Serial.printf("Wiki query: %s\n", wikiQuery.c_str());
+
+  response = wordWrap(answer, 25);
+  Serial.println("Final display text:");
+  Serial.println(response);
+
+  // Try to fetch Wikipedia image for this fact
+  hasImage = false;
+  currentImageUrl = "";
+  hasModel = false;
+  modelRefText = "";
+  eduUnloadActive();
+
+  if (wikiQuery.length() > 0) {
+    Serial.printf("Fetching Wikipedia image for: %s\n", wikiQuery.c_str());
+    WikiResult wikiResult = searchWikipedia(wikiQuery);
+
+    if (wikiResult.found && wikiResult.imageUrl.length() > 0) {
+      Serial.printf("Found Wikipedia image: %s\n", wikiResult.imageUrl.c_str());
+      bool imageDownloaded = downloadImage(wikiResult.imageUrl);
+
+      if (imageDownloaded) {
+        hasImage = true;
+        currentImageUrl = wikiResult.imageUrl;
+        Serial.println("Successfully downloaded Wikipedia image");
+      } else {
+        Serial.println("Failed to download Wikipedia image");
+      }
+    } else {
+      Serial.println("No Wikipedia image found");
+    }
+  }
+
+  // Show text in landscape mode
+  M5.Display.setRotation(getLandscapeRotation());
+  currentDisplayMode = SHOW_TEXT;
+  imageZoomMode = CONTAIN;
+  drawScreen(response);
+  resetToActiveState();
+
+  // Don't speak the answer for shake-triggered surprise facts
+  // User can still see the text and image
+
+  Serial.println("\n*** SHAKE INTERACTION COMPLETE ***\n");
+  return false;
+}
+
+// The setup page, as the triple press opens it; also the home menu's "Einstellungen"
+void openSettings() {
+  // Display message
+  drawSetupScreen(true);
+  delay(2000);
+
+  // Stop any ongoing operations if not in AP mode
+  if (!apMode) {
+    WiFi.disconnect();
+  }
+
+  // Start settings/captive portal
+  startAPMode();
+}
+
 void loop() {
   M5.update();
   speakerOffWhenQuiet();  // StickS3: no hum at rest (board.h). Before the early returns below.
@@ -9488,21 +9699,11 @@ void loop() {
   // Three quick presses of Button C (B on the StickS3) open the settings/capture landing page.
   // Not in the timer and printer lists (Button C is "next" there, so three quick presses must not
   // open the settings), while a timer alert is up, or where Button C has another job.
-  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive() || shopActive();
+  bool btnCIsListButton = timerAlertActive || inTimerListMode || inPrinterSelectionMode || guideActive() || vocabActive() ||
+                          shopActive() || homeMenuActive();
   if (setupPressesDone(buttonCCountsForSettings(btnCIsListButton, hasImage, hasModel))) {
     Serial.println("\n*** TRIPLE-CLICK DETECTED - ENTERING SETTINGS ***\n");
-
-    // Display message
-    drawSetupScreen(true);
-    delay(2000);
-
-    // Stop any ongoing operations if not in AP mode
-    if (!apMode) {
-      WiFi.disconnect();
-    }
-
-    // Start settings/captive portal
-    startAPMode();
+    openSettings();
     return;
   }
 
@@ -9582,6 +9783,7 @@ void loop() {
       if (guideActive()) guideRenderStep();
       if (vocabActive()) vocabRedraw();
       if (shopActive()) shopRedraw();
+      if (homeMenuActive()) homeMenuRedraw();
       resetToActiveState();
       discardButtonA(0);  // This press dismissed the alert; its click must not start a recording
     }
@@ -9676,6 +9878,13 @@ void loop() {
     return;
   }
 
+  // And the home menu
+  if (homeMenuActive()) {
+    homeMenuTick();
+    delay(20);
+    return;
+  }
+
   // 3D view: one frame per pass, so timers, buttons and sleep keep working
   if (currentDisplayMode == SHOW_MODEL && hasModel && !displaySleeping && currentPowerState == POWER_ACTIVE) {
     modelViewTick();
@@ -9685,102 +9894,7 @@ void loop() {
   if (!displaySleeping && currentPowerState == POWER_ACTIVE && !inPrinterSelectionMode &&
       currentDisplayMode != SHOW_MODEL && detectShakeGesture() && shakeSurpriseEnabled()) {
     Serial.println("\n*** SHAKE DETECTED - SURPRISE ***\n");
-    resetToActiveState();
-
-    // Half the time a scene, a shape, a star map or the time somewhere instead of a fact. All built in,
-    // so it opens at once. If it can't (no memory, no clock yet), the fact comes as before.
-    if (random(0, 2) == 0 && openShakeMedia()) {
-      Serial.println("\n*** SHAKE INTERACTION COMPLETE (media) ***\n");
-      return;
-    }
-
-    // Wake display if sleeping (though check above prevents this)
-    if (displaySleeping) {
-      M5.Display.wakeup();
-      displaySleeping = false;
-    }
-
-    // Show thinking message (brief)
-    drawScreenWithIcon("...", thinkingIcon, THINKINGICON_WIDTH, THINKINGICON_HEIGHT, 2);
-
-    // Use pre-generated surprise responses instead of calling GPT
-    // For shake gesture, we only use instruction 0 (learning facts) with all 5 question types
-    int questionIndex = random(0, 5);
-    int instructionIndex = 0;  // Always use instruction 0 for shake (learning facts)
-
-    Serial.printf("Shake gesture: selecting random fact for instruction %d, question %d\n", instructionIndex, questionIndex);
-
-    // Get a random surprise response from the data arrays
-    int responseIndex = getRandomSurpriseIndex(instructionIndex, questionIndex);
-
-    if (responseIndex < 0) {
-      Serial.println("ERROR: No surprise response found!");
-      response = "Keine\nUeberraschung\nverfuegbar.";
-      drawScreen(response);
-      resetToActiveState();
-      Serial.println("\n*** SHAKE INTERACTION FAILED ***\n");
-      return;
-    }
-
-    SurpriseResponse surpriseResp = getSurpriseResponse(responseIndex);
-
-    // Read answer and wiki query from PROGMEM, using language-appropriate field
-    // Check preferences for language setting (defaults to German if not set)
-    Preferences langPrefs;
-    langPrefs.begin("settings", true);  // Read-only
-    String deviceLanguage = langPrefs.getString("language", "DE");
-    langPrefs.end();
-
-    const char* answerField = (deviceLanguage == "EN") ? surpriseResp.answerEN : surpriseResp.answerDE;
-    String answer = readProgmemString(answerField);
-    String wikiQuery = readProgmemString(surpriseResp.wikiQuery);
-
-    Serial.printf("Selected response index %d\n", responseIndex);
-    Serial.printf("Answer: %s\n", answer.c_str());
-    Serial.printf("Wiki query: %s\n", wikiQuery.c_str());
-
-    response = wordWrap(answer, 25);
-    Serial.println("Final display text:");
-    Serial.println(response);
-
-    // Try to fetch Wikipedia image for this fact
-    hasImage = false;
-    currentImageUrl = "";
-    hasModel = false;
-    modelRefText = "";
-    eduUnloadActive();
-
-    if (wikiQuery.length() > 0) {
-      Serial.printf("Fetching Wikipedia image for: %s\n", wikiQuery.c_str());
-      WikiResult wikiResult = searchWikipedia(wikiQuery);
-
-      if (wikiResult.found && wikiResult.imageUrl.length() > 0) {
-        Serial.printf("Found Wikipedia image: %s\n", wikiResult.imageUrl.c_str());
-        bool imageDownloaded = downloadImage(wikiResult.imageUrl);
-
-        if (imageDownloaded) {
-          hasImage = true;
-          currentImageUrl = wikiResult.imageUrl;
-          Serial.println("Successfully downloaded Wikipedia image");
-        } else {
-          Serial.println("Failed to download Wikipedia image");
-        }
-      } else {
-        Serial.println("No Wikipedia image found");
-      }
-    }
-
-    // Show text in landscape mode
-    M5.Display.setRotation(getLandscapeRotation());
-    currentDisplayMode = SHOW_TEXT;
-    imageZoomMode = CONTAIN;
-    drawScreen(response);
-    resetToActiveState();
-
-    // Don't speak the answer for shake-triggered surprise facts
-    // User can still see the text and image
-
-    Serial.println("\n*** SHAKE INTERACTION COMPLETE ***\n");
+    if (showSurprise()) return;
   }
 
   // Use orientation change as a toggle gesture (always render in landscape)
@@ -10025,7 +10139,7 @@ void loop() {
       Serial.println("⚠ Long press conditions not met - not in image view mode");
     }
   }
-  // Button B short press: scroll up when showing an image
+  // Button B short press: scroll up when showing an image, open the home menu on the home screen or a text
   else if (buttonBClicked()) {
     Serial.printf("Button B single-click detected! displaySleeping=%d, mode=%d, hasImage=%d\n",
                   displaySleeping, currentDisplayMode, hasImage);
@@ -10039,6 +10153,12 @@ void loop() {
       Serial.printf("Button B: scroll offset now: %d\n", wolframScrollOffset);
       displayImage(currentImageUrl.length() == 0);
       resetToActiveState();
+    } else if (!displaySleeping && !inWakeCooldown() && currentDisplayMode == SHOW_TEXT) {
+      // The home screen or a written answer, where B had no job: B opens the home menu (home_menu.ino). Not only
+      // on the home screen, because after an answer `response` keeps it, so the home screen can't be told apart.
+      // "Keine Timer aktiv." is only a passing note: there B goes back to the home screen.
+      if (noTimersShown()) goHomeScreen();
+      else homeMenuOpen();
     }
   }
   // Button B double click: comes a second after the two clicks, which each did their own job above
@@ -10089,8 +10209,9 @@ void loop() {
     resetToActiveState();
   }
 
-  // Long press B to reset WiFi credentials
-  if (M5.BtnB.pressedFor(3000)) {
+  // Long press B to reset WiFi credentials. A hold that closed the home menu isn't one: B counts again once let go.
+  if (buttonBHeldForMenu && M5.BtnB.isReleased()) buttonBHeldForMenu = false;
+  if (M5.BtnB.pressedFor(3000) && !buttonBHeldForMenu) {
     resetCredentials();
   }
 

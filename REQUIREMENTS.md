@@ -83,6 +83,7 @@
   - Configurable via web interface
   - Affects RECORD_SECONDS and RECORD_SAMPLES globals
 - **Button A during recording**: one tap restarts the recording; a second tap within 500 ms cancels it and shows the last answer (or the home screen). Further taps of the burst are swallowed.
+- **Button B during recording** (both recorders, `recordAudio()` and `recordSpeech()`): cancels at once, like A's double tap. `releaseButtonBAfterCancel()` waits for B's release and forgets its clicks, so it doesn't open the home menu afterwards, and a long hold doesn't reset WiFi. Requested by the user on 2026-11-16
 - **Wake press**: the Button A press that wakes the device (display, light or deep sleep) never starts a recording. Pending clicks are discarded after wake, and a 2 s cooldown applies after every wake.
 
 ### Language Settings
@@ -133,6 +134,7 @@
 - Setup hotspot (open WiFi) is named "zitro"; mDNS makes the setup page reachable at `zitro.local`. The WiFi QR code (`WIFI:T:nopass;S:zitro;P:;;`, QR version 3, 93x93 px) is made by `generate_wifi_qr.py` and `convert_wifi_qr.sh`
 - Setup page follows zitro.spot (webpage2/styles.css): paper palette, Sniglet headings, lemon-shaped citrus buttons. Sniglet is served from flash (`setup_fonts.h`, `/f/sniglet-400.woff2`, `/f/sniglet-800.woff2`, made by `scripts/make_setup_fonts.py`) because setup mode has no internet
 - Home screen (`drawHomeScreen()`, drawn whenever `MAIN_QUESTION` is shown): "[lemon] Press [M5] button" on one line: small citrus lemon (#f2b705, with leaf), then "Press", a keycap labeled "M5" like the stick's front button (rounded dark grey face with white outline, smaller DejaVu 12 text, 2 px mid-grey key side showing bottom and right), then "button"; "to ask a question"; half-line gap; shake icon (`shakeIcon`, phone slightly tilted) + "Shake for a surprise."
+  - One click of Button B there opens the home menu (see Requirements for the Home Menu)
   - On the StickS3 the key looks like its front button (`drawFrontKeycap()`): an upright blue pill with no label, face 7 px wide and as tall as the M5 key's face, corner radius 3, fill `0x3C7F`, the same 2 px mid-grey side bottom and right. The tour, the vocabulary trainer and the shop draw their keys with it too, so the StickS3 never shows "M5"
   - In German (Settings → language DE, the default): "[lemon] Drück die [M5] Taste", "und stell eine Frage", shake icon + "Schüttle mich!" ("Schüttle für eine Überraschung." is 281 px wide, the screen 240)
 - WiFi search icon (see WiFi in the Background): three arcs over a dot, 17x14 px, drawn with primitives, top right at (WIDTH-21, 3), left of the battery indicator when that shows. Only on the home screen, the recording screen, and the screens that wait for WiFi while showing something else ("Restoring...", "Restoring image..."). Pulses grey (90) to white and back every 1.4 s while searching, stays grey once a search found nothing. When the connection stands it turns into the connected icon
@@ -499,6 +501,81 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 
 ---
 
+# Requirements for the Home Menu
+
+Requested by the user on 2026-11-15: "Beim Hauptscreen der Button B soll das Menü zeigen, mit Settings, aber auch mit 10+ Fragen, die die Multimedia-Sachen auslösen", then the functions "direkt ins Menü nach B", "Timer anzeigen" prominent, and a line above the questions instead of a sub-list. Spec: `docs/superpowers/specs/2026-11-15-home-menu-design.md`.
+
+- **Opening:** one click of Button B on any `SHOW_TEXT` screen (`buttonBClicked()`, both sticks): the home screen and every written answer, where B had no job. Or serial `home`.
+  - Not the home screen alone, because `response` keeps the last answer: after one answer, the home screen can't be told apart from it.
+  - Except on "Keine Timer aktiv." (`noTimersShown()`): a passing note, where B goes back to the home screen (`goHomeScreen()`: no answer kept). The note also drops the last answer's picture and 3D view, so no rotate or cube hint shows on it. User, 2026-11-16
+  - The button module (`feature/button-ui`) will open it through `homeMenuOpen()` with its own press reader.
+- **Code:** `home_menu.ino`. Rows, questions and presses are pure in `home_menu_core.h`, with host tests in `tests/home_menu/run.sh`. While it is open, `loop()` hands over to `homeMenuTick()` after the shop block, as for the trainer.
+- **Rows:**
+  1. Timer anzeigen / Show timers: `showTimerList(false)`.
+  2. Tour starten / Start the tour: `guideStartNow()`.
+  3. Überraschung / Surprise: `showSurprise()`, also when shaking is off.
+  4. Wörter üben / Practise words: `vocabStart("practice")`, after the WiFi wait.
+  5. Einstellungen / Settings: `openSettings()`.
+  6. Menü schliessen / Close menu.
+  - A grey line (0x7BEF) above row 7.
+  - Rows 7–22: the 16 example questions (`HOME_QUESTIONS`).
+  - Row 1 is preselected.
+- **Look:** as `vocabDrawMenu`.
+  - Landscape, 3 rows at y 14 + k × 36.
+  - The selected row is a white rounded rectangle 204 × 30 at x 20, with black ink.
+  - Each row has its own 20 × 20 icon at x 26 (`HOME_ROW_ICONS`, `home_menu_icons.h`), drawn in the row's ink: a timer, a flag (tour), a parcel (surprise), 文A (words), gears (settings), a cross (close); for the questions a star, a satellite, a rocket, a moon, a camera, a T. rex, a heart, DNA, a crystal, a drop, an icosahedron, a parabola, mountains, a clock, a pan and a note. Material Symbols Rounded (Apache 2.0), the T. rex, the parabola and the icosahedron drawn in the same grid; made by `scripts/make_home_menu_icons.py`. Requested by the user on 2026-11-16 ("Icons ... für Settings (Zahnräder), Timer (Timer-Uhr), Tour, Überraschung (Päckli). Stretch goal: für Orion, etc. auch")
+  - Label at x 50 in `getFont12pt()` (Roboto 10 pt), at most 174 px wide (checked by the host test).
+  - Scroll bar at x 230.
+  - Tabs ✓ (A) and ▼ (B); no C tab.
+- **Presses:**
+  - Read by `menuPressRead(M5.BtnA.wasClicked(), M5.BtnB.wasClicked(), M5.BtnB.wasHold())` (pure, `home_menu_core.h`), on both sticks. The user, 2026-11-16: "in the menu double button b shouldn't have it's own function".
+  - B click: next row at once, wrapping. No double-click window to wait for: two quick clicks are two rows.
+  - Closing: holding B, or "Menü schliessen". Button C isn't read.
+  - `forgetButtonBClicks()` after every B press, so the menu's clicks never come back to `loop()` as a single, double or triple press (the setup page) once it has closed.
+  - A hold that closes the menu sets `buttonBHeldForMenu`. Until B is released, `loop()`'s 3-second WiFi reset doesn't count that press.
+  - A: choose. It is read as `M5.BtnA.wasClicked()`, with `discardButtonA(0)` before and after.
+- **Questions:**
+
+  | # | DE | EN | Opens |
+  |---|---|---|---|
+  | 7 | Wo ist Orion? | Where is Orion? | `sky:Orion` |
+  | 8 | Wo ist die ISS? | Where is the ISS? | `iss:now` |
+  | 9 | Mondlandungen | Moon landings | `timeline:moon_missions` |
+  | 10 | Mondphasen | Moon phases | `physics:moon` |
+  | 11 | Foto: Marie Curie | Photo: Marie Curie | Wikipedia picture |
+  | 12 | T-Rex | T. rex | `dino:Tyrannosaurus` |
+  | 13 | Das Herz | The heart | `anatomy:heart` |
+  | 14 | DNA in 3D | DNA in 3D | `protein:dna` |
+  | 15 | Salzkristall | Salt crystal | `crystal:salt` |
+  | 16 | Wassermolekül | Water molecule | `molecule:water` |
+  | 17 | Ikosaeder | Icosahedron | `solid:icosahedron` |
+  | 18 | Kurve von x² | Graph of x² | `graph:x^2` |
+  | 19 | Matterhorn | The Matterhorn | `globe:Matterhorn` |
+  | 20 | Uhrzeit in Tokio | Time in Tokyo | `clock:Tokyo` |
+  | 21 | Pfannkuchen | Pancakes | `recipe:pancakes` |
+  | 22 | Twinkle Twinkle | Twinkle Twinkle | `music:twinkle-twinkle` |
+
+  - Every question has a fixed answer: a label, a short line in DE and EN without facts ("Hier ist Orion."), its reference, and an `imageQuery`. The `imageQuery` is the photo itself, or the fallback picture when the view can't open.
+  - Choosing one builds a `GPTResponse` and calls `showAnswer()`, the function a spoken question ends in, moved out of `handleVoiceQuery()`. So view, text, tabs, printing and memory work the same; the label goes into the memory as the question.
+  - Never an AI call, read-aloud, Wolfram or an AI picture.
+- **WiFi:** the questions and the trainer wait for it as a spoken question does (`wifiWaitForLink(WIFI_QUESTION_WAIT_MS, WIFI_SHOW_PAGE)`). With no known network, the WiFi page, then setup.
+- **Night lock** (on, 8 pm to 6 am): the tour, the surprise, the trainer and the questions show "Ich schlafe z z z" and switch the display off, as a spoken question does. The timers, the settings and closing still work.
+  - Both use `showNightLockAndSleep()`, which also sets `displaySleeping` and `POWER_DISPLAY_SLEEP`. Before, the panel went dark while the stick still counted as awake, so a press acted on the dark screen.
+- **Sleep:** as the trainer.
+  - A press while the screen is dark or in the wake cooldown only wakes it and redraws.
+  - The menu keeps the stick awake for 5 minutes after the last press.
+  - Deep sleep closes it (`saveStateToPreferences()`).
+  - A timer alert comes on top; dismissing it redraws the menu.
+- **Serial:**
+  - `home`: open the menu.
+  - `home <row>`: choose row 1–22 directly.
+  - `homekey a|b|c`: a press in the open menu (b = next, c = close).
+- **Moved out for it, with no change in behaviour:**
+  - `showTimerList(bool playAudio)`, from the voice path. "Keine Timer aktiv." / "No timers running." now follows the language.
+  - `showSurprise()`, from the shake block. It returns true where the block used to end the loop pass.
+  - `openSettings()`, from the triple press.
+- **Example pictures:** `imageQuery` is an English Wikipedia title, because `searchWikipedia` asks en.wikipedia.org's summary for that exact title. All were checked live on 2026-11-15 and have a picture, except "Twinkle, Twinkle, Little Star". The song is built in and doesn't need one.
+
 # Requirements for Timer/Reminder System
 
 ## Overview
@@ -611,7 +688,9 @@ spike results: [docs/features/vocab.md](docs/features/vocab.md).
 ## What changes for existing behaviour
 
 - In the trainer, Button A answers instead of asking a new question (like the tour); B opens the trainer's menu, C is
-  "I don't know". Holding B doesn't reset WiFi and three presses of C don't open the settings there.
+  "I don't know". The menu and the choice of books and lists (`vocabListActive()`) press as the home menu
+  (`menuPressRead()`): each click of B is the next row, holding B goes back, A chooses, C isn't read; tabs ✓ and ▼
+  (user, 2026-11-16). Holding B doesn't reset WiFi and three presses of C don't open the settings there.
 - Spelling records at 16 kHz for up to 15 s and stops after a pause, whatever the recording settings say. Normal
   questions are unchanged.
 - `transcribeAudio()` and `speakText()` gained parameterised versions (`transcribeSamples()` with language and prompt,
@@ -639,6 +718,8 @@ Screens drawn by the stick's own drawing code: `screenshots/shop/`.
 
 - In the game, Button A answers, B opens the game's menu, C is "?" (like the vocabulary trainer). Holding B doesn't
   reset WiFi and three presses of C don't open the settings there.
+- The game's menu presses as the home menu (`menuPressRead()`): each click of B is the next row, holding B goes back,
+  A chooses, C isn't read; tabs ✓ and ▼ (user, 2026-11-16)
 - The answer JSON has a new field `shop`; the prompt has one more rule.
 - `speakTextVoiced()` takes the voice; `speakTextStyled()` and `speakText()` still use "nova".
 - The vocabulary trainer's recording loop moved to `record_speech.ino` (`recordSpeech()`), unchanged, with the screen

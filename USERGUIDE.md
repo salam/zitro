@@ -129,6 +129,8 @@ Development builds show two small grey lines under the logo at power-on: the new
   - AP mode: retry WiFi connection. A big WiFi symbol and a progress bar show the search, then "Verbunden!" with your network's name.
   - Print menu: confirm the printer, then the page size. The last confirmation prints.
 - Button B (side)
+  - Short click on the home screen or on a written answer: open the home menu (see "Home menu" below). On "Keine Timer aktiv.": back to the home screen.
+  - While recording: cancel, back to where you were.
   - Short click (image view): scroll. The upper of the two side buttons scrolls up, the lower one down, however you hold the stick.
   - Hold about 1 second (image view): open printer discovery and selection.
   - Hold about 3 seconds (normal mode): reset WiFi credentials and restart.
@@ -148,7 +150,7 @@ Zitro's firmware also runs on the StickS3, but the installer can't put it there 
 The StickS3 has a front button (A) and a side button (B). Its power button only switches the stick on and off, so Button B also takes over Button C's job:
 - Button A: the same as on the Plus2.
 - Where the Plus2 shows its "M5" key on screen, the StickS3 shows its own front button: a thin, upright blue key with no label.
-- Button B, one click: what Button B does on the Plus2. It counts once the stick has made sure no second click follows, so it reacts a moment later.
+- Button B, one click: what Button B does on the Plus2, so on the home screen or a written answer it opens the home menu. It counts once the stick has made sure no second click follows, so it reacts a moment later.
 - Button B, double click: what one click on Button C does on the Plus2: scroll down, next page of a fact sheet or timeline, text or picture, next timer, next printer.
 - Button B, three quick clicks: open the setup page, in the same places as three clicks on Button C.
 - Holding Button B works as on the Plus2. Where holding B has no job, it does what holding C does: in music, back to the text.
@@ -167,6 +169,19 @@ The StickS3 has a front button (A) and a side button (B). Its power button only 
 - Triple-click Button A to capture photo and analyze.
 - Camera analyzes objects, plants, and provides kid-friendly facts.
 - Camera sleeps during light sleep (stage 2) and deep sleep (stage 3).
+
+### Home menu
+Press Button B once on the home screen, or on a written answer, and a menu opens. Each press of Button B moves to the next row right away, Button A chooses. To close it, hold Button B or choose "Menü schliessen". Pressing B twice quickly just moves two rows, and Button C does nothing here. Each row has a small picture: a timer, a flag for the tour, a parcel for the surprise, gears for the settings, and one for each of the 16 things to try. Holding B to close it never resets the WiFi, however long you hold. At the top:
+- **Timer anzeigen** (Show timers): your running timers, or "Keine Timer aktiv." (press B there to go back to the start screen).
+- **Tour starten** (Start the tour): the guided tour.
+- **Überraschung** (Surprise): a surprise, as when you shake Zitro.
+- **Wörter üben** (Practise words): the word trainer, with the list you practised last.
+- **Einstellungen** (Settings): the setup page.
+- **Menü schliessen** (Close menu).
+
+Below a line come 16 things to try: Wo ist Orion?, Wo ist die ISS?, Mondlandungen, Mondphasen, Foto: Marie Curie, T-Rex, Das Herz, DNA in 3D, Salzkristall, Wassermolekül, Ikosaeder, Kurve von x², Matterhorn, Uhrzeit in Tokio, Pfannkuchen and Twinkle Twinkle (in English when the stick speaks English). Each opens its star map, live map, timeline, fact sheet, 3D model, recipe or song straight away (Marie Curie: her photo comes when you turn the stick or press Button C), without asking the AI: it costs nothing and needs no AI key, only WiFi. Zitro doesn't read these answers aloud. Afterwards you can ask about it by voice, for example "Wie gross war er?" after the T-Rex.
+
+With the parental lock on, between 8 pm and 6 am only the timers, the settings and closing work; everything else shows "Ich schlafe z z z".
 
 ### Voice commands
 - All device settings can be changed by speaking naturally.
@@ -225,7 +240,8 @@ names, one by one: "tee, eye, em, ee". Say every letter, also when two are the s
 The boxes fill with what Zitro heard: green is right, red is different, orange is missing.
 
 **Menu.** The lower side button opens it: go on, answer in German instead, spell or say the words, print a word sheet,
-or stop.
+or stop. In the menu, and in the list of books and word lists, each press of the lower side button moves down a row,
+M5 picks, and holding the lower side button goes back, as in the home menu.
 
 **On paper.** "Voci-Blatt drucken" in the menu (or say "Druck mir die Voci von Unit 1") prints the unit as pages to fill
 in, then the same pages with the answers.
@@ -248,7 +264,8 @@ English: "Three apples and a bottle of milk, please". If the seller understood s
 "Anything else?" and you add the rest: "and two carrots". Answer the question: to "How many
 apples?" just say "Three". The upper side button (?) says the words for you, the second time the whole order.
 
-**Menu.** The lower side button: go on, swap sides, go to the next place, or stop.
+**Menu.** The lower side button: go on, swap sides, go to the next place, or stop. In the menu each press of it moves
+down a row, M5 picks, and holding it goes back, as in the home menu.
 
 ### Timers and reminders
 

@@ -385,6 +385,8 @@ void handleSerialCommands() {
       Serial.println("Memory cleared");
     } else if (line.startsWith("vocab")) {
       vocabSerial(line);  // vocab <value>, vocabkey a|b|c, vocabtype <text>, vocabcode, vocabnewcode
+    } else if (line == "home" || line.startsWith("home ") || line.startsWith("homekey ")) {
+      homeMenuSerial(line);  // home, home <row>, homekey a|b|c
     } else if (line.startsWith("shop")) {
       shopSerial(line);  // shop <value>, shopkey a|b|c, shoptype <text>
     } else if (line.startsWith("guidetype ")) {

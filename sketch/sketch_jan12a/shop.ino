@@ -184,7 +184,7 @@ static void shopDrawMenu() {
   }
   c.fillRoundRect(230, 14, 4, 102, 2, 0x31A6);
   c.fillRoundRect(230, 14 + first * 102 / n, 4, 102 * 3 / n, 2, 0xAD55);
-  shopTabs(c, HINT_OK, HINT_CANCEL, HINT_NEXT);
+  shopTabs(c, HINT_OK, HINT_NEXT, HINT_NONE);  // a list: B is next, holding B goes back (shopTick)
   shopPush(c);
 }
 
@@ -593,9 +593,23 @@ void shopTick() {
   if (awake && shopWasAsleep) shopRedraw();
   shopWasAsleep = !awake;
 
-  const bool clickedA = M5.BtnA.wasClicked();
-  const bool clickedB = buttonBClicked();
-  const bool clickedC = buttonCClicked();
+  bool clickedA, clickedB, clickedC;
+  if (shopScreen == SHOP_SCR_MENU) {
+    // The menu presses as the home menu (menuPressRead, Matthias 2026-11-16): each click of B is the next row at once,
+    // holding B goes back, C isn't read. For shopPress() below that's the shop's C (next) and B (back).
+    const bool rawB = M5.BtnB.wasClicked();
+    const bool heldB = M5.BtnB.wasHold();
+    const MenuPress p = menuPressRead(M5.BtnA.wasClicked(), rawB, heldB);
+    if (rawB || heldB) forgetButtonBClicks();
+    if (heldB) buttonBHeldForMenu = true;  // the game may end on it: no WiFi reset while B is still held
+    clickedA = p == MENU_PRESS_A;
+    clickedB = p == MENU_PRESS_BACK;
+    clickedC = p == MENU_PRESS_NEXT;
+  } else {
+    clickedA = M5.BtnA.wasClicked();
+    clickedB = buttonBClicked();
+    clickedC = buttonCClicked();
+  }
   if (!guideAcceptsPress(awake, inWakeCooldown())) {
     if (clickedA || clickedB || clickedC) {
       shopLastPress = now;

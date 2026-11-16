@@ -324,9 +324,41 @@ static void testButtonRules() {
   CHECK(!modelIdleTurnAllowed(200, 0xFFFFFF00UL));
 }
 
+// The footer under a model view: 6 px per character, as if every letter were as wide
+static int footerWidth(const char* t) {
+  int n = 0;
+  for (; *t; t++) if (((unsigned char)*t & 0xC0) != 0x80) n++;
+  return 6 * n;
+}
+
+static void testFooterFit() {
+  char out[160];
+  // Fits whole: unchanged
+  CHECK(eduFooterFit("Tokio", "Natural Earth", 228, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "Tokio - Natural Earth") == 0);
+  CHECK(eduFooterFit("Tokio", "", 228, footerWidth, out, sizeof out) && strcmp(out, "Tokio") == 0);
+  // Too wide: the label gets shorter, the longest that fits (here 19 characters in 120 px)
+  CHECK(eduFooterFit("Rio de Janeiro", "Natural Earth", 120, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "R... - Natural Earth") == 0);
+  CHECK(footerWidth(out) <= 120);
+  CHECK(eduFooterFit("Rio de Janeiro", "Natural Earth", 150, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "Rio de... - Natural Earth") == 0);
+  // Never cut inside a UTF-8 character: "Zürich" keeps "Zü", not "Z" plus half a ü
+  CHECK(eduFooterFit("Z\xC3\xBCrich", "Natural Earth", 6 * 21, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "Z\xC3\xBC... - Natural Earth") == 0);
+  // Not even one letter fits (the turned screen): the credit alone, and the caller may use the small font
+  CHECK(!eduFooterFit("Z\xC3\xBCrich", "Natural Earth", 6 * 19, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "Natural Earth") == 0);
+  CHECK(eduIsAscii(out));
+  CHECK(!eduIsAscii("Z\xC3\xBCrich"));
+  // One letter fits: kept
+  CHECK(eduFooterFit("Z\xC3\xBCrich", "Natural Earth", 6 * 20, footerWidth, out, sizeof out));
+  CHECK(strcmp(out, "Z... - Natural Earth") == 0);
+}
+
 int main(int argc, char** argv) {
   fixtureDir = argc > 1 ? argv[1] : "fixtures";
-  testRefs(); testSdf(); testMath(); testElements(); testButtonRules(); testGyroAxes(); testLevel();
+  testRefs(); testSdf(); testMath(); testElements(); testButtonRules(); testGyroAxes(); testLevel(); testFooterFit();
   printf("%d checks, %d failures\n", checks, failures);
   if (failures == 0) printf("All model tests passed\n");
   return failures == 0 ? 0 : 1;

@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -345,4 +346,33 @@ inline void sortByDepth(const float* z, uint8_t* order, uint16_t n) {
     }
     order[j + 1] = v;
   }
+}
+
+// True if the text has only ASCII: the model views' small footer font knows nothing else
+inline bool eduIsAscii(const char* s) {
+  for (; *s; s++) {
+    if ((uint8_t)*s >= 0x80) return false;
+  }
+  return true;
+}
+
+// The footer line under a model view: "label - source", the label shortened with "..." until it fits in room
+// (never inside a UTF-8 character). When not even one letter of the label fits, the source alone, so a narrow
+// (turned) screen doesn't lose the credit off its edge. width(text) measures in the label's font. Returns false
+// when the label was left out: then the source may get the small font.
+template <typename Width>
+inline bool eduFooterFit(const char* label, const char* source, int room, Width width, char* out, size_t size) {
+  const char* dash = *source ? " - " : "";
+  snprintf(out, size, "%s%s%s", label, dash, source);
+  if (width(out) <= room) return true;
+  size_t keep = strlen(label);
+  while (keep > 0) {
+    keep--;
+    while (keep > 0 && ((uint8_t)label[keep] & 0xC0) == 0x80) keep--;
+    if (keep == 0) break;
+    snprintf(out, size, "%.*s...%s%s", (int)keep, label, dash, source);
+    if (width(out) <= room) return true;
+  }
+  snprintf(out, size, "%s", source);
+  return false;
 }

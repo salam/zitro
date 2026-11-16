@@ -373,7 +373,7 @@ Ask where a place is: "Where is the Matterhorn?" or "Wo liegt Paris?". Zitro sho
 - **Turn it like a steering wheel**, or hold it upright: the globe stays exactly where it is, north up, and only the writing turns so you can read it.
 - **Flick it quickly** and the globe keeps spinning, then slows down. Move the stick again to stop it.
 - **Lost the pin?** A yellow arrow shows which way it is.
-- **The little white house** is your home city, when it's on your side of the globe.
+- **The little white house** is your home city, when it's on your side of the globe. Right next to the pin it stays away, so you can see where the pin points.
 - **Button B** zooms in, three steps.
 - **Button C** shows the written answer. Go back to the globe and the pin is in the middle again.
 - **Button A** asks a new question.

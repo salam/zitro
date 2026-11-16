@@ -267,6 +267,10 @@ static void runScreenshotTour() {
   drawProgress(activeRecordSeconds > 2 ? activeRecordSeconds - 2 : 1);
   delay(300);
   wifiIconTourLevel = 0;
+  // Connected: the tick the searching icon turns into, before it fades
+  wifiDoneTourLevel = 255;
+  tourScreen("05b-home-wifi-connected", MAIN_QUESTION);
+  wifiDoneTourLevel = 0;
   // The WiFi page (a question waiting for WiFi, the setup screen's retry), mid-pulse
   armCapture("06b-no-known-wifi", 0);
   wifiPageTourShot(WIFI_PAGE_NONE, "", 0, 0, 0, 0);

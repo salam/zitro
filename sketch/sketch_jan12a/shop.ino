@@ -64,6 +64,9 @@ static bool shopOpenCanvas(M5Canvas& c) {
     return false;
   }
   shopFonts = {FontManager::getFont12pt(), FontManager::getFont16pt()};
+  // The StickS3's B tab sits at the bottom left with its buttons on the left (rotation 3), where the
+  // stars are: they go just above it
+  shopStarsY = (ZITRO_STICKS3 && M5.Display.getRotation() == 3) ? SHOP_H - 21 : SHOP_H - 10;
   return true;
 }
 

@@ -13,6 +13,12 @@
   #define ZITRO_STICKS3 1
   #define BUTTON_A_GPIO GPIO_NUM_11
   #define BUTTON_B_GPIO GPIO_NUM_12
+  // Button B sits low on the right side: measured 1 to 9 mm above the bottom edge of the 25 mm
+  // display, so its centre is 192 px from the top with the stick upright (USB at the bottom).
+  // Its tab goes there (drawButtonHints), as long as the key (154 to 230 px from the top) and 3 px
+  // more at each end, as the user chose at the stick: 151 to 233.
+  #define BUTTON_B_FROM_TOP 192
+  #define BUTTON_B_LENGTH 82
 #else
   #define ZITRO_STICKS3 0
   #define BUTTON_A_GPIO GPIO_NUM_37

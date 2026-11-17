@@ -180,8 +180,10 @@ static void guideDrawPhoto() {
     c.setTextDatum(ML_DATUM);
     c.drawString(hint, WIDTH - 4 - w + 6, 24);
     c.setTextColor(TFT_LIGHTGREY);
-    c.setTextDatum(textdatum_t::baseline_left);
-    c.drawString(gt("Mond - NASA", "Moon - NASA"), 2, HEIGHT - 4);
+    // Bottom left, except where the StickS3's B tab sits there (buttons on the left): bottom right
+    const bool creditRight = ZITRO_STICKS3 && M5.Display.getRotation() == 3;
+    c.setTextDatum(creditRight ? textdatum_t::baseline_right : textdatum_t::baseline_left);
+    c.drawString(gt("Mond - NASA", "Moon - NASA"), creditRight ? WIDTH - 2 : 2, HEIGHT - 4);
   }
   guideTabs(c, HINT_NONE, HINT_MENU, HINT_LATER);
   guidePush(c);

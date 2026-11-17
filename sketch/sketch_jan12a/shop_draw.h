@@ -22,6 +22,7 @@ static ShopFonts shopFonts = {nullptr, nullptr};
 
 static const int SHOP_W = 240, SHOP_H = 135;
 static const int SHOP_COUNTER_Y = 96;  // the top of the counter
+static int shopStarsY = SHOP_H - 10;    // the row of stars; shop.ino lifts it clear of the StickS3's B tab
 static const uint16_t SHOP_INK = shopRgb(40, 32, 30);
 static const uint16_t SHOP_WHITE = shopRgb(255, 255, 255);
 static const uint16_t SHOP_OK = shopRgb(47, 163, 90);
@@ -665,7 +666,7 @@ static void shopDrawBoard(C& c, ShopPlace place) {
 template <class C>
 static void shopDrawStars(C& c, const std::vector<uint8_t>& stars) {
   for (size_t k = 0; k < stars.size(); k++) {
-    const int x = 24 + (int)k * 11, y = SHOP_H - 10;
+    const int x = 24 + (int)k * 11, y = shopStarsY;
     if (stars[k] == 1) shopHeart(c, x, y, 4, SHOP_CITRUS);
     else c.fillCircle(x, y, stars[k] == 2 ? 3 : 2, stars[k] == 2 ? SHOP_WHITE : shopRgb(170, 170, 180));
   }

@@ -147,9 +147,14 @@ void guideDrawGrid(M5Canvas& c, float pos, int rotation) {
   }
   const int current = (int)roundf(pos);
   const uint16_t citrus = guideRgb(c, 0xF2B705), dim = guideRgb(c, 0x8A8A8A);
-  // At the top right, clear of Button B's tab when the stick is turned around
+  // At the top right, clear of Button B's tab when the stick is turned around. The StickS3's B sits
+  // low on its side, so turned around its tab is at the top right: the dots go to the top left.
+  int dotsX = 176;
+#if ZITRO_STICKS3
+  if (rotation == 1) dotsX = 16;
+#endif
   for (int page = 0; page < GUIDE_PAGES; page++) {
-    c.fillCircle(176 + page * 16, 6, page == current ? 3 : 2, page == current ? citrus : dim);
+    c.fillCircle(dotsX + page * 16, 6, page == current ? 3 : 2, page == current ? citrus : dim);
   }
   c.setFont(&fonts::DejaVu9);
   c.setTextSize(1);

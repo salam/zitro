@@ -152,6 +152,7 @@ The StickS3 has a front button (A) and a side button (B). Its power button only 
 - Where the Plus2 shows its "M5" key on screen, the StickS3 shows its own front button: a thin, upright blue key with no label.
 - Button B, one click: what Button B does on the Plus2, so on the home screen or a written answer it opens the home menu. It counts once the stick has made sure no second click follows, so it reacts a moment later.
 - Button B, double click: what one click on Button C does on the Plus2: scroll down, next page of a fact sheet or timeline, text or picture, next timer, next printer.
+- The small tabs at the screen edge sit next to the StickS3's own buttons: Button B's tab is next to the side button, low on that side, not in the middle, and as long as the button itself. The Plus2 has a tab for Button C as well; the StickS3 shows none, since it has no Button C. Its job is the double click on Button B.
 - Button B, three quick clicks: open the setup page, in the same places as three clicks on Button C.
 - Holding Button B works as on the Plus2. Where holding B has no job, it does what holding C does: in music, back to the text.
 - Coloured note heads in music (a double click of Button B on the Plus2) can't be switched on the StickS3, because a double click there is Button C.

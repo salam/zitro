@@ -8,6 +8,7 @@
 - **Menus that follow one button**: in the start menu, the word trainer's menu and the shop's menu, each press of the side button moves down a row right away. Hold it to go back. No more waiting, and the setup page no longer opens by accident.
 - **Changed your mind?** Press the side button while Zitro is listening, and the recording stops. Back where you were.
 - **Quick way home**: on "Keine Timer aktiv.", press the side button to go back to the start screen.
+- **Tabs where your buttons are (StickS3)**: the little tab for the side button now sits right next to it, low on the side and as long as the button itself, instead of in the middle. The tab for a third button the StickS3 doesn't have is gone.
 - **The right time in Havana**: Cuba keeps its summer time this winter, and Zitro's world clock now knows. Other countries' one-off changes like this come through from now on.
 - **See what the ISS flies over**: a yellow arrow next to the station's numbers now shows what's right below it, from Korsika and Alaska to the South Pacific. Ask "Wo ist die ISS?" and watch the names change as it flies.
 - **An installer that never gets stuck**: if a plugged-in device doesn't answer, the installer stops after a few seconds and tells you what to do, instead of waiting forever.

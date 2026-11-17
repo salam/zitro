@@ -1451,6 +1451,10 @@ void drawBatteryIndicator(M5Canvas &canvas) {
   // Battery indicator position (top right corner)
   int startX = WIDTH - 25;
   int startY = 2;
+#if ZITRO_STICKS3
+  // Turned with the buttons on the right, the StickS3's B tab runs along the top right: left of it
+  if (M5.Display.getRotation() == 1) startX = BUTTON_B_FROM_TOP - BUTTON_B_LENGTH / 2 - 4 - 19;
+#endif
   int rectSize = 5;
   int spacing = 2;
 
@@ -3774,8 +3778,9 @@ void drawCutMark(M5Canvas &canvas, int cx, int cy, uint16_t color) {
 // A tab that sticks out of the screen edge, with a symbol in its visible part.
 // pos: center along that edge. filled: main action (Button A). invert: screen is white.
 // The "next" triangle points down on top/bottom tabs and right on side tabs.
-void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = false, bool invert = false) {
-  const int len = 34;      // along the edge
+// len: along the edge (the StickS3's B tab is as long as its key).
+void drawPrintHint(M5Canvas &canvas, int edge, int pos, int kind, bool filled = false, bool invert = false,
+                   int len = 34) {
   const int depth = 15;    // visible part
   const int hidden = 8;    // part beyond the screen edge (rounds only the inner corners)
   int cw = canvas.width();
@@ -3880,8 +3885,22 @@ void drawButtonHints(M5Canvas &canvas, int rotation, int kindA, int kindB, int k
       edgeA = EDGE_TOP;    posA = cw / 2;  edgeC = EDGE_RIGHT;  posC = 24;      edgeB = EDGE_LEFT;   posB = ch / 2;
       break;
   }
+  int lenB = 34;
+#if ZITRO_STICKS3
+  // The StickS3's B sits low on its side, not in the middle, and its tab is as long as the key. It
+  // has no Button C: its power button can't be read, so C's tab would point at nothing (its job is
+  // a double click on B).
+  switch (rotation) {
+    case 3:  posB = cw - BUTTON_B_FROM_TOP; break;
+    case 1:  posB = BUTTON_B_FROM_TOP;      break;
+    case 0:  posB = BUTTON_B_FROM_TOP;      break;
+    default: posB = ch - BUTTON_B_FROM_TOP; break;
+  }
+  lenB = BUTTON_B_LENGTH;
+  kindC = HINT_NONE;
+#endif
   if (kindA != HINT_NONE) drawPrintHint(canvas, edgeA, posA, kindA, true, invert);
-  if (kindB != HINT_NONE) drawPrintHint(canvas, edgeB, posB, kindB, false, invert);
+  if (kindB != HINT_NONE) drawPrintHint(canvas, edgeB, posB, kindB, false, invert, lenB);
   if (kindC != HINT_NONE) drawPrintHint(canvas, edgeC, posC, kindC, false, invert);
 }
 

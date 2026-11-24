@@ -37,6 +37,14 @@ struct EduFeature {
   // ways (see levelStep in model_core.h). frame() draws the picture through modelLevelMatrix() at the sprite's
   // rotation 0, then turns the sprite to modelReadingTurn for its text. False: the view stays as it opened.
   bool levels;
+  // The view's own menu rows (the wave lab's "Ton an"), shown above "Text" and "Schliessen" in the menu that holding
+  // B opens (view_menu.ino). Shaped so the button module's shared menu can take them over. nullptr: no rows.
+  int (*menuRowCount)();
+  // Called on every redraw, so a row can switch ("Ton an" / "Ton aus"). At most 17 characters and 174 px in the
+  // menu font
+  const char* (*menuRowLabel)(int i, bool german);
+  // A chose row i. True: keep the menu open and redraw it (a switch); false: close it
+  bool (*menuRowChoose)(int i);
 };
 
 // One per kind. All are registered in feature_registry.ino.

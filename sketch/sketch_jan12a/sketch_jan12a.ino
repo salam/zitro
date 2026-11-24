@@ -724,6 +724,11 @@ void showNightLockAndSleep();
 bool homeMenuActive();
 void homeMenuOpen();
 void homeMenuStop();
+bool viewMenuActive();
+bool viewMenuOpen();
+void viewMenuStop();
+void viewMenuTick();
+void viewMenuDraw(M5Canvas& c);
 void homeMenuRedraw();
 void homeMenuTick();
 void homeMenuSerial(const String& line);
@@ -9913,6 +9918,19 @@ void loop() {
     return;
   }
 
+  // A view's own menu (the wave lab's "Ton an"): it takes the buttons, and the view keeps running under it
+  if (viewMenuActive()) {
+    viewMenuTick();
+    if (viewMenuActive() && currentDisplayMode == SHOW_MODEL && hasModel && !displaySleeping &&
+        currentPowerState == POWER_ACTIVE) {
+      modelViewTick();
+    } else if (currentDisplayMode == SHOW_MODEL && hasModel && !displaySleeping) {
+      modelViewRender(0.0f);  // Closed: the view again, without the menu
+    }
+    delay(20);  // As the other menus: no need to spin; the view still gets its 25 frames a second
+    return;
+  }
+
   // 3D view: one frame per pass, so timers, buttons and sleep keep working
   if (currentDisplayMode == SHOW_MODEL && hasModel && !displaySleeping && currentPowerState == POWER_ACTIVE) {
     modelViewTick();
@@ -10131,7 +10149,10 @@ void loop() {
 
   // Button B long press (hold): Initiate printer discovery and selection when showing image
   // Hold Button B for 1 second to open print menu (much easier than double-click!)
-  if (M5.BtnB.wasHold()) {
+  // In a view with its own menu rows (the wave lab), holding B opens that menu instead
+  if (M5.BtnB.wasHold() && !displaySleeping && viewMenuOpen()) {
+    resetToActiveState();
+  } else if (M5.BtnB.wasHold()) {
     Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
     Serial.println("✓ BUTTON B LONG PRESS DETECTED!");
     Serial.printf("  displaySleeping=%d, mode=%d, hasImage=%d\n",

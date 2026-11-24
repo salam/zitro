@@ -113,7 +113,7 @@
   - Can be toggled via voice command regardless of setting
 
 ### Gesture/Interaction Toggles
-- **Shake for a Surprise** (`shakeRandom`): Enable/disable the shake gesture (default: on). Read when a shake happens; off means shakes are ignored. A shake shows a built-in fact or, half the time, a built-in result from `SHAKE_MEDIA` in `shake_core.h` (physics and astronomy scenes except the two that make sound, solids, star maps, the world clock for one of the 80 biggest cities). These need no network and open at once; if one can't open, the fact comes. Each entry is checked against its feature's closed list by `tests/shake/run.sh`. Changed from facts only on the user's request (2026-11-08)
+- **Shake for a Surprise** (`shakeRandom`): Enable/disable the shake gesture (default: on). Read when a shake happens; off means shakes are ignored. A shake shows a built-in fact or, half the time, a built-in result from `SHAKE_MEDIA` in `shake_core.h` (physics and astronomy scenes except the three that make sound, solids, star maps, the world clock for one of the 80 biggest cities). These need no network and open at once; if one can't open, the fact comes. Each entry is checked against its feature's closed list by `tests/shake/run.sh`. Changed from facts only on the user's request (2026-11-08)
 - **Double-Click for Audio**: Enable/disable double-click for audio output (default: on)
   - If disabled, double-click behaves like single-click (text only)
 - **Movement for Zoom**: Enable/disable roll gesture to toggle image zoom modes (default: on)
@@ -458,7 +458,13 @@ Design: `docs/superpowers/specs/2026-11-05-3d-view-design.md`. Molecules are des
 - **ISS live**: [docs/features/iss.md](docs/features/iss.md). The zitro.spot server (`webpage2/api/iss.php`) turns NASA's ephemeris into a track; the written answer is computed, never the AI's. With `?places=1` it also names the place under the track from Natural Earth (`webpage2/data/iss`, made by `scripts/make_iss_places.py`); disputed regions inside a country stay blank
 - **Proteins, DNA and crystals**: [docs/features/protein.md](docs/features/protein.md)
 - **Night sky**: [docs/features/sky.md](docs/features/sky.md)
-- **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md)
+- **Physics scenes and geometric solids**: [docs/features/physics.md](docs/features/physics.md). Includes the wave lab (`physics:wave-lab`, 2026-11-17): tilt for pitch and loudness, Button B for seven waves and patterns, a held sound switched in its menu
+- **A view's own menu** (`view_menu.ino`, `view_menu_core.h`, 2026-11-17): a view whose feature has its own rows (`EduFeature.menuRowCount/menuRowLabel/menuRowChoose`; today only the wave lab's "Ton an"/"Ton aus") opens a menu over itself when Button B is held, and, until the button module removes Button C, on Button C (the StickS3's double press of B). Matthias: "C is not available on S3. Instead, use the menu to toggle sound on/off, etc."
+  - Rows: the feature's rows (the first preselected), "Text" (back to the written answer), "Schliessen". Labels are read on every redraw, so a row can switch; a feature row that returns true keeps the menu open.
+  - Presses as the home menu (`menuPressRead()`): each click of B is the next row, holding B closes, A chooses; B's clicks are forgotten as they come and holding B never runs on into the WiFi reset (`buttonBHeldForMenu`). A's late single click never starts a recording.
+  - The view keeps running under the menu (its sound too), drawn on the same sprite with the menu's tabs (A ✓, B ▼).
+  - It closes by itself after 20 s without a press, when the screen goes dark, when a timer alert comes, and when the view ends.
+  - Interim: the button module's shared menu (feature/button-ui, ai-stick-0a) is to take the feature's rows over, with the hooks shaped for that (agreed 2026-11-17)
 - **Timelines with pictures**: [docs/features/timeline.md](docs/features/timeline.md)
 - **Dinosaur fact sheets** (picture, facts, size next to a 1.70 m person, fun fact): [docs/features/dino.md](docs/features/dino.md)
 - **Organs, skeleton and cells**: [docs/features/anatomy.md](docs/features/anatomy.md)

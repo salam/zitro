@@ -48,6 +48,22 @@ struct PhysicsSunPathData {
   bool nowKnown;
   float nowHeight, nowAzimuth;  // Radians
 };
+struct PhysicsWaveLabData {
+  float pitchDeg, loudDeg;  // The tilts, smoothed
+  float loudZeroDeg;        // The loudness tilt that is the middle
+  bool zeroPending;         // Take the next tilt as the middle: at opening and when the sound goes on
+  float realT;              // Seconds, real time: the beat swells at the pace you hear
+  float phase;              // The lower tone's phase at the left edge, in cycles, 0 to 2
+};
+
+// The wave lab's held sound, as the scene wants it this frame; the device plays it (feature_physics.ino).
+// count 0: silent. Tone i plays at hz[i] on speaker channel 1 + i, from waveLabTable(shape), at loudness 0..1.
+struct PhysicsLabSound {
+  uint8_t count;
+  float hz[2];
+  uint8_t shape;
+  float loudness;
+};
 
 struct PhysicsState {
   uint8_t sceneIndex, param;
@@ -62,6 +78,11 @@ struct PhysicsState {
   float homeLatitude, homeLongitude;  // Radians, north and east positive: for seasons and the Sun's path
   // A sound the scene asks for in this frame; the device plays it after drawing. toneMs 0: none
   uint16_t toneHz, toneMs;
+  // Wave lab: the tilts in degrees, set by the device before each frame (right edge down, top edge away positive)
+  float tiltPitchDeg, tiltLoudDeg;
+  bool labSoundOn;          // Switched in its menu; off at every opening
+  uint8_t deviceVolume;     // Zitro's speaker volume (M5.Speaker.getVolume()), set by the device: the speaker symbol
+  PhysicsLabSound labSound;  // Set by the scene each frame
   uint32_t random;
   union {
     PhysicsChaosData chaos;
@@ -71,6 +92,7 @@ struct PhysicsState {
     PhysicsOrbitData orbits;
     PhysicsLoopData loop;
     PhysicsSunPathData sun;
+    PhysicsWaveLabData lab;
   } data;
   PhysicsMatter matter;
   // Magnets: field lines, worked out once for each setting
@@ -1011,6 +1033,7 @@ void physicsDrawAtom(C& c, PhysicsState& s, float dt) {
 }
 
 #include "physics_draw_waves.h"
+#include "physics_draw_wavelab.h"
 #include "physics_draw_astro.h"
 
 // ---- The list ----
@@ -1058,6 +1081,10 @@ inline void physicsSceneReset(PhysicsState& s) {
     case PHYSICS_RETROGRADE:
       physicsLoopBuild(s);
       break;
+    case PHYSICS_WAVE_LAB:
+      s.data.lab = PhysicsWaveLabData();
+      s.data.lab.zeroPending = true;
+      break;
     default:
       break;
   }
@@ -1068,7 +1095,8 @@ inline void physicsSceneNextParam(PhysicsState& s) {
   s.param = (uint8_t)((s.param + 1) % count);
   // These carry on from where they are, so you see the change happen
   // The Sun's path keeps its clock, so the Sun now stays where it really is
-  if (s.scene == PHYSICS_LEVER || s.scene == PHYSICS_MATTER || s.scene == PHYSICS_SUNPATH) return;
+  // The wave lab keeps its pitch, loudness and sound, so you hear the shapes change
+  if (s.scene == PHYSICS_LEVER || s.scene == PHYSICS_MATTER || s.scene == PHYSICS_SUNPATH || s.scene == PHYSICS_WAVE_LAB) return;
   if (s.scene == PHYSICS_SEASONS) {
     s.b = physicsNextSeasonLongitude(s.b);
     return;
@@ -1107,5 +1135,6 @@ void physicsDrawFrame(C& c, PhysicsState& s, float dt) {
     case PHYSICS_SUNPATH: physicsDrawSunPath(c, s, dt); break;
     case PHYSICS_SATELLITES: physicsDrawSatellites(c, s, dt); break;
     case PHYSICS_SIZES: physicsDrawSizes(c, s, dt); break;
+    case PHYSICS_WAVE_LAB: physicsDrawWaveLab(c, s, dt); break;
   }
 }

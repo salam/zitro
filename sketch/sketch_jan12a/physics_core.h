@@ -10,6 +10,7 @@
 
 #include "astro_core.h"
 #include "physics_atom_table.h"
+#include "wave_lab_core.h"
 
 static const float PHYSICS_PI = 3.14159265358979f;
 static const float PHYSICS_DEG = PHYSICS_PI / 180.0f;
@@ -714,7 +715,8 @@ enum PhysicsSceneId : uint8_t {
   PHYSICS_RETROGRADE,
   PHYSICS_SUNPATH,
   PHYSICS_SATELLITES,
-  PHYSICS_SIZES
+  PHYSICS_SIZES,
+  PHYSICS_WAVE_LAB
 };
 
 struct PhysicsSceneInfo {
@@ -752,6 +754,7 @@ static const PhysicsSceneInfo PHYSICS_SCENES[] = {
     {"sunpath", "Sonnenbahn", "Sun path", PHYSICS_SUNPATH, 4},
     {"satellites", "Satellitenbahnen", "Satellite orbits", PHYSICS_SATELLITES, 4},
     {"sizes", "Gr\xC3\xB6ssenvergleich", "Size comparison", PHYSICS_SIZES, 5},
+    {"wave-lab", "Wellenlabor", "Wave lab", PHYSICS_WAVE_LAB, WAVE_LAB_PATTERN_COUNT},
     {"atom", "Atom", "Atom", PHYSICS_ATOM, PHYSICS_ELEMENT_COUNT},
 };
 static const int PHYSICS_SCENE_COUNT = sizeof(PHYSICS_SCENES) / sizeof(PHYSICS_SCENES[0]);
@@ -769,10 +772,12 @@ static const char PHYSICS_PROMPT_RULE[] =
     "oder 'Wie sieht unser Sonnensystem aus?' ergibt planets, 'Warum laeuft der Mars manchmal rueckwaerts?' ergibt "
     "retrograde, 'Warum steht die Sonne im Winter so tief?' oder 'Wie laeuft die Sonne ueber den Himmel?' ergibt "
     "sunpath, 'Wie hoch fliegt die ISS?' oder 'Was ist ein geostationaerer Satellit?' ergibt satellites, 'Wie gross "
-    "ist Jupiter im Vergleich zur Erde?' oder 'Wie gross ist die Sonne?' ergibt sizes). "
+    "ist Jupiter im Vergleich zur Erde?' oder 'Wie gross ist die Sonne?' ergibt sizes, 'Was ist eine Wellenlaenge?', "
+    "'Warum klingen Toene verschieden?', 'Ich will mit Toenen spielen' oder 'Was ist eine Schwebung?' ergibt wave-lab, "
+    "'Was ist Schall?' oder 'Wie kommt ein Ton zum Ohr?' ergibt sound). "
     "id genau eine von: falling friction lever pulley buoyancy pendulum ramp magnet shadow mirror refraction "
     "sound circuit matter seasons moon double-pendulum doppler double-slit prism half-life planets retrograde "
-    "sunpath satellites sizes atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
+    "sunpath satellites sizes wave-lab atom-<Symbol>. Symbol ist das Elementsymbol von H bis Kr ('Wie ist ein "
     "Kohlenstoffatom aufgebaut?' ergibt atom-C). Frage nach dem Aufbau eines Atoms ergibt immer physics:atom-<Symbol>, "
     "nie molecule. Allgemeine Fragen ('Was ist ein Magnet?', 'Wer war Newton?') bleiben Fotos mit leerem model. Rechenaufgaben bleiben is_wolfram mit leerem model. "
     "Nenne nur die id, alle Werte berechnet das Geraet.";

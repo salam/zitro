@@ -453,15 +453,22 @@ This is a map of all the stars, not a window. The stick has no compass and doesn
 Ask how something works, and Zitro shows it moving.
 
 - "Wie funktioniert ein Hebel?", "Warum schwimmt Holz?", "Warum gibt es Jahreszeiten?", "Warum knickt ein Stab im Wasser?", "Wie ist ein Kohlenstoffatom aufgebaut?"
+- Play with sound: "Was ist eine Wellenlänge?", "Ich will mit Tönen spielen", "Was ist eine Schwebung?" open the wave lab (below).
 - Light, waves and atoms: "Was passiert beim Doppelspalt?", "Warum macht ein Prisma Regenbogenfarben?", "Was ist eine Halbwertszeit?", "Was ist Chaos?" (double pendulum), "Warum klingt ein Krankenwagen anders, wenn er vorbeifährt?"
 - Space: "Wo stehen die Planeten gerade?", "Warum läuft der Mars manchmal rückwärts?", "Warum steht die Sonne im Winter so tief?", "Was ist ein geostationärer Satellit?", "Wie gross ist Jupiter im Vergleich zur Erde?"
 - For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism; light through a prism is the prism scene.
 
-The Doppler and half-life scenes make sound: a siren that changes pitch, and the clicks of a Geiger counter. The planets, the seasons and the Sun's path use today's date and your home city from the settings. Scenes that are sped up, slowed down or not to scale say so on screen.
+The Doppler and half-life scenes make sound: a siren that changes pitch, and the clicks of a Geiger counter. The wave lab plays its tone once you switch the sound on. The planets, the seasons and the Sun's path use today's date and your home city from the settings. Scenes that are sped up, slowed down or not to scale say so on screen.
 
 Questions like "Was ist ein Magnet?" still bring a photo.
 
 **Scenes:** Button B changes something: a heavier weight, a longer pendulum, another planet. Button C shows the written answer, and pressing it again brings the scene back. Button A asks something new.
+
+**Wave lab:** tilt Zitro left or right to make the tone higher or lower; held level it plays 440 Hz, the note A. Tilt it toward you or away from you to make it quieter or louder. The wave on screen stretches and squeezes with the tone, at its true length in air, and shows how many times a second it swings (Hz), how long one wave is, and the nearest note.
+- **Button B:** the next wave: sine, triangle, square, sawtooth, then two tones together: an octave, a fifth, and a beat that swells and fades.
+- **Hold Button B** (or press Button C; on the StickS3 press B twice) for the menu: "Ton an" switches the sound on, "Ton aus" off again, "Text" shows the written answer, "Schliessen" closes the menu. In the menu, each press of B moves down a row, Button A chooses.
+- The little speaker in the corner shows how loud it is: up to three sound waves, none when the sound is off or Zitro's volume is at 0.
+- The sound is off every time the wave lab opens, and switches itself off 5 minutes after your last press, so Zitro can sleep.
 
 **Shapes:** turn the stick to look around the shape. Button B zooms. Shapes with flat sides show how many faces, edges and corners they have. Button C shows the written answer.
 

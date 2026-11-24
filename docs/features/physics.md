@@ -10,16 +10,30 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 - Results, numbers and shapes come from textbook equations in `physics_core.h`, `astro_core.h` and `solid_core.h`, and from published values named under Sources. Where something only follows a set schedule, or a scene isn't real time or true to scale, this document says so, and the scene says it on screen in a word: "Zeitlupe" / "slowed", "Zeitraffer" / "time-lapse", "nicht massstabsgetreu" / "not to scale".
 - Labels come from built-in tables, in the device language (`settings/language`, read once per lookup). Decimal mark in German is a comma.
 - Footer: the scene or solid name and "berechnet" / "computed" (atoms: "PubChem").
-- `keepAwake` stays unset: a running animation never holds off the normal sleep timers.
+- A running animation never holds off the normal sleep timers. One exception: the wave lab with its sound on, while the hand tilts it (within the last 30 s), and never longer than 5 minutes after the last press, the 3D view's cap (`keepAwake`, approved 2026-11-17).
 - Working memory comes from PSRAM in `begin()`, is freed in `end()`, and a failed allocation returns false. `fetch()` does no network and allocates nothing.
 - Button A: new question, as everywhere.
 
 ### Physics (`physics:<id>`)
 
-- `turnsWithGyro` false. Button B steps through the scene's settings and wraps around. Button C goes back to the text in every scene, so nobody gets stuck in one; no scene uses it for steps.
-- Button B restarts the run, except the lever, states of matter and seasons, which continue from their current state so the change is visible, and the Sun's path, which keeps its clock. The setting survives Button C and back, but not a new lookup.
+- `turnsWithGyro` false. Button B steps through the scene's settings and wraps around. Button C goes back to the text in every scene, so nobody gets stuck in one; no scene uses it for steps. One exception, the wave lab: Button C (the StickS3's double press of B) opens the lab's menu, whose row "Text" goes back (Matthias, 2026-11-17: "C is not available on S3. Instead, use the menu to toggle sound on/off").
+- Button B restarts the run, except the lever, states of matter and seasons, which continue from their current state so the change is visible, the Sun's path, which keeps its clock, and the wave lab, which keeps its pitch, loudness and sound. The setting survives Button C and back, but not a new lookup.
 - No goals, scores or games: Button B only changes what is shown.
-- Two scenes make sound, short tones the scene asks for and the device plays on the speaker's channel 1 at the device volume (never changed): the Doppler scene beeps at the pitch the listener hears, the half-life scene clicks like a Geiger counter. No tone lasts longer than 60 ms, and `end()` stops the speaker channel, so nothing sounds after the view closes.
+- Three scenes make sound, at the device volume (never changed). `end()` stops every channel they use, so nothing sounds after the view closes.
+  - Doppler and half-life: short tones the scene asks for, played on the speaker's channel 1. The Doppler scene beeps at the pitch the listener hears, the half-life scene clicks like a Geiger counter. No tone lasts longer than 60 ms.
+  - The wave lab holds a tone for as long as its sound is on (2026-11-17). The scene only describes it (`PhysicsState.labSound`: up to two tones, a wave shape, a loudness); the device plays it from a fixed table (`waveLabTable()`), the lower tone on channel 1 and the upper on channel 2. Each frame sends one 200 ms piece of whole wave cycles that takes over from the playing one where its wave stands (M5Unified keeps the place in the table while the table stays the same), so a pitch change takes effect at once without a jump, and the sound can't run out between frames, which come 40 to 60 ms apart. If frames stop, it runs out within a quarter second. A new shape lets the old one finish its cycle (30 ms) and is queued behind it, since a new table starts from its beginning (`waveLabSoundStep()`). Until 2026-11-23 it queued 50 ms pieces, two per channel: frames came further apart than the queue lasted, the sound ran dry, and it clicked when tilting a little. Its loudness is the channels' volume (`setChannelVolume`), given back in `end()`. The sound is off at every opening, after a gap of more than a second between frames (dark screen, light sleep), and 5 minutes after the last press.
+
+### Wave lab (`physics:wave-lab`)
+
+Asked for by Matthias on 2026-11-16 ("play with waves and sounds related to it. Audio and waves, and wave lengths"). Spec: `docs/superpowers/specs/2026-11-16-wave-lab-design.md`. Math in `wave_lab_core.h`, drawing in `physics_draw_wavelab.h`, tilt and sound in `feature_physics.ino`.
+
+- Tilt left or right (right edge down = higher): the pitch slides from 220 to 880 Hz, 440 Hz held level, 40 degrees to an octave, clamped beyond. Measured as how far the screen's x axis leans from level, so it works held upright or flat.
+- Tilt toward or away (top edge away = louder): the loudness. The tilt when the lab opens, and when the sound is switched on, is the middle (0.6); 30 degrees either way reach full (1.0) or quiet (0.2), never silent.
+- Both tilts are smoothed over 0.15 s, so a steady hand gives a steady tone. The lean is measured against the whole of up in the screen's plane, so turning for the pitch doesn't change the loudness; turned more than 70 degrees (toward portrait) the loudness holds. The speaker's mixer squares a channel's volume, so the channel gets the square root of the loudness (`waveLabChannelVolume()`): quiet really is a fifth of full, and two tones at half each add up to one.
+- Button B: Sinus, Dreieck, Rechteck, Sägezahn, Oktave (2f), Quinte (3f/2), Schwebung (f + 4 Hz). Sine, triangle, square and sawtooth are built from their first 9 harmonics, the same on screen and in the speaker. The two-tone patterns are sines.
+- On screen: the wave across the screen at its true length in air (60 px to a metre, 343 m/s), moving right slowed ("Zeitlupe"); a bracket under one wavelength that travels with it; frequency, wavelength ("λ 78 cm"), and the nearest note with a drawn "≈" (German names as in music: H, Cis … Ais; English C# … A#) or, for two tones, the second one ("+ 880 Hz"; the beat: how far apart, "+ 4 Hz"); the pattern's name; a speaker that shows what you hear, as music's does: 0 to 3 sound waves from Zitro's volume times the loudness, none with the sound off or the volume at 0, white while the sound is on (`waveLabSpeakerWaves()`, Matthias 2026-11-22: "Speaker should reflect the volume"). Two-tone patterns draw both tones thin and their sum bold.
+- The menu (holding B; also Button C until the button module removes it): "Ton an"/"Ton aus" (preselected), "Text", "Schliessen". The lab keeps running under it, so the sound starts at once. B's tab shows ▼; no C tab.
+- Not in the shake surprise (it can sound), nor in the home menu's question list.
 - Home place: `PhysicsState.homeLatitude` and `homeLongitude` (radians, north and east positive) feed the seasons and the Sun's path. `physicsBegin()` sets them from the home city setting (`clockHomeCity()`, the world clock's table, default Zurich 47.4 degrees north). `PHYSICS_HOME_LATITUDE` and `PHYSICS_HOME_LONGITUDE` remain for the host tests. Both scenes show the latitude they use. South of the equator the seasons scene names the seasons the other way round, and the Sun's path faces north, east on the right.
 
 | Id | Curriculum topic | What it computes | Button B |
@@ -50,6 +64,7 @@ Two result kinds, `physics` and `solid`, computed entirely on the device. They n
 | `sunpath` | The Sun's daily path | Height and direction of the Sun over the home horizon through a day, from latitude and declination; the Sun now from the clock (sidereal time, home longitude). Day length and noon height of the chosen day | Today, June solstice, equinoxes, December solstice |
 | `satellites` | Orbits | Earth and orbit true to scale; period from Kepler's third law with the Earth's GM (and the Moon's for the Moon); the satellite runs by Kepler's second law; a spot on the equator turns once a sidereal day at the same pace | ISS, GPS, Meteosat (geostationary), the Moon |
 | `sizes` | How big things are | Bodies side by side at their true sizes to each other, with the exact ratio of their radii | Earth and Moon, Jupiter and Earth, Sun and Jupiter, Sun and Earth, all planets in a row |
+| `wave-lab` | Sound and waves, played | Tilt sets pitch and loudness; the wave at its true wavelength in air, frequency, note; heard as you see it | Sine, triangle, square, sawtooth, octave, fifth, beat; the menu switches the sound |
 | `atom-<symbol>` | Atom shell model | Electron shells of hydrogen to krypton (Z 1 to 36), from PubChem's configurations. The symbol is matched whole and in any case; English names work too | Next element, label follows |
 
 Chosen the way primary and lower-secondary school teaches physics, for up to 12-year-olds: forces first, then energy, light, sound, electricity, matter, the sky and atoms. The ten scenes from `double-pendulum` on go further, for teenagers: chaos, waves, light's colours, radioactivity and the solar system.
@@ -80,6 +95,7 @@ Known simplifications, none of them on-screen claims:
 - `sunpath`: the Sun's centre, with no refraction: days come out a few minutes shorter than in sunrise tables, which count the Sun's upper edge lifted by the air. The dots on the chosen day's path are hours of sun time, not clock time; no clock times are shown. The view is a chart: direction across, height up, both at the same scale. Near the equator, where the Sun passes almost overhead, the paths there turn steep, as on any such chart. The Sun now moves in real time; without a clock there is no "today".
 - `satellites`: the orbit's shape and period, not where the satellite really is today: there is no live data. Time-lapse ("Zeitraffer"), each at its own pace: one trip takes 6 seconds for the ISS, 10 for GPS, 12 for geostationary, 16 for the Moon. Earth and orbits are true to scale with each other; the satellites and the Moon are dots. Heights count from the Earth's equator radius. The Moon's orbit is drawn tilted by 23.4 degrees to the equator; the real tilt swings between 18.3 and 28.6 degrees over 18.6 years. The ISS's and GPS's tilts are shown, the turning of their orbits over weeks is not.
 - `sizes`: sizes true to each other within each picture, distances not: the bodies are placed side by side. Mean radii, so Jupiter's and Saturn's flattening isn't drawn. Saturn's main rings run from the inner edge of the C ring to the outer edge of the A ring, drawn tilted.
+- `wave-lab`: the wave moves slowed ("Zeitlupe"), at the Sound scene's 94 pixels a second for every tone, because sound's speed doesn't depend on pitch; the sound itself is real time. Wavelengths are true to scale for air at 20 °C. Shapes have 9 harmonics, so the square shows small ripples where a textbook draws sharp corners; that is what the speaker plays. Beat: 4 Hz apart, the two tones' wavelengths differ by about 1 %, which would take 86 m of air to show one whole swell; in the few metres on screen the air's pressure is one wave whose height swells and fades with time, and that is what is drawn, at the real pace you hear (4 times a second) while the wave itself moves slowed. The tilt is a control, like a knob: in physics the pitch doesn't depend on how a source is held.
 - `atom-*`: shell model, not to scale. Speeds follow Bohr's 1/n^3 ratio, slowed enormously. Neutrons aren't shown, as they differ by isotope.
 
 ### Solids (`solid:<id>`)
@@ -92,13 +108,16 @@ Known simplifications, none of them on-screen claims:
 
 ### Tests
 
-`tests/physics/run.sh` builds with address and undefined-behaviour sanitizers and runs three programs:
+`tests/physics/run.sh` builds with address and undefined-behaviour sanitizers and runs four programs:
 
 - `test_physics.cpp`: the math, against textbook values, US Naval Observatory dates and JPL Horizons positions: planets against Horizons within four times JPL's stated typical errors, Mars's 2020 and 2027 oppositions and its 2020 retrograde stretch, the Sun's height and direction for Switzerland and Sydney, Kepler periods (ISS 93 min, GPS half a sidereal day, geostationary one sidereal day, the Moon 27.3 days), SCHOTT's catalogue indices and Abbe numbers, a hand-worked prism deviation, half-life chances, double pendulum energy and its small-swing mode, and the Doppler pitch against the crests' timing.
 - `test_solid.cpp`: counts, Euler, closed surfaces, outward normals, hostile ids.
-- `test_render.cpp`: the real drawing code on a stand-in canvas with the real fonts: every scene and setting in both languages, and the seasons and the Sun's path also for homes in Sydney, Singapore and Tromsø. It fails on text that leaves the screen, sits over the footer or over other text, or has no glyph, and on a sound longer than two frames or from a scene that has none. With `ZITRO_RENDER_DIR=<dir>` it writes pictures. It runs only on the host: speed and look on the stick aren't covered.
+- `test_wave_lab.cpp`: tilt to pitch and loudness (ends, clamping, the middle), the tilt angles held upright, flat and upside down, each shape's harmonics by a Fourier sum (odd only for square and triangle, 1/n and 1/n²), the tables, the patterns' second tones, note names in both languages, staying awake and the 5-minute cap across the millis() wrap.
+- `test_render.cpp`: the real drawing code on a stand-in canvas with the real fonts: every scene and setting in both languages, and the seasons and the Sun's path also for homes in Sydney, Singapore and Tromsø. It fails on text that leaves the screen, sits over the footer or over other text, or has no glyph, and on a sound longer than two frames or from a scene that has none. The wave lab also runs at every pattern, seven pitch tilts, three loudness tilts and its sound off and on: its held sound must be silent when off, one or two tones in range when on, and it never asks for a short tone; the loudness holds when the stick is turned past 70 degrees and doesn't jump when held upside down. With `ZITRO_RENDER_DIR=<dir>` it writes pictures. It runs only on the host: speed and look on the stick aren't covered.
 
-Not measured on the stick yet: frame rates (the double slit, the Sun's path and the planets do the most per frame), how long the retrograde scene takes to prepare when it opens (about 600 orbit positions in double precision), and how the Doppler beeps and Geiger clicks sound on the buzzer.
+`tests/view_menu/run.sh`: the view menu's rows, presses and closing by itself.
+
+Not measured on the stick yet: frame rates (the double slit, the Sun's path and the planets do the most per frame), how long the retrograde scene takes to prepare when it opens (about 600 orbit positions in double precision), and how the Doppler beeps and Geiger clicks sound on the buzzer. The wave lab: the tilt signs and range by hand, whether a sliding pitch sounds smooth or stepped, whether the shapes and patterns can be told apart by ear (the Plus2's buzzer may make them sound alike), that every way out goes quiet at once, and the frame rate.
 
 ## User guide
 
@@ -107,6 +126,7 @@ Ask how something works, and Zitro shows it moving.
 - "Wie funktioniert ein Hebel?", "Warum schwimmt Holz?", "Warum gibt es Jahreszeiten?", "Warum knickt ein Stab im Wasser?", "Wie ist ein Kohlenstoffatom aufgebaut?"
 - "Was ist Chaos?", "Warum klingt ein Krankenwagen anders, wenn er vorbeifährt?", "Was passiert beim Doppelspalt?", "Warum macht ein Prisma Regenbogenfarben?", "Was ist eine Halbwertszeit?"
 - "Wo stehen die Planeten gerade?", "Warum läuft der Mars manchmal rückwärts?", "Warum steht die Sonne im Winter so tief?", "Wie hoch fliegt die ISS?", "Wie gross ist Jupiter im Vergleich zur Erde?"
+- "Was ist eine Wellenlänge?", "Ich will mit Tönen spielen", "Was ist eine Schwebung?" open the wave lab.
 - For shapes: "Zeig mir einen Torus", "Wie sieht ein Ikosaeder aus?" Just "Pyramide" or "Prisma" shows the square pyramid and the triangular prism.
 
 Questions like "Was ist ein Magnet?" still bring a photo.
@@ -115,11 +135,14 @@ Questions like "Was ist ein Magnet?" still bring a photo.
 
 The Doppler scene beeps and the half-life scene clicks, at your Zitro's volume. Scenes that run faster or slower than real life, or aren't to scale, say so on screen.
 
+**Wave lab:** tilt Zitro left or right to make the tone higher or lower, and toward or away from you to make it quieter or louder. The wave on screen stretches and squeezes with it, at its true length in air. Button B shows the next wave: sine, triangle, square, sawtooth, octave, fifth and beat. Hold Button B for the menu: "Ton an" switches the sound on, "Text" shows the written answer. The sound starts off every time, and switches itself off 5 minutes after your last press.
+
 **Shapes:** turn the stick to look around the shape. Button B zooms. Shapes with flat sides show how many faces, edges and corners they have. Button C shows the written answer.
 
 ## Release note
 
 - Ask how something works and watch it move: levers, pendulums, magnets, light, sound, seasons, moon phases and atoms, plus 3D shapes to turn in your hand, all computed right on your Zitro.
+- Play with sound in the new wave lab: tilt Zitro to make a tone higher or louder, watch its wave stretch, and switch between sine, square, sawtooth, octaves and beats.
 - Ten new scenes: watch a double pendulum turn chaotic, hear a siren's pitch drop as it passes, see light make bands behind a double slit and fan into colours in a prism, listen to atoms decay, find the planets where they are today, follow Mars's loop, trace the Sun's path over your sky, fly with the ISS and compare the sizes of Earth, Jupiter and the Sun.
 
 ## Sources and licences

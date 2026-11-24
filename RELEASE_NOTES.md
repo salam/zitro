@@ -1,5 +1,17 @@
 # Release Notes
 
+## Mon 23 Nov, 2026
+
+- **A smooth tone in the wave lab**: tilt Zitro a little or a lot, and the tone glides along without clicking. Switch to a square or a sawtooth, and the old sound finishes its wave before the new one starts.
+
+## Sun 22 Nov, 2026
+
+- **See how loud it is**: in the wave lab, the little speaker shows up to three waves for what you hear, from Zitro's volume and how far you lean it. Turn Zitro's volume down and the waves get fewer.
+
+## Tue 17 Nov, 2026
+
+- **Play with sound in the wave lab**: ask "Was ist eine Wellenlänge?" or "Ich will mit Tönen spielen", hold the side button and switch the sound on. Tilt Zitro to make the tone higher, lower, louder or quieter, and watch its wave stretch to its true length in air. Press the side button to hear a square, a sawtooth, an octave and a beat.
+
 ## Mon 16 Nov, 2026
 
 - **The whole globe, every way round**: on the world clock and the ISS, the writing now has a thin dark edge instead of black boxes, so it no longer cuts corners out of the Earth, whichever way you hold the stick. "422 km hoch" fits whole, the speed under it is no longer cut off when held upright, and the bottom line no longer runs off the screen for places like Zürich. Right next to the pin, the little house steps aside, so you see where the pin points.

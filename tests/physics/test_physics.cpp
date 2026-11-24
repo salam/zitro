@@ -547,6 +547,7 @@ static void testNumbers() {
 
 static void testScenes() {
   CHECK(physicsFindScene("pendulum") >= 0);
+  CHECK(physicsFindScene("wave-lab") >= 0);
   CHECK(physicsFindScene("PENDULUM") == physicsFindScene("pendulum"));
   const char* bad[] = {"", " ", "pendulu", "pendulums", "pendulum ", "pendulum;x", "../lever", "%6Cever",
                        ("Pendel"), "\xFF\xFE", "orbital-2p", "a very long name that is not on any list at all"};

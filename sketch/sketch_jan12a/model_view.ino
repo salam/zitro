@@ -73,6 +73,7 @@ void drawModelHint(M5Canvas& c) {
 }
 
 void modelViewEnd() {
+  viewMenuStop();  // Its rows belong to the view
   if (modelCanvas) {
     if (activeFeature && activeFeature->end) activeFeature->end();
     modelCanvas->deleteSprite();
@@ -147,7 +148,11 @@ void modelViewRender(float dt) {
   activeFeature->frame(*modelCanvas, dt);
   modelCanvas->setRotation(0);  // Raw buffer access and screenshots expect the buffer's own axes
   modelViewRedraw = false;
-  if (hints) modelDrawHints(*modelCanvas);
+  if (viewMenuActive()) {
+    viewMenuDraw(*modelCanvas);  // Over the running view, with its own tabs
+  } else if (hints) {
+    modelDrawHints(*modelCanvas);
+  }
   modelCanvas->pushSprite(0, 0);
   captureCanvas(*modelCanvas);
 }
@@ -207,6 +212,8 @@ void modelButtonBDouble() {
 bool modelButtonC() {
   modelWindowStart = millis();
   modelShowHints();
+  // A view with its own menu rows (the wave lab): C opens that menu, until the button module takes C away
+  if (viewMenuOpen()) return true;
   return activeFeature && activeFeature->buttonC && activeFeature->buttonC();
 }
 
